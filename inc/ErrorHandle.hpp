@@ -8,8 +8,6 @@
 #include <exception>
 #include <string>
 
-class ErrorHandle {
-
 class ErrorHandle : public std::exception {
 public:
     explicit ErrorHandle(const char* message);
@@ -19,8 +17,9 @@ public:
     const char* what() const throw() override ;
 private:
     std::string _message;
+
 };
-};
+
 
 
 #endif //BOMBERMAN_ERRORHANDLE_HPP

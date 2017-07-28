@@ -2,4 +2,15 @@
 // Created by Tony Mack on 2017/07/28.
 //
 
-#include "ErrorHandle.hpp"
+#include "../inc/ErrorHandle.hpp"
+
+
+ErrorHandle::ErrorHandle(const char *message) : _message(message) {}
+
+ErrorHandle::ErrorHandle(const std::string &message) : _message(message) {}
+
+ErrorHandle::~ErrorHandle() {}
+
+const char *ErrorHandle::what() const throw() {
+    return _message.c_str();
+}
