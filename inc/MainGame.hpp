@@ -10,6 +10,7 @@
 #include "../inc/Sprite.hpp"
 #include "GLSLProgram.hpp"
 #include <OpenGL/gl3.h>
+#include "GLTexture.hpp"
 
 
 enum GameState {PLAY, EXIT};
@@ -25,13 +26,14 @@ public:
 
 
 private:
-    SDL_Window *_window;
-    unsigned int _ScreenWidth;
-    unsigned int _ScreenHeight;
-    GameState _gameState;
-    Sprite _sprite;
-    GLSLProgram _colorProgram;
-
+    SDL_Window      *_window;
+    unsigned int    _ScreenWidth;
+    unsigned int    _ScreenHeight;
+    GameState       _gameState;
+    Sprite          _sprite;
+    GLSLProgram     _colorProgram;
+    float           _time;
+    GLTexture       _PlayerTexture;
 
     void initGame();
     void initShaders();

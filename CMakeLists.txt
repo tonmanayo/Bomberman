@@ -8,7 +8,7 @@ find_package(SDL2 REQUIRED)
 INCLUDE(FindPkgConfig)
 INCLUDE(FindOpenGL REQUIRED)
 #INCLUDE(FindGLEW REQUIRED)
-set(SOURCE_FILES src/main.cpp src/MainGame.cpp inc/MainGame.hpp src/ErrorHandle.cpp inc/ErrorHandle.hpp src/Sprite.cpp inc/Sprite.hpp inc/GLSLProgram.hpp src/GLSLProgram.cpp)
+set(SOURCE_FILES src/main.cpp src/MainGame.cpp inc/MainGame.hpp src/ErrorHandle.cpp inc/ErrorHandle.hpp src/Sprite.cpp inc/Sprite.hpp inc/GLSLProgram.hpp src/GLSLProgram.cpp inc/Vertex.hpp src/IOManager.cpp inc/IOManager.hpp src/picoPNG.cpp inc/picoPNG.hpp inc/GLTexture.hpp src/imageLoader.cpp inc/imageLoader.hpp)
 
 #find_package(GLEW REQUIRED)
 #if (GLEW_FOUND)

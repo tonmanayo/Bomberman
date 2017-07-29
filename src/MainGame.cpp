@@ -5,16 +5,16 @@
 #include <iostream>
 #include "../inc/MainGame.hpp"
 #include "../inc/ErrorHandle.hpp"
+#include "../inc/imageLoader.hpp"
 
-MainGame::MainGame(): _window(nullptr), _ScreenHeight(768), _ScreenWidth(1024), _gameState(PLAY) {}
+MainGame::MainGame(): _time(0), _window(nullptr), _ScreenHeight(768), _ScreenWidth(1024), _gameState(PLAY) {}
 
-MainGame::~MainGame() {
-
-}
+MainGame::~MainGame() {}
 
 void MainGame::run() {
     initGame();
-    _sprite.init(-1.0f, -1.0f, 1.0f, 1.0f);
+    _sprite.init(-1.0f, -1.0f, 2.0f, 2.0f);
+    _PlayerTexture = imageLoader::loadPNG("resources/sprites/Enemys/Enemy_Snowman1.png");
     gameLoop();
 }
 
@@ -55,7 +55,7 @@ void MainGame::initGame() {
 
 }
 
-void MainGame::processInput() {
+void MainGame::processInput(){
 
     SDL_Event e;
 
@@ -74,6 +74,7 @@ void MainGame::processInput() {
 void MainGame::gameLoop() {
     while (_gameState != EXIT) {
         processInput();
+        _time += 0.01;
         drawGame();
     }
 }
@@ -82,7 +83,19 @@ void MainGame::drawGame() {
     glClearDepth(1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     _colorProgram.use();
-     _sprite.draw();
+
+    glActiveTexture(GL_TEXTURE0);
+    GLint texturelocation = _colorProgram.getUiformLocation("mySampler");
+    glUniform1i(texturelocation, 0);
+    glBindTexture(GL_TEXTURE_2D, _PlayerTexture.id);
+
+   // GLint timeLocation = _colorProgram.getUiformLocation("time");
+  //  glUniform1f(timeLocation, _time);
+
+    _sprite.draw();
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+
     _colorProgram.unuse();
     SDL_GL_SwapWindow(_window);
 }
@@ -90,5 +103,7 @@ void MainGame::drawGame() {
 void MainGame::initShaders() {
     _colorProgram.compileShaders("shaders/colorShading.vert", "shaders/fragShader.frag");
     _colorProgram.addAttribute("vertexPosition");
+    _colorProgram.addAttribute("vertexColor");
+    _colorProgram.addAttribute("vertexUV");
     _colorProgram.linkShaders();
 }

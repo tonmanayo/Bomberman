@@ -7,6 +7,7 @@
 
 //#include <GL/glew.h>
 #include <OpenGL/gl3.h>
+#include "Vertex.hpp"
 
 
 class Sprite {

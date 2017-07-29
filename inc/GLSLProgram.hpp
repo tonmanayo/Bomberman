@@ -8,6 +8,10 @@
 
 #include <string>
 #include <OpenGL/gl3.h>
+#include <fstream>
+#include <vector>
+#include <iostream>
+#include <SDL.h>
 
 class GLSLProgram {
 private:
@@ -15,7 +19,6 @@ private:
     GLuint  _vertexShaderID;
     GLuint  _fragmentShaderID;
     GLuint  _numAtterbutes;
-
 
     void compileShader(const std::string &filepath, GLuint id);
 
@@ -28,6 +31,7 @@ public:
     void addAttribute(const std::string &attributeName);
     void use();
     void unuse();
+    GLint getUiformLocation(const std::string &unifronName);
 };
 
 

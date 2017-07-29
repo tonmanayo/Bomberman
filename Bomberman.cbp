@@ -90,10 +90,25 @@
 		<Unit filename="/nfs/zfs-student-6/users/tmack/Projects/opengltut/Bomberman/inc/GLSLProgram.hpp">
 			<Option target="Bomberman"/>
 		</Unit>
+		<Unit filename="/nfs/zfs-student-6/users/tmack/Projects/opengltut/Bomberman/inc/GLTexture.hpp">
+			<Option target="Bomberman"/>
+		</Unit>
+		<Unit filename="/nfs/zfs-student-6/users/tmack/Projects/opengltut/Bomberman/inc/IOManager.hpp">
+			<Option target="Bomberman"/>
+		</Unit>
 		<Unit filename="/nfs/zfs-student-6/users/tmack/Projects/opengltut/Bomberman/inc/MainGame.hpp">
 			<Option target="Bomberman"/>
 		</Unit>
 		<Unit filename="/nfs/zfs-student-6/users/tmack/Projects/opengltut/Bomberman/inc/Sprite.hpp">
+			<Option target="Bomberman"/>
+		</Unit>
+		<Unit filename="/nfs/zfs-student-6/users/tmack/Projects/opengltut/Bomberman/inc/Vertex.hpp">
+			<Option target="Bomberman"/>
+		</Unit>
+		<Unit filename="/nfs/zfs-student-6/users/tmack/Projects/opengltut/Bomberman/inc/imageLoader.hpp">
+			<Option target="Bomberman"/>
+		</Unit>
+		<Unit filename="/nfs/zfs-student-6/users/tmack/Projects/opengltut/Bomberman/inc/picoPNG.hpp">
 			<Option target="Bomberman"/>
 		</Unit>
 		<Unit filename="/nfs/zfs-student-6/users/tmack/Projects/opengltut/Bomberman/src/ErrorHandle.cpp">
@@ -102,13 +117,22 @@
 		<Unit filename="/nfs/zfs-student-6/users/tmack/Projects/opengltut/Bomberman/src/GLSLProgram.cpp">
 			<Option target="Bomberman"/>
 		</Unit>
+		<Unit filename="/nfs/zfs-student-6/users/tmack/Projects/opengltut/Bomberman/src/IOManager.cpp">
+			<Option target="Bomberman"/>
+		</Unit>
 		<Unit filename="/nfs/zfs-student-6/users/tmack/Projects/opengltut/Bomberman/src/MainGame.cpp">
 			<Option target="Bomberman"/>
 		</Unit>
 		<Unit filename="/nfs/zfs-student-6/users/tmack/Projects/opengltut/Bomberman/src/Sprite.cpp">
 			<Option target="Bomberman"/>
 		</Unit>
+		<Unit filename="/nfs/zfs-student-6/users/tmack/Projects/opengltut/Bomberman/src/imageLoader.cpp">
+			<Option target="Bomberman"/>
+		</Unit>
 		<Unit filename="/nfs/zfs-student-6/users/tmack/Projects/opengltut/Bomberman/src/main.cpp">
+			<Option target="Bomberman"/>
+		</Unit>
+		<Unit filename="/nfs/zfs-student-6/users/tmack/Projects/opengltut/Bomberman/src/picoPNG.cpp">
 			<Option target="Bomberman"/>
 		</Unit>
 		<Unit filename="/nfs/zfs-student-6/users/tmack/Projects/opengltut/Bomberman/CMakeLists.txt">

@@ -2,9 +2,7 @@
 // Created by Tony MACK on 2017/07/29.
 //
 
-#include <fstream>
-#include <vector>
-#include <iostream>
+
 #include "../inc/GLSLProgram.hpp"
 #include "../inc/ErrorHandle.hpp"
 
@@ -66,14 +64,13 @@ void GLSLProgram::compileShaders(const std::string &vertexShaderFilePath, const 
 
     } catch (ErrorHandle errorHandle){
        std::cout << errorHandle.what() << std::endl;
+        SDL_Quit();
+        exit(-1);
     }
 }
 
 void GLSLProgram::linkShaders() {
-
     try {
-        _programID = glCreateProgram();
-
         glAttachShader(_programID, _fragmentShaderID);
         glAttachShader(_programID, _vertexShaderID);
 
@@ -97,6 +94,8 @@ void GLSLProgram::linkShaders() {
         glDeleteShader(_fragmentShaderID);
     } catch (ErrorHandle errorHandle) {
         std::cout << errorHandle.what() << std::endl;
+        SDL_Quit();
+        exit(-1);
     }
 }
 
@@ -119,3 +118,15 @@ void GLSLProgram::unuse() {
 
 }
 
+GLint GLSLProgram::getUiformLocation(const std::string &unifronName) {
+    GLint location = glGetUniformLocation(_programID, unifronName.c_str());
+    try {
+        if (location == GL_INVALID_INDEX) {
+            throw ErrorHandle("Uniform name not found in shader");
+        }
+
+    } catch (ErrorHandle errorHandle) {
+        std::cout << errorHandle.what();
+    }
+    return (location);
+}
