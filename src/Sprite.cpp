@@ -14,10 +14,19 @@ Sprite::~Sprite() {
 }
 
 void Sprite::draw() {
+    glBindBuffer(GL_ARRAY_BUFFER, _vboID);
+
+    glEnableVertexAttribArray(0);
+
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
+
+    glDrawArrays(GL_TRIANGLES, 0, 6);
+
+    glDisableVertexAttribArray(0);
 
 }
 
-void Sprite::init(const unsigned int &x, const unsigned int &y, const unsigned int &width, const unsigned int &height) {
+void Sprite::init(float x, float y, float width, float height) {
     _x = x;
     _y = y;
     _width = width;

@@ -5,8 +5,12 @@
 #ifndef BOMBERMAN_MAINGAME_HPP
 #define BOMBERMAN_MAINGAME_HPP
 
-#include <sdl.h>
-#include <GL/glew.h>
+#include <SDL.h>
+//#include <GL/glew.h>
+#include "../inc/Sprite.hpp"
+#include "GLSLProgram.hpp"
+#include <OpenGL/gl3.h>
+
 
 enum GameState {PLAY, EXIT};
 
@@ -19,20 +23,21 @@ public:
     void run();
 
 
+
 private:
     SDL_Window *_window;
     unsigned int _ScreenWidth;
     unsigned int _ScreenHeight;
     GameState _gameState;
+    Sprite _sprite;
+    GLSLProgram _colorProgram;
+
 
     void initGame();
+    void initShaders();
     void processInput();
     void gameLoop();
     void drawGame();
-
-
-
-
 };
 
 

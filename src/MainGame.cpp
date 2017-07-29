@@ -14,6 +14,7 @@ MainGame::~MainGame() {
 
 void MainGame::run() {
     initGame();
+    _sprite.init(-1.0f, -1.0f, 1.0f, 1.0f);
     gameLoop();
 }
 
@@ -27,22 +28,29 @@ void MainGame::initGame() {
         if (_window == nullptr)
             throw ErrorHandle("Error creating window");
 
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+
         SDL_GLContext glContext = SDL_GL_CreateContext(_window);
+
+        GLuint vertexArrayID;
+        glGenVertexArrays(1, &vertexArrayID);
+        glBindVertexArray(vertexArrayID);
 
         if (glContext == nullptr)
             throw ErrorHandle("could not create SDL GL context");
 
-        GLenum error = glewInit();
-        if (error != GLEW_OK)
-            throw ErrorHandle("could not init Glew");
+//        GLenum error = glewInit();
+//        if (error != GLEW_OK)
+//            throw ErrorHandle("could not init Glew");
 
         SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
         //background colour
         glClearColor(1.0f, 1.0f, 0.0f, 1.0);
+        initShaders();
 
 
     } catch (ErrorHandle errorHandle){
-        errorHandle.what();
+        std::cout << errorHandle.what() << std::endl;
     }
 
 }
@@ -73,8 +81,14 @@ void MainGame::gameLoop() {
 void MainGame::drawGame() {
     glClearDepth(1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+    _colorProgram.use();
+     _sprite.draw();
+    _colorProgram.unuse();
     SDL_GL_SwapWindow(_window);
+}
 
-
+void MainGame::initShaders() {
+    _colorProgram.compileShaders("shaders/colorShading.vert", "shaders/fragShader.frag");
+    _colorProgram.addAttribute("vertexPosition");
+    _colorProgram.linkShaders();
 }

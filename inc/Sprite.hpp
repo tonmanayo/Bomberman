@@ -5,20 +5,22 @@
 #ifndef BOMBERMAN_SPRITE_HPP
 #define BOMBERMAN_SPRITE_HPP
 
-#include <GL/Glew.h>
+//#include <GL/glew.h>
+#include <OpenGL/gl3.h>
+
 
 class Sprite {
 public:
     Sprite();
     virtual ~Sprite();
     void draw();
-    void init(const unsigned int &x, const unsigned int &y, const unsigned int &width, const unsigned int &height);
+    void init(float x, float y, float width, float height);
 
 private:
-    unsigned int _x;
-    unsigned int _y;
-    unsigned int _width;
-    unsigned int _height;
+    float _x;
+    float _y;
+    float _width;
+    float _height;
     GLuint _vboID;
 
 };
