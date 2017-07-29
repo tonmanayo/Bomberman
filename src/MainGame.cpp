@@ -82,8 +82,8 @@ void MainGame::gameLoop() {
 void MainGame::drawGame() {
     glClearDepth(1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    _colorProgram.use();
 
+    _colorProgram.use();
     glActiveTexture(GL_TEXTURE0);
     GLint texturelocation = _colorProgram.getUiformLocation("mySampler");
     glUniform1i(texturelocation, 0);
@@ -95,7 +95,6 @@ void MainGame::drawGame() {
     _sprite.draw();
 
     glBindTexture(GL_TEXTURE_2D, 0);
-
     _colorProgram.unuse();
     SDL_GL_SwapWindow(_window);
 }
