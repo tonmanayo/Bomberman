@@ -1,25 +1,56 @@
 cmake_minimum_required(VERSION 3.8)
 project(Bomberman)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 
 find_package(SDL2 REQUIRED)
+find_package(OpenGL REQUIRED)
 
 INCLUDE(FindPkgConfig)
 INCLUDE(FindOpenGL REQUIRED)
-#INCLUDE(FindGLEW REQUIRED)
-set(SOURCE_FILES src/main.cpp src/MainGame.cpp inc/MainGame.hpp src/ErrorHandle.cpp inc/ErrorHandle.hpp src/Sprite.cpp inc/Sprite.hpp inc/GLSLProgram.hpp src/GLSLProgram.cpp inc/Vertex.hpp src/IOManager.cpp inc/IOManager.hpp src/picoPNG.cpp inc/picoPNG.hpp inc/GLTexture.hpp src/imageLoader.cpp inc/imageLoader.hpp src/ResourceManager.cpp inc/ResourceManager.hpp src/TextureCache.cpp inc/TextureCache.hpp src/Window.cpp inc/Window.hpp)
 
-#find_package(GLEW REQUIRED)
-#if (GLEW_FOUND)
-#    include_directories(${GLEW_INCLUDE_DIRS})
-#    link_libraries(${GLEW_LIBRARIES})
-#endif()
+
+#INCLUDE(FindGLEW REQUIRED)
+set(SOURCE_FILES src/main.cpp
+        src/MainGame.cpp
+        inc/MainGame.hpp
+        src/ErrorHandle.cpp
+        inc/ErrorHandle.hpp
+        src/Sprite.cpp
+        inc/Sprite.hpp
+        inc/GLSLProgram.hpp
+        src/GLSLProgram.cpp
+        inc/Vertex.hpp
+        src/IOManager.cpp
+        inc/IOManager.hpp
+        src/picoPNG.cpp
+        inc/picoPNG.hpp
+        inc/GLTexture.hpp
+        src/imageLoader.cpp
+        inc/imageLoader.hpp
+        src/ResourceManager.cpp
+        inc/ResourceManager.hpp
+        src/TextureCache.cpp
+        inc/TextureCache.hpp
+        src/Window.cpp
+        inc/Window.hpp
+        src/WTCEngine.cpp
+        inc/WTCEngine.hpp src/Camera2D.cpp inc/Camera2D.hpp)
 
 add_executable(Bomberman ${SOURCE_FILES})
 
+PKG_SEARCH_MODULE(GLM REQUIRED glm)
 PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
-INCLUDE_DIRECTORIES(${OPENGL_INCLUDE_DIR} ${SDL2_INCLUDE_DIRS} ${SDL2IMAGE_INCLUDE_DIRS})
-target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES} ${OPENGL_LIBRARIES})
+PKG_SEARCH_MODULE(GLEW REQUIRED glew)
 
-#${GLEW_LIBRARIES}
+INCLUDE_DIRECTORIES(${OPENGL_INCLUDE_DIR}
+                    ${SDL2_INCLUDE_DIRS}
+                    ${SDL2IMAGE_INCLUDE_DIRS}
+                    ${GLM_INCLUDE_DIRS}
+                    ${GLEW_INCLUDE_DIRS})
+target_link_libraries(${PROJECT_NAME}
+                      ${SDL2_LIBRARIES}
+                      ${OPENGL_LIBRARIES}
+                      ${GLM_LIBRARIES}
+                      ${GLEW_LIBRARIES})
+

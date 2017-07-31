@@ -8,11 +8,13 @@
 
 #include <vector>
 #include <string>
-
-class IOManager {
-public:
-    static bool readFileToBuffer(std::string filePath, std::vector<unsigned char> &buff);
-};
+namespace WTCEngine {
 
 
+    class IOManager {
+    public:
+        static bool readFileToBuffer(std::string filePath, std::vector<unsigned char> &buff);
+    };
+
+}
 #endif //BOMBERMAN_IOMANAGER_HPP

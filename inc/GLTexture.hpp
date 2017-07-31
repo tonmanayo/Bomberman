@@ -6,11 +6,11 @@
 #define BOMBERMAN_GLTEXTURE_HPP
 
 #include <OpenGL/gl3.h>
-
-struct GLTexture {
-    GLuint id;
-    int width;
-    int height;
-};
-
+namespace WTCEngine {
+    struct GLTexture {
+        GLuint id;
+        int width;
+        int height;
+    };
+}
 #endif //BOMBERMAN_GLTEXTURE_HPP

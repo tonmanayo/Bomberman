@@ -7,13 +7,14 @@
 
 
 #include "TextureCache.hpp"
+namespace WTCEngine {
+    class ResourceManager {
+    public:
+        static GLTexture getTexture(const std::string &textureString);
 
-class ResourceManager {
-public:
-    static GLTexture getTexture(const std::string &textureString);
-private:
-    static TextureCache _textureCache;
-};
-
+    private:
+        static TextureCache _textureCache;
+    };
+}
 
 #endif //BOMBERMAN_RESOURCEMANAGER_HPP

@@ -12,27 +12,33 @@
 #include <vector>
 #include <iostream>
 #include <SDL.h>
+namespace WTCEngine {
+    class GLSLProgram {
+    private:
+        GLuint _programID;
+        GLuint _vertexShaderID;
+        GLuint _fragmentShaderID;
+        GLuint _numAtterbutes;
 
-class GLSLProgram {
-private:
-    GLuint  _programID;
-    GLuint  _vertexShaderID;
-    GLuint  _fragmentShaderID;
-    GLuint  _numAtterbutes;
+        void compileShader(const std::string &filepath, GLuint id);
 
-    void compileShader(const std::string &filepath, GLuint id);
+    public:
+        GLSLProgram();
 
-public:
-    GLSLProgram();
-    virtual ~GLSLProgram();
+        virtual ~GLSLProgram();
 
-    void compileShaders(const std::string &vertexShaderFilePath, const std::string &fragmentShaderFilePath);
-    void linkShaders();
-    void addAttribute(const std::string &attributeName);
-    void use();
-    void unuse();
-    GLint getUiformLocation(const std::string &unifronName);
-};
+        void compileShaders(const std::string &vertexShaderFilePath, const std::string &fragmentShaderFilePath);
 
+        void linkShaders();
 
+        void addAttribute(const std::string &attributeName);
+
+        void use();
+
+        void unuse();
+
+        GLint getUiformLocation(const std::string &unifronName);
+    };
+
+}
 #endif //BOMBERMAN_GLSLPROGRAM_HPP

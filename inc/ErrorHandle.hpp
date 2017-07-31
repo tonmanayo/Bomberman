@@ -7,18 +7,22 @@
 
 #include <exception>
 #include <string>
+namespace WTCEngine {
+    class ErrorHandle : public std::exception {
+    public:
+        explicit ErrorHandle(const char *message);
 
-class ErrorHandle : public std::exception {
-public:
-    explicit ErrorHandle(const char* message);
-    explicit ErrorHandle(const std::string& message);
-    virtual ~ErrorHandle();
+        explicit ErrorHandle(const std::string &message);
 
-    const char* what() const throw() override ;
-private:
-    std::string _message;
+        virtual ~ErrorHandle();
 
-};
+        const char *what() const throw() override;
+
+    private:
+        std::string _message;
+
+    };
+}
 
 
 

@@ -8,12 +8,12 @@
 
 #include <string>
 #include "GLTexture.hpp"
-
-class imageLoader {
+namespace WTCEngine {
+    class imageLoader {
     public:
 
-    static GLTexture loadPNG(std::string filepath);
-};
+        static GLTexture loadPNG(std::string filepath);
+    };
 
-
+}
 #endif //BOMBERMAN_IMAGELOADER_HPP

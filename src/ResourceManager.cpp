@@ -3,9 +3,10 @@
 //
 
 #include "../inc/ResourceManager.hpp"
+namespace WTCEngine {
+    TextureCache ResourceManager::_textureCache;
 
-TextureCache ResourceManager::_textureCache;
-
-GLTexture ResourceManager::getTexture(const std::string &textureString) {
-    return _textureCache.getTexture(textureString);
+    GLTexture ResourceManager::getTexture(const std::string &textureString) {
+        return _textureCache.getTexture(textureString);
+    }
 }

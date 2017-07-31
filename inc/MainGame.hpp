@@ -6,41 +6,52 @@
 #define BOMBERMAN_MAINGAME_HPP
 
 #include <SDL.h>
-//#include <GL/glew.h>
+
 #include "../inc/Sprite.hpp"
 #include "GLSLProgram.hpp"
 #include <OpenGL/gl3.h>
 #include "GLTexture.hpp"
 #include "Window.hpp"
+#include "Camera2D.hpp"
 
-enum GameState {PLAY, EXIT};
+enum GameState {
+        PLAY, EXIT
+    };
 
-class MainGame {
+    class MainGame {
 
-public:
-    MainGame();
-    virtual ~MainGame();
+    public:
+        MainGame();
 
-    void run();
+        virtual ~MainGame();
 
-private:
-    Window              _window;
-    unsigned int        _ScreenWidth;
-    unsigned int        _ScreenHeight;
-    GameState           _gameState;
-    std::vector<Sprite *> _sprites;
-    GLSLProgram         _colorProgram;
-    float               _time;
-    float               _fps;
-    float               _frameTime;
-    float               _maxFPS;
-    void initGame();
-    void initShaders();
-    void processInput();
-    void gameLoop();
-    void drawGame();
-    void calculateFPS();
-};
+        void run();
+
+    private:
+        WTCEngine::Window _window;
+        unsigned int                     _ScreenWidth;
+        unsigned int                     _ScreenHeight;
+        GameState                        _gameState;
+        std::vector<WTCEngine::Sprite *> _sprites;
+        WTCEngine::GLSLProgram           _colorProgram;
+        float                            _time;
+        float                            _fps;
+        float                            _frameTime;
+        float                            _maxFPS;
+        WTCEngine::Camera2D              _camera2D;
+
+        void initGame();
+
+        void initShaders();
+
+        void processInput();
+
+        void gameLoop();
+
+        void drawGame();
+
+        void calculateFPS();
+    };
 
 
 #endif //BOMBERMAN_MAINGAME_HPP

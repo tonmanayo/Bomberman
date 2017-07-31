@@ -11,23 +11,26 @@
 #include "Vertex.hpp"
 #include "GLTexture.hpp"
 
+namespace WTCEngine {
+    class Sprite {
+    public:
+        Sprite();
 
-class Sprite {
-public:
-    Sprite();
-    virtual ~Sprite();
-    void draw();
-    void init(float x, float y, float width, float height, std::string texturePath);
+        virtual ~Sprite();
 
-private:
-    float _x;
-    float _y;
-    float _width;
-    float _height;
-    GLuint _vboID;
-    GLTexture _texture;
+        void draw();
 
-};
+        void init(float x, float y, float width, float height, std::string texturePath);
 
+    private:
+        float _x;
+        float _y;
+        float _width;
+        float _height;
+        GLuint _vboID;
+        GLTexture _texture;
+
+    };
+}
 
 #endif //BOMBERMAN_SPRITE_HPP

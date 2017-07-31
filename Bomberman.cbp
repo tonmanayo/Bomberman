@@ -46,6 +46,8 @@
 				<Compiler>
 					<Add directory="/System/Library/Frameworks/OpenGL.framework"/>
 					<Add directory="/nfs/zfs-student-6/users/tmack/.brew/Cellar/sdl2/2.0.5/include/SDL2"/>
+					<Add directory="/nfs/zfs-student-6/users/tmack/.brew/Cellar/glm/0.9.8.4/include"/>
+					<Add directory="/nfs/zfs-student-6/users/tmack/.brew/include/SDL2"/>
 					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
 					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/7.3.0/include"/>
 					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
@@ -69,6 +71,8 @@
 				<Compiler>
 					<Add directory="/System/Library/Frameworks/OpenGL.framework"/>
 					<Add directory="/nfs/zfs-student-6/users/tmack/.brew/Cellar/sdl2/2.0.5/include/SDL2"/>
+					<Add directory="/nfs/zfs-student-6/users/tmack/.brew/Cellar/glm/0.9.8.4/include"/>
+					<Add directory="/nfs/zfs-student-6/users/tmack/.brew/include/SDL2"/>
 					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
 					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/7.3.0/include"/>
 					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
@@ -84,6 +88,9 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/nfs/zfs-student-6/users/tmack/Projects/opengltut/Bomberman/inc/Camera2D.hpp">
+			<Option target="Bomberman"/>
+		</Unit>
 		<Unit filename="/nfs/zfs-student-6/users/tmack/Projects/opengltut/Bomberman/inc/ErrorHandle.hpp">
 			<Option target="Bomberman"/>
 		</Unit>
@@ -111,6 +118,9 @@
 		<Unit filename="/nfs/zfs-student-6/users/tmack/Projects/opengltut/Bomberman/inc/Vertex.hpp">
 			<Option target="Bomberman"/>
 		</Unit>
+		<Unit filename="/nfs/zfs-student-6/users/tmack/Projects/opengltut/Bomberman/inc/WTCEngine.hpp">
+			<Option target="Bomberman"/>
+		</Unit>
 		<Unit filename="/nfs/zfs-student-6/users/tmack/Projects/opengltut/Bomberman/inc/Window.hpp">
 			<Option target="Bomberman"/>
 		</Unit>
@@ -118,6 +128,9 @@
 			<Option target="Bomberman"/>
 		</Unit>
 		<Unit filename="/nfs/zfs-student-6/users/tmack/Projects/opengltut/Bomberman/inc/picoPNG.hpp">
+			<Option target="Bomberman"/>
+		</Unit>
+		<Unit filename="/nfs/zfs-student-6/users/tmack/Projects/opengltut/Bomberman/src/Camera2D.cpp">
 			<Option target="Bomberman"/>
 		</Unit>
 		<Unit filename="/nfs/zfs-student-6/users/tmack/Projects/opengltut/Bomberman/src/ErrorHandle.cpp">
@@ -139,6 +152,9 @@
 			<Option target="Bomberman"/>
 		</Unit>
 		<Unit filename="/nfs/zfs-student-6/users/tmack/Projects/opengltut/Bomberman/src/TextureCache.cpp">
+			<Option target="Bomberman"/>
+		</Unit>
+		<Unit filename="/nfs/zfs-student-6/users/tmack/Projects/opengltut/Bomberman/src/WTCEngine.cpp">
 			<Option target="Bomberman"/>
 		</Unit>
 		<Unit filename="/nfs/zfs-student-6/users/tmack/Projects/opengltut/Bomberman/src/Window.cpp">

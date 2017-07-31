@@ -10,14 +10,14 @@
 #include "GLTexture.hpp"
 #include <string>
 
+namespace WTCEngine {
+    class TextureCache {
+    private:
+        std::map<std::string, GLTexture> _texttureMap;
+    public:
+        GLTexture getTexture(std::string);
 
-class TextureCache {
-private:
-    std::map<std::string, GLTexture> _texttureMap;
-public:
-    GLTexture getTexture(std::string);
-
-};
-
+    };
+}
 
 #endif //BOMBERMAN_TEXTURECACHE_HPP
