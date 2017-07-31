@@ -16,8 +16,9 @@ namespace WTCEngine {
     }
 
     void Camera2D::setPosition(const glm::vec2& newPosition) {
-        _needsMatrixUpdate = true;
         _position = newPosition;
+        _needsMatrixUpdate = true;
+
     }
 
     glm::vec2 Camera2D::getPosition() {
@@ -33,8 +34,8 @@ namespace WTCEngine {
     }
 
     void Camera2D::setScale(float scale) {
-        _needsMatrixUpdate = true;
         _scale = scale;
+        _needsMatrixUpdate = true;
     }
 
     float Camera2D::getScale() {
@@ -44,15 +45,18 @@ namespace WTCEngine {
     void Camera2D::init(int screenWidth, int screenHeight) {
         _ScreenWidth = screenWidth;
         _ScreenHeight = screenHeight;
-        _orthoMatrix = glm::ortho(0.0f, (float) _ScreenWidth, 0.0f, (float) _ScreenHeight);
+        _orthoMatrix = glm::ortho(0.0f, (float)screenWidth, 0.0f, (float)screenHeight);
     }
 
     void Camera2D::update() {
         if (_needsMatrixUpdate) {
-            glm::vec3 translate(-_position.x, -_position.y, 0.0f);
+            //translate
+            glm::vec3 translate(-_position.x + _ScreenWidth / 2, -_position.y + _ScreenHeight / 2, 0.0f);
             _camMatrix = glm::translate(_orthoMatrix, translate);
+            //scale
             glm::vec3 scale(_scale, _scale, 0.0f);
-            _camMatrix = glm::translate(_camMatrix, scale);
+            _camMatrix = glm::scale(glm::mat4(1.0f), scale) * _camMatrix;
+
             _needsMatrixUpdate = false;
         }
     }

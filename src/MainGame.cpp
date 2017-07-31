@@ -41,6 +41,8 @@
     void MainGame::processInput() {
 
         const float CAMERA_SPEED = 20.0f;
+        const float SCALE_SPEED = 0.10f;
+
         SDL_Event e;
 
         while (SDL_PollEvent(&e)) {
@@ -65,11 +67,16 @@
                         case SDLK_d:
                             _camera2D.setPosition(_camera2D.getPosition() + glm::vec2(-CAMERA_SPEED, 0.0f));
                             break ;
+                        case SDLK_q:
+                            _camera2D.setScale(_camera2D.getScale() + SCALE_SPEED);
+                            break ;
+                        case SDLK_e:
+                            _camera2D.setScale(_camera2D.getScale() - SCALE_SPEED);
+                            break ;
                         case SDLK_ESCAPE:
                             _gameState = EXIT;
                             break ;
                     }
-
             }
         }
     }
