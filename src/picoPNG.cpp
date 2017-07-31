@@ -5,8 +5,6 @@
 #include "../inc/picoPNG.hpp"
 
 
-#include <vector>
-
 /*
 decodePNG: The picoPNG function, decodes a PNG file buffer in memory, into a raw pixel buffer.
 out_image: output parameter, this will contain the raw pixels after decoding.
@@ -537,31 +535,4 @@ int decodePNG(std::vector<unsigned char>& out_image, unsigned long& image_width,
     PNG decoder; decoder.decode(out_image, in_png, in_size, convert_to_rgba32);
     image_width = decoder.info.width; image_height = decoder.info.height;
     return decoder.error;
-}
-
-
-
-
-
-//an example using the PNG loading function:
-
-#include <iostream>
-#include <fstream>
-
-void loadFile(std::vector<unsigned char>& buffer, const std::string& filename) //designed for loading files from hard disk in an std::vector
-{
-    std::ifstream file(filename.c_str(), std::ios::in|std::ios::binary|std::ios::ate);
-
-    //get filesize
-    std::streamsize size = 0;
-    if(file.seekg(0, std::ios::end).good()) size = file.tellg();
-    if(file.seekg(0, std::ios::beg).good()) size -= file.tellg();
-
-    //read contents of the file into the vector
-    if(size > 0)
-    {
-        buffer.resize((size_t)size);
-        file.read((char*)(&buffer[0]), size);
-    }
-    else buffer.clear();
 }

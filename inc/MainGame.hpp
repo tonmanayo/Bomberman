@@ -11,7 +11,7 @@
 #include "GLSLProgram.hpp"
 #include <OpenGL/gl3.h>
 #include "GLTexture.hpp"
-
+#include "Window.hpp"
 
 enum GameState {PLAY, EXIT};
 
@@ -23,23 +23,23 @@ public:
 
     void run();
 
-
-
 private:
-    SDL_Window      *_window;
-    unsigned int    _ScreenWidth;
-    unsigned int    _ScreenHeight;
-    GameState       _gameState;
-    Sprite          _sprite;
-    GLSLProgram     _colorProgram;
-    float           _time;
-    GLTexture       _PlayerTexture;
-
+    Window              _window;
+    unsigned int        _ScreenWidth;
+    unsigned int        _ScreenHeight;
+    GameState           _gameState;
+    std::vector<Sprite *> _sprites;
+    GLSLProgram         _colorProgram;
+    float               _time;
+    float               _fps;
+    float               _frameTime;
+    float               _maxFPS;
     void initGame();
     void initShaders();
     void processInput();
     void gameLoop();
     void drawGame();
+    void calculateFPS();
 };
 
 

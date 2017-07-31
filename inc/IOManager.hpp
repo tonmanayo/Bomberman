@@ -11,7 +11,7 @@
 
 class IOManager {
 public:
-    static bool readFileToBuffer(std::vector<unsigned char> &buff, std::string filePath);
+    static bool readFileToBuffer(std::string filePath, std::vector<unsigned char> &buff);
 };
 
 

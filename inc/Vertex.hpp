@@ -7,11 +7,6 @@
 
 #include <OpenGL/OpenGL.h>
 
-struct UV {
-    float u;
-    float v;
-};
-
 struct Position {
     float x;
     float y;
@@ -22,6 +17,11 @@ struct Color {
     GLubyte g;
     GLubyte b;
     GLubyte a;
+};
+
+struct UV {
+    float u;
+    float v;
 };
 
 struct Vertex {

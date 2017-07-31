@@ -99,10 +99,19 @@
 		<Unit filename="/nfs/zfs-student-6/users/tmack/Projects/opengltut/Bomberman/inc/MainGame.hpp">
 			<Option target="Bomberman"/>
 		</Unit>
+		<Unit filename="/nfs/zfs-student-6/users/tmack/Projects/opengltut/Bomberman/inc/ResourceManager.hpp">
+			<Option target="Bomberman"/>
+		</Unit>
 		<Unit filename="/nfs/zfs-student-6/users/tmack/Projects/opengltut/Bomberman/inc/Sprite.hpp">
 			<Option target="Bomberman"/>
 		</Unit>
+		<Unit filename="/nfs/zfs-student-6/users/tmack/Projects/opengltut/Bomberman/inc/TextureCache.hpp">
+			<Option target="Bomberman"/>
+		</Unit>
 		<Unit filename="/nfs/zfs-student-6/users/tmack/Projects/opengltut/Bomberman/inc/Vertex.hpp">
+			<Option target="Bomberman"/>
+		</Unit>
+		<Unit filename="/nfs/zfs-student-6/users/tmack/Projects/opengltut/Bomberman/inc/Window.hpp">
 			<Option target="Bomberman"/>
 		</Unit>
 		<Unit filename="/nfs/zfs-student-6/users/tmack/Projects/opengltut/Bomberman/inc/imageLoader.hpp">
@@ -123,7 +132,16 @@
 		<Unit filename="/nfs/zfs-student-6/users/tmack/Projects/opengltut/Bomberman/src/MainGame.cpp">
 			<Option target="Bomberman"/>
 		</Unit>
+		<Unit filename="/nfs/zfs-student-6/users/tmack/Projects/opengltut/Bomberman/src/ResourceManager.cpp">
+			<Option target="Bomberman"/>
+		</Unit>
 		<Unit filename="/nfs/zfs-student-6/users/tmack/Projects/opengltut/Bomberman/src/Sprite.cpp">
+			<Option target="Bomberman"/>
+		</Unit>
+		<Unit filename="/nfs/zfs-student-6/users/tmack/Projects/opengltut/Bomberman/src/TextureCache.cpp">
+			<Option target="Bomberman"/>
+		</Unit>
+		<Unit filename="/nfs/zfs-student-6/users/tmack/Projects/opengltut/Bomberman/src/Window.cpp">
 			<Option target="Bomberman"/>
 		</Unit>
 		<Unit filename="/nfs/zfs-student-6/users/tmack/Projects/opengltut/Bomberman/src/imageLoader.cpp">

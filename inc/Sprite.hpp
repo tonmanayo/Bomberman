@@ -7,7 +7,9 @@
 
 //#include <GL/glew.h>
 #include <OpenGL/gl3.h>
+#include <string>
 #include "Vertex.hpp"
+#include "GLTexture.hpp"
 
 
 class Sprite {
@@ -15,7 +17,7 @@ public:
     Sprite();
     virtual ~Sprite();
     void draw();
-    void init(float x, float y, float width, float height);
+    void init(float x, float y, float width, float height, std::string texturePath);
 
 private:
     float _x;
@@ -23,6 +25,7 @@ private:
     float _width;
     float _height;
     GLuint _vboID;
+    GLTexture _texture;
 
 };
 

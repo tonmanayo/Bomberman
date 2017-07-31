@@ -39,7 +39,7 @@ void GLSLProgram::compileShader(const std::string &filepath, GLuint id) {
             std::vector<char> errorlog(maxLength);
             glGetShaderInfoLog(id, maxLength, &maxLength, &errorlog[0]);
             glDeleteShader(id);
-            std::printf("%s\n", &(errorlog[0]));
+           std::printf("%s\n", &(errorlog[0]));
             throw ErrorHandle("Error loading Shaders!");
         }
     } catch (ErrorHandle errorHandle) {

@@ -17,15 +17,13 @@ GLTexture imageLoader::loadPNG(std::string filepath) {
     unsigned long width, height;
 
     try {
-        if (!IOManager::readFileToBuffer(in, filepath)) {
+        if (IOManager::readFileToBuffer(filepath, in) == false) {
             throw ErrorHandle("Failed to load PNG to buffer");
         }
 
-
-        int err = decodePNG(out, width, height, &(in[0]), in.size());
+        int err = decodePNG(out, width, height, &(in[0]), in.size(), true);
         if (err != 0)
             throw ErrorHandle("decode failed with error: " + std::to_string(err));
-
 
         glGenTextures(1, &(texture.id));
 
