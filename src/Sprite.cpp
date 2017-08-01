@@ -5,6 +5,7 @@
 #include <cstddef>
 #include "../inc/Sprite.hpp"
 #include "../inc/ResourceManager.hpp"
+
 namespace WTCEngine {
     Sprite::Sprite() : _vboID(0) {
 
@@ -18,15 +19,10 @@ namespace WTCEngine {
     void Sprite::draw() {
         glBindTexture(GL_TEXTURE_2D, _texture.id);
         glBindBuffer(GL_ARRAY_BUFFER, _vboID);
-        glEnableVertexAttribArray(0);
 
-        //position attribute pointer
-        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *) offsetof(Vertex, position));
 
-        glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(Vertex), (void *) offsetof(Vertex, color));
         glDrawArrays(GL_TRIANGLES, 0, 6);
 
-        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *) offsetof(Vertex, uv));
 
         glDisableVertexAttribArray(0);
 

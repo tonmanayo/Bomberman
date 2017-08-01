@@ -112,6 +112,9 @@
 		<Unit filename="/nfs/zfs-student-6/users/tmack/Projects/opengltut/Bomberman/inc/Sprite.hpp">
 			<Option target="Bomberman"/>
 		</Unit>
+		<Unit filename="/nfs/zfs-student-6/users/tmack/Projects/opengltut/Bomberman/inc/SpriteBatch.hpp">
+			<Option target="Bomberman"/>
+		</Unit>
 		<Unit filename="/nfs/zfs-student-6/users/tmack/Projects/opengltut/Bomberman/inc/TextureCache.hpp">
 			<Option target="Bomberman"/>
 		</Unit>
@@ -149,6 +152,9 @@
 			<Option target="Bomberman"/>
 		</Unit>
 		<Unit filename="/nfs/zfs-student-6/users/tmack/Projects/opengltut/Bomberman/src/Sprite.cpp">
+			<Option target="Bomberman"/>
+		</Unit>
+		<Unit filename="/nfs/zfs-student-6/users/tmack/Projects/opengltut/Bomberman/src/SpriteBatch.cpp">
 			<Option target="Bomberman"/>
 		</Unit>
 		<Unit filename="/nfs/zfs-student-6/users/tmack/Projects/opengltut/Bomberman/src/TextureCache.cpp">

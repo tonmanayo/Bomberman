@@ -13,6 +13,7 @@
 #include "GLTexture.hpp"
 #include "Window.hpp"
 #include "Camera2D.hpp"
+#include "SpriteBatch.hpp"
 
 enum GameState {
         PLAY, EXIT
@@ -32,13 +33,13 @@ enum GameState {
         unsigned int                     _ScreenWidth;
         unsigned int                     _ScreenHeight;
         GameState                        _gameState;
-        std::vector<WTCEngine::Sprite *> _sprites;
         WTCEngine::GLSLProgram           _colorProgram;
         float                            _time;
         float                            _fps;
         float                            _frameTime;
         float                            _maxFPS;
         WTCEngine::Camera2D              _camera2D;
+        WTCEngine::SpriteBatch           _spriteBatch;
 
         void initGame();
 

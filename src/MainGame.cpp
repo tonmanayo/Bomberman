@@ -6,6 +6,7 @@
 #include "../inc/MainGame.hpp"
 #include "../inc/ErrorHandle.hpp"
 #include "../inc/WTCEngine.hpp"
+#include "../inc/ResourceManager.hpp"
 
     MainGame::MainGame() : _time(0), _ScreenHeight(768), _ScreenWidth(1024), _gameState(PLAY), _maxFPS(60) {
         _camera2D.init(_ScreenWidth, _ScreenHeight);
@@ -15,12 +16,6 @@
 
     void MainGame::run() {
         initGame();
-        _sprites.push_back(new WTCEngine::Sprite());
-        _sprites.back()->init(0.0f, 0.0f, _ScreenWidth / 2, _ScreenWidth / 2, "resources/sprites/Enemys/Enemy_Snowman1.png");
-
-        _sprites.push_back(new WTCEngine::Sprite());
-        _sprites.back()->init(_ScreenWidth / 2, 0.0f, _ScreenWidth / 2, _ScreenWidth / 2, "resources/sprites/Enemys/Enemy_Snowman1.png");
-
         gameLoop();
     }
 
@@ -30,6 +25,7 @@
             WTCEngine::init();
             _window.create("Bomberman", _ScreenWidth, _ScreenHeight, 0);
             initShaders();
+            _spriteBatch.init();
 
 
         } catch (WTCEngine::ErrorHandle errorHandle) {
@@ -119,9 +115,24 @@
 
         glUniformMatrix4fv(pLocation, 1, GL_FALSE, &(cameraMatrix[0][0]));
 
-        for (int i = 0; i < _sprites.size(); ++i) {
-            _sprites[i]->draw();
+        _spriteBatch.begin();
+
+        glm::vec4 position(0.0f, 0.0f, 50.0f, 50.0f);
+        glm::vec4 uv(0.0f, 0.0f, 1.0f, 1.0f);
+        static WTCEngine::GLTexture texture = WTCEngine::ResourceManager::getTexture("resources/sprites/Enemys/Enemy_Snowman1.png");
+        WTCEngine::Color color;
+        color.r = 255;
+        color.g = 1;
+        color.b = 1;
+        color.a = 255;
+        _spriteBatch.draw(position, uv, texture.id, 0.0f, color);
+        for (int i = 0; i < 10000; ++i) {
+            _spriteBatch.draw(position + glm::vec4(50.0f,0.0f,00.0f,00.0f), uv, texture.id, 0.0f, color);
         }
+
+        _spriteBatch.end();
+        _spriteBatch.renderBatch();
+
 
         glBindTexture(GL_TEXTURE_2D, 0);
         _colorProgram.unuse();
