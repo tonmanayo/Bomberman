@@ -127,6 +127,9 @@ void WTCEngine::SpriteBatch::createVertexArray() {
 void WTCEngine::SpriteBatch::begin(WTCEngine::GlyphSortType sortType) {
     _sortType = sortType;
     _renderBatches.clear();
+    for (auto &_glyph : _glyphs) {
+        delete _glyph;
+    }
     _glyphs.clear();
 }
 

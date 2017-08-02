@@ -14,6 +14,7 @@
 #include "Window.hpp"
 #include "Camera2D.hpp"
 #include "SpriteBatch.hpp"
+#include "InputManager.hpp"
 
 enum GameState {
         PLAY, EXIT
@@ -40,6 +41,7 @@ enum GameState {
         float                            _maxFPS;
         WTCEngine::Camera2D              _camera2D;
         WTCEngine::SpriteBatch           _spriteBatch;
+        WTCEngine::InputManager          _inputManager;
 
         void initGame();
 

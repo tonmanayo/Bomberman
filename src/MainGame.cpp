@@ -36,7 +36,7 @@
 
     void MainGame::processInput() {
 
-        const float CAMERA_SPEED = 20.0f;
+        const float CAMERA_SPEED = 2.0f;
         const float SCALE_SPEED = 0.10f;
 
         SDL_Event e;
@@ -50,30 +50,34 @@
                     //std::cout << "x: " << e.motion.x << " y: " << e.motion.y << std::endl;
                     break;
                 case SDL_KEYDOWN :
-                    switch (e.key.keysym.sym) {
-                        case SDLK_w :
-                            _camera2D.setPosition(_camera2D.getPosition() + glm::vec2(0.0f, -CAMERA_SPEED));
-                            break ;
-                        case SDLK_s:
-                            _camera2D.setPosition(_camera2D.getPosition() + glm::vec2(0.0f, CAMERA_SPEED));
-                            break ;
-                        case SDLK_a :
-                            _camera2D.setPosition(_camera2D.getPosition() + glm::vec2(CAMERA_SPEED, 0.0f));
-                            break ;
-                        case SDLK_d:
-                            _camera2D.setPosition(_camera2D.getPosition() + glm::vec2(-CAMERA_SPEED, 0.0f));
-                            break ;
-                        case SDLK_q:
-                            _camera2D.setScale(_camera2D.getScale() + SCALE_SPEED);
-                            break ;
-                        case SDLK_e:
-                            _camera2D.setScale(_camera2D.getScale() - SCALE_SPEED);
-                            break ;
-                        case SDLK_ESCAPE:
-                            _gameState = EXIT;
-                            break ;
-                    }
+                    _inputManager.pressKey(e.key.keysym.sym);
+
+                    break;
+                case SDL_KEYUP:
+                    _inputManager.releaseKey(e.key.keysym.sym);
+                    break;
             }
+        }
+        if (_inputManager.isKeyPressed(SDLK_w)) {
+            _camera2D.setPosition(_camera2D.getPosition() + glm::vec2(0.0f, -CAMERA_SPEED));
+        }
+        if (_inputManager.isKeyPressed(SDLK_s)) {
+            _camera2D.setPosition(_camera2D.getPosition() + glm::vec2(0.0f, CAMERA_SPEED));
+        }
+        if (_inputManager.isKeyPressed(SDLK_a)) {
+            _camera2D.setPosition(_camera2D.getPosition() + glm::vec2(CAMERA_SPEED, 0.0f));
+        }
+        if (_inputManager.isKeyPressed(SDLK_d)) {
+            _camera2D.setPosition(_camera2D.getPosition() + glm::vec2(-CAMERA_SPEED, 0.0f));
+        }
+        if (_inputManager.isKeyPressed(SDLK_q)) {
+            _camera2D.setScale(_camera2D.getScale() + SCALE_SPEED);
+        }
+        if (_inputManager.isKeyPressed(SDLK_e)) {
+            _camera2D.setScale(_camera2D.getScale() - SCALE_SPEED);
+        }
+        if (_inputManager.isKeyPressed(SDLK_ESCAPE)) {
+            _gameState = EXIT;
         }
     }
 
@@ -120,14 +124,14 @@
         glm::vec4 position(0.0f, 0.0f, 50.0f, 50.0f);
         glm::vec4 uv(0.0f, 0.0f, 1.0f, 1.0f);
         static WTCEngine::GLTexture texture = WTCEngine::ResourceManager::getTexture("resources/sprites/Enemys/Enemy_Snowman1.png");
-        WTCEngine::Color color;
+        WTCEngine::Color color = {};
         color.r = 255;
         color.g = 1;
         color.b = 1;
         color.a = 255;
         _spriteBatch.draw(position, uv, texture.id, 0.0f, color);
-        for (int i = 0; i < 10000; ++i) {
-            _spriteBatch.draw(position + glm::vec4(50.0f,0.0f,00.0f,00.0f), uv, texture.id, 0.0f, color);
+        for (int i = 0; i < 55000eee; ++i) {
+            _spriteBatch.draw(position + glm::vec4(50.0f * i,0.0f,00.0f,00.0f), uv, texture.id, 0.0f, color);
         }
 
         _spriteBatch.end();

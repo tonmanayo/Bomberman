@@ -35,7 +35,7 @@ set(SOURCE_FILES src/main.cpp
         src/Window.cpp
         inc/Window.hpp
         src/WTCEngine.cpp
-        inc/WTCEngine.hpp src/Camera2D.cpp inc/Camera2D.hpp src/SpriteBatch.cpp inc/SpriteBatch.hpp)
+        inc/WTCEngine.hpp src/Camera2D.cpp inc/Camera2D.hpp src/SpriteBatch.cpp inc/SpriteBatch.hpp src/InputManager.cpp inc/InputManager.hpp src/FpsLimiter.cpp inc/FpsLimiter.hpp)
 
 add_executable(Bomberman ${SOURCE_FILES})
 
