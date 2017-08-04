@@ -15,6 +15,7 @@
 #include "Camera2D.hpp"
 #include "SpriteBatch.hpp"
 #include "InputManager.hpp"
+#include "FpsLimiter.hpp"
 
 enum GameState {
         PLAY, EXIT
@@ -36,12 +37,13 @@ enum GameState {
         GameState                        _gameState;
         WTCEngine::GLSLProgram           _colorProgram;
         float                            _time;
-        float                            _fps;
-        float                            _frameTime;
-        float                            _maxFPS;
         WTCEngine::Camera2D              _camera2D;
         WTCEngine::SpriteBatch           _spriteBatch;
         WTCEngine::InputManager          _inputManager;
+        WTCEngine::FpsLimiter            _fpsLimiter;
+        float                            _fps;
+        float                            _maxFPS;
+
 
         void initGame();
 
@@ -52,8 +54,6 @@ enum GameState {
         void gameLoop();
 
         void drawGame();
-
-        void calculateFPS();
     };
 
 

@@ -5,16 +5,33 @@
 #ifndef BOMBERMAN_FPSLIMITER_HPP
 #define BOMBERMAN_FPSLIMITER_HPP
 
+#include <SDL.h>
 
-class FpsLimiter {
-public:
-    FpsLimiter();
-    virtual ~FpsLimiter();
-    void begin();
-    int end();
+namespace WTCEngine {
+    class FpsLimiter {
+    public:
+        FpsLimiter();
 
-private:
-};
+        virtual ~FpsLimiter();
+
+        void init(float targetFPS);
+
+        void begin();
+        //return fps
+        float end();
+
+        void setMaxFPS(float targetFPS);
+
+    private:
+        float           _fps;
+        float           _maxFPS;
+        unsigned int    _startTicks;
+        float           _frameTime;
+
+        void            calculateFPS();
+
+    };
+}
 
 
 #endif //BOMBERMAN_FPSLIMITER_HPP

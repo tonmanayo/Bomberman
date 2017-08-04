@@ -26,7 +26,7 @@
             _window.create("Bomberman", _ScreenWidth, _ScreenHeight, 0);
             initShaders();
             _spriteBatch.init();
-
+            _fpsLimiter.init(_maxFPS);
 
         } catch (WTCEngine::ErrorHandle errorHandle) {
             std::cout << errorHandle.what() << std::endl;
@@ -83,21 +83,18 @@
 
     void MainGame::gameLoop() {
         while (_gameState != EXIT) {
-            float startTicks = SDL_GetTicks();
-
+            _fpsLimiter.begin();
             processInput();
             _time += 0.01;
             _camera2D.update();
             drawGame();
-            calculateFPS();
+            _fps = _fpsLimiter.end();
+            // print every 10 frames
             static int frameCounter = 0;
-            if (frameCounter++ == 10) {
+            frameCounter++;
+            if (frameCounter == 10) {
                 std::cout << _fps << std::endl;
                 frameCounter = 0;
-            }
-            float frameTicks = SDL_GetTicks() - startTicks;
-            if (1000.00f / _maxFPS > frameTicks) {
-                SDL_Delay(1000.0f / _maxFPS - frameTicks);
             }
         }
     }
@@ -130,7 +127,7 @@
         color.b = 1;
         color.a = 255;
         _spriteBatch.draw(position, uv, texture.id, 0.0f, color);
-        for (int i = 0; i < 55000eee; ++i) {
+        for (int i = 0; i < 1000; ++i) {
             _spriteBatch.draw(position + glm::vec4(50.0f * i,0.0f,00.0f,00.0f), uv, texture.id, 0.0f, color);
         }
 
@@ -151,34 +148,4 @@
         _colorProgram.linkShaders();
     }
 
-    void MainGame::calculateFPS() {
-        static const int NUM_SAMPLES = 10;
-        static float frameTimes[NUM_SAMPLES];
-        static int curFrame = 0;
-
-        static float prevTicks = SDL_GetTicks();
-        float curTicks = SDL_GetTicks();
-
-        _frameTime = curTicks - prevTicks;
-        prevTicks = curTicks;
-        frameTimes[curFrame % NUM_SAMPLES] = _frameTime;
-
-        int count = 0;
-        if (curFrame < NUM_SAMPLES) {
-            count = curFrame;
-        } else
-            count = NUM_SAMPLES;
-        float frameTimeAvg = 0;
-        for (int i = 0; i < count; ++i) {
-            frameTimeAvg += frameTimes[i];
-        }
-        if (count > 0)
-            frameTimeAvg /= count;
-
-        if (frameTimeAvg > 0)
-            _fps = 1000.0f / frameTimeAvg;
-        else
-            _fps = 60;
-        curFrame++;
-    }
 
