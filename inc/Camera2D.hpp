@@ -29,6 +29,7 @@ namespace WTCEngine {
         float getScale();
 
         void setPosition(const glm::vec2 &newPosition);
+        glm::vec2 convertScreenToWorld(glm::vec2 screenCoords);
 
         glm::vec2 getPosition();
 

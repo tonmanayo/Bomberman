@@ -4,7 +4,7 @@
 
 #include "../inc/InputManager.hpp"
 
-WTCEngine::InputManager::InputManager() {
+WTCEngine::InputManager::InputManager() : _mouseCoords(0){
 
 }
 
@@ -29,4 +29,13 @@ bool WTCEngine::InputManager::isKeyPressed(unsigned int keyID) {
     else {
         return false;
     }
+}
+
+void WTCEngine::InputManager::setMouseCoords(float x, float y) {
+    _mouseCoords.x = x;
+    _mouseCoords.y = y;
+}
+
+glm::vec2 WTCEngine::InputManager::getMouseCoords() const{
+    return _mouseCoords;
 }

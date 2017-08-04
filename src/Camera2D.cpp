@@ -60,6 +60,20 @@ namespace WTCEngine {
             _needsMatrixUpdate = false;
         }
     }
+
+    glm::vec2 Camera2D::convertScreenToWorld(glm::vec2 screenCoords) {
+        //invert Y
+        screenCoords.y = _ScreenHeight - screenCoords.y;
+        //0 is the centre
+        screenCoords -= glm::vec2(_ScreenWidth / 2, _ScreenHeight / 2);
+        // scale coords
+        screenCoords /= _scale;
+        // translate with the camera position
+        screenCoords += _position;
+        return screenCoords;
+    }
+
+
 }
 
 

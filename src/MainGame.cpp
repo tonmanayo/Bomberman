@@ -47,14 +47,19 @@
                     _gameState = EXIT;
                     break;
                 case SDL_MOUSEMOTION :
-                    //std::cout << "x: " << e.motion.x << " y: " << e.motion.y << std::endl;
+                    _inputManager.setMouseCoords(e.motion.x, e.motion.y);
                     break;
                 case SDL_KEYDOWN :
                     _inputManager.pressKey(e.key.keysym.sym);
-
                     break;
                 case SDL_KEYUP:
                     _inputManager.releaseKey(e.key.keysym.sym);
+                    break;
+                case SDL_MOUSEBUTTONDOWN:
+                    _inputManager.pressKey(e.button.button);
+                    break;
+                case SDL_MOUSEBUTTONUP:
+                    _inputManager.releaseKey(e.button.button);
                     break;
             }
         }
@@ -78,6 +83,11 @@
         }
         if (_inputManager.isKeyPressed(SDLK_ESCAPE)) {
             _gameState = EXIT;
+        }
+        if (_inputManager.isKeyPressed(SDL_BUTTON_LEFT)) {
+            glm::vec2 mouseCoords = _inputManager.getMouseCoords();
+            mouseCoords = _camera2D.convertScreenToWorld(mouseCoords);
+            std::cout << "X: " << mouseCoords.x << "Y: " << mouseCoords.y << std::endl;
         }
     }
 
@@ -108,8 +118,8 @@
         GLint texturelocation = _colorProgram.getUiformLocation("mySampler");
         glUniform1i(texturelocation, 0);
 
-        GLint timeLocation = _colorProgram.getUiformLocation("time");
-        glUniform1f(timeLocation, _time);
+//        GLint timeLocation = _colorProgram.getUiformLocation("time");
+//        glUniform1f(timeLocation, _time);
 
         GLint pLocation = _colorProgram.getUiformLocation("P");
         glm::mat4 cameraMatrix = _camera2D.getcamMatrix();
@@ -127,9 +137,6 @@
         color.b = 1;
         color.a = 255;
         _spriteBatch.draw(position, uv, texture.id, 0.0f, color);
-        for (int i = 0; i < 1000; ++i) {
-            _spriteBatch.draw(position + glm::vec4(50.0f * i,0.0f,00.0f,00.0f), uv, texture.id, 0.0f, color);
-        }
 
         _spriteBatch.end();
         _spriteBatch.renderBatch();

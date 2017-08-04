@@ -3,14 +3,13 @@ project(Bomberman)
 
 set(CMAKE_CXX_STANDARD 14)
 
-find_package(SDL2 REQUIRED)
-find_package(OpenGL REQUIRED)
-
 INCLUDE(FindPkgConfig)
 INCLUDE(FindOpenGL REQUIRED)
 
+find_package(SDL2 REQUIRED)
+find_package(OpenGL REQUIRED)
+find_package(GLEW REQUIRED)
 
-#INCLUDE(Find GLEW REQUIRED)
 set(SOURCE_FILES src/main.cpp
         src/MainGame.cpp
         inc/MainGame.hpp
@@ -37,20 +36,25 @@ set(SOURCE_FILES src/main.cpp
         src/WTCEngine.cpp
         inc/WTCEngine.hpp src/Camera2D.cpp inc/Camera2D.hpp src/SpriteBatch.cpp inc/SpriteBatch.hpp src/InputManager.cpp inc/InputManager.hpp src/FpsLimiter.cpp inc/FpsLimiter.hpp)
 
-add_executable(Bomberman ${SOURCE_FILES})
+link_directories(
 
-PKG_SEARCH_MODULE(GLM REQUIRED glm)
-PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
-PKG_SEARCH_MODULE(GLEW REQUIRED glew)
+        ${GLEW_LIBRARY_DIRS}
+        ${SDL2_LIBRARY_DIRS}
+        ${GLM_LIBRARY_DIRS})
+
+add_executable(Bomberman ${SOURCE_FILES})
 
 INCLUDE_DIRECTORIES(${OPENGL_INCLUDE_DIR}
                     ${SDL2_INCLUDE_DIRS}
                     ${SDL2IMAGE_INCLUDE_DIRS}
                     ${GLM_INCLUDE_DIRS}
-                    ${GLEW_INCLUDE_DIRS})
+                    ${GLEW_INCLUDE_DIRS}
+                    )
+
 target_link_libraries(${PROJECT_NAME}
                       ${SDL2_LIBRARIES}
                       ${OPENGL_LIBRARIES}
                       ${GLM_LIBRARIES}
-                      ${GLEW_LIBRARIES})
+                      ${GLEW_LIBRARIES}
+        )
 

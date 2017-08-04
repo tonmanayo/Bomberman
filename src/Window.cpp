@@ -50,7 +50,9 @@ namespace WTCEngine {
             //background colour
             glClearColor(1.0f, 1.0f, 0.0f, 1.0);
             //set vsync
-            SDL_GL_SetSwapInterval(1);
+            SDL_GL_SetSwapInterval(0);
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             std::printf("*** OpenGL Version: %s\n", glGetString(GL_VERSION));
 
             return 0;
