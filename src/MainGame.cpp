@@ -85,9 +85,16 @@
             _gameState = EXIT;
         }
         if (_inputManager.isKeyPressed(SDL_BUTTON_LEFT)) {
+
+
             glm::vec2 mouseCoords = _inputManager.getMouseCoords();
             mouseCoords = _camera2D.convertScreenToWorld(mouseCoords);
-            std::cout << "X: " << mouseCoords.x << "Y: " << mouseCoords.y << std::endl;
+            glm::vec2 playerPosition(0.0f);
+            glm::vec2 direction = mouseCoords - playerPosition;
+
+            direction = glm::normalize(direction);
+
+            _bullets.emplace_back(playerPosition, direction, 1.05f, 1000);
         }
     }
 
@@ -97,6 +104,15 @@
             processInput();
             _time += 0.01;
             _camera2D.update();
+
+            for (int i = 0; i < _bullets.size() ;) {
+                if (_bullets[i].update()) {
+                    _bullets[i] = _bullets.back();
+                    _bullets.pop_back();
+                }  else
+                    i++;
+            }
+
             drawGame();
             _fps = _fpsLimiter.end();
             // print every 10 frames
@@ -131,11 +147,12 @@
         glm::vec4 position(0.0f, 0.0f, 50.0f, 50.0f);
         glm::vec4 uv(0.0f, 0.0f, 1.0f, 1.0f);
         static WTCEngine::GLTexture texture = WTCEngine::ResourceManager::getTexture("resources/sprites/Enemys/Enemy_Snowman1.png");
-        WTCEngine::Color color = {};
-        color.r = 255;
-        color.g = 1;
-        color.b = 1;
-        color.a = 255;
+        WTCEngine::Color color(255, 0, 0, 255);
+
+        for (int i = 0; i < _bullets.size(); i++) {
+            _bullets[i].draw(_spriteBatch);
+        }
+
         _spriteBatch.draw(position, uv, texture.id, 0.0f, color);
 
         _spriteBatch.end();

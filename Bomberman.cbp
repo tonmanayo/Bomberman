@@ -88,6 +88,9 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/nfs/zfs-student-6/users/tmack/Projects/opengltut/Bomberman/inc/Bullet.hpp">
+			<Option target="Bomberman"/>
+		</Unit>
 		<Unit filename="/nfs/zfs-student-6/users/tmack/Projects/opengltut/Bomberman/inc/Camera2D.hpp">
 			<Option target="Bomberman"/>
 		</Unit>
@@ -137,6 +140,9 @@
 			<Option target="Bomberman"/>
 		</Unit>
 		<Unit filename="/nfs/zfs-student-6/users/tmack/Projects/opengltut/Bomberman/inc/picoPNG.hpp">
+			<Option target="Bomberman"/>
+		</Unit>
+		<Unit filename="/nfs/zfs-student-6/users/tmack/Projects/opengltut/Bomberman/src/Bullet.cpp">
 			<Option target="Bomberman"/>
 		</Unit>
 		<Unit filename="/nfs/zfs-student-6/users/tmack/Projects/opengltut/Bomberman/src/Camera2D.cpp">

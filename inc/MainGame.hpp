@@ -16,6 +16,7 @@
 #include "SpriteBatch.hpp"
 #include "InputManager.hpp"
 #include "FpsLimiter.hpp"
+#include "Bullet.hpp"
 
 enum GameState {
         PLAY, EXIT
@@ -31,6 +32,7 @@ enum GameState {
         void run();
 
     private:
+        std::vector<Bullet>              _bullets;
         WTCEngine::Window _window;
         unsigned int                     _ScreenWidth;
         unsigned int                     _ScreenHeight;

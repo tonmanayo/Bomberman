@@ -17,6 +17,18 @@ namespace WTCEngine {
         GLubyte g;
         GLubyte b;
         GLubyte a;
+        Color() {
+            r = 0;
+            g = 0;
+            b = 0;
+            a = 0;
+        }
+        Color(GLubyte R,GLubyte G,GLubyte B,GLubyte A){
+            r = R;
+            g = G;
+            b = B;
+            a = A;
+        }
     };
 
     struct UV {
