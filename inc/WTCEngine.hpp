@@ -6,7 +6,7 @@
 #define BOMBERMAN_WTCENGINE_HPP
 
 #include <SDL.h>
-#include <OpenGL/gl3.h>
+#include <GL/glew.h>
 namespace WTCEngine {
     extern int init();
 }

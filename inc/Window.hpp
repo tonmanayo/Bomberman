@@ -6,7 +6,7 @@
 #define BOMBERMAN_WINDOW_HPP
 
 #include <SDL.h>
-#include <OpenGL/gl3.h>
+#include <GL/glew.h>
 #include <string>
 namespace WTCEngine {
     enum windowFlags {

@@ -6,7 +6,7 @@
 #define BOMBERMAN_SPRITE_HPP
 
 //#include <GL/glew.h>
-#include <OpenGL/gl3.h>
+#include <GL/glew.h>
 #include <string>
 #include "Vertex.hpp"
 #include "GLTexture.hpp"

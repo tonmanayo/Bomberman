@@ -5,97 +5,197 @@
 		<Option title="Bomberman"/>
 		<Option makefile_is_custom="1"/>
 		<Option compiler="gcc"/>
-		<Option virtualFolders="CMake Files\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\.brew\;CMake Files\..\..\.brew\lib\;CMake Files\..\..\.brew\lib\cmake\;CMake Files\..\..\.brew\lib\cmake\SDL2\;"/>
+		<Option virtualFolders="CMake Files\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\..\;CMake Files\..\..\..\..\;CMake Files\..\..\..\..\usr\;CMake Files\..\..\..\..\usr\lib\;CMake Files\..\..\..\..\usr\lib\x86_64-linux-gnu\;CMake Files\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\;CMake Files\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\SDL2\;"/>
 		<Build>
 			<Target title="all">
-				<Option working_dir="/goinfre/tmack/Projects/Bomberman/cmake-build-debug"/>
+				<Option working_dir="/home/tonmanayo/Projects/Bomberman/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/goinfre/tmack/Projects/Bomberman/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/goinfre/tmack/Projects/Bomberman/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/goinfre/tmack/Projects/Bomberman/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/goinfre/tmack/Projects/Bomberman/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/tonmanayo/Projects/Bomberman/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/tonmanayo/Projects/Bomberman/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/tonmanayo/Projects/Bomberman/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/tonmanayo/Projects/Bomberman/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="rebuild_cache">
-				<Option working_dir="/goinfre/tmack/Projects/Bomberman/cmake-build-debug"/>
+				<Option working_dir="/home/tonmanayo/Projects/Bomberman/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/goinfre/tmack/Projects/Bomberman/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/goinfre/tmack/Projects/Bomberman/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/goinfre/tmack/Projects/Bomberman/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/goinfre/tmack/Projects/Bomberman/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/tonmanayo/Projects/Bomberman/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/tonmanayo/Projects/Bomberman/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/tonmanayo/Projects/Bomberman/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/tonmanayo/Projects/Bomberman/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="edit_cache">
-				<Option working_dir="/goinfre/tmack/Projects/Bomberman/cmake-build-debug"/>
+				<Option working_dir="/home/tonmanayo/Projects/Bomberman/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/goinfre/tmack/Projects/Bomberman/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/goinfre/tmack/Projects/Bomberman/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/goinfre/tmack/Projects/Bomberman/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/goinfre/tmack/Projects/Bomberman/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/tonmanayo/Projects/Bomberman/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/tonmanayo/Projects/Bomberman/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/tonmanayo/Projects/Bomberman/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/tonmanayo/Projects/Bomberman/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="Bomberman">
-				<Option output="/goinfre/tmack/Projects/Bomberman/cmake-build-debug/Bomberman" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/goinfre/tmack/Projects/Bomberman/cmake-build-debug"/>
+				<Option output="/home/tonmanayo/Projects/Bomberman/cmake-build-debug/Bomberman" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/tonmanayo/Projects/Bomberman/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/goinfre/tmack/.brew/Cellar/sdl2/2.0.5/include/SDL2"/>
-					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
-					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/7.3.0/include"/>
-					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/usr/include/SDL2"/>
+					<Add directory="/usr/include/c++/6"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/6"/>
+					<Add directory="/usr/include/c++/6/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/6/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
 					<Add directory="/usr/include"/>
-					<Add directory="/System/Library/Frameworks"/>
-					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/goinfre/tmack/Projects/Bomberman/cmake-build-debug/Makefile&quot;  VERBOSE=1 Bomberman"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/goinfre/tmack/Projects/Bomberman/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/goinfre/tmack/Projects/Bomberman/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/goinfre/tmack/Projects/Bomberman/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/tonmanayo/Projects/Bomberman/cmake-build-debug/Makefile&quot;  VERBOSE=1 Bomberman"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/tonmanayo/Projects/Bomberman/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/tonmanayo/Projects/Bomberman/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/tonmanayo/Projects/Bomberman/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="Bomberman/fast">
-				<Option output="/goinfre/tmack/Projects/Bomberman/cmake-build-debug/Bomberman" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/goinfre/tmack/Projects/Bomberman/cmake-build-debug"/>
+				<Option output="/home/tonmanayo/Projects/Bomberman/cmake-build-debug/Bomberman" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/tonmanayo/Projects/Bomberman/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/goinfre/tmack/.brew/Cellar/sdl2/2.0.5/include/SDL2"/>
-					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
-					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/7.3.0/include"/>
-					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/usr/include/SDL2"/>
+					<Add directory="/usr/include/c++/6"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/6"/>
+					<Add directory="/usr/include/c++/6/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/6/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
 					<Add directory="/usr/include"/>
-					<Add directory="/System/Library/Frameworks"/>
-					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/goinfre/tmack/Projects/Bomberman/cmake-build-debug/Makefile&quot;  VERBOSE=1 Bomberman/fast"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/goinfre/tmack/Projects/Bomberman/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/goinfre/tmack/Projects/Bomberman/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/goinfre/tmack/Projects/Bomberman/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/tonmanayo/Projects/Bomberman/cmake-build-debug/Makefile&quot;  VERBOSE=1 Bomberman/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/tonmanayo/Projects/Bomberman/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/tonmanayo/Projects/Bomberman/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/tonmanayo/Projects/Bomberman/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/goinfre/tmack/Projects/Bomberman/inc/MainGame.hpp">
+		<Unit filename="/home/tonmanayo/Projects/Bomberman/inc/Bullet.hpp">
 			<Option target="Bomberman"/>
 		</Unit>
-		<Unit filename="/goinfre/tmack/Projects/Bomberman/src/MainGame.cpp">
+		<Unit filename="/home/tonmanayo/Projects/Bomberman/inc/Camera2D.hpp">
 			<Option target="Bomberman"/>
 		</Unit>
-		<Unit filename="/goinfre/tmack/Projects/Bomberman/src/main.cpp">
+		<Unit filename="/home/tonmanayo/Projects/Bomberman/inc/ErrorHandle.hpp">
 			<Option target="Bomberman"/>
 		</Unit>
-		<Unit filename="/goinfre/tmack/Projects/Bomberman/CMakeLists.txt">
+		<Unit filename="/home/tonmanayo/Projects/Bomberman/inc/FpsLimiter.hpp">
+			<Option target="Bomberman"/>
+		</Unit>
+		<Unit filename="/home/tonmanayo/Projects/Bomberman/inc/GLSLProgram.hpp">
+			<Option target="Bomberman"/>
+		</Unit>
+		<Unit filename="/home/tonmanayo/Projects/Bomberman/inc/GLTexture.hpp">
+			<Option target="Bomberman"/>
+		</Unit>
+		<Unit filename="/home/tonmanayo/Projects/Bomberman/inc/IOManager.hpp">
+			<Option target="Bomberman"/>
+		</Unit>
+		<Unit filename="/home/tonmanayo/Projects/Bomberman/inc/InputManager.hpp">
+			<Option target="Bomberman"/>
+		</Unit>
+		<Unit filename="/home/tonmanayo/Projects/Bomberman/inc/MainGame.hpp">
+			<Option target="Bomberman"/>
+		</Unit>
+		<Unit filename="/home/tonmanayo/Projects/Bomberman/inc/ResourceManager.hpp">
+			<Option target="Bomberman"/>
+		</Unit>
+		<Unit filename="/home/tonmanayo/Projects/Bomberman/inc/Sprite.hpp">
+			<Option target="Bomberman"/>
+		</Unit>
+		<Unit filename="/home/tonmanayo/Projects/Bomberman/inc/SpriteBatch.hpp">
+			<Option target="Bomberman"/>
+		</Unit>
+		<Unit filename="/home/tonmanayo/Projects/Bomberman/inc/TextureCache.hpp">
+			<Option target="Bomberman"/>
+		</Unit>
+		<Unit filename="/home/tonmanayo/Projects/Bomberman/inc/Vertex.hpp">
+			<Option target="Bomberman"/>
+		</Unit>
+		<Unit filename="/home/tonmanayo/Projects/Bomberman/inc/WTCEngine.hpp">
+			<Option target="Bomberman"/>
+		</Unit>
+		<Unit filename="/home/tonmanayo/Projects/Bomberman/inc/Window.hpp">
+			<Option target="Bomberman"/>
+		</Unit>
+		<Unit filename="/home/tonmanayo/Projects/Bomberman/inc/imageLoader.hpp">
+			<Option target="Bomberman"/>
+		</Unit>
+		<Unit filename="/home/tonmanayo/Projects/Bomberman/inc/picoPNG.hpp">
+			<Option target="Bomberman"/>
+		</Unit>
+		<Unit filename="/home/tonmanayo/Projects/Bomberman/src/Bullet.cpp">
+			<Option target="Bomberman"/>
+		</Unit>
+		<Unit filename="/home/tonmanayo/Projects/Bomberman/src/Camera2D.cpp">
+			<Option target="Bomberman"/>
+		</Unit>
+		<Unit filename="/home/tonmanayo/Projects/Bomberman/src/ErrorHandle.cpp">
+			<Option target="Bomberman"/>
+		</Unit>
+		<Unit filename="/home/tonmanayo/Projects/Bomberman/src/FpsLimiter.cpp">
+			<Option target="Bomberman"/>
+		</Unit>
+		<Unit filename="/home/tonmanayo/Projects/Bomberman/src/GLSLProgram.cpp">
+			<Option target="Bomberman"/>
+		</Unit>
+		<Unit filename="/home/tonmanayo/Projects/Bomberman/src/IOManager.cpp">
+			<Option target="Bomberman"/>
+		</Unit>
+		<Unit filename="/home/tonmanayo/Projects/Bomberman/src/InputManager.cpp">
+			<Option target="Bomberman"/>
+		</Unit>
+		<Unit filename="/home/tonmanayo/Projects/Bomberman/src/MainGame.cpp">
+			<Option target="Bomberman"/>
+		</Unit>
+		<Unit filename="/home/tonmanayo/Projects/Bomberman/src/ResourceManager.cpp">
+			<Option target="Bomberman"/>
+		</Unit>
+		<Unit filename="/home/tonmanayo/Projects/Bomberman/src/Sprite.cpp">
+			<Option target="Bomberman"/>
+		</Unit>
+		<Unit filename="/home/tonmanayo/Projects/Bomberman/src/SpriteBatch.cpp">
+			<Option target="Bomberman"/>
+		</Unit>
+		<Unit filename="/home/tonmanayo/Projects/Bomberman/src/TextureCache.cpp">
+			<Option target="Bomberman"/>
+		</Unit>
+		<Unit filename="/home/tonmanayo/Projects/Bomberman/src/WTCEngine.cpp">
+			<Option target="Bomberman"/>
+		</Unit>
+		<Unit filename="/home/tonmanayo/Projects/Bomberman/src/Window.cpp">
+			<Option target="Bomberman"/>
+		</Unit>
+		<Unit filename="/home/tonmanayo/Projects/Bomberman/src/imageLoader.cpp">
+			<Option target="Bomberman"/>
+		</Unit>
+		<Unit filename="/home/tonmanayo/Projects/Bomberman/src/main.cpp">
+			<Option target="Bomberman"/>
+		</Unit>
+		<Unit filename="/home/tonmanayo/Projects/Bomberman/src/picoPNG.cpp">
+			<Option target="Bomberman"/>
+		</Unit>
+		<Unit filename="/home/tonmanayo/Projects/Bomberman/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
-		<Unit filename="/goinfre/tmack/Projects/Bomberman/../../.brew/lib/cmake/SDL2/sdl2-config.cmake">
-			<Option virtualFolder="CMake Files\..\..\.brew\lib\cmake\SDL2\"/>
+		<Unit filename="/home/tonmanayo/Projects/Bomberman/../../../../usr/lib/x86_64-linux-gnu/cmake/SDL2/sdl2-config.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\SDL2\"/>
 		</Unit>
 	</Project>
 </CodeBlocks_project_file>

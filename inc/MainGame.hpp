@@ -9,7 +9,7 @@
 
 #include "../inc/Sprite.hpp"
 #include "GLSLProgram.hpp"
-#include <OpenGL/gl3.h>
+#include <GL/glew.h>
 #include "GLTexture.hpp"
 #include "Window.hpp"
 #include "Camera2D.hpp"

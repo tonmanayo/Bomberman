@@ -1,6 +1,7 @@
 
 #include <iostream>
-#include "../inc/MainGame.hpp"
+
+#include "../ZombieGame/inc/MainGame.hpp"
 
 int main(int argc, char **argv) {
     MainGame mainGame;

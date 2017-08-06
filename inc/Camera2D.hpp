@@ -25,6 +25,8 @@ namespace WTCEngine {
         glm::mat4 getcamMatrix();
 
         void setScale(float scale);
+        bool isBoxInView(const glm::vec2& position, const glm::vec2& dimensions);
+
 
         float getScale();
 

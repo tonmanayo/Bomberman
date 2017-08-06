@@ -3,7 +3,7 @@
 //
 
 #include <iostream>
-#include <OpenGL/gl3.h>
+#include <GL/glew.h>
 #include "../inc/imageLoader.hpp"
 #include "../inc/picoPNG.hpp"
 #include "../inc/IOManager.hpp"

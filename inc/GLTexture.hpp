@@ -5,7 +5,7 @@
 #ifndef BOMBERMAN_GLTEXTURE_HPP
 #define BOMBERMAN_GLTEXTURE_HPP
 
-#include <OpenGL/gl3.h>
+#include <GL/glew.h>
 namespace WTCEngine {
     struct GLTexture {
         GLuint id;

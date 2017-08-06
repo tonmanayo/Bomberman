@@ -39,9 +39,14 @@ namespace WTCEngine {
 
             SDL_GLContext glContext = SDL_GL_CreateContext(_SDLwindow);
 
+            glewExperimental = GL_TRUE;
+            glewInit();
+
             GLuint vertexArrayID;
             glGenVertexArrays(1, &vertexArrayID);
+            std::cout << "here\n";
             glBindVertexArray(vertexArrayID);
+
 
             if (glContext == nullptr)
                 throw ErrorHandle("could not create SDL GL context");

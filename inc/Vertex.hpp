@@ -5,7 +5,8 @@
 #ifndef BOMBERMAN_VERTEX_HPP
 #define BOMBERMAN_VERTEX_HPP
 
-#include <OpenGL/OpenGL.h>
+#include <GL/glew.h>
+
 namespace WTCEngine {
     struct Position {
         float x;
