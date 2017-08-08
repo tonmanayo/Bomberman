@@ -30,15 +30,10 @@ public:
                         float deltaTime) = 0;
 
     bool collideWithLevel(const std::vector<std::string>& levelData);
-
     bool collideWithAgent(Agent* agent);
-
     void draw(WTCEngine::SpriteBatch& _spriteBatch);
-
-    // Return true if we died
     bool applyDamage(float damage);
-
-    glm::vec2 getPosition() const { return _position; }
+    glm::vec2 getPosition() const;
 
 protected:
 

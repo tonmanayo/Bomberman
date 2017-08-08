@@ -44,83 +44,54 @@ class MainGame
 {
 public:
     MainGame();
-    ~MainGame();
+    virtual ~MainGame();
 
-    /// Runs the game
     void run();
 
 private:
-    /// Initializes the core systems
     void initSystems();
-
-    /// Initializes the level and sets up everything
     void initLevel();
-
-    /// Initializes the shaders
     void initShaders();
-
-    /// Main game loop for the program
     void gameLoop();
-
-    /// Updates all agents
     void updateAgents(float deltaTime);
-
-    /// Updates all bullets
     void updateBullets(float deltaTim);
-
-    /// Checks the victory condition
     void checkVictory();
-
-    /// Handles input processing
     void processInput();
-
-    /// Renders the game
     void drawGame();
-
-    /// Draws the HUD
     void drawHud();
-
-    /// Adds blood to the particle engine
     void addBlood(const glm::vec2& position, int numParticles);
 
-    /// Member Variables
-    WTCEngine::Window m_window; ///< The game window
+    WTCEngine::Window _window;
+    WTCEngine::GLSLProgram _textureProgram;
+    WTCEngine::InputManager _inputManager;
+    WTCEngine::Camera2D _camera;
+    WTCEngine::Camera2D _hudCamera;
+    WTCEngine::SpriteBatch _agentSpriteBatch;
+    WTCEngine::SpriteBatch _hudSpriteBatch;
+    WTCEngine::ParticleEngine2D _particleEngine;
+    WTCEngine::ParticleBatch2D* _bloodParticleBatch;
 
-    WTCEngine::GLSLProgram m_textureProgram; ///< The shader program
+    WTCEngine::SpriteFont* _spriteFont;
+    WTCEngine::AudioEngine _audioEngine;
 
-    WTCEngine::InputManager m_inputManager; ///< Handles input
+    std::vector<Level*> _levels;
 
-    WTCEngine::Camera2D m_camera; ///< Main Camera
-    WTCEngine::Camera2D m_hudCamera; ///< Hud Camera
+    int _screenWidth = 1024;
+    int _screenHeight = 768;
 
-    WTCEngine::SpriteBatch m_agentSpriteBatch; ///< Draws all agents
-    WTCEngine::SpriteBatch m_hudSpriteBatch;
+    float _fps;
 
-    WTCEngine::ParticleEngine2D m_particleEngine;
-    WTCEngine::ParticleBatch2D* m_bloodParticleBatch;
+    int _currentLevel;
 
-    std::vector<Level*> m_levels; ///< vector of all levels
+    Player* _player;
+    std::vector<Human*> _humans;
+    std::vector<Zombie*> _zombies;
+    std::vector<Bullet> _bullets;
 
-    int m_screenWidth = 1024;
-    int m_screenHeight = 768;
+    int _numHumansKilled;
+    int _numZombiesKilled;
 
-    float m_fps;
-
-    int m_currentLevel;
-
-    Player* m_player;
-    std::vector<Human*> m_humans; ///< Vector of all humans
-    std::vector<Zombie*> m_zombies; ///< Vector of all zombies
-    std::vector<Bullet> m_bullets;
-
-    int m_numHumansKilled; ///< Humans killed by player
-    int m_numZombiesKilled; ///< Zombies killed by player
-
-    WTCEngine::SpriteFont* m_spriteFont;
-
-    WTCEngine::AudioEngine m_audioEngine;
-
-    GameState m_gameState;
+    GameState _gameState;
 };
 
 #endif //BOMBERMAN_MAINGAME_H

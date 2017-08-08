@@ -31,8 +31,8 @@ public:
     void draw();
 
     // Getters
-    int getWidth() const { return _levelData[0].size(); }
-    int getHeight() const { return _levelData.size(); }
+    int getWidth() const ;
+    int getHeight() const ;
     int getNumHumans() const { return _numHumans; }
     const std::vector<std::string>& getLevelData() const { return _levelData; }
     glm::vec2 getStartPlayerPos() const { return _startPlayerPos; }
@@ -40,10 +40,10 @@ public:
 
 private:
     std::vector<std::string> _levelData;
-    int _numHumans;
-    WTCEngine::SpriteBatch _spriteBatch;
+    int                      _numHumans;
+    WTCEngine::SpriteBatch   _spriteBatch;
 
-    glm::vec2 _startPlayerPos;
-    std::vector<glm::vec2> _zombieStartPositions;
+    glm::vec2                _startPlayerPos;
+    std::vector<glm::vec2>   _zombieStartPositions;
 };
 #endif //BOMBERMAN_LEVEL_H

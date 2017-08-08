@@ -168,3 +168,7 @@ void Agent::collideWithTile(glm::vec2 tilePos) {
         }
     }
 }
+
+glm::vec2 Agent::getPosition() const {
+    return _position;
+}

@@ -67,8 +67,8 @@ bool Bullet::collideWithAgent(Agent* agent) {
 
 bool Bullet::collideWithWorld(const std::vector<std::string>& levelData) {
     glm::ivec2 gridPosition;
-    gridPosition.x = floor(_position.x / (float)TILE_WIDTH);
-    gridPosition.y = floor(_position.y / (float)TILE_WIDTH);
+    gridPosition.x = static_cast<int>(floor(_position.x / (float)TILE_WIDTH));
+    gridPosition.y = static_cast<int>(floor(_position.y / (float)TILE_WIDTH));
 
     // If we are outside the world, just return
     if (gridPosition.x < 0 || gridPosition.x >= levelData[0].size() ||
@@ -77,4 +77,12 @@ bool Bullet::collideWithWorld(const std::vector<std::string>& levelData) {
     }
 
     return (levelData[gridPosition.y][gridPosition.x] != '.');
+}
+
+float Bullet::getDamage() const {
+    return _damage;
+}
+
+glm::vec2 Bullet::getPosition() const {
+    return _position;
 }

@@ -23,7 +23,7 @@ class Player : public Human
 {
 public:
     Player();
-    ~Player();
+    virtual ~Player();
 
     void init(float speed, glm::vec2 pos, WTCEngine::InputManager* inputManager, WTCEngine::Camera2D* camera, std::vector<Bullet>* bullets);
 
