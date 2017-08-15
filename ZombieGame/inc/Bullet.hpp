@@ -15,7 +15,7 @@ class Human;
 class Zombie;
 class Agent;
 
-const int BULLET_RADIUS = 5;
+const int BULLET_RADIUS = 10;
 
 class Bullet
 {

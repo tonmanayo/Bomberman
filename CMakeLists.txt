@@ -16,7 +16,7 @@ endif (NOT SDL_MIXER_FOUND)
 find_package(SDL_ttf REQUIRED)
 if (NOT SDL_TTF_FOUND)
     message (FATAL_ERROR "SDL2_TTF library could not be found my msg!")
-endif (NOT SDL2_TTF_FOUND)
+endif (NOT SDL_TTF_FOUND)
 
 
 find_package(OpenGL REQUIRED)

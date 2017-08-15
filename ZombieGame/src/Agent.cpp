@@ -18,30 +18,19 @@ bool Agent::collideWithLevel(const std::vector<std::string>& levelData) {
 
     // Check the four corners
     // First corner
-    checkTilePosition(levelData,
-                      collideTilePositions,
-                      _position.x,
-                      _position.y);
+    checkTilePosition(levelData, collideTilePositions, _position.x, _position.y);
     // Second Corner
     checkTilePosition(levelData,
-                      collideTilePositions,
-                      _position.x + AGENT_WIDTH,
-                      _position.y);
+                      collideTilePositions, _position.x + AGENT_WIDTH, _position.y);
 
     // Third Corner
-    checkTilePosition(levelData,
-                      collideTilePositions,
-                      _position.x,
-                      _position.y + AGENT_WIDTH);
+    checkTilePosition(levelData, collideTilePositions, _position.x, _position.y + AGENT_WIDTH);
 
     // Third Corner
-    checkTilePosition(levelData,
-                      collideTilePositions,
-                      _position.x + AGENT_WIDTH,
-                      _position.y + AGENT_WIDTH);
+    checkTilePosition(levelData, collideTilePositions, _position.x + AGENT_WIDTH, _position.y + AGENT_WIDTH);
 
     // Check if there was no collision
-    if (collideTilePositions.size() == 0) {
+    if (collideTilePositions.empty()) {
         return false;
     }
 
