@@ -2,7 +2,6 @@
 // Created by Tony MACK on 2017/08/01.
 //
 
-#include <GL/glew.h>
 #include "../inc/SpriteBatch.hpp"
 #include <algorithm>
 
@@ -247,6 +246,8 @@ namespace WTCEngine {
                 break;
             case GlyphSortType::TEXTURE:
                 std::stable_sort(_glyphPointers.begin(), _glyphPointers.end(), compareTexture);
+                break;
+            case GlyphSortType::NONE:
                 break;
         }
     }

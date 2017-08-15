@@ -5,9 +5,11 @@
 #ifndef BOMBERMAN_WINDOW_HPP
 #define BOMBERMAN_WINDOW_HPP
 
-#include <SDL.h>
 #include <GL/glew.h>
+#include <SDL.h>
+
 #include <string>
+
 namespace WTCEngine {
     enum windowFlags {
         INVISABLE = 0x1,

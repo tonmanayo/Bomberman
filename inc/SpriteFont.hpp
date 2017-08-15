@@ -6,13 +6,14 @@
 #define BOMBERMAN_SPRITEFONT_HPP
 
 #include <SDL_ttf.h>
+#include <SDL.h>
+
 #include <glm/glm.hpp>
 #include <map>
 #include <vector>
 
 #include "Vertex.hpp"
 #include "SpriteBatch.hpp"
-#include <SDL/SDL.h>
 
 
 

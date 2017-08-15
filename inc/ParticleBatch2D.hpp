@@ -35,7 +35,7 @@ namespace WTCEngine {
         void init(int maxParticles,
                   float decayRate,
                   GLTexture texture,
-                  std::function<void(Particle2D&, float)> updateFunc = defaultParticleUpdate);
+                  std::function<void(Particle2D&, float)> _updateFunc = defaultParticleUpdate);
 
         void update(float deltaTime);
 
@@ -49,12 +49,12 @@ namespace WTCEngine {
     private:
         int findFreeParticle();
 
-        std::function<void(Particle2D&, float)> m_updateFunc; ///< Function pointer for custom updates
-        float m_decayRate = 0.1f;
-        Particle2D* m_particles = nullptr;
-        int m_maxParticles = 0;
-        int m_lastFreeParticle = 0;
-        GLTexture m_texture;
+        std::function<void(Particle2D&, float)> _updateFunc;
+        float _decayRate = 0.1f;
+        Particle2D* _particles = nullptr;
+        int _maxParticles = 0;
+        int _lastFreeParticle = 0;
+        GLTexture _texture;
     };
 
 }

@@ -8,6 +8,8 @@
 
 #include <string>
 #include "GLTexture.hpp"
+#include <GL/glew.h>
+
 namespace WTCEngine {
     class imageLoader {
     public:

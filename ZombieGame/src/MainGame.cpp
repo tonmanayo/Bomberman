@@ -43,8 +43,8 @@ void MainGame::run() {
 
     initLevel();
 
-    WTCEngine::Music music = _audioEngine.loadMusic("Sound/XYZ.ogg");
-    music.play(-1);
+   // WTCEngine::Music music = _audioEngine.loadMusic("Sound/XYZ.ogg");
+    //music.play(-1);
 
     gameLoop();
 }
@@ -54,7 +54,7 @@ void MainGame::initSystems() {
     WTCEngine::init();
 
     // Initialize sound, must happen after WTCEngine::init
-    _audioEngine.init();
+   // _audioEngine.init();
 
     // Create our window
     _window.create("ZombieGame", _screenWidth, _screenHeight, 0);
@@ -123,10 +123,12 @@ void MainGame::initLevel() {
     }
 
     // Set up the players guns
-    const float BULLET_SPEED = 10.0f;
-    _player->addGun(new Gun("Magnum", 10, 1, 0.0f, 10, 0.01f, _audioEngine.loadSoundEffect("Sound/shots/pistol.wav")));
-    _player->addGun(new Gun("Shotgun", 30, 12, 20.0f, 4, BULLET_SPEED, _audioEngine.loadSoundEffect("Sound/shots/shotgun.wav")));
-    _player->addGun(new Gun("MP5", 2, 1, 10.0f, 20, BULLET_SPEED, _audioEngine.loadSoundEffect("Sound/shots/cg1.wav")));
+
+    const float BULLET_SPEED = 20.0f;
+//    _player->addGun(new Gun("Magnum", 10, 1, 5.0f, 30, BULLET_SPEED, _audioEngine.loadSoundEffect("Sound/shots/pistol.wav")));
+//    _player->addGun(new Gun("Shotgun", 30, 12, 20.0f, 4, BULLET_SPEED, _audioEngine.loadSoundEffect("Sound/shots/shotgun.wav")));
+//    _player->addGun(new Gun("MP5", 2, 1, 10.0f, 20, BULLET_SPEED, _audioEngine.loadSoundEffect("Sound/shots/cg1.wav")));
+
 }
 
 void MainGame::initShaders() {
@@ -205,42 +207,30 @@ void MainGame::gameLoop() {
 
 void MainGame::updateAgents(float deltaTime) {
     try {
-        // Update all humans
         for (auto &_human : _humans) {
             _human->update(_levels[_currentLevel]->getLevelData(), _humans, _zombies, deltaTime);
         }
-        // Update all zombies
         for (auto &_zombie : _zombies) {
             _zombie->update(_levels[_currentLevel]->getLevelData(), _humans, _zombies, deltaTime);
         }
-        // Update Zombie collisions
         for (int i = 0; i < _zombies.size(); i++) {
-            // Collide with other zombies
             for (int j = i + 1; j < _zombies.size(); j++) {
                 _zombies[i]->collideWithAgent(_zombies[j]);
             }
-            // Collide with humans
             for (int j = 1; j < _humans.size(); j++) {
                 if (_zombies[i]->collideWithAgent(_humans[j])) {
-                    // Add the new zombie
                     _zombies.push_back(new Zombie);
                     _zombies.back()->init(ZOMBIE_SPEED, _humans[j]->getPosition());
-                    // Delete the human
                     delete _humans[j];
                     _humans[j] = _humans.back();
                     _humans.pop_back();
                 }
             }
-
-            // Collide with player
             if (_zombies[i]->collideWithAgent(_player)) {
                throw WTCEngine::ErrorHandle("YOU LOSE");
             }
         }
-
-        // Update Human collisions
         for (int i = 0; i < _humans.size(); i++) {
-            // Collide with other humans
             for (int j = i + 1; j < _humans.size(); j++) {
                 _humans[i]->collideWithAgent(_humans[j]);
             }
@@ -249,8 +239,6 @@ void MainGame::updateAgents(float deltaTime) {
         std::cout << errorHandle.what() << std::endl;
         _gameState =  GameState::EXIT;
     }
-
-    // Dont forget to update zombies
 }
 
 void MainGame::updateBullets(float deltaTime) {
@@ -267,7 +255,6 @@ void MainGame::updateBullets(float deltaTime) {
 
     bool wasBulletRemoved;
 
-    // Collide with humans and zombies
     for (int i = 0; i < _bullets.size(); i++) {
         wasBulletRemoved = false;
         // Loop through zombies
@@ -277,7 +264,6 @@ void MainGame::updateBullets(float deltaTime) {
                 // Add blood
                 addBlood(_bullets[i].getPosition(), 5);
 
-                // Damage zombie, and kill it if its out of health
                 if (_zombies[j]->applyDamage(_bullets[i].getDamage())) {
                     // If the zombie died, remove him
                     delete _zombies[j];
@@ -288,19 +274,17 @@ void MainGame::updateBullets(float deltaTime) {
                     j++;
                 }
 
-                // Remove the bullet
                 _bullets[i] = _bullets.back();
                 _bullets.pop_back();
                 wasBulletRemoved = true;
-                i--; // Make sure we don't skip a bullet
-                // Since the bullet died, no need to loop through any more zombies
+                i--;
                 break;
             } else {
                 j++;
             }
         }
         // Loop through humans
-        if (wasBulletRemoved == false) {
+        if (!wasBulletRemoved) {
             for (int j = 1; j < _humans.size(); ) {
                 // Check collision
                 if (_bullets[i].collideWithAgent(_humans[j])) {
@@ -316,12 +300,10 @@ void MainGame::updateBullets(float deltaTime) {
                         j++;
                     }
 
-                    // Remove the bullet
                     _bullets[i] = _bullets.back();
                     _bullets.pop_back();
                     _numHumansKilled++;
-                    i--; // Make sure we don't skip a bullet
-                    // Since the bullet died, no need to loop through any more zombies
+                    i--;
                     break;
                 } else {
                     j++;
@@ -338,11 +320,8 @@ void MainGame::checkVictory() {
     // If all zombies are dead we win!
     if (_zombies.empty()) {
         // Print victory message
-        std::printf("*** You win! ***\n You killed %d humans and %d zombies. There are %d/%d civilians remaining",
-                    _numHumansKilled, _numZombiesKilled, _humans.size() - 1, _levels[_currentLevel]->getNumHumans());
-
-        // Easy way to end the game :P
-       // WTCEngine::fatalError("");
+        std::cout << "*** You win! ***\n You killed: " << _numHumansKilled << " humans and " << _numZombiesKilled << " zombies. There are " << _humans.size() - 1 <<  " civilians remaining\n" ;
+        _gameState = GameState::EXIT;
     }
 }
 
@@ -359,6 +338,8 @@ void MainGame::processInput() {
                 break;
             case SDL_KEYDOWN:
                 _inputManager.pressKey(evnt.key.keysym.sym);
+                if (evnt.key.keysym.sym == SDLK_ESCAPE)
+                    _gameState = GameState::EXIT;
                 break;
             case SDL_KEYUP:
                 _inputManager.releaseKey(evnt.key.keysym.sym);
@@ -415,10 +396,8 @@ void MainGame::drawGame() {
         _bullets[i].draw(_agentSpriteBatch);
     }
 
-    // End spritebatch creation
     _agentSpriteBatch.end();
 
-    // Render to the screen
     _agentSpriteBatch.renderBatch();
 
     // Render the particles

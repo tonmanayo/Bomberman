@@ -3,7 +3,6 @@
 //
 
 #include <iostream>
-#include <GL/glew.h>
 #include "../inc/imageLoader.hpp"
 #include "../inc/picoPNG.hpp"
 #include "../inc/IOManager.hpp"

@@ -5,13 +5,10 @@
 #ifndef BOMBERMAN_SPRITEBATCH_HPP
 #define BOMBERMAN_SPRITEBATCH_HPP
 
-#include <GL/glew.h>
 #include "Vertex.hpp"
 #include <glm/glm.hpp>
 #include <vector>
 #include <GL/glew.h>
-#include <glm/glm.hpp>
-
 
 namespace WTCEngine {
 

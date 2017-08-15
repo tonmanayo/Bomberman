@@ -3,24 +3,27 @@ project(Bomberman)
 
 set(CMAKE_CXX_STANDARD 14)
 
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
+#set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${project_SOURCE_DIR}/cmake")
+
 INCLUDE(FindPkgConfig)
 INCLUDE(FindOpenGL REQUIRED)
 
 find_package(SDL2 REQUIRED)
 
-find_package(SDL_mixer REQUIRED)
-if (NOT SDL_MIXER_FOUND)
-    message (FATAL_ERROR "SDL_mixer library could not be found my msg!")
-endif (NOT SDL_MIXER_FOUND)
-
-find_package(SDL_ttf REQUIRED)
-if (NOT SDL_TTF_FOUND)
-    message (FATAL_ERROR "SDL2_TTF library could not be found my msg!")
-endif (NOT SDL_TTF_FOUND)
-
+find_package(SDL2_image REQUIRED)
+find_package(SDL2_ttf REQUIRED)
+find_package(SDL2_mixer REQUIRED)
+find_package(Freetype REQUIRED)
 
 find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
+
+if (GLEW_FOUND)
+    include_directories(${GLEW_INCLUDE_DIRS})
+    link_libraries(${GLEW_LIBRARIES})
+endif()
+
 
 set(SOURCE_FILES src/main.cpp
         src/ErrorHandle.cpp
@@ -71,8 +74,8 @@ set(SOURCE_FILES src/main.cpp
         ZombieGame/inc/Zombie.hpp
         ZombieGame/src/Gun.cpp
         ZombieGame/inc/Gun.hpp
-        src/AudioEngine.cpp
-        inc/AudioEngine.hpp
+        #src/AudioEngine.cpp
+        #inc/AudioEngine.hpp
         src/ParticleBatch2D.cpp
         inc/ParticleBatch2D.hpp
         src/ParticleEngine2D.cpp
@@ -80,27 +83,21 @@ set(SOURCE_FILES src/main.cpp
         src/SpriteFont.cpp
         inc/SpriteFont.hpp)
 
-link_directories(
-        ${GLEW_LIBRARY_DIRS}
-        ${SDL2_LIBRARY_DIRS}
-        ${GLM_LIBRARY_DIRS}
-        ${SDL_MIXER_LIBRARY_DIRS}
-        ${SDL_TTF_LIBRARY_DIRS})
-
 add_executable(Bomberman ${SOURCE_FILES})
 
-INCLUDE_DIRECTORIES(${OPENGL_INCLUDE_DIR}
-                    ${SDL2_INCLUDE_DIRS}
-                    ${SDL2IMAGE_INCLUDE_DIRS}
+include_directories(${OPENGL_INCLUDE_DIR}
                     ${GLM_INCLUDE_DIRS}
                     ${GLEW_INCLUDE_DIRS}
-                    ${SDL_MIXER_INCLUDE_DIRS}
-                    ${SDL_TTF_INCLUDE_DIRS})
+                    ${SDL2_INCLUDE_DIR}
+                    ${SDL2_IMAGE_INCLUDE_DIR}
+                    ${SDL2_TTF_INCLUDE_DIR}
+                    ${FREETYPE_INCLUDE_DIR})
 
-target_link_libraries(${PROJECT_NAME}
-                      ${SDL2_LIBRARIES}
+target_link_libraries(Bomberman
                       ${OPENGL_LIBRARIES}
                       ${GLM_LIBRARIES}
                       ${GLEW_LIBRARIES}
-                      ${SDL_MIXER_LIBRARIES}
-                      ${SDL_TTF_LIBRARIES})
+                      ${SDL2_LIBRARY}
+                      ${SDL2_IMAGE_LIBRARIES}
+                      ${SDL2_TTF_LIBRARIES}
+                      ${FREETYPE_LIBRARIES})

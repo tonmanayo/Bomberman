@@ -29,7 +29,7 @@ namespace WTCEngine {
         void draw(SpriteBatch* spriteBatch);
 
     private:
-        std::vector<ParticleBatch2D*> m_batches;
+        std::vector<ParticleBatch2D*> _batches;
     };
 
 }

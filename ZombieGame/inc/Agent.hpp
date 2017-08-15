@@ -45,11 +45,11 @@ protected:
     void collideWithTile(glm::vec2 tilePos);
 
     glm::vec2 _position;
-    glm::vec2 m_direction = glm::vec2(1.0f, 0.0f);
+    glm::vec2 _direction = glm::vec2(1.0f, 0.0f);
     WTCEngine::Color _color;
     float _speed;
     float _health;
-    GLuint m_textureID;
+    GLuint _textureID;
 };
 
 

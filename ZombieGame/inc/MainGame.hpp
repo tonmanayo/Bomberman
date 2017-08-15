@@ -11,7 +11,7 @@
 #include "../../inc/InputManager.hpp"
 #include "../../inc/SpriteBatch.hpp"
 #include "../../inc/SpriteFont.hpp"
-#include "../../inc/AudioEngine.hpp"
+//#include "../../inc/AudioEngine.hpp"
 #include "../../inc/ParticleEngine2D.hpp"
 #include "../../inc/ParticleBatch2D.hpp"
 
@@ -23,7 +23,7 @@
 #include <ctime>
 #include <algorithm>
 
-#include <SDL/SDL.h>
+#include <SDL.h>
 #include <iostream>
 #include <glm/gtx/rotate_vector.hpp>
 
@@ -72,7 +72,7 @@ private:
     WTCEngine::ParticleBatch2D* _bloodParticleBatch;
 
     WTCEngine::SpriteFont* _spriteFont;
-    WTCEngine::AudioEngine _audioEngine;
+   // WTCEngine::AudioEngine _audioEngine;
 
     std::vector<Level*> _levels;
 

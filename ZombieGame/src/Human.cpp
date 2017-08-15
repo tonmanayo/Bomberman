@@ -32,13 +32,13 @@ void Human::init(float speed, glm::vec2 pos) {
     _speed = speed;
     _position = pos;
     // Get random direction
-    m_direction = glm::vec2(randDir(randomEngine), randDir(randomEngine));
+    _direction = glm::vec2(randDir(randomEngine), randDir(randomEngine));
     // Make sure direction isn't zero
-    if (m_direction.length() == 0) m_direction = glm::vec2(1.0f, 0.0f);
+    if (_direction.length() == 0) _direction = glm::vec2(1.0f, 0.0f);
 
-    m_direction = glm::normalize(m_direction);
+    _direction = glm::normalize(_direction);
 
-    m_textureID = WTCEngine::ResourceManager::getTexture("Textures/human.png").id;
+    _textureID = WTCEngine::ResourceManager::getTexture("Textures/human.png").id;
 }
 
 void Human::update(const std::vector<std::string>& levelData,
@@ -46,20 +46,23 @@ void Human::update(const std::vector<std::string>& levelData,
                    std::vector<Zombie*>& zombies,
                    float deltaTime) {
 
-    static std::mt19937 randomEngine(time(nullptr));
-    static std::uniform_real_distribution<float> randRotate(-40.0f, 40.0f);
+    std::random_device rd;
+    static std::mt19937 randomEngine(rd());
+    static std::uniform_real_distribution<float> randRotate(-4, 4);
 
-    _position += m_direction * _speed * deltaTime;
+    _position += _direction * _speed * deltaTime;
 
     // Randomly change direction every 20 frames
-    if (_frames == 20) {
-        m_direction = glm::rotate(m_direction, randRotate(randomEngine));
-        _frames = 0;
-    } else {
-        _frames++;
-    }
+//    if (_frames == 100) {
+//        _direction = glm::rotate(_direction, randRotate(randomEngine));
+//        _frames = 0;
+//    } else {
+//        _frames++;
+//    }
 
-    if (collideWithLevel(levelData)) {
-        m_direction = glm::rotate(m_direction, randRotate(randomEngine));
+    if (!collideWithLevel(levelData)) {
+        _direction = glm::rotate(_direction, randRotate(randomEngine));
+    } else {
+        _direction = _direction;
     }
 }

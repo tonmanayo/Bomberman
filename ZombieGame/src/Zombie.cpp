@@ -19,7 +19,7 @@ void Zombie::init(float speed, glm::vec2 pos) {
     _health = 50;
     // Set Green Color
     _color = WTCEngine::Color(255, 255, 255, 255);
-    m_textureID = WTCEngine::ResourceManager::getTexture("Textures/zombie.png").id;
+    _textureID = WTCEngine::ResourceManager::getTexture("Textures/zombie.png").id;
 }
 
 void Zombie::update(const std::vector<std::string>& levelData,
@@ -33,8 +33,8 @@ void Zombie::update(const std::vector<std::string>& levelData,
     // If we found a human, move towards him
     if (closestHuman != nullptr) {
         // Get the direction vector twoards the player
-        m_direction = glm::normalize(closestHuman->getPosition() - _position);
-        _position += m_direction * _speed * deltaTime;
+        _direction = glm::normalize(closestHuman->getPosition() - _position);
+        _position += _direction * _speed * deltaTime;
     }
 
     // Do collision

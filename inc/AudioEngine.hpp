@@ -20,7 +20,7 @@ namespace WTCEngine {
         /// otherwise play it loops+1 times
         void play(int loops = 0);
     private:
-        Mix_Chunk* m_chunk = nullptr;
+        Mix_Chunk* _chunk = nullptr;
     };
 
     class Music {
@@ -39,7 +39,7 @@ namespace WTCEngine {
         /// Resumes whatever song is currently playing
         static void resume();
     private:
-        Mix_Music* m_music = nullptr;
+        Mix_Music* _music = nullptr;
     };
 
     class AudioEngine {
@@ -54,10 +54,10 @@ namespace WTCEngine {
         Music loadMusic(const std::string& filePath);
     private:
 
-        std::map<std::string, Mix_Chunk*> m_effectMap; ///< Effects cache
-        std::map<std::string, Mix_Music*> m_musicMap; ///< Music cache
+        std::map<std::string, Mix_Chunk*> _effectMap; ///< Effects cache
+        std::map<std::string, Mix_Music*> _musicMap; ///< Music cache
 
-        bool m_isInitialized = false;
+        bool _isInitialized = false;
     };
 
 }

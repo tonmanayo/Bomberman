@@ -20,20 +20,16 @@ bool Agent::collideWithLevel(const std::vector<std::string>& levelData) {
     // First corner
     checkTilePosition(levelData, collideTilePositions, _position.x, _position.y);
     // Second Corner
-    checkTilePosition(levelData,
-                      collideTilePositions, _position.x + AGENT_WIDTH, _position.y);
-
+    checkTilePosition(levelData, collideTilePositions, _position.x + AGENT_WIDTH, _position.y);
     // Third Corner
     checkTilePosition(levelData, collideTilePositions, _position.x, _position.y + AGENT_WIDTH);
-
-    // Third Corner
+    // 4th Corner
     checkTilePosition(levelData, collideTilePositions, _position.x + AGENT_WIDTH, _position.y + AGENT_WIDTH);
 
     // Check if there was no collision
     if (collideTilePositions.empty()) {
         return false;
     }
-
     // Do the collision
     for (int i = 0; i < collideTilePositions.size(); i++) {
         collideWithTile(collideTilePositions[i]);
@@ -79,14 +75,9 @@ bool Agent::collideWithAgent(Agent* agent) {
 void Agent::draw(WTCEngine::SpriteBatch& _spriteBatch) {
 
     const glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f);
+    glm::vec4       destRect(_position.x, _position.y, AGENT_WIDTH, AGENT_WIDTH);
 
-    glm::vec4 destRect;
-    destRect.x = _position.x;
-    destRect.y = _position.y;
-    destRect.z = AGENT_WIDTH;
-    destRect.w = AGENT_WIDTH;
-
-    _spriteBatch.draw(destRect, uvRect, m_textureID, 0.0f, _color, m_direction);
+    _spriteBatch.draw(destRect, uvRect, _textureID, 0.0f, _color, _direction);
 }
 
 bool Agent::applyDamage(float damage) {
@@ -133,8 +124,8 @@ void Agent::collideWithTile(glm::vec2 tilePos) {
     glm::vec2 distVec = centerAgentPos - tilePos;
 
     // Get the depth of the collision
-    float xDepth = MIN_DISTANCE - abs(distVec.x);
-    float yDepth = MIN_DISTANCE - abs(distVec.y);
+    float xDepth = MIN_DISTANCE - std::abs(distVec.x);
+    float yDepth = MIN_DISTANCE - std::abs(distVec.y);
 
     // If both the depths are > 0, then we collided
     if (xDepth > 0 && yDepth > 0) {

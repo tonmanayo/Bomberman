@@ -35,16 +35,18 @@ namespace WTCEngine {
             if (_SDLwindow == nullptr)
                 throw ErrorHandle("Error creating window");
 
+
             SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 
             SDL_GLContext glContext = SDL_GL_CreateContext(_SDLwindow);
 
+
             glewExperimental = GL_TRUE;
-            glewInit();
+            if (glewInit() != GLEW_OK)
+                std::cout << "here\n";
 
             GLuint vertexArrayID;
             glGenVertexArrays(1, &vertexArrayID);
-            std::cout << "here\n";
             glBindVertexArray(vertexArrayID);
 
 

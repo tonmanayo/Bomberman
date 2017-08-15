@@ -13,39 +13,39 @@ namespace WTCEngine {
 
 
     ParticleBatch2D::~ParticleBatch2D() {
-        delete[] m_particles;
+        delete[] _particles;
     }
 
     void ParticleBatch2D::init(int maxParticles,
                                float decayRate,
                                GLTexture texture,
                                std::function<void(Particle2D&, float)> updateFunc /* = defaultParticleUpdate */) {
-        m_maxParticles = maxParticles;
-        m_particles = new Particle2D[maxParticles];
-        m_decayRate = decayRate;
-        m_texture = texture;
-        m_updateFunc = updateFunc;
+        _maxParticles = maxParticles;
+        _particles = new Particle2D[maxParticles];
+        _decayRate = decayRate;
+        _texture = texture;
+        _updateFunc = updateFunc;
     }
 
     void ParticleBatch2D::update(float deltaTime) {
-        for (int i = 0; i < m_maxParticles; i++) {
+        for (int i = 0; i < _maxParticles; i++) {
             // Check if it is active
-            if (m_particles[i].life > 0.0f) {
+            if (_particles[i].life > 0.0f) {
                 // Update using function pointer
-                m_updateFunc(m_particles[i], deltaTime);
-                m_particles[i].life -= m_decayRate * deltaTime;
+                _updateFunc(_particles[i], deltaTime);
+                _particles[i].life -= _decayRate * deltaTime;
             }
         }
     }
 
     void ParticleBatch2D::draw(SpriteBatch* spriteBatch) {
         glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f);
-        for (int i = 0; i < m_maxParticles; i++) {
+        for (int i = 0; i < _maxParticles; i++) {
             // Check if it is active
-            auto& p = m_particles[i];
+            auto& p = _particles[i];
             if (p.life > 0.0f) {
                 glm::vec4 destRect(p.position.x, p.position.y, p.width, p.width);
-                spriteBatch->draw(destRect, uvRect, m_texture.id, 0.0f, p.color);
+                spriteBatch->draw(destRect, uvRect, _texture.id, 0.0f, p.color);
             }
         }
     }
@@ -56,7 +56,7 @@ namespace WTCEngine {
                                       float width) {
         int particleIndex = findFreeParticle();
 
-        auto& p = m_particles[particleIndex];
+        auto& p = _particles[particleIndex];
 
         p.life = 1.0f;
         p.position = position;
@@ -67,16 +67,16 @@ namespace WTCEngine {
 
     int ParticleBatch2D::findFreeParticle() {
 
-        for (int i = m_lastFreeParticle; i < m_maxParticles; i++) {
-            if (m_particles[i].life <= 0.0f) {
-                m_lastFreeParticle = i;
+        for (int i = _lastFreeParticle; i < _maxParticles; i++) {
+            if (_particles[i].life <= 0.0f) {
+                _lastFreeParticle = i;
                 return i;
             }
         }
 
-        for (int i = 0; i < m_lastFreeParticle; i++) {
-            if (m_particles[i].life <= 0.0f) {
-                m_lastFreeParticle = i;
+        for (int i = 0; i < _lastFreeParticle; i++) {
+            if (_particles[i].life <= 0.0f) {
+                _lastFreeParticle = i;
                 return i;
             }
         }

@@ -19,7 +19,7 @@
 
 
 
-const int TILE_WIDTH = 64;
+const int TILE_WIDTH = 60;
 
 class Level
 {

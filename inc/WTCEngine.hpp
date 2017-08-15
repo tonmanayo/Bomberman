@@ -7,6 +7,7 @@
 
 #include <SDL.h>
 #include <GL/glew.h>
+
 namespace WTCEngine {
     extern int init();
 }

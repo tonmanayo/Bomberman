@@ -11,8 +11,8 @@ namespace WTCEngine {
 
     void SoundEffect::play(int loops /* = 0 */ ) {
         try {
-            if (Mix_PlayChannel(-1, m_chunk, loops) == -1) {
-                if (Mix_PlayChannel(0, m_chunk, loops) == -1) {
+            if (Mix_PlayChannel(-1, _chunk, loops) == -1) {
+                if (Mix_PlayChannel(0, _chunk, loops) == -1) {
                     ErrorHandle("Mix_PlayChannel error: " + std::string(Mix_GetError()));
                 }
             }
@@ -22,7 +22,7 @@ namespace WTCEngine {
     }
 
     void Music::play(int loops /* = -1 */) {
-        Mix_PlayMusic(m_music, loops);
+        Mix_PlayMusic(_music, loops);
     }
 
     void Music::pause() {
@@ -48,7 +48,7 @@ namespace WTCEngine {
 
     void AudioEngine::init() {
         try {
-            if (m_isInitialized) {
+            if (_isInitialized) {
                 ErrorHandle("Tried to initialize Audio Engine twice!\n");
             }
 
@@ -62,26 +62,26 @@ namespace WTCEngine {
                 ErrorHandle("Mix_OpenAudio error: " + std::string(Mix_GetError()));
             }
 
-            m_isInitialized = true;
+            _isInitialized = true;
         } catch (ErrorHandle errorHandle) {
             std::cout << errorHandle.what() << std::endl;
         }
     }
 
     void AudioEngine::destroy() {
-        if (m_isInitialized) {
-            m_isInitialized = false;
+        if (_isInitialized) {
+            _isInitialized = false;
 
-            for (auto &it : m_effectMap) {
+            for (auto &it : _effectMap) {
                 Mix_FreeChunk(it.second);
             }
 
-            for (auto &it : m_musicMap) {
+            for (auto &it : _musicMap) {
                 Mix_FreeMusic(it.second);
             }
 
-            m_effectMap.clear();
-            m_musicMap.clear();
+            _effectMap.clear();
+            _musicMap.clear();
 
             Mix_CloseAudio();
             Mix_Quit();
@@ -91,11 +91,11 @@ namespace WTCEngine {
     SoundEffect AudioEngine::loadSoundEffect(const std::string &filePath) {
         // Try to find the audio in the cache
         try {
-            auto it = m_effectMap.find(filePath);
+            auto it = _effectMap.find(filePath);
 
             SoundEffect effect;
 
-            if (it == m_effectMap.end()) {
+            if (it == _effectMap.end()) {
                 // Failed to find it, must load
                 Mix_Chunk *chunk = Mix_LoadWAV(filePath.c_str());
                 // Check for errors
@@ -103,12 +103,12 @@ namespace WTCEngine {
                     ErrorHandle("Mix_LoadWAV error: " + std::string(Mix_GetError()));
                 }
 
-                effect.m_chunk = chunk;
-                m_effectMap[filePath] = chunk;
+                effect._chunk = chunk;
+                _effectMap[filePath] = chunk;
 
             } else {
                 // Its already cached
-                effect.m_chunk = it->second;
+                effect._chunk = it->second;
             }
 
             return effect;
@@ -120,11 +120,11 @@ namespace WTCEngine {
     Music AudioEngine::loadMusic(const std::string &filePath) {
         // Try to find the audio in the cache
         try {
-            auto it = m_musicMap.find(filePath);
+            auto it = _musicMap.find(filePath);
 
             Music music;
 
-            if (it == m_musicMap.end()) {
+            if (it == _musicMap.end()) {
                 // Failed to find it, must load
                 Mix_Music *mixMusic = Mix_LoadMUS(filePath.c_str());
                 // Check for errors
@@ -132,12 +132,12 @@ namespace WTCEngine {
                     ErrorHandle("Mix_LoadMUS error: " + std::string(Mix_GetError()));
                 }
 
-                music.m_music = mixMusic;
-                m_musicMap[filePath] = mixMusic;
+                music._music = mixMusic;
+                _musicMap[filePath] = mixMusic;
 
             } else {
                 // Its already cached
-                music.m_music = it->second;
+                music._music = it->second;
             }
 
             return music;

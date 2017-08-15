@@ -13,7 +13,7 @@
 #include "../../inc/Camera2D.hpp"
 #include "Bullet.hpp"
 
-#include <SDL/SDL.h>
+#include <SDL2/SDL.h>
 #include "../../inc/ResourceManager.hpp"
 #include "Gun.hpp"
 
