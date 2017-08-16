@@ -11,7 +11,7 @@
 
 
 Gun::Gun(std::string name, int fireRate, int bulletsPerShot,
-         float spread, float bulletDamage, float bulletSpeed/*, WTCEngine::SoundEffect fireEffect*/) :
+         float spread, float bulletDamage, float bulletSpeed) :
         _name(name),
         _fireRate(fireRate),
         _bulletsPerShot(bulletsPerShot),
@@ -19,7 +19,7 @@ Gun::Gun(std::string name, int fireRate, int bulletsPerShot,
         _bulletDamage(bulletDamage),
         _bulletSpeed(bulletSpeed),
         _frameCounter(0)
-        /*_fireEffect(fireEffect)*/ {
+        {
     // Empty
 }
 
@@ -42,8 +42,6 @@ void Gun::fire(const glm::vec2& direction, const glm::vec2& position, std::vecto
     static std::mt19937 randomEngine(time(nullptr));
     // For offsetting the accuracy
     std::uniform_real_distribution<float> randRotate(-_spread, _spread);
-
-   // _fireEffect.play();
 
     for (int i = 0; i < _bulletsPerShot; i++) {
         // Add a new bullet

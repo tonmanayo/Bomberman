@@ -1,14 +1,14 @@
-Humans: 10
+Humans: 5
 RRRRRRRRRRRRRRR
-R@............R
-R.L.L.L.L.L.L.R
+R@......G.....R
+R.L.L.L.LGL.L.R
 R.............R
+R.L.L.LGL.L.L.R
+R.G...........R
+R.L.L.L.L.L.LGR
+R...G.........R
 R.L.L.L.L.L.L.R
-R.............R
-R.L.L.L.L.L.L.R
-R.............R
-R.L.L.L.L.L.L.R
-R.............R
+R.....G.......R
 R.L.L.L.L.L.LLR
-R...........LZR
+R.......G...GZR
 RRRRRRRRRRRRRRR

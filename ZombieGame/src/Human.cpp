@@ -9,6 +9,7 @@
 #include <ctime>
 #include <random>
 #include <glm/gtx/rotate_vector.hpp>
+#include <iostream>
 
 
 Human::Human() :
@@ -20,7 +21,10 @@ Human::~Human() {}
 void Human::init(float speed, glm::vec2 pos) {
 
     static std::mt19937 randomEngine(time(nullptr));
-    static std::uniform_real_distribution<float> randDir(-1.0f, 1.0f);
+    static std::uniform_real_distribution<float> randDir(-180.0f, 180.0f);
+
+    float arr[6] = {-270.0f, -180.0f, -90.0f, 90.0f, 180.0f, 270.0f};
+    int r = rand() % 6;
 
     _health = 20;
 
@@ -32,9 +36,9 @@ void Human::init(float speed, glm::vec2 pos) {
     _speed = speed;
     _position = pos;
     // Get random direction
-    _direction = glm::vec2(randDir(randomEngine), randDir(randomEngine));
+    _direction = glm::vec2(0.0f , arr[r]);
     // Make sure direction isn't zero
-    if (_direction.length() == 0) _direction = glm::vec2(1.0f, 0.0f);
+    if (_direction.length() == 0) _direction = glm::vec2(-90.0f, 90.0f);
 
     _direction = glm::normalize(_direction);
 
@@ -47,22 +51,27 @@ void Human::update(const std::vector<std::string>& levelData,
                    float deltaTime) {
 
     std::random_device rd;
-    static std::mt19937 randomEngine(rd());
-    static std::uniform_real_distribution<float> randRotate(-4, 4);
+   // static std::mt19937 randomEngine(rd());
+   // static std::uniform_real_distribution<float> randRotate(-180, 180);
+
 
     _position += _direction * _speed * deltaTime;
 
     // Randomly change direction every 20 frames
-//    if (_frames == 100) {
-//        _direction = glm::rotate(_direction, randRotate(randomEngine));
-//        _frames = 0;
-//    } else {
-//        _frames++;
-//    }
+    float arr[2] = {1.0f, -1.0f};
+    int rx = rand() % 2;
+    int ry = rand() % 2;
+    std::cout <<"X: " << rx << " Y" << ry << std::endl;
+    if (_frames == 100) {
+        _direction.x = _direction.y * arr[rx];
+        _direction.y = _direction.y * arr[ry];
+        _frames = 0;
+    } else {
+        _frames++;
+    }
 
     if (!collideWithLevel(levelData)) {
-        _direction = glm::rotate(_direction, randRotate(randomEngine));
-    } else {
-        _direction = _direction;
+        _direction.x = -_direction.x ;
+        _direction.y = -_direction.y ;
     }
 }

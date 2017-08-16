@@ -7,9 +7,9 @@
 #include <stdio.h>
 
 
-const float HUMAN_SPEED = 1.0f;
-const float ZOMBIE_SPEED = 1.3f;
-const float PLAYER_SPEED = 5.0f;
+const float HUMAN_SPEED = 5.0f;
+const float ZOMBIE_SPEED = 5.3f;
+const float PLAYER_SPEED = 10.0f;
 
 MainGame::MainGame()  :
         _screenWidth(1600),
@@ -125,9 +125,9 @@ void MainGame::initLevel() {
     // Set up the players guns
 
     const float BULLET_SPEED = 20.0f;
-//    _player->addGun(new Gun("Magnum", 10, 1, 5.0f, 30, BULLET_SPEED, _audioEngine.loadSoundEffect("Sound/shots/pistol.wav")));
-//    _player->addGun(new Gun("Shotgun", 30, 12, 20.0f, 4, BULLET_SPEED, _audioEngine.loadSoundEffect("Sound/shots/shotgun.wav")));
-//    _player->addGun(new Gun("MP5", 2, 1, 10.0f, 20, BULLET_SPEED, _audioEngine.loadSoundEffect("Sound/shots/cg1.wav")));
+    _player->addGun(new Gun("Magnum", 10, 1, 0.0f, 30, BULLET_SPEED));
+    _player->addGun(new Gun("Shotgun", 30, 12, 20.0f, 4, BULLET_SPEED));
+    _player->addGun(new Gun("MP5", 2, 1, 10.0f, 20, BULLET_SPEED));
 
 }
 
@@ -246,6 +246,7 @@ void MainGame::updateBullets(float deltaTime) {
     for (int i = 0; i < _bullets.size(); ) {
         // If update returns true, the bullet collided with a wall
         if (_bullets[i].update(_levels[_currentLevel]->getLevelData(), deltaTime)) {
+            addBlood(_bullets[i].getPosition(), 10);
             _bullets[i] = _bullets.back();
             _bullets.pop_back();
         } else {
@@ -422,11 +423,11 @@ void MainGame::drawHud() {
 
     _hudSpriteBatch.begin();
 
-    std::cout << buffer << " Num Humans " << _humans.size() << std::endl;
+    std::cout  << " Num Humans " << _humans.size() << std::endl;
     //_spriteFont->draw(_hudSpriteBatch, buffer, glm::vec2(0, 0),
     //                   glm::vec2(0.5), 0.0f, WTCEngine::Color(255, 255, 255, 255));
 
-    std::cout << buffer << " Num Zombies " << _zombies.size() << std::endl;
+    std::cout  << " Num Zombies " << _zombies.size() << std::endl;
    // _spriteFont->draw(_hudSpriteBatch, buffer, glm::vec2(0, 36),
      //                  glm::vec2(0.5), 0.0f, WTCEngine::Color(255, 255, 255, 255));
 

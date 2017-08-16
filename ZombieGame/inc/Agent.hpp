@@ -12,7 +12,7 @@
 #include "../../inc/SpriteBatch.hpp"
 
 
-const float AGENT_WIDTH = 60.0f;
+const float AGENT_WIDTH = 180.0f;
 const float AGENT_RADIUS = AGENT_WIDTH / 2.0f;
 
 class Zombie;
@@ -45,7 +45,7 @@ protected:
     void collideWithTile(glm::vec2 tilePos);
 
     glm::vec2 _position;
-    glm::vec2 _direction = glm::vec2(1.0f, 0.0f);
+    glm::vec2 _direction = glm::vec2(0.0f, 0.0f);
     WTCEngine::Color _color;
     float _speed;
     float _health;
