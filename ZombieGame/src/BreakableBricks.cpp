@@ -9,7 +9,7 @@ void BreakableBricks::init(glm::vec2 pos) {
     _health = 1;
     _color = WTCEngine::Color(255,255,255,255);
     _speed = 0;
-    _textureID = WTCEngine::ResourceManager::getTexture("Textures/light_bricks.png").id;
+    _textureID = WTCEngine::ResourceManager::getTexture("Textures/glass.png").id;
 }
 
 void BreakableBricks::update(const std::vector<std::string> &levelData, std::vector<Human *> &humans,

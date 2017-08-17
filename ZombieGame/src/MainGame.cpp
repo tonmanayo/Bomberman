@@ -292,29 +292,28 @@ void MainGame::updateBullets(float deltaTime) {
                 j++;
             }
         }
+        if (!wasBulletRemoved) {
 
-        for (int i = 0; i < _bullets.size(); i++) {
-            wasBulletRemoved = false;
-            // Loop through zombies
-            for (int j = 0; j < _breakableBricks.size();) {
-                // Check collision
-                if (_bullets[i].collideWithBreakableBrick(_breakableBricks[j], _levels[_currentLevel]->getLevelData())) {
-                    // Add blood
-                    addBlood(_breakableBricks[i]->getPosition(), 5);
-                    _levels[_currentLevel]->setLevelData(_breakableBricks[i]->getPosition());
-                    delete _breakableBricks[j];
-                    _breakableBricks[j] = _breakableBricks.back();
-                    _breakableBricks.pop_back();
-                    _bullets[i] = _bullets.back();
-                    _bullets.pop_back();
-                    wasBulletRemoved = true;
-                    i--;
-                    break;
-                } else {
-                    j++;
+                for (int j = 0; j < _breakableBricks.size();) {
+                    // Check collision
+                    if (_bullets[i].collideWithBreakableBrick(_breakableBricks[j])) {
+                        // Add blood
+                        addBlood(_breakableBricks[i]->getPosition(), 5);
+                        _levels[_currentLevel]->setLevelData(_breakableBricks[i]->getPosition());
+                        delete _breakableBricks[j];
+                        _breakableBricks[j] = _breakableBricks.back();
+                        _breakableBricks.pop_back();
+                        _bullets[i] = _bullets.back();
+                        _bullets.pop_back();
+                        wasBulletRemoved = true;
+                        i--;
+                        break;
+                    } else {
+                        j++;
+                    }
                 }
             }
-        }
+
         // Loop through humans
         if (!wasBulletRemoved) {
             for (int j = 1; j < _humans.size(); ) {
@@ -344,6 +343,7 @@ void MainGame::updateBullets(float deltaTime) {
         }
     }
 }
+
 
 void MainGame::checkVictory() {
     // TODO: Support for multiple levels!

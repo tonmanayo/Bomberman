@@ -63,20 +63,24 @@ bool Bullet::collideWithAgent(Agent* agent) {
     return false;
 }
 
-bool Bullet::collideWithBreakableBrick(BreakableBricks* breakableBricks, const std::vector<std::string>& levelData) {
-    const float MIN_DISTANCE = TILE_WIDTH + BULLET_RADIUS;
+bool Bullet::collideWithBreakableBrick(BreakableBricks *breakableBricks) {
+    const float MIN_DISTANCE = TILE_WIDTH;
 
     glm::vec2 centerPosA = _position;
-    glm::vec2 centerPosB = breakableBricks->getPosition() + glm::vec2(TILE_WIDTH);
+    glm::vec2 centerPosB = breakableBricks->getPosition() + glm::vec2(TILE_WIDTH / 2);
+    glm::ivec2 gridPosition;
+
 
     glm::vec2 distVec = centerPosA - centerPosB;
 
-    return (levelData[breakableBricks->getPosition().y][breakableBricks->getPosition().x] != '.' &&
-            levelData[breakableBricks->getPosition().y][breakableBricks->getPosition().x] != 'R') &&
-            levelData[breakableBricks->getPosition().y][breakableBricks->getPosition().x] != 'L';
+    float distance = glm::length(distVec);
 
+    float collisionDepth = MIN_DISTANCE - distance;
+    if (collisionDepth > 0) {
+        return true;
+    }
+    return false;
 }
-
 bool Bullet::collideWithWorld(const std::vector<std::string>& levelData) {
     glm::ivec2 gridPosition;
     gridPosition.x = static_cast<int>(floor(_position.x / (float)TILE_WIDTH));

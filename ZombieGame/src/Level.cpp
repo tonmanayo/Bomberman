@@ -56,11 +56,6 @@ Level::Level(const std::string& fileName) {
                         break;
                     case 'G':
                         _breakBrickPositions.emplace_back(x * TILE_WIDTH, y * TILE_WIDTH) ;
-                   /*     _spriteBatch.draw(destRect,
-                                          uvRect,
-                                          WTCEngine::ResourceManager::getTexture("Textures/glass.png").id,
-                                          0.0f,
-                                          whiteColor);*/
                         break;
                     case 'L':
                         _spriteBatch.draw(destRect,

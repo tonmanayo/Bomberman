@@ -27,7 +27,7 @@ public:
     bool update(const std::vector<std::string>& levelData, float deltaTime);
     void draw(WTCEngine::SpriteBatch& spriteBatch);
     bool collideWithAgent(Agent* agent);
-    bool collideWithBreakableBrick(BreakableBricks* breakableBricks, const std::vector<std::string>& levelData);
+    bool collideWithBreakableBrick(BreakableBricks *breakableBricks);
     float getDamage() const ;
     glm::vec2 getPosition() const ;
 
