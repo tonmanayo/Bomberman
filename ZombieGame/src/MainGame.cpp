@@ -129,7 +129,7 @@ void MainGame::initLevel() {
     // Set up the players guns
 
     const float BULLET_SPEED = 20.0f;
-    _player->addGun(new Gun("Magnum", 10, 1, 0.0f, 30, BULLET_SPEED));
+    _player->addGun(new Gun("Magnum", 10, 1, 0.0f, 30, 0.0f));
     _player->addGun(new Gun("Shotgun", 30, 12, 20.0f, 4, BULLET_SPEED));
     _player->addGun(new Gun("MP5", 2, 1, 10.0f, 20, BULLET_SPEED));
 

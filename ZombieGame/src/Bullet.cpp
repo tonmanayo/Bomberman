@@ -3,15 +3,7 @@
 //
 
 #include "../inc/Bullet.hpp"
-
-
-#include "../../inc/ResourceManager.hpp"
-
-#include "../inc/Agent.hpp"
-#include "../inc/Human.hpp"
-#include "../inc/Zombie.hpp"
 #include "../inc/Level.hpp"
-#include "../inc/BreakableBricks.hpp"
 
 
 Bullet::Bullet(glm::vec2 position, glm::vec2 direction, float damage, float speed) :
@@ -21,9 +13,7 @@ Bullet::Bullet(glm::vec2 position, glm::vec2 direction, float damage, float spee
         _speed(speed) {
 }
 
-
 Bullet::~Bullet() {}
-
 
 bool Bullet::update(const std::vector<std::string>& levelData, float deltaTime) {
     _position += _direction * _speed * deltaTime;
@@ -37,11 +27,8 @@ void Bullet::draw(WTCEngine::SpriteBatch& spriteBatch) {
                        BULLET_RADIUS * 2);
     const glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f);
 
-    WTCEngine::Color color;
-    color.r = 75;
-    color.g = 75;
-    color.b = 75;
-    color.a = 255;
+    WTCEngine::Color color(75, 75, 75, 75);
+
 
     spriteBatch.draw(destRect, uvRect, WTCEngine::ResourceManager::getTexture("Textures/circle.png").id, 0.0f, color);
 }
