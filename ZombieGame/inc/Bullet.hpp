@@ -10,6 +10,7 @@
 #include <vector>
 #include <string>
 #include "../../inc/SpriteBatch.hpp"
+#include "BreakableBricks.hpp"
 
 class Human;
 class Zombie;
@@ -26,6 +27,7 @@ public:
     bool update(const std::vector<std::string>& levelData, float deltaTime);
     void draw(WTCEngine::SpriteBatch& spriteBatch);
     bool collideWithAgent(Agent* agent);
+    bool collideWithBreakableBrick(BreakableBricks* breakableBricks, const std::vector<std::string>& levelData);
     float getDamage() const ;
     glm::vec2 getPosition() const ;
 

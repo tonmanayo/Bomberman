@@ -35,17 +35,15 @@ MainGame::~MainGame() {
     for (auto &_zombie : _zombies) {
         delete _zombie;
     }
+    for (auto &_breakableBricks : _breakableBricks) {
+        delete _breakableBricks;
+    }
 }
 
 void MainGame::run() {
 
     initSystems();
-
     initLevel();
-
-   // WTCEngine::Music music = _audioEngine.loadMusic("Sound/XYZ.ogg");
-    //music.play(-1);
-
     gameLoop();
 }
 
@@ -120,6 +118,12 @@ void MainGame::initLevel() {
     for (int i = 0; i < zombiePositions.size(); i++) {
         _zombies.push_back(new Zombie);
         _zombies.back()->init(ZOMBIE_SPEED, zombiePositions[i]);
+    }
+    //add bricks
+    const std::vector<glm::vec2>& breakableBrickPositions = _levels[_currentLevel]->getBreakableBrickStartPositions();
+    for (int i = 0; i < breakableBrickPositions.size(); i++) {
+        _breakableBricks.push_back(new BreakableBricks);
+        _breakableBricks.back()->init(breakableBrickPositions[i]);
     }
 
     // Set up the players guns
@@ -201,7 +205,7 @@ void MainGame::gameLoop() {
 
         // End the frame, limit the FPS, and get the current FPS.
         _fps = fpsLimiter.end();
-        std::cout << _fps << std::endl;
+        //std::cout << _fps << std::endl;
     }
 }
 
@@ -213,6 +217,10 @@ void MainGame::updateAgents(float deltaTime) {
         for (auto &_zombie : _zombies) {
             _zombie->update(_levels[_currentLevel]->getLevelData(), _humans, _zombies, deltaTime);
         }
+        for (auto &_breakableBrick : _breakableBricks) {
+            _breakableBrick->update(_levels[_currentLevel]->getLevelData(), _humans, _zombies, deltaTime);
+        }
+
         for (int i = 0; i < _zombies.size(); i++) {
             for (int j = i + 1; j < _zombies.size(); j++) {
                 _zombies[i]->collideWithAgent(_zombies[j]);
@@ -282,6 +290,29 @@ void MainGame::updateBullets(float deltaTime) {
                 break;
             } else {
                 j++;
+            }
+        }
+
+        for (int i = 0; i < _bullets.size(); i++) {
+            wasBulletRemoved = false;
+            // Loop through zombies
+            for (int j = 0; j < _breakableBricks.size();) {
+                // Check collision
+                if (_bullets[i].collideWithBreakableBrick(_breakableBricks[j], _levels[_currentLevel]->getLevelData())) {
+                    // Add blood
+                    addBlood(_breakableBricks[i]->getPosition(), 5);
+                    _levels[_currentLevel]->setLevelData(_breakableBricks[i]->getPosition());
+                    delete _breakableBricks[j];
+                    _breakableBricks[j] = _breakableBricks.back();
+                    _breakableBricks.pop_back();
+                    _bullets[i] = _bullets.back();
+                    _bullets.pop_back();
+                    wasBulletRemoved = true;
+                    i--;
+                    break;
+                } else {
+                    j++;
+                }
             }
         }
         // Loop through humans
@@ -392,6 +423,13 @@ void MainGame::drawGame() {
         }
     }
 
+    // Draw the bricks
+    for (int i = 0; i < _breakableBricks.size(); i++) {
+        if (_camera.isBoxInView(_breakableBricks[i]->getPosition(), agentDims)) {
+            _breakableBricks[i]->drawBrick(_agentSpriteBatch);
+        }
+    }
+
     // Draw the bullets
     for (int i = 0; i < _bullets.size(); i++) {
         _bullets[i].draw(_agentSpriteBatch);
@@ -423,13 +461,13 @@ void MainGame::drawHud() {
 
     _hudSpriteBatch.begin();
 
-    std::cout  << " Num Humans " << _humans.size() << std::endl;
-    //_spriteFont->draw(_hudSpriteBatch, buffer, glm::vec2(0, 0),
-    //                   glm::vec2(0.5), 0.0f, WTCEngine::Color(255, 255, 255, 255));
-
-    std::cout  << " Num Zombies " << _zombies.size() << std::endl;
-   // _spriteFont->draw(_hudSpriteBatch, buffer, glm::vec2(0, 36),
-     //                  glm::vec2(0.5), 0.0f, WTCEngine::Color(255, 255, 255, 255));
+//    std::cout  << " Num Humans " << _humans.size() << std::endl;
+//    //_spriteFont->draw(_hudSpriteBatch, buffer, glm::vec2(0, 0),
+//    //                   glm::vec2(0.5), 0.0f, WTCEngine::Color(255, 255, 255, 255));
+//
+//    std::cout  << " Num Zombies " << _zombies.size() << std::endl;
+//   // _spriteFont->draw(_hudSpriteBatch, buffer, glm::vec2(0, 36),
+//     //                  glm::vec2(0.5), 0.0f, WTCEngine::Color(255, 255, 255, 255));
 
     _hudSpriteBatch.end();
     _hudSpriteBatch.renderBatch();

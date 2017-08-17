@@ -37,6 +37,31 @@ bool Agent::collideWithLevel(const std::vector<std::string>& levelData) {
     return true;
 }
 
+bool Agent::collideWithBreakableBrick(const std::vector<std::string>& levelData) {
+
+    std::vector<glm::vec2> collideTilePositions;
+
+    // Check the four corners
+    // First corner
+    checkTilePosition(levelData, collideTilePositions, _position.x, _position.y);
+    // Second Corner
+    checkTilePosition(levelData, collideTilePositions, _position.x + TILE_WIDTH, _position.y);
+    // Third Corner
+    checkTilePosition(levelData, collideTilePositions, _position.x, _position.y + TILE_WIDTH);
+    // 4th Corner
+    checkTilePosition(levelData, collideTilePositions, _position.x + TILE_WIDTH, _position.y + TILE_WIDTH);
+
+    // Check if there was no collision
+    if (collideTilePositions.empty()) {
+        return false;
+    }
+    // Do the collision
+    for (int i = 0; i < collideTilePositions.size(); i++) {
+        collideWithTile(collideTilePositions[i]);
+    }
+    return true;
+}
+
 // Circular collision
 bool Agent::collideWithAgent(Agent* agent) {
 

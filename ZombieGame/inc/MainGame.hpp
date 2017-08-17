@@ -32,6 +32,7 @@
 #include "Player.hpp"
 #include "Level.hpp"
 #include "Bullet.hpp"
+#include "BreakableBricks.hpp"
 
 class Zombie;
 
@@ -86,6 +87,7 @@ private:
     Player* _player;
     std::vector<Human*> _humans;
     std::vector<Zombie*> _zombies;
+    std::vector<BreakableBricks*> _breakableBricks;
     std::vector<Bullet> _bullets;
 
     int _numHumansKilled;

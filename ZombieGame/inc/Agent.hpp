@@ -12,7 +12,7 @@
 #include "../../inc/SpriteBatch.hpp"
 
 
-const float AGENT_WIDTH = 180.0f;
+const float AGENT_WIDTH = 120.0f;
 const float AGENT_RADIUS = AGENT_WIDTH / 2.0f;
 
 class Zombie;
@@ -30,7 +30,9 @@ public:
                         float deltaTime) = 0;
 
     bool collideWithLevel(const std::vector<std::string>& levelData);
-    bool collideWithAgent(Agent* agent);
+    bool collideWithBreakableBrick(const std::vector<std::string>& levelData);
+
+        bool collideWithAgent(Agent* agent);
     void draw(WTCEngine::SpriteBatch& _spriteBatch);
     bool applyDamage(float damage);
     glm::vec2 getPosition() const;

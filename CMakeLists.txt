@@ -81,7 +81,7 @@ set(SOURCE_FILES src/main.cpp
         src/ParticleEngine2D.cpp
         inc/ParticleEngine2D.hpp
         src/SpriteFont.cpp
-        inc/SpriteFont.hpp)
+        inc/SpriteFont.hpp ZombieGame/src/BreakableBricks.cpp ZombieGame/inc/BreakableBricks.hpp)
 
 add_executable(Bomberman ${SOURCE_FILES})
 

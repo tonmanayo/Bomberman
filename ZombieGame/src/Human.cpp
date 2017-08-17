@@ -61,7 +61,6 @@ void Human::update(const std::vector<std::string>& levelData,
     float arr[2] = {1.0f, -1.0f};
     int rx = rand() % 2;
     int ry = rand() % 2;
-    std::cout <<"X: " << rx << " Y" << ry << std::endl;
     if (_frames == 100) {
         _direction.x = _direction.y * arr[rx];
         _direction.y = _direction.y * arr[ry];

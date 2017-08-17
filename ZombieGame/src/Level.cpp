@@ -55,11 +55,12 @@ Level::Level(const std::string& fileName) {
                                           whiteColor);
                         break;
                     case 'G':
-                        _spriteBatch.draw(destRect,
+                        _breakBrickPositions.emplace_back(x * TILE_WIDTH, y * TILE_WIDTH) ;
+                   /*     _spriteBatch.draw(destRect,
                                           uvRect,
                                           WTCEngine::ResourceManager::getTexture("Textures/glass.png").id,
                                           0.0f,
-                                          whiteColor);
+                                          whiteColor);*/
                         break;
                     case 'L':
                         _spriteBatch.draw(destRect,
@@ -106,4 +107,10 @@ int Level::getWidth() const {
 
 int Level::getHeight() const {
     return static_cast<int>(_levelData.size());
+}
+
+void Level::setLevelData(glm::vec2 position) {
+     std::cout << " X: " << position.x  << " Y: " << position.y  << std::endl;
+    _levelData[position.y / TILE_WIDTH][position.x / TILE_WIDTH] = '.';
+
 }

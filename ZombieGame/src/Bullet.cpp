@@ -11,6 +11,7 @@
 #include "../inc/Human.hpp"
 #include "../inc/Zombie.hpp"
 #include "../inc/Level.hpp"
+#include "../inc/BreakableBricks.hpp"
 
 
 Bullet::Bullet(glm::vec2 position, glm::vec2 direction, float damage, float speed) :
@@ -60,6 +61,20 @@ bool Bullet::collideWithAgent(Agent* agent) {
         return true;
     }
     return false;
+}
+
+bool Bullet::collideWithBreakableBrick(BreakableBricks* breakableBricks, const std::vector<std::string>& levelData) {
+    const float MIN_DISTANCE = TILE_WIDTH + BULLET_RADIUS;
+
+    glm::vec2 centerPosA = _position;
+    glm::vec2 centerPosB = breakableBricks->getPosition() + glm::vec2(TILE_WIDTH);
+
+    glm::vec2 distVec = centerPosA - centerPosB;
+
+    return (levelData[breakableBricks->getPosition().y][breakableBricks->getPosition().x] != '.' &&
+            levelData[breakableBricks->getPosition().y][breakableBricks->getPosition().x] != 'R') &&
+            levelData[breakableBricks->getPosition().y][breakableBricks->getPosition().x] != 'L';
+
 }
 
 bool Bullet::collideWithWorld(const std::vector<std::string>& levelData) {
