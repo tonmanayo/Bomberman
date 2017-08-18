@@ -483,6 +483,7 @@ void MainGame::drawHud() {
 void MainGame::addBlood(const glm::vec2& position, int numParticles) {
 
     static std::mt19937 randEngine(time(nullptr));
+
     static std::uniform_real_distribution<float> randAngle(0.0f, 360.0f);
 
     glm::vec2 vel(2.0f, 0.0f);
