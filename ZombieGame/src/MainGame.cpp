@@ -253,7 +253,6 @@ void MainGame::updateAgents(float deltaTime) {
 void MainGame::updateBullets(float deltaTime) {
     // Update and collide with world
     for (int i = 0; i < _bullets.size(); ) {
-        std::cout << deltaTime << "here: " << _bullets[i].getTime() << std::endl;
         if (_bullets[i].getTime() > 2){
             addBlood(_bullets[i].getPosition(), 10);
             _bullets[i] = _bullets.back();
@@ -489,7 +488,14 @@ void MainGame::addBlood(const glm::vec2& position, int numParticles) {
     glm::vec2 vel(2.0f, 0.0f);
     WTCEngine::Color col(255, 0, 0, 255);
 
+    glm::vec2 newpos = position;
+    newpos.x = sqrt(newpos.x * (newpos.x + TILE_WIDTH / 2));
+    newpos.y = sqrt(newpos.y * (newpos.y + TILE_WIDTH / 2));
+    //newpos.x = (newpos.x );
+    newpos.y = ((newpos.y) ) ;
+
+
     for (int i = 0; i < numParticles; i++) {
-        _bloodParticleBatch->addParticle(position, glm::rotate(vel, randAngle(randEngine)), col, 30.0f);
+        _bloodParticleBatch->addParticle(newpos, glm::rotate(vel, randAngle(randEngine)), col, 30.0f);
     }
 }
