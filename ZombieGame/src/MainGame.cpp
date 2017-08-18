@@ -163,6 +163,7 @@ void MainGame::gameLoop() {
 
     // Start our previousTicks variable
     float previousTicks = SDL_GetTicks();
+    static float total;
 
     // Main loop
     while (_gameState == GameState::PLAY) {
@@ -180,15 +181,15 @@ void MainGame::gameLoop() {
         _inputManager.update();
 
         processInput();
-
         int i = 0; // This counter makes sure we don't spiral to death!
         // Loop while we still have steps to process.
         while (totalDeltaTime > 0.0f && i < MAX_PHYSICS_STEPS) {
             // The deltaTime should be the the smaller of the totalDeltaTime and MAX_DELTA_TIME
             float deltaTime = std::min(totalDeltaTime, MAX_DELTA_TIME);
+            total += deltaTime / 100;
             // Update all physics here and pass in deltaTime
             updateAgents(deltaTime);
-            updateBullets(deltaTime);
+            updateBullets(total);
             _particleEngine.update(deltaTime);
             // Since we just took a step that is length deltaTime, subtract from totalDeltaTime
             totalDeltaTime -= deltaTime;
@@ -252,8 +253,14 @@ void MainGame::updateAgents(float deltaTime) {
 void MainGame::updateBullets(float deltaTime) {
     // Update and collide with world
     for (int i = 0; i < _bullets.size(); ) {
+        std::cout << deltaTime << "here: " << _bullets[i].getTime() << std::endl;
+        if (_bullets[i].getTime() > 2){
+            addBlood(_bullets[i].getPosition(), 10);
+            _bullets[i] = _bullets.back();
+            _bullets.pop_back();
+        }
         // If update returns true, the bullet collided with a wall
-        if (_bullets[i].update(_levels[_currentLevel]->getLevelData(), deltaTime)) {
+        if (_bullets[i].update(_levels[_currentLevel]->getLevelData())) {
             addBlood(_bullets[i].getPosition(), 10);
             _bullets[i] = _bullets.back();
             _bullets.pop_back();

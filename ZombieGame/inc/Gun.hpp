@@ -12,6 +12,7 @@
 
 #include "../inc/Bullet.hpp"
 #include "../../inc/AudioEngine.hpp"
+class Bullet;
 
 class Gun
 {

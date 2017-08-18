@@ -10,13 +10,21 @@ Bullet::Bullet(glm::vec2 position, glm::vec2 direction, float damage, float spee
         _position(position),
         _direction(direction),
         _damage(damage),
-        _speed(speed) {
+        _speed(speed),
+        _time(0)
+        {
 }
 
 Bullet::~Bullet() {}
 
-bool Bullet::update(const std::vector<std::string>& levelData, float deltaTime) {
-    _position += _direction * _speed * deltaTime;
+float Bullet::getTime() const{
+    return _time;
+}
+
+bool Bullet::update(const std::vector<std::string>& levelData) {
+
+    //_position += _direction  deltaTime;
+    _time += 0.01;
     return collideWithWorld(levelData);
 }
 

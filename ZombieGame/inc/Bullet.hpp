@@ -11,10 +11,12 @@
 #include <string>
 #include "../../inc/SpriteBatch.hpp"
 #include "BreakableBricks.hpp"
+#include "Player.hpp"
 
 class Human;
 class Zombie;
 class Agent;
+class Player;
 
 const int BULLET_RADIUS = 45;
 
@@ -24,12 +26,13 @@ public:
     Bullet(glm::vec2 position, glm::vec2 direction, float damage, float speed);
     virtual ~Bullet();
 
-    bool update(const std::vector<std::string>& levelData, float deltaTime);
+    bool update(const std::vector<std::string>& levelData);
     void draw(WTCEngine::SpriteBatch& spriteBatch);
     bool collideWithAgent(Agent* agent);
     bool collideWithBreakableBrick(BreakableBricks *breakableBricks);
-    float getDamage() const ;
-    glm::vec2 getPosition() const ;
+    float getDamage() const;
+    float getTime() const;
+    glm::vec2 getPosition() const;
 
 private:
 
@@ -38,6 +41,7 @@ private:
     glm::vec2 _direction;
     float _damage;
     float _speed;
+    float _time;
 };
 
 

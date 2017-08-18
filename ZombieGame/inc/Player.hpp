@@ -7,17 +7,18 @@
 
 
 #include "Human.hpp"
+#include "Gun.hpp"
+#include "Bullet.hpp"
 
-#include "Human.hpp"
 #include "../../inc/InputManager.hpp"
 #include "../../inc/Camera2D.hpp"
-#include "Bullet.hpp"
 
 #include <SDL2/SDL.h>
 #include "../../inc/ResourceManager.hpp"
-#include "Gun.hpp"
+
 
 class Gun;
+class Bullet;
 
 class Player : public Human
 {
