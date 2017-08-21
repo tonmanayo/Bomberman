@@ -30,9 +30,7 @@ public:
                         float deltaTime) = 0;
 
     bool collideWithLevel(const std::vector<std::string>& levelData);
-    bool collideWithBreakableBrick(const std::vector<std::string>& levelData);
-
-        bool collideWithAgent(Agent* agent);
+    bool collideWithAgent(Agent* agent);
     void draw(WTCEngine::SpriteBatch& _spriteBatch);
     bool applyDamage(float damage);
     glm::vec2 getPosition() const;

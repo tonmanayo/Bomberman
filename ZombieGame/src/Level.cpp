@@ -13,38 +13,27 @@ Level::Level(const std::string& fileName) {
         std::ifstream file;
         file.open(fileName);
 
-        if (file.fail()) {
+        if (file.fail())
             WTCEngine::ErrorHandle("Failed to open " + fileName);
-        }
 
-        // Throw away the first string in tmp
         std::string tmp;
-
         file >> tmp >> _numHumans;
+        std::getline(file, tmp);                // Throw away the rest of the first line
 
-        std::getline(file, tmp); // Throw away the rest of the first line
-
-        // Read the level data
-        while (std::getline(file, tmp)) {
+        while (std::getline(file, tmp)) {       // Read the level data
             _levelData.emplace_back(tmp);
         }
 
         _spriteBatch.init();
         _spriteBatch.begin();
-
         glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f);
-
         WTCEngine::Color whiteColor(255, 255, 255, 255);
 
-        // Render all the map
-        for (int y = 0; y < _levelData.size(); y++) {
+        for (int y = 0; y < _levelData.size(); y++) {           // Read the level data
             for (int x = 0; x < _levelData[y].size(); x++) {
-
                 char tile = _levelData[y][x];
-                // Get dest rect
                 glm::vec4 destRect(x * TILE_WIDTH, y * TILE_WIDTH, TILE_WIDTH, TILE_WIDTH);
 
-                // Process the tile
                 switch (tile) {
                     case 'B':
                     case 'R':
@@ -65,12 +54,12 @@ Level::Level(const std::string& fileName) {
                                           whiteColor);
                         break;
                     case '@':
-                        _levelData[y][x] = '.'; // So we dont collide with a @
+                        _levelData[y][x] = '.';                                                                 // Dont collide with a @
                         _startPlayerPos.x = x * TILE_WIDTH;
                         _startPlayerPos.y = y * TILE_WIDTH;
                         break;
                     case 'Z':
-                        _levelData[y][x] = '.'; // So we dont collide with a Z
+                        _levelData[y][x] = '.';                                                                 // Dont collide with a Z
                         _zombieStartPositions.emplace_back(x * TILE_WIDTH, y * TILE_WIDTH);
                         break;
                     case '.':

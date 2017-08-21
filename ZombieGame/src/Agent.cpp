@@ -17,46 +17,15 @@ bool Agent::collideWithLevel(const std::vector<std::string>& levelData) {
     std::vector<glm::vec2> collideTilePositions;
 
     // Check the four corners
-    // First corner
-    checkTilePosition(levelData, collideTilePositions, _position.x, _position.y);
-    // Second Corner
-    checkTilePosition(levelData, collideTilePositions, _position.x + AGENT_WIDTH, _position.y);
-    // Third Corner
-    checkTilePosition(levelData, collideTilePositions, _position.x, _position.y + AGENT_WIDTH);
-    // 4th Corner
-    checkTilePosition(levelData, collideTilePositions, _position.x + AGENT_WIDTH, _position.y + AGENT_WIDTH);
+    checkTilePosition(levelData, collideTilePositions, _position.x, _position.y);                                   // 1st corner
+    checkTilePosition(levelData, collideTilePositions, _position.x + AGENT_WIDTH, _position.y);                     // 2nd Corner
+    checkTilePosition(levelData, collideTilePositions, _position.x, _position.y + AGENT_WIDTH);                     // 3rd Corner
+    checkTilePosition(levelData, collideTilePositions, _position.x + AGENT_WIDTH, _position.y + AGENT_WIDTH);       // 4th Corner
 
-    // Check if there was no collision
-    if (collideTilePositions.empty()) {
+    if (collideTilePositions.empty()) {                                                                             // No collision
         return false;
     }
-    // Do the collision
-    for (int i = 0; i < collideTilePositions.size(); i++) {
-        collideWithTile(collideTilePositions[i]);
-    }
-    return true;
-}
-
-bool Agent::collideWithBreakableBrick(const std::vector<std::string>& levelData) {
-
-    std::vector<glm::vec2> collideTilePositions;
-
-    // Check the four corners
-    // First corner
-    checkTilePosition(levelData, collideTilePositions, _position.x, _position.y);
-    // Second Corner
-    checkTilePosition(levelData, collideTilePositions, _position.x + TILE_WIDTH, _position.y);
-    // Third Corner
-    checkTilePosition(levelData, collideTilePositions, _position.x, _position.y + TILE_WIDTH);
-    // 4th Corner
-    checkTilePosition(levelData, collideTilePositions, _position.x + TILE_WIDTH, _position.y + TILE_WIDTH);
-
-    // Check if there was no collision
-    if (collideTilePositions.empty()) {
-        return false;
-    }
-    // Do the collision
-    for (int i = 0; i < collideTilePositions.size(); i++) {
+    for (int i = 0; i < collideTilePositions.size(); i++) {                                                         // Do the collision
         collideWithTile(collideTilePositions[i]);
     }
     return true;
@@ -65,33 +34,17 @@ bool Agent::collideWithBreakableBrick(const std::vector<std::string>& levelData)
 // Circular collision
 bool Agent::collideWithAgent(Agent* agent) {
 
-    // Minimum distance before there is a collision
-    const float MIN_DISTANCE = AGENT_RADIUS * 2.0f;
+    const float MIN_DISTANCE = AGENT_RADIUS * 2.0f;                                 // Minimum distance before there is a collision
+    glm::vec2 centerPosA = _position + glm::vec2(AGENT_RADIUS);                     // Center position of this agent
+    glm::vec2 centerPosB = agent->getPosition() + glm::vec2(AGENT_RADIUS);          // Center position of the parameter agent
+    glm::vec2 distVec = centerPosA - centerPosB;                                    // Distance vector between the two agents
+    float distance = glm::length(distVec);                                          // Length of the distance vector
+    float collisionDepth = MIN_DISTANCE - distance;                                 // Depth of the collision
 
-    // Center position of this agent
-    glm::vec2 centerPosA = _position + glm::vec2(AGENT_RADIUS);
-    // Center position of the parameter agent
-    glm::vec2 centerPosB = agent->getPosition() + glm::vec2(AGENT_RADIUS);
-
-    // Distance vector between the two agents
-    glm::vec2 distVec = centerPosA - centerPosB;
-
-    // Length of the distance vector
-    float distance = glm::length(distVec);
-
-    // Depth of the collision
-    float collisionDepth = MIN_DISTANCE - distance;
-
-    // If collision depth > 0 then we did collide
-    if (collisionDepth > 0) {
-
-        // Get the direction times the collision depth so we can push them away from each other
-        glm::vec2 collisionDepthVec = glm::normalize(distVec) * collisionDepth;
-
-        // Push them in opposite directions
-        _position += collisionDepthVec / 2.0f;
+    if (collisionDepth > 0) {                                                       // If collision depth > 0 then we did collide
+        glm::vec2 collisionDepthVec = glm::normalize(distVec) * collisionDepth;     // push them away from each other
+        _position += collisionDepthVec / 2.0f;                                      // Push them in opposite directions
         agent->_position -= collisionDepthVec / 2.0f;
-
         return true;
     }
     return false;
@@ -108,7 +61,6 @@ void Agent::draw(WTCEngine::SpriteBatch& _spriteBatch) {
 bool Agent::applyDamage(float damage) {
 
     _health -= damage;
-    // If we died, return true
     if (_health <= 0) {
         return true;
     }
@@ -120,52 +72,32 @@ void Agent::checkTilePosition(const std::vector<std::string>& levelData,
                               float x,
                               float y) {
 
-    // Get the position of this corner in grid-space
-    glm::vec2 gridPos = glm::vec2(floor(x / (float)TILE_WIDTH),
-                                  floor(y / (float)TILE_WIDTH));
-
-    // If we are outside the world, just return
+    glm::vec2 gridPos = glm::vec2(std::floor(x / (float)TILE_WIDTH), std::floor(y / (float)TILE_WIDTH));            // Get the position of this corner in grid
     if (gridPos.x < 0 || gridPos.x >= levelData[0].size() ||
-        gridPos.y < 0 || gridPos.y >= levelData.size()) {
+        gridPos.y < 0 || gridPos.y >= levelData.size())                                                             // If we are outside the world, just return
         return;
-    }
-
-    // If this is not an air tile, we should collide with it
-    if (levelData[gridPos.y][gridPos.x] != '.') {
+    if (levelData[gridPos.y][gridPos.x] != '.') {                                                                   // If this is not an air tile, we should collide with it
         collideTilePositions.push_back(gridPos * (float)TILE_WIDTH + glm::vec2((float)TILE_WIDTH / 2.0f));
     }
 }
 
-// AABB (Axis Aligned Bounding Box) collision
-void Agent::collideWithTile(glm::vec2 tilePos) {
+void Agent::collideWithTile(glm::vec2 tilePos) {                    // Axis Aligned Bounding Box collision
 
-    const float TILE_RADIUS = (float)TILE_WIDTH / 2.0f;
-    // The minimum distance before a collision occurs
+    const float TILE_RADIUS = (float)TILE_WIDTH / 2.0f;             // The minimum distance before a collision
     const float MIN_DISTANCE = AGENT_RADIUS + TILE_RADIUS;
-
-    // Center position of the agent
-    glm::vec2 centerAgentPos = _position + glm::vec2(AGENT_RADIUS);
-    // Vector from the agent to the tile
-    glm::vec2 distVec = centerAgentPos - tilePos;
-
-    // Get the depth of the collision
-    float xDepth = MIN_DISTANCE - std::abs(distVec.x);
+    glm::vec2 centerAgentPos = _position + glm::vec2(AGENT_RADIUS); // Center position of the agent
+    glm::vec2 distVec = centerAgentPos - tilePos;                   // Vector from the agent to the tile
+    float xDepth = MIN_DISTANCE - std::abs(distVec.x);              // Depth of the collision
     float yDepth = MIN_DISTANCE - std::abs(distVec.y);
-
-    // If both the depths are > 0, then we collided
-    if (xDepth > 0 && yDepth > 0) {
-
-        // Check which collision depth is less
-        if (std::max(xDepth, 0.0f) < std::max(yDepth, 0.0f)) {
-            // X collsion depth is smaller so we push in X direction
-            if (distVec.x < 0) {
+    if (xDepth > 0 && yDepth > 0) {                                 // If both the depths are > 0, then we collided
+        if (std::max(xDepth, 0.0f) < std::max(yDepth, 0.0f)) {      // Which collision depth is less
+            if (distVec.x < 0) {                                    // Push in X direction
                 _position.x -= xDepth;
             } else {
                 _position.x += xDepth;
             }
         } else {
-            // Y collsion depth is smaller so we push in X direction
-            if (distVec.y < 0) {
+            if (distVec.y < 0) {                                    // Push in Y direction
                 _position.y -= yDepth;
             } else {
                 _position.y += yDepth;

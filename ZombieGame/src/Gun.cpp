@@ -25,14 +25,12 @@ Gun::Gun(std::string name, int fireRate, int bulletsPerShot,
 }
 
 
-Gun::~Gun() {
-    // Empty
-}
+Gun::~Gun() {}
 
 void Gun::update(bool isMouseDown, const glm::vec2& position, const glm::vec2& direction, std::vector<Bullet>& bullets, float deltaTime) {
     _frameCounter += 1.0f * deltaTime;
-    // After a certain number of frames has passed we fire our gun
-    if (_frameCounter >= _fireRate && isMouseDown) {
+
+    if (_frameCounter >= _fireRate && isMouseDown) {                    // frame rate fire check
         fire(direction, position, bullets);
         _frameCounter = 0;
     }
@@ -40,59 +38,38 @@ void Gun::update(bool isMouseDown, const glm::vec2& position, const glm::vec2& d
 
 void Gun::fire(const glm::vec2& direction, const glm::vec2& position, std::vector<Bullet>& bullets) {
 
-    static std::mt19937 randomEngine(time(nullptr));
-    // For offsetting the accuracy
-    std::uniform_real_distribution<float> randRotate(-_spread, _spread);
-
-    glm::vec2 newpos = position;
-    glm::vec2 newdir = position;
-    newpos.x += TILE_WIDTH;
-    //newpos.x += TILE_WIDTH;
-
-    for (int i = 0; i < _bulletsPerShot; i++) {
-        // Add a new bullet
-
-        //static
+    for (int i = 0; i < _bulletsPerShot; i++) {                     // showing the bomb todo change to bomb name
         bullets.emplace_back(position - glm::vec2(BULLET_RADIUS),
                              glm::vec2(0, 0),
                              _bulletDamage,
                              0, 0);
 
-        //right bullet
-
-
     }
 }
 
-void Gun::Bomb(const glm::vec2& direction, const glm::vec2& position, std::vector<Bullet> &bombs) {
-
+void Gun::Bomb(const glm::vec2& direction, const glm::vec2& position, std::vector<Bullet> &bombs) { // Function spread of bomb //todo make bomb bigger
 
     glm::vec2 newpos = position;
     glm::vec2 newdir = position;
     newpos.x += TILE_WIDTH;
-    //newpos.x += TILE_WIDTH;
 
     for (int i = 0; i < _bulletsPerShot; i++) {
-        // Add a new bullet
 
-
-
-        //right bullet
-
-        newdir.x = -newdir.x;
+        newdir.x = -newdir.x;                                   // Right bullet
         bombs.emplace_back(newpos - glm::vec2(BULLET_RADIUS),
                              glm::normalize(glm::vec2(1, 0)),
                              _bulletDamage,
                              _bulletSpeed,
                              0);
-        newpos.x -= TILE_WIDTH * 2;
 
+        newpos.x -= TILE_WIDTH * 2;                             // Left bullet
         bombs.emplace_back(newpos - glm::vec2(BULLET_RADIUS),
                              glm::normalize(glm::vec2(-1, 0)),
                              _bulletDamage,
                              _bulletSpeed,
                              0);
-        newpos.x = position.x;
+
+        newpos.x = position.x;                                  // Top bullet
         newpos.y -= TILE_WIDTH;
 
         bombs.emplace_back(newpos - glm::vec2(BULLET_RADIUS),
@@ -101,7 +78,7 @@ void Gun::Bomb(const glm::vec2& direction, const glm::vec2& position, std::vecto
                              _bulletSpeed,
                              0);
 
-        newpos.y += TILE_WIDTH * 2;
+        newpos.y += TILE_WIDTH * 2;                             // Down bullet
         bombs.emplace_back(newpos - glm::vec2(BULLET_RADIUS),
                              glm::normalize(glm::vec2(0, 1)),
                              _bulletDamage,

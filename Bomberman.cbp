@@ -95,9 +95,6 @@
 		<Unit filename="/home/tonmanayo/Projects/Bomberman/ZombieGame/inc/Bullet.hpp">
 			<Option target="Bomberman"/>
 		</Unit>
-		<Unit filename="/home/tonmanayo/Projects/Bomberman/ZombieGame/inc/Enemy.hpp">
-			<Option target="Bomberman"/>
-		</Unit>
 		<Unit filename="/home/tonmanayo/Projects/Bomberman/ZombieGame/inc/Gun.hpp">
 			<Option target="Bomberman"/>
 		</Unit>
@@ -123,9 +120,6 @@
 			<Option target="Bomberman"/>
 		</Unit>
 		<Unit filename="/home/tonmanayo/Projects/Bomberman/ZombieGame/src/Bullet.cpp">
-			<Option target="Bomberman"/>
-		</Unit>
-		<Unit filename="/home/tonmanayo/Projects/Bomberman/ZombieGame/src/Enemy.cpp">
 			<Option target="Bomberman"/>
 		</Unit>
 		<Unit filename="/home/tonmanayo/Projects/Bomberman/ZombieGame/src/Gun.cpp">

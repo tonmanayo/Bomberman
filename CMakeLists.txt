@@ -58,8 +58,6 @@ set(SOURCE_FILES src/main.cpp
         inc/FpsLimiter.hpp
         ZombieGame/src/Player.cpp
         ZombieGame/inc/Player.hpp
-        ZombieGame/src/Enemy.cpp
-        ZombieGame/inc/Enemy.hpp
         ZombieGame/src/Level.cpp
         ZombieGame/inc/Level.hpp
         ZombieGame/src/Agent.cpp

@@ -18,7 +18,7 @@ public:
     virtual void update(const std::vector<std::string> &levelData,
                         std::vector<Human *> &humans,
                         std::vector<Zombie *> &zombies,
-                        float deltaTime) override;
+                        float deltaTime) override {};
 
     void init(glm::vec2 pos);
 
