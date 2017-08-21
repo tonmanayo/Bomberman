@@ -23,6 +23,7 @@ public:
     void init(glm::vec2 pos);
 
     void drawBrick(WTCEngine::SpriteBatch &_spriteBatch);
+    glm::vec2 getPosition() {return _position;};
 };
 
 

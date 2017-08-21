@@ -3,6 +3,7 @@
 //
 
 #include "../inc/Gun.hpp"
+#include "../inc/Level.hpp"
 
 
 #include <random>
@@ -43,12 +44,68 @@ void Gun::fire(const glm::vec2& direction, const glm::vec2& position, std::vecto
     // For offsetting the accuracy
     std::uniform_real_distribution<float> randRotate(-_spread, _spread);
 
+    glm::vec2 newpos = position;
+    glm::vec2 newdir = position;
+    newpos.x += TILE_WIDTH;
+    //newpos.x += TILE_WIDTH;
+
     for (int i = 0; i < _bulletsPerShot; i++) {
         // Add a new bullet
-        bullets.emplace_back(position - glm::vec2(BULLET_RADIUS),
-                             glm::rotate(direction, randRotate(randomEngine)),
-                             _bulletDamage,
-                             _bulletSpeed);
-    }
 
+        //static
+        bullets.emplace_back(position - glm::vec2(BULLET_RADIUS),
+                             glm::vec2(0, 0),
+                             _bulletDamage,
+                             0, 0);
+
+        //right bullet
+
+
+    }
+}
+
+void Gun::Bomb(const glm::vec2& direction, const glm::vec2& position, std::vector<Bullet> &bombs) {
+
+
+    glm::vec2 newpos = position;
+    glm::vec2 newdir = position;
+    newpos.x += TILE_WIDTH;
+    //newpos.x += TILE_WIDTH;
+
+    for (int i = 0; i < _bulletsPerShot; i++) {
+        // Add a new bullet
+
+
+
+        //right bullet
+
+        newdir.x = -newdir.x;
+        bombs.emplace_back(newpos - glm::vec2(BULLET_RADIUS),
+                             glm::normalize(glm::vec2(1, 0)),
+                             _bulletDamage,
+                             _bulletSpeed,
+                             0);
+        newpos.x -= TILE_WIDTH * 2;
+
+        bombs.emplace_back(newpos - glm::vec2(BULLET_RADIUS),
+                             glm::normalize(glm::vec2(-1, 0)),
+                             _bulletDamage,
+                             _bulletSpeed,
+                             0);
+        newpos.x = position.x;
+        newpos.y -= TILE_WIDTH;
+
+        bombs.emplace_back(newpos - glm::vec2(BULLET_RADIUS),
+                             glm::normalize(glm::vec2(0, -1)),
+                             _bulletDamage,
+                             _bulletSpeed,
+                             0);
+
+        newpos.y += TILE_WIDTH * 2;
+        bombs.emplace_back(newpos - glm::vec2(BULLET_RADIUS),
+                             glm::normalize(glm::vec2(0, 1)),
+                             _bulletDamage,
+                             _bulletSpeed,
+                             0);
+    }
 }

@@ -8,7 +8,7 @@ void BreakableBricks::init(glm::vec2 pos) {
     _position = pos;
     _health = 1;
     _color = WTCEngine::Color(255,255,255,255);
-    _speed = 0;
+    _speed = 1;
     _textureID = WTCEngine::ResourceManager::getTexture("Textures/glass.png").id;
 }
 

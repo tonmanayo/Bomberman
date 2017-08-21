@@ -89,6 +89,7 @@ private:
     std::vector<Zombie*> _zombies;
     std::vector<BreakableBricks*> _breakableBricks;
     std::vector<Bullet> _bullets;
+    std::vector<Bullet> _bomb;
 
     int _numHumansKilled;
     int _numZombiesKilled;

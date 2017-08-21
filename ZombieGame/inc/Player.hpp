@@ -26,9 +26,10 @@ public:
     Player();
     virtual ~Player();
 
-    void init(float speed, glm::vec2 pos, WTCEngine::InputManager* inputManager, WTCEngine::Camera2D* camera, std::vector<Bullet>* bullets);
+    void init(float speed, glm::vec2 pos, WTCEngine::InputManager* inputManager, WTCEngine::Camera2D* camera, std::vector<Bullet>* bullets, std::vector<Bullet>* bombs);
 
     void addGun(Gun* gun);
+    void bomb(glm::vec2 pos);
 
     void update(const std::vector<std::string> &levelData,
                 std::vector<Human*>& humans,
@@ -42,6 +43,7 @@ private:
 
     WTCEngine::Camera2D* _camera;
     std::vector<Bullet>* _bullets;
+    std::vector<Bullet>* _bombs;
 
 };
 

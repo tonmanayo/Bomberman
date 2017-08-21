@@ -23,6 +23,8 @@ public:
 
     void update(bool isMouseDown, const glm::vec2& position, const glm::vec2& direction, std::vector<Bullet>& bullets, float deltaTime);
 
+    void Bomb(const glm::vec2& direction, const glm::vec2& position, std::vector<Bullet>& bullets);
+
 private:
 
     void fire(const glm::vec2& direction, const glm::vec2& position, std::vector<Bullet>& bullets);

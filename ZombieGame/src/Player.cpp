@@ -14,11 +14,12 @@ Player::~Player() {
     // Empty
 }
 
-void Player::init(float speed, glm::vec2 pos, WTCEngine::InputManager* inputManager, WTCEngine::Camera2D* camera, std::vector<Bullet>* bullets) {
+void Player::init(float speed, glm::vec2 pos, WTCEngine::InputManager* inputManager, WTCEngine::Camera2D* camera, std::vector<Bullet>* bullets, std::vector<Bullet>* bombs) {
     _speed = speed;
     _position = pos;
     _inputManager = inputManager;
     _bullets = bullets;
+    _bombs = bombs;
     _camera = camera;
     _color = WTCEngine::Color(255,255,255,255);
     _health = 150;
@@ -41,13 +42,17 @@ void Player::update(const std::vector<std::string>& levelData,
                     float deltaTime) {
 
     if (_inputManager->isKeyDown(SDLK_w)) {
+        _direction = glm::normalize(glm::vec2(0.0f, 1.0f));
         _position.y += _speed * deltaTime;
     } else if (_inputManager->isKeyDown(SDLK_s)) {
+        _direction = glm::normalize(glm::vec2(0.0f, -1.0f));
         _position.y -= _speed * deltaTime;
     }
     if (_inputManager->isKeyDown(SDLK_a)) {
+        _direction = glm::normalize(glm::vec2(-1.0f, 0.0f));
         _position.x -= _speed * deltaTime;
     } else if (_inputManager->isKeyDown(SDLK_d)) {
+        _direction = glm::normalize(glm::vec2(1.0f, 0.0f));
         _position.x += _speed * deltaTime;
     }
 
@@ -61,22 +66,25 @@ void Player::update(const std::vector<std::string>& levelData,
         return;
     }
 
-    glm::vec2 mouseCoords = _inputManager->getMouseCoords();
-    mouseCoords = _camera->convertScreenToWorld(mouseCoords);
+    //glm::vec2 mouseCoords = _inputManager->getMouseCoords();
+    //mouseCoords = _camera->convertScreenToWorld(mouseCoords);
 
 
     glm::vec2 centerPosition = _position + glm::vec2(AGENT_RADIUS);
 
-    _direction = glm::normalize(mouseCoords - centerPosition);
+  //  _direction = glm::normalize(mouseCoords - centerPosition);
 
     if (_currentGunIndex != -1) {
 
-        _guns[_currentGunIndex]->update(_inputManager->isKeyDown(SDL_BUTTON_LEFT),
+        _guns[_currentGunIndex]->update(_inputManager->isKeyDown(SDLK_SPACE),
                                         centerPosition,
                                         _direction,
                                         *_bullets,
                                         deltaTime);
-
     }
     collideWithLevel(levelData);
+}
+
+void Player::bomb(glm::vec2 pos){
+    _guns[_currentGunIndex]->Bomb(_direction,pos , *_bombs);
 }

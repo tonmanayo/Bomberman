@@ -18,12 +18,12 @@ class Zombie;
 class Agent;
 class Player;
 
-const int BULLET_RADIUS = 45;
+const int BULLET_RADIUS = 40;
 
 class Bullet
 {
 public:
-    Bullet(glm::vec2 position, glm::vec2 direction, float damage, float speed);
+    Bullet(glm::vec2 position, glm::vec2 direction, float damage, float speed, float time);
     virtual ~Bullet();
 
     bool update(const std::vector<std::string>& levelData);

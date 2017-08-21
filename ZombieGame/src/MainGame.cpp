@@ -96,7 +96,7 @@ void MainGame::initLevel() {
     _currentLevel = 0;
 
     _player = new Player();
-    _player->init(PLAYER_SPEED, _levels[_currentLevel]->getStartPlayerPos(), &_inputManager, &_camera, &_bullets);
+    _player->init(PLAYER_SPEED, _levels[_currentLevel]->getStartPlayerPos(), &_inputManager, &_camera, &_bullets, &_bomb);
 
     _humans.push_back(_player);
 
@@ -129,7 +129,7 @@ void MainGame::initLevel() {
     // Set up the players guns
 
     const float BULLET_SPEED = 20.0f;
-    _player->addGun(new Gun("Magnum", 10, 1, 0.0f, 30, 0.0f));
+    _player->addGun(new Gun("Magnum", 10, 1, 0.0f, 30, BULLET_SPEED));
     _player->addGun(new Gun("Shotgun", 30, 12, 20.0f, 4, BULLET_SPEED));
     _player->addGun(new Gun("MP5", 2, 1, 10.0f, 20, BULLET_SPEED));
 
@@ -255,8 +255,12 @@ void MainGame::updateBullets(float deltaTime) {
     for (int i = 0; i < _bullets.size(); ) {
         if (_bullets[i].getTime() > 2){
             addBlood(_bullets[i].getPosition(), 10);
+            _player->bomb(_bullets[i].getPosition());
             _bullets[i] = _bullets.back();
             _bullets.pop_back();
+        }
+        for (int i = 0; i < _bomb.size(); i++) {
+           addBlood(_bomb[i].getPosition(), 10);
         }
         // If update returns true, the bullet collided with a wall
         if (_bullets[i].update(_levels[_currentLevel]->getLevelData())) {
@@ -270,16 +274,16 @@ void MainGame::updateBullets(float deltaTime) {
 
     bool wasBulletRemoved;
 
-    for (int i = 0; i < _bullets.size(); i++) {
+    for (int i = 0; i < _bomb.size(); i++) {
         wasBulletRemoved = false;
         // Loop through zombies
         for (int j = 0; j < _zombies.size(); ) {
             // Check collision
-            if (_bullets[i].collideWithAgent(_zombies[j])) {
+            if (_bomb[i].collideWithAgent(_zombies[j])) {
                 // Add blood
-                addBlood(_bullets[i].getPosition(), 5);
+                addBlood(_bomb[i].getPosition(), 5);
 
-                if (_zombies[j]->applyDamage(_bullets[i].getDamage())) {
+                if (_zombies[j]->applyDamage(_bomb[i].getDamage())) {
                     // If the zombie died, remove him
                     delete _zombies[j];
                     _zombies[j] = _zombies.back();
@@ -289,8 +293,8 @@ void MainGame::updateBullets(float deltaTime) {
                     j++;
                 }
 
-                _bullets[i] = _bullets.back();
-                _bullets.pop_back();
+                _bomb[i] = _bomb.back();
+                _bomb.pop_back();
                 wasBulletRemoved = true;
                 i--;
                 break;
@@ -302,15 +306,15 @@ void MainGame::updateBullets(float deltaTime) {
 
                 for (int j = 0; j < _breakableBricks.size();) {
                     // Check collision
-                    if (_bullets[i].collideWithBreakableBrick(_breakableBricks[j])) {
+                    if (_bomb[i].collideWithBreakableBrick(_breakableBricks[j])) {
                         // Add blood
-                        addBlood(_breakableBricks[i]->getPosition(), 5);
-                        _levels[_currentLevel]->setLevelData(_breakableBricks[i]->getPosition());
+                        addBlood(_breakableBricks[j]->getPosition(), 5);
+                       _levels[_currentLevel]->setLevelData(_breakableBricks[j]->getPosition());
                         delete _breakableBricks[j];
                         _breakableBricks[j] = _breakableBricks.back();
                         _breakableBricks.pop_back();
-                        _bullets[i] = _bullets.back();
-                        _bullets.pop_back();
+                        _bomb[i] = _bomb.back();
+                        _bomb.pop_back();
                         wasBulletRemoved = true;
                         i--;
                         break;
@@ -324,11 +328,11 @@ void MainGame::updateBullets(float deltaTime) {
         if (!wasBulletRemoved) {
             for (int j = 1; j < _humans.size(); ) {
                 // Check collision
-                if (_bullets[i].collideWithAgent(_humans[j])) {
+                if (_bomb[i].collideWithAgent(_humans[j])) {
                     // Add blood
-                    addBlood(_bullets[i].getPosition(), 5);
+                    addBlood(_bomb[i].getPosition(), 5);
                     // Damage human, and kill it if its out of health
-                    if (_humans[j]->applyDamage(_bullets[i].getDamage())) {
+                    if (_humans[j]->applyDamage(_bomb[i].getDamage())) {
                         // If the human died, remove him
                         delete _humans[j];
                         _humans[j] = _humans.back();
@@ -337,8 +341,8 @@ void MainGame::updateBullets(float deltaTime) {
                         j++;
                     }
 
-                    _bullets[i] = _bullets.back();
-                    _bullets.pop_back();
+                    _bomb[i] = _bomb.back();
+                    _bomb.pop_back();
                     _numHumansKilled++;
                     i--;
                     break;
@@ -346,8 +350,10 @@ void MainGame::updateBullets(float deltaTime) {
                     j++;
                 }
             }
+
         }
     }
+    _bomb.clear();
 }
 
 
@@ -440,6 +446,10 @@ void MainGame::drawGame() {
     for (int i = 0; i < _bullets.size(); i++) {
         _bullets[i].draw(_agentSpriteBatch);
     }
+    //draw bomb
+    for (int i = 0; i < _bomb.size(); i++) {
+        _bomb[i].draw(_agentSpriteBatch);
+    }
 
     _agentSpriteBatch.end();
 
@@ -486,16 +496,14 @@ void MainGame::addBlood(const glm::vec2& position, int numParticles) {
     static std::uniform_real_distribution<float> randAngle(0.0f, 360.0f);
 
     glm::vec2 vel(2.0f, 0.0f);
-    WTCEngine::Color col(255, 0, 0, 255);
+    WTCEngine::Color col(255, 255, 255, 255);
 
     glm::vec2 newpos = position;
-    newpos.x = sqrt(newpos.x * (newpos.x + TILE_WIDTH / 2));
-    newpos.y = sqrt(newpos.y * (newpos.y + TILE_WIDTH / 2));
-    //newpos.x = (newpos.x );
-    newpos.y = ((newpos.y) ) ;
+   // newpos.x = sqrt(newpos.x * (newpos.x + TILE_WIDTH / 2)) ;
+    //newpos.y = sqrt(newpos.y * (newpos.y + TILE_WIDTH / 2)) ;
 
 
     for (int i = 0; i < numParticles; i++) {
-        _bloodParticleBatch->addParticle(newpos, glm::rotate(vel, randAngle(randEngine)), col, 30.0f);
+        _bloodParticleBatch->addParticle(position, glm::rotate(vel, randAngle(randEngine)), col, TILE_WIDTH);
     }
 }

@@ -6,13 +6,14 @@
 #include "../inc/Level.hpp"
 
 
-Bullet::Bullet(glm::vec2 position, glm::vec2 direction, float damage, float speed) :
+Bullet::Bullet(glm::vec2 position, glm::vec2 direction, float damage, float speed, float time) :
         _position(position),
         _direction(direction),
         _damage(damage),
         _speed(speed),
-        _time(0)
+        _time(time)
         {
+
 }
 
 Bullet::~Bullet() {}
@@ -23,7 +24,8 @@ float Bullet::getTime() const{
 
 bool Bullet::update(const std::vector<std::string>& levelData) {
 
-    //_position += _direction  deltaTime;
+    if (_speed != 0 && _time < 0.02f)
+    _position += _direction * _speed ;//deltaTime;
     _time += 0.01;
     return collideWithWorld(levelData);
 }
@@ -60,6 +62,7 @@ bool Bullet::collideWithAgent(Agent* agent) {
 
 bool Bullet::collideWithBreakableBrick(BreakableBricks *breakableBricks) {
     const float MIN_DISTANCE = TILE_WIDTH;
+
 
     glm::vec2 centerPosA = _position;
     glm::vec2 centerPosB = breakableBricks->getPosition() + glm::vec2(TILE_WIDTH / 2);
