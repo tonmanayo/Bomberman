@@ -32,9 +32,6 @@ MainGame::~MainGame() {
     for (auto &_human : _humans) {
         delete _human;
     }
-    for (auto &_zombie : _zombies) {
-        delete _zombie;
-    }
     for (auto &_breakableBricks : _breakableBricks) {
         delete _breakableBricks;
     }
@@ -55,7 +52,7 @@ void MainGame::initSystems() {
    // _audioEngine.init();
 
     // Create our window
-    _window.create("ZombieGame", _screenWidth, _screenHeight, 0);
+    _window.create("BomberMan", _screenWidth, _screenHeight, 0);
 
     // Grey background color
     glClearColor(0.7f, 0.7f, 0.7f, 1.0f);
@@ -111,13 +108,6 @@ void MainGame::initLevel() {
         _humans.push_back(new Human);
         glm::vec2 pos(randX(randomEngine) * TILE_WIDTH, randY(randomEngine) * TILE_WIDTH);
         _humans.back()->init(HUMAN_SPEED, pos);
-    }
-
-    // Add the zombies
-    const std::vector<glm::vec2>& zombiePositions = _levels[_currentLevel]->getZombieStartPositions();
-    for (int i = 0; i < zombiePositions.size(); i++) {
-        _zombies.push_back(new Zombie);
-        _zombies.back()->init(ZOMBIE_SPEED, zombiePositions[i]);
     }
     //add bricks
     const std::vector<glm::vec2>& breakableBrickPositions = _levels[_currentLevel]->getBreakableBrickStartPositions();
@@ -215,30 +205,16 @@ void MainGame::updateAgents(float deltaTime) {
         for (auto &_human : _humans) {
             _human->update(_levels[_currentLevel]->getLevelData(), _humans, _zombies, deltaTime);
         }
-        for (auto &_zombie : _zombies) {
-            _zombie->update(_levels[_currentLevel]->getLevelData(), _humans, _zombies, deltaTime);
-        }
         for (auto &_breakableBrick : _breakableBricks) {
             _breakableBrick->update(_levels[_currentLevel]->getLevelData(), _humans, _zombies, deltaTime);
         }
 
-        for (int i = 0; i < _zombies.size(); i++) {
-            for (int j = i + 1; j < _zombies.size(); j++) {
-                _zombies[i]->collideWithAgent(_zombies[j]);
-            }
-            for (int j = 1; j < _humans.size(); j++) {
-                if (_zombies[i]->collideWithAgent(_humans[j])) {
-                    _zombies.push_back(new Zombie);
-                    _zombies.back()->init(ZOMBIE_SPEED, _humans[j]->getPosition());
-                    delete _humans[j];
-                    _humans[j] = _humans.back();
-                    _humans.pop_back();
-                }
-            }
-            if (_zombies[i]->collideWithAgent(_player)) {
-               throw WTCEngine::ErrorHandle("YOU LOSE");
+        for (int i = 1; i < _humans.size(); i++) {
+            if (_humans[i]->collideWithAgent(_player)) {
+                throw WTCEngine::ErrorHandle("YOU LOSE");
             }
         }
+
         for (int i = 0; i < _humans.size(); i++) {
             for (int j = i + 1; j < _humans.size(); j++) {
                 _humans[i]->collideWithAgent(_humans[j]);
@@ -276,34 +252,8 @@ void MainGame::updateBullets(float deltaTime) {
 
     for (int i = 0; i < _bomb.size(); i++) {
         wasBulletRemoved = false;
-        // Loop through zombies
-        for (int j = 0; j < _zombies.size(); ) {
-            // Check collision
-            if (_bomb[i].collideWithAgent(_zombies[j])) {
-                // Add blood
-                addBlood(_bomb[i].getPosition(), 5);
 
-                if (_zombies[j]->applyDamage(_bomb[i].getDamage())) {
-                    // If the zombie died, remove him
-                    delete _zombies[j];
-                    _zombies[j] = _zombies.back();
-                    _zombies.pop_back();
-                    _numZombiesKilled++;
-                } else {
-                    j++;
-                }
-
-                _bomb[i] = _bomb.back();
-                _bomb.pop_back();
-                wasBulletRemoved = true;
-                i--;
-                break;
-            } else {
-                j++;
-            }
-        }
         if (!wasBulletRemoved) {
-
                 for (int j = 0; j < _breakableBricks.size();) {
                     // Check collision
                     if (_bomb[i].collideWithBreakableBrick(_breakableBricks[j])) {
@@ -323,7 +273,6 @@ void MainGame::updateBullets(float deltaTime) {
                     }
                 }
             }
-
         // Loop through humans
         if (!wasBulletRemoved) {
             for (int j = 1; j < _humans.size(); ) {
@@ -361,12 +310,12 @@ void MainGame::checkVictory() {
     // TODO: Support for multiple levels!
     // _currentLevel++; initLevel(...);
 
-    // If all zombies are dead we win!
-    if (_zombies.empty()) {
-        // Print victory message
-        std::cout << "*** You win! ***\n You killed: " << _numHumansKilled << " humans and " << _numZombiesKilled << " zombies. There are " << _humans.size() - 1 <<  " civilians remaining\n" ;
-        _gameState = GameState::EXIT;
-    }
+//    // If all zombies are dead we win!
+//    if (_zombies.empty()) {
+//        // Print victory message
+//        std::cout << "*** You win! ***\n You killed: " << _numHumansKilled << " humans and " << _numZombiesKilled << " zombies. There are " << _humans.size() - 1 <<  " civilians remaining\n" ;
+//        _gameState = GameState::EXIT;
+//    }
 }
 
 void MainGame::processInput() {
