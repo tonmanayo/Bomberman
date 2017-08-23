@@ -5,6 +5,7 @@
 #ifndef BOMBERMAN_ZOMBIE_HPP
 #define BOMBERMAN_ZOMBIE_HPP
 
+// todo make it enemy 2
 
 #include <glm/vec2.hpp>
 #include "Agent.hpp"

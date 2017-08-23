@@ -27,7 +27,7 @@ Gun::Gun(std::string name, int fireRate, int bulletsPerShot,
 
 Gun::~Gun() {}
 
-void Gun::update(bool isMouseDown, const glm::vec2& position, const glm::vec2& direction, std::vector<Bullet>& bullets, float deltaTime) {
+void Gun::update(bool isMouseDown, const glm::vec2& position, const glm::vec2& direction, std::vector<Bomber>& bullets, float deltaTime) {
     _frameCounter += 1.0f * deltaTime;
 
     if (_frameCounter >= _fireRate && isMouseDown) {                    // frame rate fire check
@@ -36,7 +36,7 @@ void Gun::update(bool isMouseDown, const glm::vec2& position, const glm::vec2& d
     }
 }
 
-void Gun::fire(const glm::vec2& direction, const glm::vec2& position, std::vector<Bullet>& bullets) {
+void Gun::fire(const glm::vec2& direction, const glm::vec2& position, std::vector<Bomber>& bullets) {
 
     for (int i = 0; i < _bulletsPerShot; i++) {                     // showing the bomb todo change to bomb name
         bullets.emplace_back(position - glm::vec2(BULLET_RADIUS),
@@ -47,7 +47,7 @@ void Gun::fire(const glm::vec2& direction, const glm::vec2& position, std::vecto
     }
 }
 
-void Gun::Bomb(const glm::vec2& direction, const glm::vec2& position, std::vector<Bullet> &bombs) { // Function spread of bomb //todo make bomb bigger
+void Gun::explosion(const glm::vec2& direction, const glm::vec2& position, std::vector<Bomber> &bombs) { // Function spread of bomb //todo make bomb bigger
 
     glm::vec2 newpos = position;
     glm::vec2 newdir = position;

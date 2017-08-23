@@ -11,7 +11,7 @@
 #include "../../inc/InputManager.hpp"
 #include "../../inc/SpriteBatch.hpp"
 #include "../../inc/SpriteFont.hpp"
-//#include "../../inc/AudioEngine.hpp"
+
 #include "../../inc/ParticleEngine2D.hpp"
 #include "../../inc/ParticleBatch2D.hpp"
 
@@ -31,7 +31,7 @@
 #include "Zombie.hpp"
 #include "Player.hpp"
 #include "Level.hpp"
-#include "Bullet.hpp"
+#include "Bomber.hpp"
 #include "BreakableBricks.hpp"
 
 class Zombie;
@@ -88,8 +88,8 @@ private:
     std::vector<Human*> _humans;
     std::vector<Zombie*> _zombies;
     std::vector<BreakableBricks*> _breakableBricks;
-    std::vector<Bullet> _bullets;
-    std::vector<Bullet> _bomb;
+    std::vector<Bomber> _bullets;
+    std::vector<Bomber> _bomb;
 
     int _numHumansKilled;
     int _numZombiesKilled;

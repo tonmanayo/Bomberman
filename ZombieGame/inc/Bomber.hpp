@@ -20,11 +20,11 @@ class Player;
 
 const int BULLET_RADIUS = 40;
 
-class Bullet
+class Bomber
 {
 public:
-    Bullet(glm::vec2 position, glm::vec2 direction, float damage, float speed, float time);
-    virtual ~Bullet();
+    Bomber(glm::vec2 position, glm::vec2 direction, float damage, float speed, float time);
+    virtual ~Bomber();
 
     bool update(const std::vector<std::string>& levelData);
     void draw(WTCEngine::SpriteBatch& spriteBatch);

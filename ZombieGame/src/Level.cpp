@@ -98,3 +98,23 @@ void Level::setLevelData(glm::vec2 position) {
     _levelData[position.y / TILE_WIDTH][position.x / TILE_WIDTH] = '.';
 
 }
+
+const std::vector<glm::vec2> &Level::getBreakableBrickStartPositions() const {
+    return _breakBrickPositions;
+}
+
+const std::vector<glm::vec2> &Level::getZombieStartPositions() const {
+    return _zombieStartPositions;
+}
+
+glm::vec2 Level::getStartPlayerPos() const {
+    return _startPlayerPos;
+}
+
+const std::vector<std::string> &Level::getLevelData() const {
+    return _levelData;
+}
+
+int Level::getNumHumans() const {
+    return _numHumans;
+}

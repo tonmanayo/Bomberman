@@ -89,10 +89,10 @@
 		<Unit filename="/home/tonmanayo/Projects/Bomberman/ZombieGame/inc/Agent.hpp">
 			<Option target="Bomberman"/>
 		</Unit>
-		<Unit filename="/home/tonmanayo/Projects/Bomberman/ZombieGame/inc/BreakableBricks.hpp">
+		<Unit filename="/home/tonmanayo/Projects/Bomberman/ZombieGame/inc/Bomber.hpp">
 			<Option target="Bomberman"/>
 		</Unit>
-		<Unit filename="/home/tonmanayo/Projects/Bomberman/ZombieGame/inc/Bullet.hpp">
+		<Unit filename="/home/tonmanayo/Projects/Bomberman/ZombieGame/inc/BreakableBricks.hpp">
 			<Option target="Bomberman"/>
 		</Unit>
 		<Unit filename="/home/tonmanayo/Projects/Bomberman/ZombieGame/inc/Gun.hpp">
@@ -116,10 +116,10 @@
 		<Unit filename="/home/tonmanayo/Projects/Bomberman/ZombieGame/src/Agent.cpp">
 			<Option target="Bomberman"/>
 		</Unit>
-		<Unit filename="/home/tonmanayo/Projects/Bomberman/ZombieGame/src/BreakableBricks.cpp">
+		<Unit filename="/home/tonmanayo/Projects/Bomberman/ZombieGame/src/Bomber.cpp">
 			<Option target="Bomberman"/>
 		</Unit>
-		<Unit filename="/home/tonmanayo/Projects/Bomberman/ZombieGame/src/Bullet.cpp">
+		<Unit filename="/home/tonmanayo/Projects/Bomberman/ZombieGame/src/BreakableBricks.cpp">
 			<Option target="Bomberman"/>
 		</Unit>
 		<Unit filename="/home/tonmanayo/Projects/Bomberman/ZombieGame/src/Gun.cpp">

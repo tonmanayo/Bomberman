@@ -10,38 +10,41 @@
 #include <vector>
 #include <glm/glm.hpp>
 
-#include "../inc/Bullet.hpp"
+#include "Bomber.hpp"
 #include "../../inc/AudioEngine.hpp"
-class Bullet;
+class Bomber;
 
 class Gun
 {
 public:
-    Gun(std::string name, int fireRate, int bulletsPerShot,
-        float spread, float bulletDamage, float bulletSpeed);
+    Gun(std::string name,
+        int fireRate,
+        int bulletsPerShot,
+        float spread,
+        float bulletDamage,
+        float bulletSpeed
+    );
     ~Gun();
 
-    void update(bool isMouseDown, const glm::vec2& position, const glm::vec2& direction, std::vector<Bullet>& bullets, float deltaTime);
-
-    void Bomb(const glm::vec2& direction, const glm::vec2& position, std::vector<Bullet>& bullets);
+    void update(bool isMouseDown,
+                const glm::vec2& position,
+                const glm::vec2& direction,
+                std::vector<Bomber>& bullets,
+                float deltaTime
+    );
+    void explosion(const glm::vec2& direction, const glm::vec2& position, std::vector<Bomber>& bullets);
 
 private:
 
-    void fire(const glm::vec2& direction, const glm::vec2& position, std::vector<Bullet>& bullets);
+    void fire(const glm::vec2& direction, const glm::vec2& position, std::vector<Bomber>& bullets);
 
-    std::string _name;
-
-    int _fireRate; ///< Fire rate in terms of frames
-
-    int _bulletsPerShot; ///< How many bullets are fired at at time
-
-    float _spread; ///< Accuracy
-
-    float _bulletSpeed;
-
-    int _bulletDamage;
-
-    float _frameCounter; ///< Counts frames so we know when to shoot bullets
+    std::string     _name;
+    int             _fireRate;          // Fire rate in terms of frames
+    int             _bulletsPerShot;
+    float           _spread;            // Accuracy
+    float           _bulletSpeed;
+    int             _bulletDamage;
+    float           _frameCounter;
 
 };
 

@@ -14,9 +14,7 @@ Agent::~Agent() {}
 
 bool Agent::collideWithLevel(const std::vector<std::string>& levelData) {
 
-    std::vector<glm::vec2> collideTilePositions;
-
-    // Check the four corners
+    std::vector<glm::vec2> collideTilePositions;                                                                    // Check the four corners
     checkTilePosition(levelData, collideTilePositions, _position.x, _position.y);                                   // 1st corner
     checkTilePosition(levelData, collideTilePositions, _position.x + AGENT_WIDTH, _position.y);                     // 2nd Corner
     checkTilePosition(levelData, collideTilePositions, _position.x, _position.y + AGENT_WIDTH);                     // 3rd Corner

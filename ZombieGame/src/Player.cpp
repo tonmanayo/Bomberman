@@ -14,7 +14,7 @@ Player::~Player() {
     // Empty
 }
 
-void Player::init(float speed, glm::vec2 pos, WTCEngine::InputManager* inputManager, WTCEngine::Camera2D* camera, std::vector<Bullet>* bullets, std::vector<Bullet>* bombs) {
+void Player::init(float speed, glm::vec2 pos, WTCEngine::InputManager* inputManager, WTCEngine::Camera2D* camera, std::vector<Bomber>* bullets, std::vector<Bomber>* bombs) {
     _speed = speed;
     _position = pos;
     _inputManager = inputManager;
@@ -86,5 +86,5 @@ void Player::update(const std::vector<std::string>& levelData,
 }
 
 void Player::bomb(glm::vec2 pos){
-    _guns[_currentGunIndex]->Bomb(_direction,pos , *_bombs);
+    _guns[_currentGunIndex]->explosion(_direction,pos , *_bombs);
 }

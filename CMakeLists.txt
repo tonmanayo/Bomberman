@@ -66,8 +66,8 @@ set(SOURCE_FILES src/main.cpp
         ZombieGame/inc/MainGame.hpp
         ZombieGame/src/Human.cpp
         ZombieGame/inc/Human.hpp
-        ZombieGame/src/Bullet.cpp
-        ZombieGame/inc/Bullet.hpp
+        ZombieGame/src/Bomber.cpp
+        ZombieGame/inc/Bomber.hpp
         ZombieGame/src/Zombie.cpp
         ZombieGame/inc/Zombie.hpp
         ZombieGame/src/Gun.cpp

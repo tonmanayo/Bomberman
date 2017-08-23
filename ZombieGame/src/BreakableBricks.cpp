@@ -12,13 +12,9 @@ void BreakableBricks::init(glm::vec2 pos) {
     _textureID = WTCEngine::ResourceManager::getTexture("Textures/glass.png").id;   // bind it to the right texture
 }
 
-BreakableBricks::~BreakableBricks() {
+BreakableBricks::~BreakableBricks() {}
 
-}
-
-BreakableBricks::BreakableBricks() {
-
-}
+BreakableBricks::BreakableBricks() {}
 
 void BreakableBricks::drawBrick(WTCEngine::SpriteBatch &_spriteBatch) {
     const glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f);                                 // draw the breakable bricks

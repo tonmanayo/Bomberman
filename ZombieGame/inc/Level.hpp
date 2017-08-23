@@ -17,29 +17,24 @@
 #include "../../inc/SpriteBatch.hpp"
 #include <fstream>
 
-
-
 const int TILE_WIDTH = 120;
 
 class Level
 {
 public:
-    // Load the level
-    Level(const std::string& fileName);
+    Level(const std::string& fileName); // Load the level
     ~Level();
 
     void draw();
-
-    // Getters
     int getWidth() const ;
     int getHeight() const ;
-    int getNumHumans() const { return _numHumans; }
-    const std::vector<std::string>& getLevelData() const { return _levelData; }
-    glm::vec2 getStartPlayerPos() const { return _startPlayerPos; }
-    const std::vector<glm::vec2>& getZombieStartPositions() const { return _zombieStartPositions; }
-    const std::vector<glm::vec2>& getBreakableBrickStartPositions() const { return _breakBrickPositions; }
-    void setLevelData(glm::vec2 position);
+    int getNumHumans() const ;
+    const std::vector<std::string>& getLevelData() const ;
+    glm::vec2 getStartPlayerPos() const ;
+    const std::vector<glm::vec2>& getZombieStartPositions() const ;
+    const std::vector<glm::vec2>& getBreakableBrickStartPositions() const ;
 
+    void setLevelData(glm::vec2 position);
 
 private:
     std::vector<std::string> _levelData;

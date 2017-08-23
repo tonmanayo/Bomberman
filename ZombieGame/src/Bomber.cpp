@@ -2,11 +2,11 @@
 // Created by tonmanayo on 2017/08/06.
 //
 
-#include "../inc/Bullet.hpp"
+#include "../inc/Bomber.hpp"
 #include "../inc/Level.hpp"
 
 
-Bullet::Bullet(glm::vec2 position, glm::vec2 direction, float damage, float speed, float time) :
+Bomber::Bomber(glm::vec2 position, glm::vec2 direction, float damage, float speed, float time) :
         _position(position),
         _direction(direction),
         _damage(damage),
@@ -16,13 +16,13 @@ Bullet::Bullet(glm::vec2 position, glm::vec2 direction, float damage, float spee
 
 }
 
-Bullet::~Bullet() {}
+Bomber::~Bomber() {}
 
-float Bullet::getTime() const{
+float Bomber::getTime() const{
     return _time;
 }
 
-bool Bullet::update(const std::vector<std::string>& levelData) {
+bool Bomber::update(const std::vector<std::string>& levelData) {
 
     if (_speed != 0 && _time < 0.02f)                           // Dont move the bomb
         _position += _direction * _speed ;                      // Speed = d / t
@@ -30,7 +30,7 @@ bool Bullet::update(const std::vector<std::string>& levelData) {
     return collideWithWorld(levelData);
 }
 
-void Bullet::draw(WTCEngine::SpriteBatch& spriteBatch) {        //draw the bomb / bullets
+void Bomber::draw(WTCEngine::SpriteBatch& spriteBatch) {        //draw the bomb / bullets
     glm::vec4 destRect(_position.x,
                        _position.y,
                        BULLET_RADIUS * 2,
@@ -40,7 +40,7 @@ void Bullet::draw(WTCEngine::SpriteBatch& spriteBatch) {        //draw the bomb 
     spriteBatch.draw(destRect, uvRect, WTCEngine::ResourceManager::getTexture("Textures/circle.png").id, 0.0f, color);
 }
 
-bool Bullet::collideWithAgent(Agent* agent) {
+bool Bomber::collideWithAgent(Agent* agent) {
     const float MIN_DISTANCE = AGENT_RADIUS + BULLET_RADIUS;                            // Min dist to collide
 
     glm::vec2 centerPosA = _position;
@@ -55,7 +55,7 @@ bool Bullet::collideWithAgent(Agent* agent) {
     return false;
 }
 
-bool Bullet::collideWithBreakableBrick(BreakableBricks *breakableBricks) {              //TODO change to template
+bool Bomber::collideWithBreakableBrick(BreakableBricks *breakableBricks) {              //TODO change to template
     const float MIN_DISTANCE = TILE_WIDTH;
 
 
@@ -74,7 +74,7 @@ bool Bullet::collideWithBreakableBrick(BreakableBricks *breakableBricks) {      
     }
     return false;
 }
-bool Bullet::collideWithWorld(const std::vector<std::string>& levelData) {
+bool Bomber::collideWithWorld(const std::vector<std::string>& levelData) {
     glm::ivec2 gridPosition;
     gridPosition.x = static_cast<int>(floor(_position.x / (float)TILE_WIDTH));          // Convert to world coords
     gridPosition.y = static_cast<int>(floor(_position.y / (float)TILE_WIDTH));
@@ -86,10 +86,10 @@ bool Bullet::collideWithWorld(const std::vector<std::string>& levelData) {
     return (levelData[gridPosition.y][gridPosition.x] != '.');                          // check map ,true, false
 }
 
-float Bullet::getDamage() const {
+float Bomber::getDamage() const {
     return _damage;
 }
 
-glm::vec2 Bullet::getPosition() const {
+glm::vec2 Bomber::getPosition() const {
     return _position;
 }

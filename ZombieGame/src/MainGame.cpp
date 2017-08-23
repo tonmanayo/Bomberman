@@ -126,12 +126,10 @@ void MainGame::initLevel() {
         _breakableBricks.back()->init(breakableBrickPositions[i]);
     }
 
-    // Set up the players guns
+    // Set up the players guns //todo use this gun when getting a power up increasde explosion size
 
     const float BULLET_SPEED = 20.0f;
     _player->addGun(new Gun("Magnum", 10, 1, 0.0f, 30, BULLET_SPEED));
-    _player->addGun(new Gun("Shotgun", 30, 12, 20.0f, 4, BULLET_SPEED));
-    _player->addGun(new Gun("MP5", 2, 1, 10.0f, 20, BULLET_SPEED));
 
 }
 
@@ -147,33 +145,27 @@ void MainGame::initShaders() {
 void MainGame::gameLoop() {
 
     // Some helpful constants.
-    const float DESIRED_FPS = 60.0f; // FPS the game is designed to run at
-    const int MAX_PHYSICS_STEPS = 6; // Max number of physics steps per frame
-    const float MS_PER_SECOND = 1000; // Number of milliseconds in a second
-    const float DESIRED_FRAMETIME = MS_PER_SECOND / DESIRED_FPS; // The desired frame time per frame
-    const float MAX_DELTA_TIME = 1.0f; // Maximum size of deltaTime
+    const float DESIRED_FPS = 60.0f;                                    // FPS the game is designed to run at
+    const int MAX_PHYSICS_STEPS = 6;                                    // Max number of physics steps per frame
+    const float MS_PER_SECOND = 1000;                                   // Number of milliseconds in a second
+    const float DESIRED_FRAMETIME = MS_PER_SECOND / DESIRED_FPS;        // The desired frame time per frame
+    const float MAX_DELTA_TIME = 1.0f;                                  // Maximum size of deltaTime
 
-    // Used to cap the FPS
-    WTCEngine::FpsLimiter fpsLimiter;
+    WTCEngine::FpsLimiter fpsLimiter;                                   // Used to cap the FPS
     fpsLimiter.setMaxFPS(60.0f);
 
-    // Zoom out the camera by 3x
-    const float CAMERA_SCALE = 1.0f / 3.0f;
+    const float CAMERA_SCALE = 1.0f / 3.0f;                             // Zoom out the camera by 3x
     _camera.setScale(CAMERA_SCALE);
 
-    // Start our previousTicks variable
-    float previousTicks = SDL_GetTicks();
+    float previousTicks = SDL_GetTicks();                               // Start our previousTicks variable
     static float total;
 
-    // Main loop
-    while (_gameState == GameState::PLAY) {
+    while (_gameState == GameState::PLAY) {                             // Main loop
         fpsLimiter.begin();
 
-        // Calculate the frameTime in milliseconds
-        float newTicks = SDL_GetTicks();
+        float newTicks = SDL_GetTicks();                                // Calculate the frameTime in milliseconds
         float frameTime = newTicks - previousTicks;
-        previousTicks = newTicks; // Store newTicks in previousTicks so we can use it next frame
-        // Get the total delta time
+        previousTicks = newTicks;                                       // Store newTicks in previousTicks so we can use it next frame
         float totalDeltaTime = frameTime / DESIRED_FRAMETIME;
 
         checkVictory();
@@ -181,32 +173,24 @@ void MainGame::gameLoop() {
         _inputManager.update();
 
         processInput();
-        int i = 0; // This counter makes sure we don't spiral to death!
-        // Loop while we still have steps to process.
-        while (totalDeltaTime > 0.0f && i < MAX_PHYSICS_STEPS) {
-            // The deltaTime should be the the smaller of the totalDeltaTime and MAX_DELTA_TIME
-            float deltaTime = std::min(totalDeltaTime, MAX_DELTA_TIME);
-            total += deltaTime / 100;
-            // Update all physics here and pass in deltaTime
+
+        int i = 0;                                                      // This counter makes sure we don't spiral to death!
+        while (totalDeltaTime > 0.0f && i < MAX_PHYSICS_STEPS) {        // Loop while we still have steps to process.
+            float deltaTime = std::min(totalDeltaTime, MAX_DELTA_TIME); // The deltaTime should be the the smaller of the totalDeltaTime and MAX_DELTA_TIME
+            total += deltaTime / 100;                                   // Update all physics here and pass in deltaTime
             updateAgents(deltaTime);
             updateBullets(total);
-            _particleEngine.update(deltaTime);
-            // Since we just took a step that is length deltaTime, subtract from totalDeltaTime
-            totalDeltaTime -= deltaTime;
-            // Increment our frame counter so we can limit steps to MAX_PHYSICS_STEPS
+            _particleEngine.update(deltaTime);                          // Since we just took a step that is length deltaTime, subtract from totalDeltaTime
+            totalDeltaTime -= deltaTime;                                // Increment our frame counter so we can limit steps to MAX_PHYSICS_STEPS
             i++;
         }
-
-        // Make sure the camera is bound to the player position
-        _camera.setPosition(_player->getPosition());
+        _camera.setPosition(_player->getPosition());                    // Make sure the camera is bound to the player position
         _camera.update();
         _hudCamera.update();
 
         drawGame();
-
-        // End the frame, limit the FPS, and get the current FPS.
-        _fps = fpsLimiter.end();
-        //std::cout << _fps << std::endl;
+        _fps = fpsLimiter.end();                                        // End the frame, limit the FPS, and get the current FPS.
+        std::cout << _fps << std::endl;
     }
 }
 
