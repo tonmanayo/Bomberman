@@ -81,6 +81,7 @@ void Player::update(const std::vector<std::string>& levelData,
                                         _direction,
                                         *_bullets,
                                         deltaTime);
+
     }
     collideWithLevel(levelData);
 }

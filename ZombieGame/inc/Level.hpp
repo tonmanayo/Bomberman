@@ -34,7 +34,7 @@ public:
     const std::vector<glm::vec2>& getZombieStartPositions() const ;
     const std::vector<glm::vec2>& getBreakableBrickStartPositions() const ;
 
-    void setLevelData(glm::vec2 position);
+    void setLevelData(glm::vec2 position, char tile);
 
 private:
     std::vector<std::string> _levelData;

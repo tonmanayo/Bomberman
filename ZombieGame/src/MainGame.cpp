@@ -212,24 +212,28 @@ void MainGame::updateAgents(float deltaTime) {
 
 void MainGame::updateBullets(float deltaTime) {
     // Update and collide with world
-    for (int i = 0; i < _bullets.size(); ) {
+    for (int i = 0; i < _bullets.size(); i++) {
+        _bullets[i].update(_levels[_currentLevel]->getLevelData());
         if (_bullets[i].getTime() > 2){
+            _levels[_currentLevel]->setLevelData(_bullets[i].getPosition(), '.');
             addBlood(_bullets[i].getPosition(), 10);
             _player->bomb(_bullets[i].getPosition());
             _bullets[i] = _bullets.back();
             _bullets.pop_back();
         }
-        for (int i = 0; i < _bomb.size(); i++) {
-           addBlood(_bomb[i].getPosition(), 10);
+
+        for (int j = 0; j < _bomb.size(); j++) {
+           addBlood(_bomb[j].getPosition(), 10);
         }
+
         // If update returns true, the bullet collided with a wall
-        if (_bullets[i].update(_levels[_currentLevel]->getLevelData())) {
-            addBlood(_bullets[i].getPosition(), 10);
-            _bullets[i] = _bullets.back();
-            _bullets.pop_back();
-        } else {
-            i++;
-        }
+//        if (_bullets[i].update(_levels[_currentLevel]->getLevelData())) {
+//            addBlood(_bullets[i].getPosition(), 10);
+//            _bullets[i] = _bullets.back();
+//            _bullets.pop_back();
+//        } else {
+//            i++;
+//        }
     }
 
     bool wasBulletRemoved;
@@ -237,13 +241,20 @@ void MainGame::updateBullets(float deltaTime) {
     for (int i = 0; i < _bomb.size(); i++) {
         wasBulletRemoved = false;
 
+//        if (_bomb[i].update(_levels[_currentLevel]->getLevelData())) {
+//            addBlood(_bomb[i].getPosition(), 10);
+//            _bomb[i] = _bomb.back();
+//            _bomb.pop_back();
+//            wasBulletRemoved = true;
+//        }
+
         if (!wasBulletRemoved) {
                 for (int j = 0; j < _breakableBricks.size();) {
                     // Check collision
                     if (_bomb[i].collideWithBreakableBrick(_breakableBricks[j])) {
                         // Add blood
                         addBlood(_breakableBricks[j]->getPosition(), 5);
-                       _levels[_currentLevel]->setLevelData(_breakableBricks[j]->getPosition());
+                       _levels[_currentLevel]->setLevelData(_breakableBricks[j]->getPosition(), '.');
                         delete _breakableBricks[j];
                         _breakableBricks[j] = _breakableBricks.back();
                         _breakableBricks.pop_back();
@@ -273,7 +284,6 @@ void MainGame::updateBullets(float deltaTime) {
                     } else {
                         j++;
                     }
-
                     _bomb[i] = _bomb.back();
                     _bomb.pop_back();
                     _numHumansKilled++;
@@ -283,7 +293,6 @@ void MainGame::updateBullets(float deltaTime) {
                     j++;
                 }
             }
-
         }
     }
     _bomb.clear();
@@ -378,6 +387,7 @@ void MainGame::drawGame() {
     // Draw the bullets
     for (int i = 0; i < _bullets.size(); i++) {
         _bullets[i].draw(_agentSpriteBatch);
+        _levels[_currentLevel]->setLevelData(_bullets[i].getPosition(), 'R');
     }
     //draw bomb
     for (int i = 0; i < _bomb.size(); i++) {
@@ -425,16 +435,12 @@ void MainGame::drawHud() {
 void MainGame::addBlood(const glm::vec2& position, int numParticles) {
 
     static std::mt19937 randEngine(time(nullptr));
-
     static std::uniform_real_distribution<float> randAngle(0.0f, 360.0f);
 
     glm::vec2 vel(2.0f, 0.0f);
     WTCEngine::Color col(255, 255, 255, 255);
 
     glm::vec2 newpos = position;
-   // newpos.x = sqrt(newpos.x * (newpos.x + TILE_WIDTH / 2)) ;
-    //newpos.y = sqrt(newpos.y * (newpos.y + TILE_WIDTH / 2)) ;
-
 
     for (int i = 0; i < numParticles; i++) {
         _bloodParticleBatch->addParticle(position, glm::rotate(vel, randAngle(randEngine)), col, TILE_WIDTH);

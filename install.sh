@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 unameOut="$(uname -s)"
 case "${unameOut}" in
 	Linux*)     machine=Linux;;
@@ -15,3 +16,63 @@ case "${machine}" in
 		fi
 		;;
 esac
+
+case "${machine}" in
+	Mac)
+		echo Checking if Homebrew is installed
+        if which -s brew > /dev/null ; then
+            echo Homebrew already installed
+            echo Installing dependencies
+            if brew ls --versions pkg-config  > /dev/null; then
+                echo pkg-config already installed
+            else
+                echo Installing pkg-config
+                brew install pkg-config
+            fi
+            if brew ls --versions sdl2  > /dev/null; then
+                echo SDL2 already installed
+            else
+                echo Installing SDL2
+                brew install sdl2
+            fi
+            if brew ls --versions sdl2_ttf  > /dev/null; then
+                echo SDL2_TTF already installed
+            else
+                echo Installing SDL2_TTF
+                brew install sdl2_ttf
+            fi
+            if brew ls --versions cmake > /dev/null; then
+                echo cmake already installed
+            else
+                echo Installing cmake
+                brew install cmake
+            fi
+            if brew ls --versions sdl2_image > /dev/null; then
+                echo sdl2_image already installed
+            else
+                echo Installing sdl2_image
+                brew install sdl2_image
+            fi
+               if brew ls --versions glew > /dev/null; then
+                echo glew already installed
+            else
+                echo Installing glew
+                brew install glew
+            fi
+
+            if brew ls --versions glm > /dev/null; then
+                echo glm already installed
+            else
+                echo Installing glm
+                brew install glm
+            fi
+        else
+            echo Installing Homebrew
+            sh -c "$(curl -fsSL https://raw.githubusercontent.com/Tolsadus/42homebrewfix/master/install.sh)"
+            echo Please open a new terminal and run "make" again.
+        fi
+
+		;;
+esac
+
+

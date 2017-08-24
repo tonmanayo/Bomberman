@@ -36,14 +36,14 @@ public:
 
 private:
 
-    void fire(const glm::vec2& direction, const glm::vec2& position, std::vector<Bomber>& bullets);
+    void placeBomb(const glm::vec2& direction, const glm::vec2& position, std::vector<Bomber>& bullets);
 
     std::string     _name;
     int             _fireRate;          // Fire rate in terms of frames
     int             _bulletsPerShot;
     float           _spread;            // Accuracy
     float           _bulletSpeed;
-    int             _bulletDamage;
+    float             _bulletDamage;
     float           _frameCounter;
 
 };

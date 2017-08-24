@@ -12,9 +12,7 @@ Bomber::Bomber(glm::vec2 position, glm::vec2 direction, float damage, float spee
         _damage(damage),
         _speed(speed),
         _time(time)
-        {
-
-}
+        {}
 
 Bomber::~Bomber() {}
 
@@ -31,11 +29,31 @@ bool Bomber::update(const std::vector<std::string>& levelData) {
 }
 
 void Bomber::draw(WTCEngine::SpriteBatch& spriteBatch) {        //draw the bomb / bullets
-    glm::vec4 destRect(_position.x,
-                       _position.y,
+
+    float x = _position.x, y = _position.y;
+
+    x =  std::trunc(_position.x / TILE_WIDTH);
+    y =  std::trunc(_position.y / TILE_WIDTH);
+
+    x *= TILE_WIDTH;
+    y *= TILE_WIDTH;
+
+  //  x += TILE_WIDTH / 2;
+   // y += TILE_WIDTH / 2;
+
+    x += (30);
+    y += (30);
+
+//    x = sqrt(pow((x + TILE_WIDTH), 2) - pow(x, 2));
+//    y = sqrt(pow((y + TILE_WIDTH), 2) - pow(y, 2));
+    //y += TILE_WIDTH / 2;
+
+    glm::vec4 destRect(x,
+                       y,
                        BULLET_RADIUS * 2,
                        BULLET_RADIUS * 2);
     const glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f);
+
     WTCEngine::Color color(75, 75, 75, 75);
     spriteBatch.draw(destRect, uvRect, WTCEngine::ResourceManager::getTexture("Textures/circle.png").id, 0.0f, color);
 }

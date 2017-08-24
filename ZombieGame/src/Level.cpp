@@ -93,9 +93,8 @@ int Level::getHeight() const {
     return static_cast<int>(_levelData.size());
 }
 
-void Level::setLevelData(glm::vec2 position) {
-     std::cout << " X: " << position.x  << " Y: " << position.y  << std::endl;
-    _levelData[position.y / TILE_WIDTH][position.x / TILE_WIDTH] = '.';
+void Level::setLevelData(glm::vec2 position, char tile) {
+    _levelData[position.y / TILE_WIDTH][position.x / TILE_WIDTH] = tile;
 
 }
 
