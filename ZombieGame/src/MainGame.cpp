@@ -254,7 +254,7 @@ void MainGame::updateBullets(float deltaTime) {
                     if (_bomb[i].collideWithBreakableBrick(_breakableBricks[j])) {
                         // Add blood
                         addBlood(_breakableBricks[j]->getPosition(), 5);
-                       _levels[_currentLevel]->setLevelData(_breakableBricks[j]->getPosition(), '.');
+                       //_levels[_currentLevel]->setLevelData(_breakableBricks[j]->getPosition(), '.');
                         delete _breakableBricks[j];
                         _breakableBricks[j] = _breakableBricks.back();
                         _breakableBricks.pop_back();

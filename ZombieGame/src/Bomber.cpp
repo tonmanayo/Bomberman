@@ -38,15 +38,9 @@ void Bomber::draw(WTCEngine::SpriteBatch& spriteBatch) {        //draw the bomb 
     x *= TILE_WIDTH;
     y *= TILE_WIDTH;
 
-  //  x += TILE_WIDTH / 2;
-   // y += TILE_WIDTH / 2;
+    x += (BULLET_RADIUS / 2);
+    y += (BULLET_RADIUS / 2);
 
-    x += (30);
-    y += (30);
-
-//    x = sqrt(pow((x + TILE_WIDTH), 2) - pow(x, 2));
-//    y = sqrt(pow((y + TILE_WIDTH), 2) - pow(y, 2));
-    //y += TILE_WIDTH / 2;
 
     glm::vec4 destRect(x,
                        y,
