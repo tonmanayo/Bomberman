@@ -46,7 +46,8 @@ void Gun::explosion(const glm::vec2& direction, const glm::vec2& position, std::
 
     glm::vec2 newpos = position;
     glm::vec2 newdir = position;
-    newpos.x += TILE_WIDTH;
+    newpos.x += TILE_WIDTH * 2;
+    newpos.y += TILE_WIDTH ;
 
     for (int i = 0; i < _bulletsPerShot; i++) {
 
@@ -64,8 +65,8 @@ void Gun::explosion(const glm::vec2& direction, const glm::vec2& position, std::
                              _bulletSpeed,
                              0);
 
-        newpos.x = position.x;                                  // Top bullet
-        newpos.y -= TILE_WIDTH;
+        newpos.x += TILE_WIDTH;                                  // Top bullet
+        newpos.y += TILE_WIDTH;
 
         bombs.emplace_back(newpos - glm::vec2(BULLET_RADIUS),
                              glm::normalize(glm::vec2(0, -1)),
@@ -73,7 +74,7 @@ void Gun::explosion(const glm::vec2& direction, const glm::vec2& position, std::
                              _bulletSpeed,
                              0);
 
-        newpos.y += TILE_WIDTH * 2;                             // Down bullet
+        newpos.y -= TILE_WIDTH * 2;                             // Down bullet
         bombs.emplace_back(newpos - glm::vec2(BULLET_RADIUS),
                              glm::normalize(glm::vec2(0, 1)),
                              _bulletDamage,

@@ -30,20 +30,17 @@ bool Bomber::update(const std::vector<std::string>& levelData) {
 
 void Bomber::draw(WTCEngine::SpriteBatch& spriteBatch) {        //draw the bomb / bullets
 
-    float x = _position.x, y = _position.y;
+    _position.x =  std::trunc(_position.x / TILE_WIDTH);
+    _position.y =  std::trunc(_position.y / TILE_WIDTH);
 
-    x =  std::trunc(_position.x / TILE_WIDTH);
-    y =  std::trunc(_position.y / TILE_WIDTH);
+    _position.x *= TILE_WIDTH;
+    _position.y *= TILE_WIDTH;
 
-    x *= TILE_WIDTH;
-    y *= TILE_WIDTH;
+    _position.x += (BULLET_RADIUS / 2);
+    _position.y += (BULLET_RADIUS / 2);
 
-    x += (BULLET_RADIUS / 2);
-    y += (BULLET_RADIUS / 2);
-
-
-    glm::vec4 destRect(x,
-                       y,
+    glm::vec4 destRect(_position.x,
+                       _position.y,
                        BULLET_RADIUS * 2,
                        BULLET_RADIUS * 2);
     const glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f);

@@ -216,7 +216,9 @@ void MainGame::updateBullets(float deltaTime) {
         _bullets[i].update(_levels[_currentLevel]->getLevelData());
         if (_bullets[i].getTime() > 2){
             _levels[_currentLevel]->setLevelData(_bullets[i].getPosition(), '.');
-            //addBlood(_bullets[i].getPosition(), 10);
+            addBlood(_bullets[i].getPosition(), 10);
+            std::cout << "Bullets X: "<< _bullets[i].getPosition().x << std::endl;
+            std::cout << "Bullets Y: "<< _bullets[i].getPosition().y << std::endl;
             _player->bomb(_bullets[i].getPosition());
             _bullets[i] = _bullets.back();
             _bullets.pop_back();
@@ -224,6 +226,8 @@ void MainGame::updateBullets(float deltaTime) {
 
         for (int j = 0; j < _bomb.size(); j++) {
            //addBlood(_bomb[j].getPosition(), 10);
+            std::cout << "X: "<< _bomb[j].getPosition().x << std::endl;
+            std::cout << "Y: "<< _bomb[j].getPosition().y << std::endl;
         }
     }
 
