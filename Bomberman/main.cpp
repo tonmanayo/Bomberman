@@ -32,7 +32,7 @@ int     main(int ac, char **av)
 	Scene       *scene;
 
 	game.initGame(1280.0f, 760.0f, 70.0f);
-	game.setupGameCamera(glm::vec3(0, 0, 3), 0, 0);
+	game.setupGameCamera(glm::vec3(0, 6, 3), -30, -30);
 
 	scene = new Scene(&game, game.getMap("map1"), 5);
 

@@ -9,21 +9,18 @@ find_package(PkgConfig REQUIRED)
 # Adding dependencies
 pkg_search_module(GLEW REQUIRED glew)
 pkg_search_module(GLFW3 REQUIRED glfw3)
-pkg_search_module(ASSIMP REQUIRED assimp)
 pkg_search_module(GLM REQUIRED glm)
 
 include_directories(
         ${PROJECT_SOURCE_DIR}/Core/includes
         ${GLEW_INCLUDE_DIRS}
         ${GLFW3_INCLUDE_DIRS}
-        ${ASSIMP_INCLUDE_DIRS}
         ${GLM_INCLUDE_DIRS}
         ${PROJECT_SOURCE_DIR}/Bomberman/include
 )
 link_directories(
         ${GLEW_LIBRARY_DIRS}
         ${GLFW3_LIBRARY_DIRS}
-        ${ASSIMP_LIBRARY_DIRS}
         ${GLM_LIBRARY_DIRS}
 )
 
@@ -41,7 +38,6 @@ target_link_libraries(${PROJECT_NAME}
         ${OPENGL_LIBRARIES}
         ${GLEW_LIBRARIES}
         ${GLFW3_LIBRARIES}
-        ${ASSIMP_LIBRARIES}
         ${GLM_LIBRARIES}
         zion
 )
@@ -55,7 +51,6 @@ target_link_libraries(Bomberman
         ${OPENGL_LIBRARIES}
         ${GLEW_LIBRARIES}
         ${GLFW3_LIBRARIES}
-        ${ASSIMP_LIBRARIES}
         ${GLM_LIBRARIES}
         zion
         )

@@ -36,6 +36,8 @@ bool Scene::buildMap()
 				_addBreakableBlock(x, z);
 			else if (c == 'L')
 				_addUnbreakableBlock(x, z);
+			else if (c == '@')
+				_addPlayer(x, z);
 			_addFloor(x, z);
 			x += 2;
 		}
@@ -99,5 +101,16 @@ void Scene::_addFloor(float x, float z)
 	{
 		MainGame::renderer.addToRender("floors", i, model, mat);
 		i++;
+	}
+}
+
+void Scene::_addPlayer(float x, float z)
+{
+	glm::mat4 mat1 = glm::translate(glm::mat4(), glm::vec3(x, -0.5, z));
+	glm::mat4 mat2 = glm::scale(glm::mat4(), glm::vec3(0.2, 0.2, 0.2));
+	Zion::Renderable *model = _game->getModel("bomberman");
+	if (model != nullptr)
+	{
+		MainGame::renderer.addToRender("Player", 0, model, mat1 * mat2);
 	}
 }

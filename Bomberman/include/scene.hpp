@@ -13,6 +13,7 @@ private:
 	void    _addBreakableBlock(float x, float z);
 	void    _addUnbreakableBlock(float x, float z);
 	void    _addFloor(float x, float z);
+	void    _addPlayer(float x, float z);
 public:
 	Scene(MainGame *game, std::vector<std::string> *map, int enemyCount);
 	Scene(const Scene & rhs);
