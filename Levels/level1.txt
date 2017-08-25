@@ -1,4 +1,4 @@
-Humans: 5
+Humans: 1
 RRRRRRRRRRRRRRR
 R@............R
 R.L.L.L.L.L.L.R

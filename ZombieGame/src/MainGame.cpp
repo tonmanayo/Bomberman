@@ -216,45 +216,28 @@ void MainGame::updateBullets(float deltaTime) {
         _bullets[i].update(_levels[_currentLevel]->getLevelData());
         if (_bullets[i].getTime() > 2){
             _levels[_currentLevel]->setLevelData(_bullets[i].getPosition(), '.');
-            addBlood(_bullets[i].getPosition(), 10);
+            //addBlood(_bullets[i].getPosition(), 10);
             _player->bomb(_bullets[i].getPosition());
             _bullets[i] = _bullets.back();
             _bullets.pop_back();
         }
 
         for (int j = 0; j < _bomb.size(); j++) {
-           addBlood(_bomb[j].getPosition(), 10);
+           //addBlood(_bomb[j].getPosition(), 10);
         }
-
-        // If update returns true, the bullet collided with a wall
-//        if (_bullets[i].update(_levels[_currentLevel]->getLevelData())) {
-//            addBlood(_bullets[i].getPosition(), 10);
-//            _bullets[i] = _bullets.back();
-//            _bullets.pop_back();
-//        } else {
-//            i++;
-//        }
     }
 
     bool wasBulletRemoved;
 
     for (int i = 0; i < _bomb.size(); i++) {
         wasBulletRemoved = false;
-
-//        if (_bomb[i].update(_levels[_currentLevel]->getLevelData())) {
-//            addBlood(_bomb[i].getPosition(), 10);
-//            _bomb[i] = _bomb.back();
-//            _bomb.pop_back();
-//            wasBulletRemoved = true;
-//        }
-
         if (!wasBulletRemoved) {
                 for (int j = 0; j < _breakableBricks.size();) {
                     // Check collision
                     if (_bomb[i].collideWithBreakableBrick(_breakableBricks[j])) {
                         // Add blood
-                        addBlood(_breakableBricks[j]->getPosition(), 5);
-                       //_levels[_currentLevel]->setLevelData(_breakableBricks[j]->getPosition(), '.');
+                     //   addBlood(_breakableBricks[j]->getPosition(), 5);
+                       _levels[_currentLevel]->setLevelData(_breakableBricks[j]->getPosition(), '.');
                         delete _breakableBricks[j];
                         _breakableBricks[j] = _breakableBricks.back();
                         _breakableBricks.pop_back();
@@ -274,7 +257,7 @@ void MainGame::updateBullets(float deltaTime) {
                 // Check collision
                 if (_bomb[i].collideWithAgent(_humans[j])) {
                     // Add blood
-                    addBlood(_bomb[i].getPosition(), 5);
+                 //   addBlood(_bomb[i].getPosition(), 5);
                     // Damage human, and kill it if its out of health
                     if (_humans[j]->applyDamage(_bomb[i].getDamage())) {
                         // If the human died, remove him
@@ -387,7 +370,7 @@ void MainGame::drawGame() {
     // Draw the bullets
     for (int i = 0; i < _bullets.size(); i++) {
         _bullets[i].draw(_agentSpriteBatch);
-        _levels[_currentLevel]->setLevelData(_bullets[i].getPosition(), 'R');
+       // _levels[_currentLevel]->setLevelData(_bullets[i].getPosition(), 'R');
     }
     //draw bomb
     for (int i = 0; i < _bomb.size(); i++) {
