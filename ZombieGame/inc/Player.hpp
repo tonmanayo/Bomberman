@@ -34,7 +34,7 @@ public:
               std::vector<Bomber>* bombs);
 
     void addGun(Gun* gun);
-    void bomb(glm::vec2 pos);
+    void bomb(const glm::vec2 &pos);
     void update(const std::vector<std::string> &levelData,
                 std::vector<Human*>& humans,
                 std::vector<Zombie*>& zombies,

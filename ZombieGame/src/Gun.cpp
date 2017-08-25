@@ -45,21 +45,19 @@ void Gun::placeBomb(const glm::vec2& direction, const glm::vec2& position, std::
 void Gun::explosion(const glm::vec2& direction, const glm::vec2& position, std::vector<Bomber> &bombs) { // Function spread of bomb //todo make bomb bigger
 
     glm::vec2 newpos = position;
-    glm::vec2 newdir = position;
-    newpos.x += TILE_WIDTH * 2;
-    newpos.y += TILE_WIDTH ;
+
+    newpos.x += TILE_WIDTH;
 
     for (int i = 0; i < _bulletsPerShot; i++) {
-
-        newdir.x = -newdir.x;                                   // Right bullet
-        bombs.emplace_back(newpos - glm::vec2(BULLET_RADIUS),
+                                                                // Right bullet
+        bombs.emplace_back(newpos,
                              glm::normalize(glm::vec2(1, 0)),
                              _bulletDamage,
                              _bulletSpeed,
                              0);
 
         newpos.x -= TILE_WIDTH * 2;                             // Left bullet
-        bombs.emplace_back(newpos - glm::vec2(BULLET_RADIUS),
+        bombs.emplace_back(newpos,
                              glm::normalize(glm::vec2(-1, 0)),
                              _bulletDamage,
                              _bulletSpeed,
@@ -68,14 +66,14 @@ void Gun::explosion(const glm::vec2& direction, const glm::vec2& position, std::
         newpos.x += TILE_WIDTH;                                  // Top bullet
         newpos.y += TILE_WIDTH;
 
-        bombs.emplace_back(newpos - glm::vec2(BULLET_RADIUS),
+        bombs.emplace_back(newpos,
                              glm::normalize(glm::vec2(0, -1)),
                              _bulletDamage,
                              _bulletSpeed,
                              0);
 
         newpos.y -= TILE_WIDTH * 2;                             // Down bullet
-        bombs.emplace_back(newpos - glm::vec2(BULLET_RADIUS),
+        bombs.emplace_back(newpos,
                              glm::normalize(glm::vec2(0, 1)),
                              _bulletDamage,
                              _bulletSpeed,

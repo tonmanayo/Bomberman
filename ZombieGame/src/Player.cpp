@@ -86,6 +86,6 @@ void Player::update(const std::vector<std::string>& levelData,
     collideWithLevel(levelData);
 }
 
-void Player::bomb(glm::vec2 pos){
-    _guns[_currentGunIndex]->explosion(_direction,pos , *_bombs);
+void Player::bomb(const glm::vec2 &pos){
+    _guns[_currentGunIndex]->explosion(_direction, pos, *_bombs);
 }

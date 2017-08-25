@@ -52,7 +52,7 @@ void Bomber::draw(WTCEngine::SpriteBatch& spriteBatch) {        //draw the bomb 
 bool Bomber::collideWithAgent(Agent* agent) {
     const float MIN_DISTANCE = AGENT_RADIUS + BULLET_RADIUS;                            // Min dist to collide
 
-    glm::vec2 centerPosA = _position;
+    glm::vec2 centerPosA = _position + glm::vec2(BULLET_RADIUS);
     glm::vec2 centerPosB = agent->getPosition() + glm::vec2(AGENT_RADIUS);
     glm::vec2 distVec = centerPosA - centerPosB;                                        // distance from agent to bullet
 
@@ -65,14 +65,11 @@ bool Bomber::collideWithAgent(Agent* agent) {
 }
 
 bool Bomber::collideWithBreakableBrick(BreakableBricks *breakableBricks) {              //TODO change to template
-    const float MIN_DISTANCE = TILE_WIDTH;
+    const float MIN_DISTANCE = BULLET_RADIUS;
 
-
-    glm::vec2 centerPosA = _position;
+    glm::vec2 centerPosA = _position + glm::vec2(BULLET_RADIUS / 2);
     glm::vec2 centerPosB = breakableBricks->getPosition() + glm::vec2(TILE_WIDTH / 2);
     glm::ivec2 gridPosition;
-
-
     glm::vec2 distVec = centerPosA - centerPosB;
 
     float distance = glm::length(distVec);

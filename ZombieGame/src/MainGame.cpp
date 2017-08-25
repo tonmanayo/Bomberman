@@ -211,78 +211,65 @@ void MainGame::updateAgents(float deltaTime) {
 }
 
 void MainGame::updateBullets(float deltaTime) {
-    // Update and collide with world
-    for (int i = 0; i < _bullets.size(); i++) {
-        _bullets[i].update(_levels[_currentLevel]->getLevelData());
-        if (_bullets[i].getTime() > 2){
-            _levels[_currentLevel]->setLevelData(_bullets[i].getPosition(), '.');
-            addBlood(_bullets[i].getPosition(), 10);
-            std::cout << "Bullets X: "<< _bullets[i].getPosition().x << std::endl;
-            std::cout << "Bullets Y: "<< _bullets[i].getPosition().y << std::endl;
-            _player->bomb(_bullets[i].getPosition());
-            _bullets[i] = _bullets.back();
-            _bullets.pop_back();
-        }
-
-        for (int j = 0; j < _bomb.size(); j++) {
-           //addBlood(_bomb[j].getPosition(), 10);
-            std::cout << "X: "<< _bomb[j].getPosition().x << std::endl;
-            std::cout << "Y: "<< _bomb[j].getPosition().y << std::endl;
-        }
-    }
-
-    bool wasBulletRemoved;
-
-    for (int i = 0; i < _bomb.size(); i++) {
-        wasBulletRemoved = false;
-        if (!wasBulletRemoved) {
-                for (int j = 0; j < _breakableBricks.size();) {
-                    // Check collision
-                    if (_bomb[i].collideWithBreakableBrick(_breakableBricks[j])) {
-                        // Add blood
-                     //   addBlood(_breakableBricks[j]->getPosition(), 5);
-                       _levels[_currentLevel]->setLevelData(_breakableBricks[j]->getPosition(), '.');
-                        delete _breakableBricks[j];
-                        _breakableBricks[j] = _breakableBricks.back();
-                        _breakableBricks.pop_back();
-                        _bomb[i] = _bomb.back();
-                        _bomb.pop_back();
-                        wasBulletRemoved = true;
-                        i--;
-                        break;
-                    } else {
-                        j++;
-                    }
+    // update bomb time and make it explode
+    try {
+        for (int i = 0; i < _bullets.size(); i++) {
+            _bullets[i].update(_levels[_currentLevel]->getLevelData());
+            if (_bullets[i].getTime() > 2) {
+                _levels[_currentLevel]->setLevelData(_bullets[i].getPosition(), '.');
+                addBlood(_bullets[i].getPosition(), 10);
+                _player->bomb(_bullets[i].getPosition());
+                _bullets[i] = _bullets.back();
+                _bullets.pop_back();
+                for (int j = 0; j < _bomb.size(); j++) {                                //showing explosion
+                    addBlood(_bomb[j].getPosition(), 5);
                 }
             }
-        // Loop through humans
-        if (!wasBulletRemoved) {
-            for (int j = 1; j < _humans.size(); ) {
+        }
+
+        for (int i = 0; i < _bomb.size(); i++) {
+            for (int j = 0; j < _breakableBricks.size();) {
                 // Check collision
-                if (_bomb[i].collideWithAgent(_humans[j])) {
+                if (_bomb[i].collideWithBreakableBrick(_breakableBricks[j])) {
                     // Add blood
-                 //   addBlood(_bomb[i].getPosition(), 5);
-                    // Damage human, and kill it if its out of health
-                    if (_humans[j]->applyDamage(_bomb[i].getDamage())) {
-                        // If the human died, remove him
-                        delete _humans[j];
-                        _humans[j] = _humans.back();
-                        _humans.pop_back();
-                    } else {
-                        j++;
-                    }
+                    addBlood(_breakableBricks[j]->getPosition(), 500);
+                    _levels[_currentLevel]->setLevelData(_breakableBricks[j]->getPosition(), '.');
+                    delete _breakableBricks[j];
+                    _breakableBricks[j] = _breakableBricks.back();
+                    _breakableBricks.pop_back();
                     _bomb[i] = _bomb.back();
                     _bomb.pop_back();
-                    _numHumansKilled++;
                     i--;
                     break;
-                } else {
-                    j++;
+                }
+                j++;
+            }
+            // Loop through humans
+
+            for (int j = 0; j < _humans.size(); j++) {
+                // Check collision
+                if (_bomb[i].collideWithAgent(_humans[0])) {
+                    _gameState = GameState::EXIT;
+                    throw WTCEngine::ErrorHandle("YOU LOSE");
+                }
+                if (_bomb[i].collideWithAgent(_humans[j])) {
+                    addBlood(_bomb[i].getPosition(), 200);
+                    delete _humans[j];
+                    _humans[j] = _humans.back();
+                    _humans.pop_back();
+                    _bomb[i] = _bomb.back();
+                    _bomb.pop_back();
+                    i--;
+                    break;
                 }
             }
+
         }
+        _bomb.clear();
+    } catch (WTCEngine::ErrorHandle errorHandle) {
+        std::cout << errorHandle.what() << std::endl;
+        _gameState =  GameState::EXIT;
     }
-    _bomb.clear();
 }
 
 
