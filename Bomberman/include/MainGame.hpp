@@ -19,10 +19,10 @@ private:
 	float           _fov;
 	Zion::Window    _window;
 	Zion::Camera    *_camera;
-	std::map<const char *, Zion::Shader *>      _shaders;
-	std::map<const char *, Zion::Renderable *>  _models;
-	std::map<const char *, Zion::Material *>    _materials;
-	std::map<const char *, std::vector<std::string> *> _levelMaps;
+	std::map<std::string, Zion::Shader *>      _shaders;
+	std::map<std::string, Zion::Renderable *>  _models;
+	std::map<std::string, Zion::Material *>    _materials;
+	std::map<std::string, std::vector<std::string> *> _levelMaps;
 public:
 	static Zion::Renderer  renderer;
 	static std::map<const char *, Func>   functions;
@@ -46,9 +46,9 @@ public:
 
 	Zion::Window&               getGameWindow();
 	Zion::Camera&               getGameCamera();
-	Zion::Shader                *getShader(const char *shaderName) const;
-	Zion::Renderable            *getModel(const char *modelName) const;
-	Zion::Material              *getMaterial(const char *materialName);
-	std::vector<std::string>    *getMap(const char *mapName);
+	Zion::Shader                *getShader(const std::string shaderName) const;
+	Zion::Renderable            *getModel(const std::string modelName) const;
+	Zion::Material              *getMaterial(const std::string materialName);
+	std::vector<std::string>    *getMap(const std::string mapName);
 };
 

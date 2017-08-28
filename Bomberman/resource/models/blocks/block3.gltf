@@ -3,9 +3,9 @@
         {
             "bufferView" : 0, 
             "componentType" : 5123, 
-            "count" : 372, 
+            "count" : 36, 
             "max" : [
-                191
+                23
             ], 
             "min" : [
                 0
@@ -15,7 +15,23 @@
         {
             "bufferView" : 1, 
             "componentType" : 5126, 
-            "count" : 192, 
+            "count" : 24, 
+            "max" : [
+                1.0000004768371582, 
+                1.0, 
+                1.0000005960464478
+            ], 
+            "min" : [
+                -1.0000003576278687, 
+                -1.0, 
+                -1.0000003576278687
+            ], 
+            "type" : "VEC3"
+        }, 
+        {
+            "bufferView" : 2, 
+            "componentType" : 5126, 
+            "count" : 24, 
             "max" : [
                 1.0, 
                 1.0, 
@@ -29,32 +45,16 @@
             "type" : "VEC3"
         }, 
         {
-            "bufferView" : 2, 
-            "componentType" : 5126, 
-            "count" : 192, 
-            "max" : [
-                0.9951847195625305, 
-                1.0, 
-                0.9951847195625305
-            ], 
-            "min" : [
-                -0.9951847791671753, 
-                -1.0, 
-                -0.9951847791671753
-            ], 
-            "type" : "VEC3"
-        }, 
-        {
             "bufferView" : 3, 
             "componentType" : 5126, 
-            "count" : 192, 
+            "count" : 24, 
             "max" : [
                 0.9999000430107117, 
-                0.9999000898751547
+                0.9999000200041337
             ], 
             "min" : [
-                9.991012484533712e-05, 
-                0.00010001659393310547
+                9.997999586630613e-05, 
+                9.995698928833008e-05
             ], 
             "type" : "VEC2"
         }
@@ -66,46 +66,43 @@
     "bufferViews" : [
         {
             "buffer" : 0, 
-            "byteLength" : 744, 
+            "byteLength" : 72, 
             "byteOffset" : 0, 
             "target" : 34963
         }, 
         {
             "buffer" : 0, 
-            "byteLength" : 2304, 
-            "byteOffset" : 744, 
+            "byteLength" : 288, 
+            "byteOffset" : 72, 
             "target" : 34962
         }, 
         {
             "buffer" : 0, 
-            "byteLength" : 2304, 
-            "byteOffset" : 3048, 
+            "byteLength" : 288, 
+            "byteOffset" : 360, 
             "target" : 34962
         }, 
         {
             "buffer" : 0, 
-            "byteLength" : 1536, 
-            "byteOffset" : 5352, 
+            "byteLength" : 192, 
+            "byteOffset" : 648, 
             "target" : 34962
         }
     ], 
     "buffers" : [
         {
-            "byteLength" : 6888, 
+            "byteLength" : 840, 
             "uri" : "block3.bin"
         }
     ], 
     "images" : [
         {
-            "uri" : "lavaWall.png"
-        }, 
-        {
-            "uri" : "skullWall.png"
+            "uri" : "metalBox2.png"
         }
     ], 
     "materials" : [
         {
-            "name" : "Material.004", 
+            "name" : "Material.001", 
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
                     0.6400000190734865, 
@@ -118,26 +115,11 @@
                 }, 
                 "metallicFactor" : 0.0
             }
-        }, 
-        {
-            "name" : "Material.005", 
-            "pbrMetallicRoughness" : {
-                "baseColorFactor" : [
-                    0.6400000190734865, 
-                    0.6400000190734865, 
-                    0.6400000190734865, 
-                    1.0
-                ], 
-                "baseColorTexture" : {
-                    "index" : 1
-                }, 
-                "metallicFactor" : 0.0
-            }
         }
     ], 
     "meshes" : [
         {
-            "name" : "Cylinder", 
+            "name" : "Cube", 
             "primitives" : [
                 {
                     "attributes" : {
@@ -154,11 +136,11 @@
     "nodes" : [
         {
             "mesh" : 0, 
-            "name" : "Cylinder", 
+            "name" : "Cube", 
             "translation" : [
                 0.0, 
-                1.126388669013977, 
-                -1.1479859352111816
+                1.0010530948638916, 
+                -1.0371431112289429
             ]
         }
     ], 
@@ -178,10 +160,6 @@
         {
             "sampler" : 0, 
             "source" : 0
-        }, 
-        {
-            "sampler" : 0, 
-            "source" : 1
         }
     ]
 }

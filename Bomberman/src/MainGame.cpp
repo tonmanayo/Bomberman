@@ -34,7 +34,7 @@ bool MainGame::initGame(float width, float height, float fov)
 	_fov = fov;
 	_window.initWindow("Bomberman", (int)width, (int)height);
 	/// Calculating perspective
-	projectionMatrix = glm::perspective(glm::radians(70.0f), width / height, 0.1f, 1000.0f);
+	projectionMatrix = glm::perspective(glm::radians(60.0f), width / height, 0.1f, 1000.0f);
 	/// Loading Shaders
 	if (addShader("basic", "shaders/basic.vert", "shaders/basic.frag"))
 		getShader("basic")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
@@ -58,14 +58,14 @@ void MainGame::setupGameCamera(glm::vec3 pos, float pitch, float yaw)
 bool MainGame::addShader(const char *name, const char *vertPath, const char *fragPath)
 {
 	auto *shader = new Zion::Shader(vertPath, fragPath);
-	_shaders.insert(std::pair<const char *, Zion::Shader *>(name, shader));
+	_shaders.insert(std::pair<std::string, Zion::Shader *>(std::string(name), shader));
 	return true;
 }
 
 bool MainGame::addModel(const char *name, Zion::Shader& shader, const char *path)
 {
 	auto *model = new Zion::Gltf(shader, path);
-	_models.insert(std::pair<const char *, Zion::Renderable *>(name, model));
+	_models.insert(std::pair<std::string, Zion::Renderable *>(std::string(name), model));
 	return true;
 }
 
@@ -73,14 +73,14 @@ bool MainGame::addMaterial(const char *name, const char *path)
 {
 	auto *material = new Zion::Material();
 	material->texure.loadTextureFromPath(path);
-	_materials.insert(std::pair<const char *, Zion::Material *>(name, material));
+	_materials.insert(std::pair<std::string, Zion::Material *>(std::string(name), material));
 	return true;
 }
 
 bool MainGame::addMap(const char *name, const char *path)
 {
-	std::ifstream file;
-	auto *map = new std::vector<std::string>();
+	std::ifstream   file;
+	std::string     line;
 
 	file.open(path);
 	if (file.fail())
@@ -88,10 +88,10 @@ bool MainGame::addMap(const char *name, const char *path)
 		std::cout << "Failed to load map : " << name << std::endl;
 		return false;
 	}
-	std::string line;
+	auto *map = new std::vector<std::string>();
 	while (std::getline(file, line))
 		map->push_back(line);
-	_levelMaps.insert(std::pair<const char *, std::vector<std::string> *>(name, map));
+	_levelMaps.insert(std::pair<std::string, std::vector<std::string> *>(std::string(name), map));
 	return true;
 }
 
@@ -108,7 +108,8 @@ void MainGame::loadResources()
 
 void MainGame::gameLoop()
 {
-	glm::mat4 viewMatrix;
+	glm::mat4   viewMatrix;
+	glm::vec3   viewPos;
 
 	Zion::Renderable::startTime = (float)glfwGetTime();
 	Zion::Renderable::runTime = Zion::Renderable::startTime;
@@ -123,8 +124,12 @@ void MainGame::gameLoop()
 		for (std::pair<const char *, Func> func : functions)
 			func.second.func(this, func.second.params);
 		viewMatrix = _camera->getViewMatrix();
-		for (std::pair<const char *, Zion::Shader *> shader : _shaders)
+		viewPos = _camera->getCameraPosition();
+		for (std::pair<std::string, Zion::Shader *> shader : _shaders)
+		{
 			shader.second->setUniformMat4((GLchar *)"view_matrix", viewMatrix);
+			shader.second->setUniform3f((GLchar *)"viewPos", viewPos);
+		}
 		MainGame::renderer.render();
 		_window.updateWindow();
 	}
@@ -134,7 +139,7 @@ Zion::Window& MainGame::getGameWindow() { return _window; }
 
 Zion::Camera& MainGame::getGameCamera() { return *_camera; }
 
-Zion::Shader* MainGame::getShader(const char *shaderName) const
+Zion::Shader* MainGame::getShader(const std::string shaderName) const
 {
 	Zion::Shader *shader;
 	try {
@@ -145,7 +150,7 @@ Zion::Shader* MainGame::getShader(const char *shaderName) const
 	return shader;
 }
 
-Zion::Renderable* MainGame::getModel(const char *modelName) const
+Zion::Renderable* MainGame::getModel(const std::string modelName) const
 {
 	Zion::Renderable *model;
 	try {
@@ -156,7 +161,7 @@ Zion::Renderable* MainGame::getModel(const char *modelName) const
 	return model;
 }
 
-Zion::Material* MainGame::getMaterial(const char *materialName)
+Zion::Material* MainGame::getMaterial(const std::string materialName)
 {
 	Zion::Material *material;
 	try {
@@ -167,7 +172,7 @@ Zion::Material* MainGame::getMaterial(const char *materialName)
 	return material;
 }
 
-std::vector<std::string>* MainGame::getMap(const char *mapName)
+std::vector<std::string>* MainGame::getMap(const std::string mapName)
 {
 	std::vector<std::string>    *map;
 	try {

@@ -1,4 +1,5 @@
 #include <MainGame.hpp>
+#include <player.hpp>
 
 class   Scene
 {
@@ -7,6 +8,7 @@ private:
 	size_t      _mapWidth;
 	size_t      _mapLength;
 	int         _enemyCount;
+	Player      *_player;
 	std::vector<std::string> *_map;
 private:
 	void    _addWall(float x, float z);
@@ -21,4 +23,7 @@ public:
 	~Scene();
 
 	bool    buildMap();
+
+public:
+	static  void    updatePlayer(MainGame *game, std::vector<void *> params);
 };

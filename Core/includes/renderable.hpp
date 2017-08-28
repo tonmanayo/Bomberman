@@ -37,14 +37,16 @@ namespace Zion
 	struct  Renderer
 	{
 	private:
-		std::map<const char *, std::vector<RendererObj>>    _objects;
+		std::map<std::string, std::vector<RendererObj>>    _objects;
 	public:
 		Renderer() = default;
 		Renderer(const Renderer & rhs);
 		Renderer&   operator=(const Renderer & rhs);
 		~Renderer();
 
-		void    addToRender(const char *type, int id, Renderable *model, glm::mat4 mat = glm::mat4(1.0f));
+		void    addToRender(std::string type, int id, Renderable *model, glm::mat4 mat = glm::mat4(1.0f));
+		void    removeFromRender(std::string type, int id);
+		void    applyTransformationToRenderable(std::string type, int id, glm::mat4 mat);
 		void    render();
 	};
 }

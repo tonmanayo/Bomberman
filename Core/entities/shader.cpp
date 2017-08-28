@@ -134,6 +134,12 @@ namespace Zion
 		glUniform1i(getUniformLocation(name), value);
 	}
 
+	void Shader::setUniform3f(GLchar *name, glm::vec3 &vec)
+	{
+		enable();
+		glUniform3f(getUniformLocation(name), vec.x, vec.y, vec.z);
+	}
+
 	void Shader::setUniform4f(GLchar *name, glm::vec4 &vec)
 	{
 		enable();

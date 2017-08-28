@@ -24,7 +24,7 @@ link_directories(
         ${GLM_LIBRARY_DIRS}
 )
 
-set(LIB_SOURCE_FILES Core/entities/window.cpp Core/entities/input.cpp Core/entities/shader.cpp Core/utils/file.cpp Core/sprite/squareSprite.cpp Core/entities/material.cpp Core/sprite/cubeSprite.cpp Core/entities/camera.cpp Core/models/renderer.cpp Core/models/gltf.cpp)
+set(LIB_SOURCE_FILES Core/entities/window.cpp Core/entities/input.cpp Core/entities/shader.cpp Core/utils/file.cpp Core/sprite/squareSprite.cpp Core/entities/material.cpp Core/sprite/cubeSprite.cpp Core/entities/camera.cpp Core/render/renderer.cpp Core/models/gltf.cpp)
 
 add_library(zion STATIC ${LIB_SOURCE_FILES})
 if (APPLE)
@@ -45,7 +45,7 @@ if (APPLE)
     target_link_libraries(${PROJECT_NAME} ${OPENGL_FLAGS})
 endif()
 
-set(B_SOURCE_FILES Bomberman/main.cpp Bomberman/src/MainGame.cpp Bomberman/src/scene.cpp)
+set(B_SOURCE_FILES Bomberman/main.cpp Bomberman/src/MainGame.cpp Bomberman/src/scene.cpp Bomberman/src/player.cpp)
 add_executable(Bomberman ${B_SOURCE_FILES})
 target_link_libraries(Bomberman
         ${OPENGL_LIBRARIES}

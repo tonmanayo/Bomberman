@@ -59,10 +59,11 @@ namespace Zion
 			std::cerr << "Failed to initialize GLFW!" << std::endl;
 			return false;
 		}
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4); // We want OpenGL 3.3
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // We want OpenGL 3.3
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // To make MacOS happy; should not be needed
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // We don't want the old OpenGL
+		glfwWindowHint(GLFW_SAMPLES, 4);
 		if (!(bool)(_window = glfwCreateWindow(_width, _height, _title, nullptr, nullptr)))
 		{
 			std::cerr << "Failed to create GLFW window!" << std::endl;
@@ -80,8 +81,10 @@ namespace Zion
 		glEnable(GL_DEPTH_TEST);
 		glDepthFunc(GL_LESS);
 		glEnable(GL_BLEND);
-		glEnable(GL_CULL_FACE); /// to tell opengl to render unseen part of a model
-		glCullFace(GL_BACK); /// tells opengl with unseen part not to render
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		//glEnable(GL_CULL_FACE); /// to tell opengl to render unseen part of a model
+		//glCullFace(GL_BACK); /// tells opengl with unseen part not to render
+		//glEnable(GL_MULTISAMPLE);
 		enableVsync();
 		glfwSetKeyCallback(_window, _input.keyCallback);
 		glfwSetMouseButtonCallback(_window, _input.mouseButtonCallback);

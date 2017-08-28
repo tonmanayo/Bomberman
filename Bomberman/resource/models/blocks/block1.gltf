@@ -179,7 +179,7 @@
     ], 
     "images" : [
         {
-            "uri" : "tile02.png"
+            "uri" : "topWall.png"
         }, 
         {
             "uri" : "topWall.png"

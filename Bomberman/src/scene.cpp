@@ -93,10 +93,7 @@ void Scene::_addFloor(float x, float z)
 	int tmp = rand() % 2 + 1;
 
 	glm::mat4 mat = glm::translate(glm::mat4(), glm::vec3(x, -1, z));
-	//if (tmp == 1)
-		model = _game->getModel("floor1");
-	//else
-	//	model = _game->getModel("floor2");
+	model = _game->getModel("floor1");
 	if (model != nullptr)
 	{
 		MainGame::renderer.addToRender("floors", i, model, mat);
@@ -106,11 +103,55 @@ void Scene::_addFloor(float x, float z)
 
 void Scene::_addPlayer(float x, float z)
 {
-	glm::mat4 mat1 = glm::translate(glm::mat4(), glm::vec3(x, -0.5, z));
-	glm::mat4 mat2 = glm::scale(glm::mat4(), glm::vec3(0.2, 0.2, 0.2));
-	Zion::Renderable *model = _game->getModel("bomberman");
+	Zion::Renderable *model;
+
+	model = _game->getModel("bomberman");
+	glm::mat4 mat = glm::translate(glm::mat4(), glm::vec3(x, 0, z));
 	if (model != nullptr)
 	{
-		MainGame::renderer.addToRender("Player", 0, model, mat1 * mat2);
+		_player = new Player(0, "player");
+		_player->setPosition(x, 0, z);
+		_player->scale(glm::vec3(0.2, 0.2, 0.2));
+		MainGame::renderer.addToRender(_player->getType(), _player->getId(), model,
+				_player->getTransformation());
+	}
+	std::vector<void *> params;
+
+	params.push_back(this);
+	MainGame::functions.insert(std::pair<const char *, Func>("updatePlayer",
+			{Scene::updatePlayer, params}));
+}
+
+void Scene::updatePlayer(MainGame *game, std::vector<void *> params)
+{
+	auto *scene = (Scene *)params[0];
+
+	if (game->getGameWindow().isKeyPressed(GLFW_KEY_S))
+	{
+		scene->_player->changePosZ(0.02f);
+		scene->_player->rotate(glm::radians(0.0f), {0, 1, 0});
+		MainGame::renderer.applyTransformationToRenderable(scene->_player->getType(),
+			scene->_player->getId(), scene->_player->getTransformation());
+	}
+	if (game->getGameWindow().isKeyPressed(GLFW_KEY_W))
+	{
+		scene->_player->changePosZ(-0.02f);
+		scene->_player->rotate(glm::radians(180.0f), {0, 1, 0});
+		MainGame::renderer.applyTransformationToRenderable(scene->_player->getType(),
+				scene->_player->getId(), scene->_player->getTransformation());
+	}
+	if (game->getGameWindow().isKeyPressed(GLFW_KEY_A))
+	{
+		scene->_player->changePosX(-0.02f);
+		scene->_player->rotate(glm::radians(-90.0f), {0, 1, 0});
+		MainGame::renderer.applyTransformationToRenderable(scene->_player->getType(),
+				scene->_player->getId(), scene->_player->getTransformation());
+	}
+	if (game->getGameWindow().isKeyPressed(GLFW_KEY_D))
+	{
+		scene->_player->changePosX(0.02f);
+		scene->_player->rotate(glm::radians(90.0f), {0, 1, 0});
+		MainGame::renderer.applyTransformationToRenderable(scene->_player->getType(),
+				scene->_player->getId(), scene->_player->getTransformation());
 	}
 }

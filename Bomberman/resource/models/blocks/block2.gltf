@@ -179,10 +179,10 @@
     ], 
     "images" : [
         {
-            "uri" : "metalBox2.png"
+            "uri" : "floor2.jpg"
         }, 
         {
-            "uri" : "metalBox3.png"
+            "uri" : "floor2.jpg"
         }
     ], 
     "materials" : [
