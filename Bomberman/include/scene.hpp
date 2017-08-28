@@ -1,5 +1,10 @@
 #include <MainGame.hpp>
 #include <player.hpp>
+#include <block.hpp>
+
+#define GRID_START_X (-4)
+#define GRID_START_Z (-1)
+#define GRID_BLOCK_SIZE (2)
 
 class   Scene
 {
@@ -10,10 +15,11 @@ private:
 	int         _enemyCount;
 	Player      *_player;
 	std::vector<std::string> *_map;
+	std::map<int, std::map<int, Block *>>    _blocks;
 private:
 	void    _addWall(float x, float z);
-	void    _addBreakableBlock(float x, float z);
-	void    _addUnbreakableBlock(float x, float z);
+	void    _addBreakableBlock(float x, float z, int xx, int yy);
+	void    _addUnbreakableBlock(float x, float z, int xx, int yy);
 	void    _addFloor(float x, float z);
 	void    _addPlayer(float x, float z);
 public:
@@ -23,6 +29,7 @@ public:
 	~Scene();
 
 	bool    buildMap();
+	static bool    worldCollision(glm::vec3 pos, glm::vec3 offset);
 
 public:
 	static  void    updatePlayer(MainGame *game, std::vector<void *> params);

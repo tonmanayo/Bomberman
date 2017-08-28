@@ -11,9 +11,9 @@ public:
 	Player(int id, std::string type);
 	~Player() = default;
 
-	void    setPosition(float x, float y, float z);
-	void    changePosX(float val);
-	void    changePosY(float val);
-	void    changePosZ(float val);
+	void        setPosition(float x, float y, float z);
+	void        changePosX(float val);
+	void        changePosY(float val);
+	void        changePosZ(float val);
 	glm::vec3   getPosition();
 };

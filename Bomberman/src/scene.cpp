@@ -16,7 +16,14 @@ Scene& Scene::operator=(const Scene &rhs)
 {}
 
 Scene::~Scene()
-{}
+{
+	for (int i = 0; i < _blocks.size(); i++)
+	{
+		for (int j = 0; j < _blocks[i].size(); j++)
+			if (_blocks[i][j] != nullptr)
+				delete _blocks[i][j];
+	}
+}
 
 bool Scene::buildMap()
 {
@@ -24,24 +31,28 @@ bool Scene::buildMap()
 	_mapLength = _map[0].size();
 
 	srand (time(NULL));
-	float  z = -1;
+	float  z = GRID_START_Z;
+	int yy = 0;
 	for (std::string line : *_map)
 	{
-		float x = -4;
+		float x = GRID_START_X;
+		int xx = 0;
 		for (char c : line)
 		{
 			if (c == 'R')
 				_addWall(x, z);
 			else if (c == 'G')
-				_addBreakableBlock(x, z);
+				_addBreakableBlock(x, z, xx, yy);
 			else if (c == 'L')
-				_addUnbreakableBlock(x, z);
+				_addUnbreakableBlock(x, z, xx, yy);
 			else if (c == '@')
 				_addPlayer(x, z);
 			_addFloor(x, z);
-			x += 2;
+			x += GRID_BLOCK_SIZE;
+			xx++;
 		}
-		z -= 2;
+		z -= GRID_BLOCK_SIZE;
+		yy++;
 	}
 	return true;
 }
@@ -59,7 +70,7 @@ void Scene::_addWall(float x, float z)
 	}
 }
 
-void Scene::_addBreakableBlock(float x, float z)
+void Scene::_addBreakableBlock(float x, float z, int xx, int yy)
 {
 	static int i = 0;
 
@@ -67,12 +78,14 @@ void Scene::_addBreakableBlock(float x, float z)
 	Zion::Renderable *model = _game->getModel("block2");
 	if (model != nullptr)
 	{
+		Block *block = new Block(i, "breakBlock", true);
+		_blocks[yy][xx] = block;
 		MainGame::renderer.addToRender("breakBlock", i, model, mat);
 		i++;
 	}
 }
 
-void Scene::_addUnbreakableBlock(float x, float z)
+void Scene::_addUnbreakableBlock(float x, float z, int xx, int yy)
 {
 	static int i = 0;
 
@@ -80,6 +93,8 @@ void Scene::_addUnbreakableBlock(float x, float z)
 	Zion::Renderable *model = _game->getModel("block3");
 	if (model != nullptr)
 	{
+		Block *block = new Block(i, "breakBlock", false);
+		_blocks[yy][xx] = block;
 		MainGame::renderer.addToRender("unbreakBlock", i, model, mat);
 		i++;
 	}
@@ -128,56 +143,12 @@ void Scene::_addPlayer(float x, float z)
 			{Scene::updatePlayer, params}));
 }
 
-void Scene::updatePlayer(MainGame *game, std::vector<void *> params)
+bool Scene::worldCollision(glm::vec3 pos, glm::vec3 offset)
 {
-	auto *scene = (Scene *)params[0];
+	glm::vec3 newPos = pos + offset;
 
-	if (game->getGameWindow().isKeyPressed(GLFW_KEY_S))
-	{
-		scene->_player->changePosZ(0.02f);
-		scene->_player->rotate(glm::radians(0.0f), {0, 1, 0});
-		MainGame::renderer.applyTransformationToRenderable(scene->_player->getType(),
-			scene->_player->getId(), scene->_player->getTransformation());
-		glm::vec3 pos = scene->_player->getPosition();
-		scene->_game->getGameCamera().setCameraPosition(
-				glm::vec3(pos.x + 0, pos.y + 10, pos.z + 6));
-		scene->_game->getGameCamera().setCameraTarget(scene->_player->getPosition());
-		scene->_game->getGameCamera().setCameraUp(glm::vec3(0, 1, 0));
-	}
-	if (game->getGameWindow().isKeyPressed(GLFW_KEY_W))
-	{
-		scene->_player->changePosZ(-0.02f);
-		scene->_player->rotate(glm::radians(180.0f), {0, 1, 0});
-		MainGame::renderer.applyTransformationToRenderable(scene->_player->getType(),
-				scene->_player->getId(), scene->_player->getTransformation());
-		glm::vec3 pos = scene->_player->getPosition();
-		scene->_game->getGameCamera().setCameraPosition(
-				glm::vec3(pos.x + 0, pos.y + 10, pos.z + 6));
-		scene->_game->getGameCamera().setCameraTarget(scene->_player->getPosition());
-		scene->_game->getGameCamera().setCameraUp(glm::vec3(0, 1, 0));
-	}
-	if (game->getGameWindow().isKeyPressed(GLFW_KEY_A))
-	{
-		scene->_player->changePosX(-0.02f);
-		scene->_player->rotate(glm::radians(-90.0f), {0, 1, 0});
-		MainGame::renderer.applyTransformationToRenderable(scene->_player->getType(),
-				scene->_player->getId(), scene->_player->getTransformation());
-		glm::vec3 pos = scene->_player->getPosition();
-		scene->_game->getGameCamera().setCameraPosition(
-				glm::vec3(pos.x + 0, pos.y + 10, pos.z + 6));
-		scene->_game->getGameCamera().setCameraTarget(scene->_player->getPosition());
-		scene->_game->getGameCamera().setCameraUp(glm::vec3(0, 1, 0));
-	}
-	if (game->getGameWindow().isKeyPressed(GLFW_KEY_D))
-	{
-		scene->_player->changePosX(0.02f);
-		scene->_player->rotate(glm::radians(90.0f), {0, 1, 0});
-		MainGame::renderer.applyTransformationToRenderable(scene->_player->getType(),
-				scene->_player->getId(), scene->_player->getTransformation());
-		glm::vec3 pos = scene->_player->getPosition();
-		scene->_game->getGameCamera().setCameraPosition(
-				glm::vec3(pos.x + 0, pos.y + 10, pos.z + 6));
-		scene->_game->getGameCamera().setCameraTarget(scene->_player->getPosition());
-		scene->_game->getGameCamera().setCameraUp(glm::vec3(0, 1, 0));
-	}
+	int x = abs((int)((pos.x - GRID_START_X) / GRID_BLOCK_SIZE));
+	int y = abs((int)((pos.z + GRID_START_Z) / GRID_BLOCK_SIZE));
+	//x-1, z-1
+	return true;
 }
