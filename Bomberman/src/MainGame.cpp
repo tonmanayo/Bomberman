@@ -1,4 +1,5 @@
 #include <MainGame.hpp>
+#include "gui/MainMenu.hpp"
 
 Zion::Renderer  MainGame::renderer;
 std::map<const char *, Func>    MainGame::functions;
@@ -115,6 +116,10 @@ void MainGame::gameLoop()
 	Zion::Renderable::runTime = Zion::Renderable::startTime;
 	while (!_window.shouldClose() && !_window.isKeyPressed(GLFW_KEY_ESCAPE))
 	{
+		bool loop = true;
+		while (loop) {
+			MainMenu::MainMenu(&_window.getWindow());
+		}
 		auto currentTime = (float)glfwGetTime();
 		Zion::Renderable::deltaTime = currentTime - Zion::Renderable::runTime;
 		Zion::Renderable::runTime = currentTime;

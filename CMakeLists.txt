@@ -11,11 +11,28 @@ pkg_search_module(GLEW REQUIRED glew)
 pkg_search_module(GLFW3 REQUIRED glfw3)
 pkg_search_module(GLM REQUIRED glm)
 
+# --- Nanogui ---
+# Disable building extras we won't need (pure C++ project)
+set(NANOGUI_BUILD_EXAMPLE OFF CACHE BOOL " " FORCE)
+set(NANOGUI_BUILD_PYTHON  OFF CACHE BOOL " " FORCE)
+set(NANOGUI_INSTALL       OFF CACHE BOOL " " FORCE)
+
+# Add the configurations from nanogui
+add_subdirectory(ext/nanogui)
+
+# For reliability of parallel build, make the NanoGUI targets dependencies
+set_property(TARGET glfw glfw_objects nanogui PROPERTY FOLDER "dependencies")
+# --- End Nanogui ---
+
 include_directories(
         ${PROJECT_SOURCE_DIR}/Core/includes
         ${GLEW_INCLUDE_DIRS}
         ${GLFW3_INCLUDE_DIRS}
         ${GLM_INCLUDE_DIRS}
+        ${PROJECT_SOURCE_DIR}/ext/nanogui/include
+        ${PROJECT_SOURCE_DIR}/ext/nanogui/ext/eigen
+        ${PROJECT_SOURCE_DIR}/ext/nanogui/ext/nanovg/src
+        ${NANOGUI_EXTRA_INCS}
         ${PROJECT_SOURCE_DIR}/Bomberman/include
 )
 link_directories(
@@ -31,7 +48,7 @@ if (APPLE)
     set(OPENGL_FLAGS "-framework OpenGL -framework GLUT -framework Cocoa -framework IOKit -framework CoreVideo")
 endif()
 
-set(SOURCE_FILES Game/main.cpp)
+set(SOURCE_FILES Game/main.cpp Bomberman/src/gui/MainMenu.cpp Bomberman/src/gui/MainMenu.hpp)
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 target_link_libraries(${PROJECT_NAME}
