@@ -1,10 +1,13 @@
 #include <MainGame.hpp>
 #include <player.hpp>
 #include <block.hpp>
+#include <glm/geometric.hpp>
+#include <glm/common.hpp>
 
 #define GRID_START_X (-4)
 #define GRID_START_Z (-1)
 #define GRID_BLOCK_SIZE (2)
+#define PLAYER_SIZE (1.5)
 
 class   Scene
 {
@@ -29,7 +32,8 @@ public:
 	~Scene();
 
 	bool    buildMap();
-	static bool    worldCollision(glm::vec3 pos, glm::vec3 offset);
+	static bool     worldCollision(glm::vec3 pos, glm::vec3 offset, Scene *scene);
+	static bool     checkBlockCollision(glm::vec3 blockPos, glm::vec3 entityPos);
 
 public:
 	static  void    updatePlayer(MainGame *game, std::vector<void *> params);

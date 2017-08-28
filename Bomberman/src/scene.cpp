@@ -1,5 +1,4 @@
 #include <scene.hpp>
-#include <time.h>
 
 Scene::Scene(MainGame *game, std::vector<std::string> *map, int enemyCount)
 {
@@ -12,8 +11,7 @@ Scene::Scene(MainGame *game, std::vector<std::string> *map, int enemyCount)
 Scene::Scene(const Scene &rhs)
 {}
 
-Scene& Scene::operator=(const Scene &rhs)
-{}
+Scene& Scene::operator=(const Scene &rhs) { return *this; }
 
 Scene::~Scene()
 {
@@ -30,7 +28,6 @@ bool Scene::buildMap()
 	_mapWidth = _map->size();
 	_mapLength = _map[0].size();
 
-	srand (time(NULL));
 	float  z = GRID_START_Z;
 	int yy = 0;
 	for (std::string line : *_map)
@@ -80,6 +77,7 @@ void Scene::_addBreakableBlock(float x, float z, int xx, int yy)
 	{
 		Block *block = new Block(i, "breakBlock", true);
 		_blocks[yy][xx] = block;
+		_blocks[yy][xx]->setPosition(x, 0, z);
 		MainGame::renderer.addToRender("breakBlock", i, model, mat);
 		i++;
 	}
@@ -95,6 +93,7 @@ void Scene::_addUnbreakableBlock(float x, float z, int xx, int yy)
 	{
 		Block *block = new Block(i, "breakBlock", false);
 		_blocks[yy][xx] = block;
+		_blocks[yy][xx]->setPosition(x, 0, z);
 		MainGame::renderer.addToRender("unbreakBlock", i, model, mat);
 		i++;
 	}
@@ -104,8 +103,6 @@ void Scene::_addFloor(float x, float z)
 {
 	static int i = 0;
 	Zion::Renderable *model;
-
-	int tmp = rand() % 2 + 1;
 
 	glm::mat4 mat = glm::translate(glm::mat4(), glm::vec3(x, -1, z));
 	model = _game->getModel("floor1");
@@ -133,7 +130,7 @@ void Scene::_addPlayer(float x, float z)
 
 	glm::vec3 pos = _player->getPosition();
 	_game->getGameCamera().setCameraPosition(
-			glm::vec3(pos.x + 0, pos.y + 10, pos.z + 6));
+			glm::vec3(pos.x + 0, pos.y + 10, pos.z + 1));
 	_game->getGameCamera().setCameraTarget(_player->getPosition());
 	_game->getGameCamera().setCameraUp(glm::vec3(0, 1, 0));
 
@@ -143,12 +140,53 @@ void Scene::_addPlayer(float x, float z)
 			{Scene::updatePlayer, params}));
 }
 
-bool Scene::worldCollision(glm::vec3 pos, glm::vec3 offset)
+bool Scene::worldCollision(glm::vec3 pos, glm::vec3 offset, Scene *scene)
 {
 	glm::vec3 newPos = pos + offset;
 
 	int x = abs((int)((pos.x - GRID_START_X) / GRID_BLOCK_SIZE));
-	int y = abs((int)((pos.z + GRID_START_Z) / GRID_BLOCK_SIZE));
-	//x-1, z-1
-	return true;
+	int y = abs((int)((pos.z + GRID_START_Z) / GRID_BLOCK_SIZE)) + 1;
+
+
+	if (scene->_blocks[y -  1][x] != nullptr)
+	{
+		if (checkBlockCollision(scene->_blocks[y -  1][x]->getPosition(), newPos))
+			return true;
+	}
+	if (scene->_blocks[y +  1][x] != nullptr)
+	{
+		if (checkBlockCollision(scene->_blocks[y +  1][x]->getPosition(), newPos))
+			return true;
+	}
+	if (scene->_blocks[y][x - 1] != nullptr)
+	{
+		if (checkBlockCollision(scene->_blocks[y][x - 1]->getPosition(), newPos))
+			return true;
+	}
+	if (scene->_blocks[y][x + 1] != nullptr)
+	{
+		if (checkBlockCollision(scene->_blocks[y][x + 1]->getPosition(), newPos))
+			return true;
+	}
+	return false;
+}
+
+bool Scene::checkBlockCollision(glm::vec3 blockPos, glm::vec3 entityPos)
+{
+	glm::vec2 center(entityPos.x + PLAYER_SIZE / 2.0f, entityPos.z + PLAYER_SIZE / 2.0f);
+	// Calculate AABB info (center, half-extents)
+	glm::vec2 aabb_half_extents(GRID_BLOCK_SIZE / 2, GRID_BLOCK_SIZE / 2);
+	glm::vec2 aabb_center(
+			blockPos.x + GRID_BLOCK_SIZE / 2,
+			blockPos.z + GRID_BLOCK_SIZE / 2
+	);
+	// Get difference vector between both centers
+	glm::vec2 difference = center - aabb_center;
+	glm::vec2 clamped = glm::clamp(difference, -aabb_half_extents, aabb_half_extents);
+	// Add clamped value to AABB_center and we get the value of box closest to circle
+	glm::vec2 closest = aabb_center + clamped;
+	// Retrieve vector between center circle and closest point AABB and check if length <= radius
+	difference = closest - center;
+	glm::vec2 tmp = glm::vec2(PLAYER_SIZE / 2.0f, PLAYER_SIZE / 2.0f);
+	return fabs(difference.x - difference.y) < PLAYER_SIZE / 2.0f;
 }
