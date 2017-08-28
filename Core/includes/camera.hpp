@@ -12,6 +12,7 @@ namespace Zion
 		glm::vec3   _front;
 		glm::vec3   _right;
 		glm::vec3   _worldUp;
+		glm::vec3   _target;
 		glm::vec3   Up;
 		float       _pitch;
 		float       _yaw;
@@ -36,5 +37,8 @@ namespace Zion
 		void            changeCameraXPos(float x);
 		void            changeCameraYPos(float y);
 		void            changeCameraZPos(float z);
+		void            setCameraPosition(glm::vec3 pos);
+		void            setCameraTarget(glm::vec3 target);
+		void            setCameraUp(glm::vec3 up);
 	};
 }

@@ -4,24 +4,24 @@ Player::Player(int id, std::string type) : NonStatic(id, type) {}
 
 void Player::setPosition(float x, float y, float z)
 {
-	_posX = x;
-	_posY = y;
-	_posZ = z;
-	translate(glm::vec3(x, y, z));
+	_pos = glm::vec3(x, y, z);
+	translate(_pos);
 }
 
 void Player::changePosX(float val)
 {
-	_posX += val;
-	translate(glm::vec3(_posX, _posY, _posZ));
+	_pos.x += val;
+	translate(_pos);
 }
 void Player::changePosY(float val)
 {
-	_posY += val;
-	translate(glm::vec3(_posX, _posY, _posZ));
+	_pos.y += val;
+	translate(_pos);
 }
 void Player::changePosZ(float val)
 {
-	_posZ += val;
-	translate(glm::vec3(_posX, _posY, _posZ));
+	_pos.z += val;
+	translate(_pos);
 }
+
+glm::vec3 Player::getPosition() { return _pos; }

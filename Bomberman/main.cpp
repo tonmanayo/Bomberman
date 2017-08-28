@@ -28,7 +28,8 @@ int     main(int ac, char **av)
 
 	scene = new Scene(&game, game.getMap("map1"), 5);
 
-	MainGame::functions.insert(std::pair<const char *, Func>("checkKeys", {checkKeys, std::vector<void *>()}));
+	MainGame::functions.insert(std::pair<const char *,
+			Func>("checkKeys", {checkKeys, std::vector<void *>()}));
 
 	game.gameLoop();
 	return 0;

@@ -111,12 +111,18 @@ void Scene::_addPlayer(float x, float z)
 	{
 		_player = new Player(0, "player");
 		_player->setPosition(x, 0, z);
-		_player->scale(glm::vec3(0.2, 0.2, 0.2));
+		_player->scale(glm::vec3(0.3, 0.3, 0.3));
 		MainGame::renderer.addToRender(_player->getType(), _player->getId(), model,
 				_player->getTransformation());
 	}
-	std::vector<void *> params;
 
+	glm::vec3 pos = _player->getPosition();
+	_game->getGameCamera().setCameraPosition(
+			glm::vec3(pos.x + 0, pos.y + 10, pos.z + 6));
+	_game->getGameCamera().setCameraTarget(_player->getPosition());
+	_game->getGameCamera().setCameraUp(glm::vec3(0, 1, 0));
+
+	std::vector<void *> params;
 	params.push_back(this);
 	MainGame::functions.insert(std::pair<const char *, Func>("updatePlayer",
 			{Scene::updatePlayer, params}));
@@ -132,6 +138,11 @@ void Scene::updatePlayer(MainGame *game, std::vector<void *> params)
 		scene->_player->rotate(glm::radians(0.0f), {0, 1, 0});
 		MainGame::renderer.applyTransformationToRenderable(scene->_player->getType(),
 			scene->_player->getId(), scene->_player->getTransformation());
+		glm::vec3 pos = scene->_player->getPosition();
+		scene->_game->getGameCamera().setCameraPosition(
+				glm::vec3(pos.x + 0, pos.y + 10, pos.z + 6));
+		scene->_game->getGameCamera().setCameraTarget(scene->_player->getPosition());
+		scene->_game->getGameCamera().setCameraUp(glm::vec3(0, 1, 0));
 	}
 	if (game->getGameWindow().isKeyPressed(GLFW_KEY_W))
 	{
@@ -139,6 +150,11 @@ void Scene::updatePlayer(MainGame *game, std::vector<void *> params)
 		scene->_player->rotate(glm::radians(180.0f), {0, 1, 0});
 		MainGame::renderer.applyTransformationToRenderable(scene->_player->getType(),
 				scene->_player->getId(), scene->_player->getTransformation());
+		glm::vec3 pos = scene->_player->getPosition();
+		scene->_game->getGameCamera().setCameraPosition(
+				glm::vec3(pos.x + 0, pos.y + 10, pos.z + 6));
+		scene->_game->getGameCamera().setCameraTarget(scene->_player->getPosition());
+		scene->_game->getGameCamera().setCameraUp(glm::vec3(0, 1, 0));
 	}
 	if (game->getGameWindow().isKeyPressed(GLFW_KEY_A))
 	{
@@ -146,6 +162,11 @@ void Scene::updatePlayer(MainGame *game, std::vector<void *> params)
 		scene->_player->rotate(glm::radians(-90.0f), {0, 1, 0});
 		MainGame::renderer.applyTransformationToRenderable(scene->_player->getType(),
 				scene->_player->getId(), scene->_player->getTransformation());
+		glm::vec3 pos = scene->_player->getPosition();
+		scene->_game->getGameCamera().setCameraPosition(
+				glm::vec3(pos.x + 0, pos.y + 10, pos.z + 6));
+		scene->_game->getGameCamera().setCameraTarget(scene->_player->getPosition());
+		scene->_game->getGameCamera().setCameraUp(glm::vec3(0, 1, 0));
 	}
 	if (game->getGameWindow().isKeyPressed(GLFW_KEY_D))
 	{
@@ -153,5 +174,10 @@ void Scene::updatePlayer(MainGame *game, std::vector<void *> params)
 		scene->_player->rotate(glm::radians(90.0f), {0, 1, 0});
 		MainGame::renderer.applyTransformationToRenderable(scene->_player->getType(),
 				scene->_player->getId(), scene->_player->getTransformation());
+		glm::vec3 pos = scene->_player->getPosition();
+		scene->_game->getGameCamera().setCameraPosition(
+				glm::vec3(pos.x + 0, pos.y + 10, pos.z + 6));
+		scene->_game->getGameCamera().setCameraTarget(scene->_player->getPosition());
+		scene->_game->getGameCamera().setCameraUp(glm::vec3(0, 1, 0));
 	}
 }

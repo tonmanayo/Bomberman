@@ -5,9 +5,7 @@
 class   Player : public NonStatic
 {
 private:
-	float   _posX;
-	float   _posY;
-	float   _posZ;
+	glm::vec3   _pos;
 
 public:
 	Player(int id, std::string type);
@@ -17,4 +15,5 @@ public:
 	void    changePosX(float val);
 	void    changePosY(float val);
 	void    changePosZ(float val);
+	glm::vec3   getPosition();
 };

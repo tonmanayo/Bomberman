@@ -31,10 +31,11 @@ namespace Zion
 		/// Also re-calculate the Right and Up vector
 		_right = glm::normalize(glm::cross(_front, _worldUp));
 		Up = glm::normalize(glm::cross(_right, _front));
+		_target = _position + _front;
 	}
 
 	glm::mat4 Camera::getViewMatrix() const {
-		return glm::lookAt(_position, _position + _front, Up);
+		return glm::lookAt(_position, _target, Up);
 	}
 
 	void Camera::moveLeft(float val)
@@ -88,4 +89,8 @@ namespace Zion
 	}
 
 	glm::vec3 Camera::getCameraPosition() { return _position; }
+	void Camera::setCameraPosition(glm::vec3 pos) { _position = pos; }
+	void Camera::setCameraTarget(glm::vec3 target) { _target = target; }
+	void Camera::setCameraUp(glm::vec3 up) { Up = up; }
+
 }
