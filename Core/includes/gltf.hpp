@@ -11,6 +11,8 @@ namespace Zion
 		tinygltf::Model     _model;
 		std::vector<int>    _nodes;
 		std::string         _path;
+		std::vector<float>  _joints;
+		std::vector<float>  _weights;
 	private:
 		bool    _processModel();
 		void    _processModelMesh(tinygltf::Mesh& mesh, int node);

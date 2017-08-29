@@ -29,7 +29,10 @@ int     main(int ac, char **av)
 	glm::mat4   proj_mat = glm::perspective(glm::radians(70.0f), (float)1280 / (float)960, 0.1f, 100.0f);
 	shader.setUniformMat4((GLchar *)"proj_matrix", proj_mat);
 
-	generateBlocks();
+	//generateBlocks();
+
+	Zion::Gltf *model = new Zion::Gltf();
+	model->loadFromFile(shader, "models/blocks/boneBox.gltf");
 
 	Zion::Renderable::startTime = (float)glfwGetTime();
 	Zion::Renderable::runTime = Zion::Renderable::startTime;
@@ -43,7 +46,7 @@ int     main(int ac, char **av)
 		win.clearWindow(0.0f, 0.0f, 0.0f, 1.0f);
 		checkKeys(win, camera);
 		shader.setUniformMat4((GLchar *)"view_matrix", camera.getViewMatrix());
-		renderer.render();
+		//renderer.render();
 		win.updateWindow();
 	}
 	for (GLuint id : Zion::Texture::textureIDs)
@@ -78,7 +81,7 @@ void    generateBlocks()
 		for (int x = 0; x < 10; x++)
 		{
 			if (map[z][x] == 1)
-				renderer.addToRender(block, glm::translate(mat, glm::vec3(X, 0, Z)));
+				//renderer.addToRender(block, glm::translate(mat, glm::vec3(X, 0, Z)));
 			X += 2;
 		}
 		Z -= 2;

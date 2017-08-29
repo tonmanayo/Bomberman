@@ -70,6 +70,7 @@ namespace Zion
 			for (int i : scene.nodes)
 			{
 				tinygltf::Node& node = _model.nodes[i];
+				/// TODO process node children
 				if (node.mesh >= 0)
 					_processModelMesh(_model.meshes[node.mesh], i);
 			}
@@ -119,6 +120,22 @@ namespace Zion
 				bufView = bufViews[Acc.bufferView];
 				auto *data = (float *)&bufs[bufView.buffer].data[bufView.byteOffset];
 				_uvs.insert(_uvs.end(), data, data + (Acc.count * 2));
+			}
+			/// adding uv coords to _joints
+			if ((it = prim.attributes.find("JOINTS_0")) != prim.attributes.end())
+			{
+				Acc = acc[prim.attributes["JOINTS_0"]];
+				bufView = bufViews[Acc.bufferView];
+				auto *data = (float *)&bufs[bufView.buffer].data[bufView.byteOffset];
+				_joints.insert(_joints.end(), data, data + (Acc.count * 4));
+			}
+			/// adding uv coords to _weights
+			if ((it = prim.attributes.find("WEIGHTS_0")) != prim.attributes.end())
+			{
+				Acc = acc[prim.attributes["WEIGHTS_0"]];
+				bufView = bufViews[Acc.bufferView];
+				auto *data = (float *)&bufs[bufView.buffer].data[bufView.byteOffset];
+				_weights.insert(_weights.end(), data, data + (Acc.count * 4));
 			}
 			/// adding indices of mesh to _indices
 			Acc = acc[prim.indices];
