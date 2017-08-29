@@ -68,18 +68,70 @@ namespace Zion
 		for (tinygltf::Scene& scene : _model.scenes)
 		{
 			for (int i : scene.nodes)
-			{
-				tinygltf::Node& node = _model.nodes[i];
-				/// TODO process node children
-				if (node.mesh >= 0)
-					_processModelMesh(_model.meshes[node.mesh], i);
-			}
+				_processNode(i);
+		}
+		if (_vertex.empty())
+		{
+			for (tinygltf::Mesh& mesh : _model.meshes)
+				_processModelMesh(mesh, 0);
 		}
 		_loadDataToGpu();
 		_loadMaterials();
 		_clearVectors();
 		_loaded = true;
 		return true;
+	}
+
+	void Gltf::_processNode(int index)
+	{
+		tinygltf::Node& node = _model.nodes[index];
+		/// getting mesh data
+		if (node.mesh >= 0)
+			_processModelMesh(_model.meshes[node.mesh], index);
+		/// getting joint connections
+		if (!_model.skins.empty() && node.skin >= 0)
+			_processSkin(_model.skins[node.skin]);
+		/// processing children nodes
+		for (int i : node.children)
+			_processNode(i);
+	}
+
+	void Gltf::_processSkin(tinygltf::Skin &skin)
+	{
+		tinygltf::Accessor& acc = _model.accessors[skin.inverseBindMatrices];
+		tinygltf::BufferView& bufView = _model.bufferViews[acc.bufferView];
+
+		_hasJoint = true;
+		/// array of inverse matrices for all joints in the skin
+		auto *mats = (glm::mat4 *)(&_model.buffers[bufView.buffer].data[0]);
+		/// getting joints from skin (skeleton)
+		for (int i : _model.nodes[skin.skeleton].children)
+		{
+			auto *bone = _processSkinJoints(i, mats, skin.joints[0], skin.skeleton);
+				if (bone != nullptr)
+					_bones.push_back(bone);
+		}
+	}
+
+	Joint* Gltf::_processSkinJoints(int id, glm::mat4 *mats, int start, int skeleton)
+	{
+		tinygltf::Node& node = _model.nodes[id];
+
+		if (id <= skeleton)
+			return nullptr;
+		auto *bone = new Joint();
+		bone->index = id;
+		bone->id = id - start;
+		bone->invMatrix = mats[id];
+		bone->name = node.name;
+		/// getting joint children
+		for (int i : node.children)
+		{
+			auto *childBone = _processSkinJoints(i, mats, start, skeleton);
+			if (childBone != nullptr)
+				bone->children.push_back(childBone);
+		}
+		return bone;
 	}
 
 	void Gltf::_processModelMesh(tinygltf::Mesh& mesh, int node)
@@ -148,17 +200,19 @@ namespace Zion
 
 	void Gltf::_loadDataToGpu()
 	{
-		GLuint  vbo[5];
+		GLuint  vbo[7];
 		GLint position = _shader.getAttribLocation((char *)"position");
 		GLint matIndex = _shader.getAttribLocation((char *)"matIndex");
 		GLint normal = _shader.getAttribLocation((char *)"normal");
+		GLint joint = _shader.getAttribLocation((char *)"joint");
+		GLint weight = _shader.getAttribLocation((char *)"weight");
 		GLint uv = _shader.getAttribLocation((char *)"uv");
 		GLint node = _shader.getAttribLocation((char *)"node");
 
 		glGenVertexArrays(1, &_vao);
 		glBindVertexArray(_vao);
-		glGenBuffers(5, vbo);
-		_vbos.insert(_vbos.end(), vbo, vbo + 4);
+		glGenBuffers(7, vbo);
+		_vbos.insert(_vbos.end(), vbo, vbo + 6);
 		if (!_vertex.empty() && position != -1)
 		{
 			glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
@@ -198,6 +252,22 @@ namespace Zion
 			glEnableVertexAttribArray((GLuint)uv);
 			glVertexAttribPointer((GLuint)uv, 2, GL_FLOAT, GL_FALSE, 0, (void *)nullptr);
 			Window::getError((char *)"after adding uv in Gltf model");
+		}
+		if (!_joints.empty() && joint != -1)
+		{
+			glBindBuffer(GL_ARRAY_BUFFER, vbo[5]);
+			glBufferData(GL_ARRAY_BUFFER, _joints.size() * sizeof(GLfloat), _joints.data(), GL_STATIC_DRAW);
+			glEnableVertexAttribArray((GLuint)joint);
+			glVertexAttribPointer((GLuint)joint, 4, GL_FLOAT, GL_FALSE, 0, (void *)nullptr);
+			Window::getError((char *)"after adding joint in Gltf model");
+		}
+		if (!_weights.empty() && weight != -1)
+		{
+			glBindBuffer(GL_ARRAY_BUFFER, vbo[6]);
+			glBufferData(GL_ARRAY_BUFFER, _weights.size() * sizeof(GLfloat), _weights.data(), GL_STATIC_DRAW);
+			glEnableVertexAttribArray((GLuint)weight);
+			glVertexAttribPointer((GLuint)weight, 4, GL_FLOAT, GL_FALSE, 0, (void *)nullptr);
+			Window::getError((char *)"after adding weight in Gltf model");
 		}
 		glGenBuffers(1, &_ibo);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ibo);
@@ -267,10 +337,25 @@ namespace Zion
 		}
 	}
 
+	void Gltf::_loadMatrices(Joint *bone)
+	{
+		std::string str = std::string("jointMat[") + std::to_string(bone->id) + std::string("]");
+		_shader.setUniformMat4((GLchar *)str.c_str(), _animeMatrice[bone->index]);
+		for (Joint *child : bone->children)
+			_loadMatrices(child);
+	}
+
 	void Gltf::render(glm::mat4 matrix)
 	{
 		_shader.enable();
 		_shader.setUniformMat4((GLchar *)"model_matrix", matrix);
+		if (!_model.animations.empty())
+		{
+			_shader.setUniform1i((GLchar *)"hasAnime", true);
+			_calcAnimation(_model.animations[0], Renderable::secondsPassed / 1000.0f);
+			for (Joint *bone : _bones)
+				_loadMatrices(bone);
+		}
 		for (std::pair<int, Material> material : _materials)
 			Material::sendMaterialToShader(_shader, material.second, material.first);
 		glBindVertexArray(_vao);
