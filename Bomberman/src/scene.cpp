@@ -163,6 +163,8 @@ bool Scene::worldCollisionDown(glm::vec3 pos, glm::vec3 offset, Scene *scene)
 		if (checkBlockCollision(scene->_blocks[y - 1][x - 1]->getPosition(), newPos))
 		{
 			//std::cout << "collide down left" << std::endl;
+			scene->_player->changePosZ(0.01f);
+			scene->_player->changePosX(0.01f);
 			return true;
 		}
 	}
@@ -170,6 +172,8 @@ bool Scene::worldCollisionDown(glm::vec3 pos, glm::vec3 offset, Scene *scene)
 	{
 		if (checkBlockCollision(scene->_blocks[y - 1][x + 1]->getPosition(), newPos))
 		{
+			scene->_player->changePosZ(0.01f);
+			scene->_player->changePosX(-0.01f);
 			//std::cout << "collide down right" << std::endl;
 			return true;
 		}
@@ -197,6 +201,8 @@ bool Scene::worldCollisionUp(glm::vec3 pos, glm::vec3 offset, Scene *scene)
 		if (checkBlockCollision(scene->_blocks[y + 1][x - 1]->getPosition(), newPos))
 		{
 			//std::cout << "collide up left" << std::endl;
+			scene->_player->changePosZ(-0.005f);
+			scene->_player->changePosX(0.005f);
 			return true;
 		}
 	}
@@ -204,6 +210,8 @@ bool Scene::worldCollisionUp(glm::vec3 pos, glm::vec3 offset, Scene *scene)
 	{
 		if (checkBlockCollision(scene->_blocks[y + 1][x + 1]->getPosition(), newPos))
 		{
+			scene->_player->changePosZ(-0.005f);
+			scene->_player->changePosX(-0.005f);
 			//std::cout << "collide up right" << std::endl;
 			return true;
 		}
@@ -220,18 +228,25 @@ bool Scene::worldCollisionLeft(glm::vec3 pos, glm::vec3 offset, Scene *scene)
 
 	if (scene->_blocks[y - 1][x - 1] != nullptr)
 	{
-		if (checkBlockCollision1(scene->_blocks[y - 1][x - 1]->getPosition(), newPos))
+		if (checkBlockCollision1(scene->_blocks[y - 1][x - 1]->getPosition(), newPos)) {
+			scene->_player->changePosZ(-0.005f);
+			scene->_player->changePosX(0.005f);
 			return true;
+		}
 	}
 	if (scene->_blocks[y][x - 1] != nullptr)
 	{
-		if (checkBlockCollision(scene->_blocks[y][x - 1]->getPosition(), newPos))
+		if (checkBlockCollision(scene->_blocks[y][x - 1]->getPosition(), newPos)) {
 			return true;
+		}
 	}
 	if (scene->_blocks[y + 1][x - 1] != nullptr)
 	{
-		if (checkBlockCollision1(scene->_blocks[y + 1][x - 1]->getPosition(), newPos))
+		if (checkBlockCollision1(scene->_blocks[y + 1][x - 1]->getPosition(), newPos)) {
+			scene->_player->changePosZ(0.005f);
+			scene->_player->changePosX(0.005f);
 			return true;
+		}
 	}
 	return false;
 }
@@ -245,8 +260,11 @@ bool Scene::worldCollisionRight(glm::vec3 pos, glm::vec3 offset, Scene *scene)
 
 	if (scene->_blocks[y - 1][x + 1] != nullptr)
 	{
-		if (checkBlockCollision1(scene->_blocks[y - 1][x + 1]->getPosition(), newPos))
+		if (checkBlockCollision1(scene->_blocks[y - 1][x + 1]->getPosition(), newPos)) {
+			scene->_player->changePosZ(-0.005f);
+			scene->_player->changePosX(0.005f);
 			return true;
+		}
 	}
 	if (scene->_blocks[y][x + 1] != nullptr)
 	{
@@ -255,8 +273,11 @@ bool Scene::worldCollisionRight(glm::vec3 pos, glm::vec3 offset, Scene *scene)
 	}
 	if (scene->_blocks[y + 1][x + 1] != nullptr)
 	{
-		if (checkBlockCollision1(scene->_blocks[y + 1][x + 1]->getPosition(), newPos))
+		if (checkBlockCollision1(scene->_blocks[y + 1][x + 1]->getPosition(), newPos)) {
+			scene->_player->changePosZ(0.005f);
+			scene->_player->changePosX(0.005f);
 			return true;
+		}
 	}
 	return false;
 }

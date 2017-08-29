@@ -6,9 +6,9 @@
 
 #define GRID_START_X (0)
 #define GRID_START_Z (0)
-#define GRID_BLOCK_SIZE (2)
+#define GRID_BLOCK_SIZE (2.0)
 #define HALF_GRID_BLOCK_SIZE (GRID_BLOCK_SIZE / (2.0))
-#define PLAYER_SIZE (1.8)
+#define PLAYER_SIZE (2.05)
 #define HALF_PLAYER_SIZE (PLAYER_SIZE / (2.0))
 
 class   Scene
