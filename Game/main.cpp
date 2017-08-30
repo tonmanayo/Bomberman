@@ -36,6 +36,7 @@ int     main(int ac, char **av)
 
 	Zion::Gltf *model = new Zion::Gltf();
 	model->loadFromFile(shader1, "models/bomberman/Onile.glb");
+	//model->loadFromFile(shader1, "models/bomberman/android.gltf");
 	Zion::Material *mat = new Zion::Material();
 	mat->texure.loadTextureFromPath("models/bomberman/OnileDiffuseColor.png");
 	model->addMaterial(0, *mat);
@@ -54,7 +55,7 @@ int     main(int ac, char **av)
 		checkKeys(win, camera);
 		shader.setUniformMat4((GLchar *)"view_matrix", camera.getViewMatrix());
 		shader1.setUniformMat4((GLchar *)"view_matrix", camera.getViewMatrix());
-		model->render(glm::translate(glm::mat4(), glm::vec3(0, 0, -1)));
+		model->render(glm::translate(glm::mat4(), glm::vec3(0, 0, -4)));
 		//renderer.render();
 		win.updateWindow();
 	}

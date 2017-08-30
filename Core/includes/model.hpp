@@ -14,10 +14,10 @@ namespace Zion
 		GLuint      _ibo;
 		std::vector<GLuint>     _vbos;
 		std::vector<GLushort>   _indices;
-		std::vector<float>      _vertex;
+		std::vector<GLbyte>      _vertex;
 		std::vector<float>      _matIndexs;
-		std::vector<float>      _normals;
-		std::vector<float>      _uvs;
+		std::vector<GLbyte>      _normals;
+		std::vector<GLbyte>      _uvs;
 		std::map<int, Material> _materials;
 		bool                    _loaded = false;
 		bool                    _hasJoint = false;
