@@ -21,6 +21,7 @@ private:
 	int         		_enemyCount;
 	Player      		*_player;
 	std::vector<Bomb>	_bomb;
+    int                 _nbBombs;
 	std::vector<std::string> *_map;
 	std::map<int, std::map<int, Block *>>    _blocks;
 	int getWorldx(float x);

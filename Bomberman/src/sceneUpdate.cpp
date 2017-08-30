@@ -56,9 +56,10 @@ void Scene::updatePlayer(MainGame *game, std::vector<void *> params)
 		scene->_game->getGameCamera().setCameraTarget(scene->_player->getPosition());
 		scene->_game->getGameCamera().setCameraUp(glm::vec3(0, 1, 0));
 	}
-	if (game->getGameWindow().isKeyPressed(GLFW_KEY_SPACE))
+	if (game->getGameWindow().isKeyPressed(GLFW_KEY_SPACE) && scene->_nbBombs < 1)
 	{
-		scene->_addBomb(scene->_player->getPosition().x, scene->_player->getPosition().z);
+            scene->_addBomb(scene->_player->getPosition().x, scene->_player->getPosition().z);
+            scene->_nbBombs++;
 	}
 }
 
@@ -67,14 +68,12 @@ void Scene::updateBomb(MainGame *game, std::vector<void *> params) {
 	for (int i = 0; i < scene->_bomb.size(); ++i) {
 		if (scene->_bomb[i].explodeTime())
 		{
+            scene->_nbBombs--;
 			MainGame::renderer.removeFromRender("bomb", scene->_bomb[i].getId());
 			delete scene->_blocks[scene->getWorldy(scene->_bomb[i].getPosition().z)][scene->getWorldx(scene->_bomb[i].getPosition().x)];
 			scene->_blocks[scene->getWorldy(scene->_bomb[i].getPosition().z)][scene->getWorldx(scene->_bomb[i].getPosition().x)] = nullptr;
 			scene->_bomb[i] = scene->_bomb.back();
 			scene->_bomb.pop_back();
-
-			std::cout << "delete x: " << scene->getWorldx(scene->_bomb[i].getPosition().x) << " Y: " <<  scene->getWorldy(scene->_bomb[i].getPosition().z) << std::endl;
-//			scene->_blocks
 		}
 	}
 }

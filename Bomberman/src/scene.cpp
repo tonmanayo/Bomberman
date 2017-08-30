@@ -6,6 +6,7 @@ Scene::Scene(MainGame *game, std::vector<std::string> *map, int enemyCount)
 	_map = map;
 	_game = game;
 	buildMap();
+    _nbBombs = 0;
 }
 
 Scene::Scene(const Scene &rhs)
@@ -191,38 +192,26 @@ bool Scene::worldCollisionDown(glm::vec3 pos, glm::vec3 offset, Scene *scene)
 {
 	glm::vec3 newPos = pos + offset;
 
-	int x = abs((int)round((pos.x) / (float)GRID_BLOCK_SIZE));
-	int y = abs((int)round((pos.z) / (float)GRID_BLOCK_SIZE));
+    int x = scene->getWorldx(pos.x);
+    int y = scene->getWorldy(pos.z);
 
-	if (scene->_blocks[y -  1][x] != nullptr)
+	if (scene->_blocks[y -  1][x] != nullptr && checkBlockCollision(scene->_blocks[y - 1][x]->getPosition(), newPos))               //std::cout << "collide down" << std::endl;
 	{
-		if (checkBlockCollision(scene->_blocks[y - 1][x]->getPosition(), newPos))
-		{
-			//std::cout << "collide down" << std::endl;
 			return true;
-		}
 	}
-	if (scene->_blocks[y -  1][x - 1] != nullptr)
-	{
-		if (checkBlockCollision(scene->_blocks[y - 1][x - 1]->getPosition(), newPos))
-		{
-			//std::cout << "collide down left" << std::endl;
+	if (scene->_blocks[y -  1][x - 1] != nullptr && checkBlockCollision(scene->_blocks[y - 1][x - 1]->getPosition(), newPos))   	//std::cout << "collide down left" << std::endl;
+    {
 			scene->_player->changePosZ(0.01f);
 			scene->_player->changePosX(0.01f);
 			return true;
-		}
 	}
-	if (scene->_blocks[y -  1][x + 1] != nullptr)
+	if (scene->_blocks[y -  1][x + 1] != nullptr && checkBlockCollision(scene->_blocks[y - 1][x + 1]->getPosition(), newPos))       //std::cout << "collide down right" << std::endl;
 	{
-		if (checkBlockCollision(scene->_blocks[y - 1][x + 1]->getPosition(), newPos))
-		{
 			scene->_player->changePosZ(0.01f);
 			scene->_player->changePosX(-0.01f);
-			//std::cout << "collide down right" << std::endl;
 			return true;
-		}
 	}
-	return false;
+    return false;
 }
 
 bool Scene::worldCollisionUp(glm::vec3 pos, glm::vec3 offset, Scene *scene)
@@ -232,33 +221,21 @@ bool Scene::worldCollisionUp(glm::vec3 pos, glm::vec3 offset, Scene *scene)
 	int x = scene->getWorldx(pos.x);
 	int y = scene->getWorldy(pos.z);
 
-	if (scene->_blocks[y + 1][x] != nullptr)
+	if (scene->_blocks[y + 1][x] != nullptr && checkBlockCollision1(scene->_blocks[y + 1][x]->getPosition(), newPos))                   //std::cout << "collide up" << std::endl;
 	{
-		if (checkBlockCollision1(scene->_blocks[y + 1][x]->getPosition(), newPos))
-		{
-			//std::cout << "collide up" << std::endl;
 			return true;
-		}
 	}
-	if (scene->_blocks[y + 1][x - 1] != nullptr)
+	if (scene->_blocks[y + 1][x - 1] != nullptr && checkBlockCollision(scene->_blocks[y + 1][x - 1]->getPosition(), newPos))    		//std::cout << "collide up left" << std::endl;
 	{
-		if (checkBlockCollision(scene->_blocks[y + 1][x - 1]->getPosition(), newPos))
-		{
-			//std::cout << "collide up left" << std::endl;
 			scene->_player->changePosZ(-0.005f);
 			scene->_player->changePosX(0.005f);
 			return true;
-		}
 	}
-	if (scene->_blocks[y + 1][x + 1] != nullptr)
+	if (scene->_blocks[y + 1][x + 1] != nullptr && checkBlockCollision(scene->_blocks[y + 1][x + 1]->getPosition(), newPos))            //std::cout << "collide up right" << std::endl;
 	{
-		if (checkBlockCollision(scene->_blocks[y + 1][x + 1]->getPosition(), newPos))
-		{
 			scene->_player->changePosZ(-0.005f);
 			scene->_player->changePosX(-0.005f);
-			//std::cout << "collide up right" << std::endl;
 			return true;
-		}
 	}
 	return false;
 }
@@ -270,27 +247,21 @@ bool Scene::worldCollisionLeft(glm::vec3 pos, glm::vec3 offset, Scene *scene)
 	int x = scene->getWorldx(pos.x);
 	int y = scene->getWorldy(pos.z);
 
-	if (scene->_blocks[y - 1][x - 1] != nullptr)
+	if (scene->_blocks[y - 1][x - 1] != nullptr && checkBlockCollision1(scene->_blocks[y - 1][x - 1]->getPosition(), newPos))
 	{
-		if (checkBlockCollision1(scene->_blocks[y - 1][x - 1]->getPosition(), newPos)) {
 			scene->_player->changePosZ(-0.005f);
 			scene->_player->changePosX(0.005f);
 			return true;
-		}
 	}
-	if (scene->_blocks[y][x - 1] != nullptr)
+	if (scene->_blocks[y][x - 1] != nullptr && checkBlockCollision(scene->_blocks[y][x - 1]->getPosition(), newPos))
 	{
-		if (checkBlockCollision(scene->_blocks[y][x - 1]->getPosition(), newPos)) {
 			return true;
-		}
 	}
-	if (scene->_blocks[y + 1][x - 1] != nullptr)
+	if (scene->_blocks[y + 1][x - 1] != nullptr && checkBlockCollision1(scene->_blocks[y + 1][x - 1]->getPosition(), newPos))
 	{
-		if (checkBlockCollision1(scene->_blocks[y + 1][x - 1]->getPosition(), newPos)) {
 			scene->_player->changePosZ(0.005f);
 			scene->_player->changePosX(0.005f);
 			return true;
-		}
 	}
 	return false;
 }
@@ -302,26 +273,21 @@ bool Scene::worldCollisionRight(glm::vec3 pos, glm::vec3 offset, Scene *scene)
 	int x = scene->getWorldx(pos.x);
 	int y = scene->getWorldy(pos.z);
 
-	if (scene->_blocks[y - 1][x + 1] != nullptr)
+	if (scene->_blocks[y - 1][x + 1] != nullptr && checkBlockCollision1(scene->_blocks[y - 1][x + 1]->getPosition(), newPos))
 	{
-		if (checkBlockCollision1(scene->_blocks[y - 1][x + 1]->getPosition(), newPos)) {
 			scene->_player->changePosZ(-0.005f);
 			scene->_player->changePosX(0.005f);
 			return true;
-		}
 	}
-	if (scene->_blocks[y][x + 1] != nullptr)
+	if (scene->_blocks[y][x + 1] != nullptr && checkBlockCollision(scene->_blocks[y][x + 1]->getPosition(), newPos))
 	{
-		if (checkBlockCollision(scene->_blocks[y][x + 1]->getPosition(), newPos))
 			return true;
 	}
-	if (scene->_blocks[y + 1][x + 1] != nullptr)
+	if (scene->_blocks[y + 1][x + 1] != nullptr && checkBlockCollision1(scene->_blocks[y + 1][x + 1]->getPosition(), newPos))
 	{
-		if (checkBlockCollision1(scene->_blocks[y + 1][x + 1]->getPosition(), newPos)) {
 			scene->_player->changePosZ(0.005f);
 			scene->_player->changePosX(0.005f);
 			return true;
-		}
 	}
 	return false;
 }
@@ -329,7 +295,6 @@ bool Scene::worldCollisionRight(glm::vec3 pos, glm::vec3 offset, Scene *scene)
 bool Scene::checkBlockCollision(glm::vec3 blockPos, glm::vec3 entityPos)
 {
 	float sqDist = 0.0f;
-	float v;
 	float minX, minZ, maxX, maxZ;
 
 	entityPos.x += HALF_PLAYER_SIZE;
