@@ -402,5 +402,25 @@ bool Scene::breakableBrickCollisionRight(glm::vec3 pos, Scene *scene)
     {
         return true;
     }
+
+    return false;
+}
+
+bool Scene::PlayerExplosionCollision(glm::vec3 pos, Scene *scene)
+{
+    int bombx = scene->getWorldx(pos.x);
+    int bomby = scene->getWorldy(pos.z);
+
+    int playerx = scene->getWorldx(scene->_player->getPosition().x);
+    int playery = scene->getWorldy(scene->_player->getPosition().z);
+
+
+    if (playerx == bombx - 1 ||
+            playerx == bombx + 1 ||
+            playery == bomby - 1 ||
+            playery == bomby + 1)
+    {
+        return true;
+    }
     return false;
 }

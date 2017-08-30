@@ -66,6 +66,7 @@ void Scene::updatePlayer(MainGame *game, std::vector<void *> params)
 void Scene::bombExplode(std::vector<void *> params, const Bomb &bomb) {
     auto *scene = (Scene *)params[0];
 
+    //todo add for loop for power up
     if (scene->breakableBrickCollisionDown(bomb.getPosition(), scene))
     {
         MainGame::renderer.removeFromRender("breakBlock", scene->_blocks[scene->getWorldy(bomb.getPosition().z) - 1][scene->getWorldx(bomb.getPosition().x)]->getId());
@@ -96,6 +97,8 @@ void Scene::updateBomb(MainGame *game, std::vector<void *> params) {
 		{
             scene->_nbBombs--;
             bombExplode(params, scene->_bomb[i]);
+            if(scene->PlayerExplosionCollision(scene->_bomb[i].getPosition(), scene))
+                std::cout << "dead\n";
 			MainGame::renderer.removeFromRender("bomb", scene->_bomb[i].getId());
 			delete scene->_blocks[scene->getWorldy(scene->_bomb[i].getPosition().z)][scene->getWorldx(scene->_bomb[i].getPosition().x)];
 			scene->_blocks[scene->getWorldy(scene->_bomb[i].getPosition().z)][scene->getWorldx(scene->_bomb[i].getPosition().x)] = nullptr;
