@@ -3,7 +3,7 @@
 //
 
 
-#include "../include/Bomb.hpp"
+#include <Bomb.hpp>
 
 Bomb::Bomb(glm::vec3 position, int id) :
         _position(position), _id(id)
@@ -13,20 +13,22 @@ Bomb::Bomb(glm::vec3 position, int id) :
 
 Bomb::~Bomb() {}
 
-float Bomb::getTime() const{
+float   Bomb::getTime() const{
     return _time;
 }
 
-bool Bomb::explodeTime(){
-    std::cout << "time: " << _time << std::endl;
-    std::cout << "timeglfw: " << glfwGetTime() << std::endl;
+bool    Bomb::explodeTime(){
     return glfwGetTime() - _time > 1.5;
 }
 
-int Bomb::getId() const {
+int     Bomb::getId() const
+{
     return _id;
 }
 
-glm::vec3 Bomb::getPosition() const {
+glm::vec3 Bomb::getPosition() const
+{
     return _position;
 }
+
+

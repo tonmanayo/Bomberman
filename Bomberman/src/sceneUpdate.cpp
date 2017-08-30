@@ -63,12 +63,42 @@ void Scene::updatePlayer(MainGame *game, std::vector<void *> params)
 	}
 }
 
+void Scene::bombExplode(std::vector<void *> params, const Bomb &bomb) {
+    auto *scene = (Scene *)params[0];
+
+    //todo add for loop for power up
+    if (scene->breakableBrickCollisionDown(bomb.getPosition(), scene))
+    {
+        MainGame::renderer.removeFromRender("breakBlock", scene->_blocks[scene->getWorldy(bomb.getPosition().z) - 1][scene->getWorldx(bomb.getPosition().x)]->getId());
+        scene->_blocks[scene->getWorldy(bomb.getPosition().z) - 1][scene->getWorldx(bomb.getPosition().x)] = nullptr;
+    }
+    if (scene->breakableBrickCollisionUp(bomb.getPosition(), scene))
+    {
+        MainGame::renderer.removeFromRender("breakBlock", scene->_blocks[scene->getWorldy(bomb.getPosition().z) + 1][scene->getWorldx(bomb.getPosition().x)]->getId());
+        scene->_blocks[scene->getWorldy(bomb.getPosition().z) + 1][scene->getWorldx(bomb.getPosition().x)] = nullptr;
+    }
+    if (scene->breakableBrickCollisionLeft(bomb.getPosition(), scene))
+    {
+        MainGame::renderer.removeFromRender("breakBlock", scene->_blocks[scene->getWorldy(bomb.getPosition().z)][scene->getWorldx(bomb.getPosition().x) - 1]->getId());
+        scene->_blocks[scene->getWorldy(bomb.getPosition().z)][scene->getWorldx(bomb.getPosition().x) - 1] = nullptr;
+    }
+    if (scene->breakableBrickCollisionRight(bomb.getPosition(), scene))
+    {
+        MainGame::renderer.removeFromRender("breakBlock", scene->_blocks[scene->getWorldy(bomb.getPosition().z)][scene->getWorldx(bomb.getPosition().x) + 1]->getId());
+        scene->_blocks[scene->getWorldy(bomb.getPosition().z)][scene->getWorldx(bomb.getPosition().x) + 1] = nullptr;
+    }
+
+}
+
 void Scene::updateBomb(MainGame *game, std::vector<void *> params) {
 	auto *scene = (Scene *)params[0];
 	for (int i = 0; i < scene->_bomb.size(); ++i) {
 		if (scene->_bomb[i].explodeTime())
 		{
             scene->_nbBombs--;
+            bombExplode(params, scene->_bomb[i]);
+            if(scene->PlayerExplosionCollision(scene->_bomb[i].getPosition(), scene))
+                std::cout << "dead\n";
 			MainGame::renderer.removeFromRender("bomb", scene->_bomb[i].getId());
 			delete scene->_blocks[scene->getWorldy(scene->_bomb[i].getPosition().z)][scene->getWorldx(scene->_bomb[i].getPosition().x)];
 			scene->_blocks[scene->getWorldy(scene->_bomb[i].getPosition().z)][scene->getWorldx(scene->_bomb[i].getPosition().x)] = nullptr;
