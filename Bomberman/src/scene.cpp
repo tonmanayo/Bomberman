@@ -355,3 +355,52 @@ bool Scene::checkBlockCollision1(glm::vec3 blockPos, glm::vec3 entityPos)
 		sqDist += (entityPos.z - maxZ) * (entityPos.z - maxZ);
 	return sqDist + 0.3f <= (float)(HALF_PLAYER_SIZE * HALF_PLAYER_SIZE);
 }
+
+bool Scene::breakableBrickCollisionDown(glm::vec3 pos, Scene *scene)
+{
+    int x = scene->getWorldx(pos.x);
+    int y = scene->getWorldy(pos.z);
+
+    if (scene->_blocks[y -  1][x] != nullptr && scene->_blocks[y - 1][x]->isBreakable())
+    {
+        return true;
+    }
+    return false;
+}
+
+bool Scene::breakableBrickCollisionUp(glm::vec3 pos, Scene *scene)
+{
+    int x = scene->getWorldx(pos.x);
+    int y = scene->getWorldy(pos.z);
+    //"collide up"
+    if (scene->_blocks[y + 1][x] != nullptr && scene->_blocks[y + 1][x]->isBreakable())
+    {
+        return true;
+    }                                           //"collide up left"
+    return false;
+}
+
+bool Scene::breakableBrickCollisionLeft(glm::vec3 pos, Scene *scene)
+{
+    int x = scene->getWorldx(pos.x);
+    int y = scene->getWorldy(pos.z);
+
+    if (scene->_blocks[y][x - 1] != nullptr && scene->_blocks[y][x - 1]->isBreakable())
+    {
+        return true;
+    }
+
+    return false;
+}
+
+bool Scene::breakableBrickCollisionRight(glm::vec3 pos, Scene *scene)
+{
+    int x = scene->getWorldx(pos.x);
+    int y = scene->getWorldy(pos.z);
+
+    if (scene->_blocks[y][x + 1] != nullptr && scene->_blocks[y][x + 1]->isBreakable())
+    {
+        return true;
+    }
+    return false;
+}

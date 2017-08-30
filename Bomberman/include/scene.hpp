@@ -24,10 +24,7 @@ private:
     int                 _nbBombs;
 	std::vector<std::string> *_map;
 	std::map<int, std::map<int, Block *>>    _blocks;
-	int getWorldx(float x);
-	int getWorldy(float y);
-	float getGridx(float x);
-	float getGridy(float y);
+
 private:
 	void    _addWall(float x, float z, int xx, int yy);
 	void    _addBreakableBlock(float x, float z, int xx, int yy);
@@ -41,6 +38,12 @@ public:
 	Scene&  operator=(const Scene & rhs);
 	~Scene();
 
+    std::map<int, std::map<int, Block *>> getBlocks() {return _blocks;};
+    int     getWorldx(float x);
+    int     getWorldy(float y);
+    float   getGridx(float x);
+    float   getGridy(float y);
+
 	bool    buildMap();
 	static bool     worldCollisionUp(glm::vec3 pos, glm::vec3 offset, Scene *scene);
 	static bool     worldCollisionDown(glm::vec3 pos, glm::vec3 offset, Scene *scene);
@@ -49,8 +52,14 @@ public:
 	static bool     checkBlockCollision(glm::vec3 blockPos, glm::vec3 entityPos);
 	static bool     checkBlockCollision1(glm::vec3 blockPos, glm::vec3 entityPos);
 	static void		updateBomb(MainGame *game, std::vector<void *> params) ;
+    static void     bombExplode(std::vector<void *> params, const Bomb &bomb) ;
+
+    static bool breakableBrickCollisionDown(glm::vec3 pos, Scene *scene);
+    static bool breakableBrickCollisionUp(glm::vec3 pos, Scene *scene);
+    static bool breakableBrickCollisionRight(glm::vec3 pos, Scene *scene);
+    static bool breakableBrickCollisionLeft(glm::vec3 pos, Scene *scene);
 
 
-		public:
+public:
 	static  void    updatePlayer(MainGame *game, std::vector<void *> params);
 };
