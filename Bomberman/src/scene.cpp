@@ -108,11 +108,11 @@ void Scene::_addUnbreakableBlock(float x, float z, int xx, int yy)
 }
 
 int Scene::getWorldx(float x) {
-	return 	 abs((int)round((x - GRID_START_X) / (float)GRID_BLOCK_SIZE));
+	return 	 std::abs(static_cast<int>(std::round((x - GRID_START_X) / (float)GRID_BLOCK_SIZE)));
 
 }
 int Scene::getWorldy(float y) {
-	return  abs((int)round((y - GRID_START_Z) / (float)GRID_BLOCK_SIZE));
+	return  std::abs((int)std::round((y - GRID_START_Z) / (float)GRID_BLOCK_SIZE));
 }
 
 
@@ -145,8 +145,6 @@ void Scene::_addBomb(float x, float z)
 		_bomb.emplace_back(_player->getPosition(), i);
 		MainGame::renderer.addToRender("bomb", i, model, mat);
 		i++;
-		//delete _blocks[newy][newx]
-
 	}
 }
 
@@ -195,17 +193,20 @@ bool Scene::worldCollisionDown(glm::vec3 pos, glm::vec3 offset, Scene *scene)
     int x = scene->getWorldx(pos.x);
     int y = scene->getWorldy(pos.z);
 
-	if (scene->_blocks[y -  1][x] != nullptr && checkBlockCollision(scene->_blocks[y - 1][x]->getPosition(), newPos))               //std::cout << "collide down" << std::endl;
+	if (scene->_blocks[y -  1][x] != nullptr &&
+            checkBlockCollision(scene->_blocks[y - 1][x]->getPosition(), newPos))
 	{
 			return true;
 	}
-	if (scene->_blocks[y -  1][x - 1] != nullptr && checkBlockCollision(scene->_blocks[y - 1][x - 1]->getPosition(), newPos))   	//std::cout << "collide down left" << std::endl;
+	if (scene->_blocks[y -  1][x - 1] != nullptr &&
+            checkBlockCollision(scene->_blocks[y - 1][x - 1]->getPosition(), newPos))
     {
 			scene->_player->changePosZ(0.01f);
 			scene->_player->changePosX(0.01f);
 			return true;
 	}
-	if (scene->_blocks[y -  1][x + 1] != nullptr && checkBlockCollision(scene->_blocks[y - 1][x + 1]->getPosition(), newPos))       //std::cout << "collide down right" << std::endl;
+	if (scene->_blocks[y -  1][x + 1] != nullptr &&
+            checkBlockCollision(scene->_blocks[y - 1][x + 1]->getPosition(), newPos))
 	{
 			scene->_player->changePosZ(0.01f);
 			scene->_player->changePosX(-0.01f);
@@ -220,18 +221,21 @@ bool Scene::worldCollisionUp(glm::vec3 pos, glm::vec3 offset, Scene *scene)
 
 	int x = scene->getWorldx(pos.x);
 	int y = scene->getWorldy(pos.z);
-
-	if (scene->_blocks[y + 1][x] != nullptr && checkBlockCollision1(scene->_blocks[y + 1][x]->getPosition(), newPos))                   //std::cout << "collide up" << std::endl;
+                                                //"collide up"
+	if (scene->_blocks[y + 1][x] != nullptr &&
+            checkBlockCollision1(scene->_blocks[y + 1][x]->getPosition(), newPos))
 	{
 			return true;
-	}
-	if (scene->_blocks[y + 1][x - 1] != nullptr && checkBlockCollision(scene->_blocks[y + 1][x - 1]->getPosition(), newPos))    		//std::cout << "collide up left" << std::endl;
+	}                                           //"collide up left"
+	if (scene->_blocks[y + 1][x - 1] != nullptr &&
+            checkBlockCollision(scene->_blocks[y + 1][x - 1]->getPosition(), newPos))
 	{
 			scene->_player->changePosZ(-0.005f);
 			scene->_player->changePosX(0.005f);
 			return true;
-	}
-	if (scene->_blocks[y + 1][x + 1] != nullptr && checkBlockCollision(scene->_blocks[y + 1][x + 1]->getPosition(), newPos))            //std::cout << "collide up right" << std::endl;
+	}                                            //"collide up right"
+	if (scene->_blocks[y + 1][x + 1] != nullptr &&
+            checkBlockCollision(scene->_blocks[y + 1][x + 1]->getPosition(), newPos))
 	{
 			scene->_player->changePosZ(-0.005f);
 			scene->_player->changePosX(-0.005f);
@@ -247,17 +251,20 @@ bool Scene::worldCollisionLeft(glm::vec3 pos, glm::vec3 offset, Scene *scene)
 	int x = scene->getWorldx(pos.x);
 	int y = scene->getWorldy(pos.z);
 
-	if (scene->_blocks[y - 1][x - 1] != nullptr && checkBlockCollision1(scene->_blocks[y - 1][x - 1]->getPosition(), newPos))
+	if (scene->_blocks[y - 1][x - 1] != nullptr &&
+            checkBlockCollision1(scene->_blocks[y - 1][x - 1]->getPosition(), newPos))
 	{
 			scene->_player->changePosZ(-0.005f);
 			scene->_player->changePosX(0.005f);
 			return true;
 	}
-	if (scene->_blocks[y][x - 1] != nullptr && checkBlockCollision(scene->_blocks[y][x - 1]->getPosition(), newPos))
+	if (scene->_blocks[y][x - 1] != nullptr &&
+            checkBlockCollision(scene->_blocks[y][x - 1]->getPosition(), newPos))
 	{
 			return true;
 	}
-	if (scene->_blocks[y + 1][x - 1] != nullptr && checkBlockCollision1(scene->_blocks[y + 1][x - 1]->getPosition(), newPos))
+	if (scene->_blocks[y + 1][x - 1] != nullptr &&
+            checkBlockCollision1(scene->_blocks[y + 1][x - 1]->getPosition(), newPos))
 	{
 			scene->_player->changePosZ(0.005f);
 			scene->_player->changePosX(0.005f);
@@ -273,17 +280,20 @@ bool Scene::worldCollisionRight(glm::vec3 pos, glm::vec3 offset, Scene *scene)
 	int x = scene->getWorldx(pos.x);
 	int y = scene->getWorldy(pos.z);
 
-	if (scene->_blocks[y - 1][x + 1] != nullptr && checkBlockCollision1(scene->_blocks[y - 1][x + 1]->getPosition(), newPos))
+	if (scene->_blocks[y - 1][x + 1] != nullptr &&
+            checkBlockCollision1(scene->_blocks[y - 1][x + 1]->getPosition(), newPos))
 	{
 			scene->_player->changePosZ(-0.005f);
 			scene->_player->changePosX(0.005f);
 			return true;
 	}
-	if (scene->_blocks[y][x + 1] != nullptr && checkBlockCollision(scene->_blocks[y][x + 1]->getPosition(), newPos))
+	if (scene->_blocks[y][x + 1] != nullptr &&
+            checkBlockCollision(scene->_blocks[y][x + 1]->getPosition(), newPos))
 	{
 			return true;
 	}
-	if (scene->_blocks[y + 1][x + 1] != nullptr && checkBlockCollision1(scene->_blocks[y + 1][x + 1]->getPosition(), newPos))
+	if (scene->_blocks[y + 1][x + 1] != nullptr &&
+            checkBlockCollision1(scene->_blocks[y + 1][x + 1]->getPosition(), newPos))
 	{
 			scene->_player->changePosZ(0.005f);
 			scene->_player->changePosX(0.005f);
