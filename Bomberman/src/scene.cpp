@@ -415,10 +415,19 @@ bool Scene::PlayerExplosionCollision(glm::vec3 pos, Scene *scene)
     int playery = scene->getWorldy(scene->_player->getPosition().z);
 
 //todo increase distance by power up
-    if (playerx == bombx - 1 ||
-            playerx == bombx + 1 ||
-            playery == bomby - 1 ||
-            playery == bomby + 1)
+    if (playerx == bombx - 1 && playery == bomby)
+    {
+        return true;
+    }
+    if (playerx == bombx + 1 && playery == bomby)
+    {
+        return true;
+    }
+    if (playery == bomby - 1 && playerx == bombx)
+    {
+        return true;
+    }
+    if (playery == bomby + 1 && playerx == bombx)
     {
         return true;
     }
