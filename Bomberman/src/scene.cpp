@@ -355,7 +355,7 @@ bool Scene::checkBlockCollision1(glm::vec3 blockPos, glm::vec3 entityPos)
 		sqDist += (entityPos.z - maxZ) * (entityPos.z - maxZ);
 	return sqDist + 0.3f <= (float)(HALF_PLAYER_SIZE * HALF_PLAYER_SIZE);
 }
-
+//todo add powerup
 bool Scene::breakableBrickCollisionDown(glm::vec3 pos, Scene *scene)
 {
     int x = scene->getWorldx(pos.x);
@@ -414,7 +414,7 @@ bool Scene::PlayerExplosionCollision(glm::vec3 pos, Scene *scene)
     int playerx = scene->getWorldx(scene->_player->getPosition().x);
     int playery = scene->getWorldy(scene->_player->getPosition().z);
 
-
+//todo increase distance by power up
     if (playerx == bombx - 1 ||
             playerx == bombx + 1 ||
             playery == bomby - 1 ||

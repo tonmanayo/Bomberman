@@ -18,8 +18,6 @@ float   Bomb::getTime() const{
 }
 
 bool    Bomb::explodeTime(){
-    std::cout << "time: " << _time << std::endl;
-    std::cout << "timeglfw: " << glfwGetTime() << std::endl;
     return glfwGetTime() - _time > 1.5;
 }
 
