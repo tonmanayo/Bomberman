@@ -35,11 +35,11 @@ int     main(int ac, char **av)
 	//generateBlocks();
 
 	Zion::Gltf *model = new Zion::Gltf();
-	model->loadFromFile(shader1, "models/bomberman/Onile.glb");
-	//model->loadFromFile(shader1, "models/bomberman/android.gltf");
+	//model->loadFromFile(shader1, "models/bomberman/Onile.glb");
+	model->loadFromFile(shader1, "models/blocks/dumb3.gltf");
 	Zion::Material *mat = new Zion::Material();
 	mat->texure.loadTextureFromPath("models/bomberman/OnileDiffuseColor.png");
-	model->addMaterial(0, *mat);
+	//model->addMaterial(0, *mat);
 
 	Zion::Renderable::startTime = (float)glfwGetTime();
 	Zion::Renderable::runTime = Zion::Renderable::startTime;
