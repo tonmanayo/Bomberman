@@ -21,6 +21,7 @@ private:
 	int         		_enemyCount;
 	Player      		*_player;
 	std::vector<Bomb>	_bomb;
+	std::vector<Player>	_enemies;
     int                 _nbBombs;
 	std::vector<std::string> *_map;
 	std::map<int, std::map<int, Block *>>    _blocks;
@@ -32,6 +33,7 @@ private:
 	void    _addFloor(float x, float z);
 	void    _addPlayer(float x, float z);
 	void 	_addBomb(float x, float z);
+	void 	_addEnemy(float x, float z);
 public:
 	Scene(MainGame *game, std::vector<std::string> *map, int enemyCount);
 	Scene(const Scene & rhs);

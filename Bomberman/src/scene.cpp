@@ -45,6 +45,8 @@ bool Scene::buildMap()
 				_addUnbreakableBlock(x, z, xx, yy);
 			else if (c == '@')
 				_addPlayer(x, z);
+            else if (c == 'E')
+                _addPlayer(x, z);
 			_addFloor(x, z);
 			x += GRID_BLOCK_SIZE;
 			xx++;
@@ -187,6 +189,28 @@ void Scene::_addPlayer(float x, float z)
 	_game->getGameCamera().setCameraPosition(glm::vec3(pos.x + 0, pos.y + 10, pos.z + 6));
 	_game->getGameCamera().setCameraTarget(_player->getPosition());
 	_game->getGameCamera().setCameraUp(glm::vec3(0, 1, 0));
+}
+
+void Scene::_addEnemy(float x, float z)
+{
+    Zion::Renderable *model;
+
+    model = _game->getModel("enemy1");
+    glm::mat4 mat = glm::translate(glm::mat4(), glm::vec3(x, 0, z));
+    if (model != nullptr)
+    {
+        _enemies.emplace_back(_enemyCount, "enemy");
+        _enemies[_enemyCount].setPosition(x, 0, z);
+        _enemies[_enemyCount].scale(glm::vec3(0.3, 0.3, 0.3));
+        _player->playerStart = glm::vec3(x, 0, z);
+        _player->playerScale = glm::vec3(0.3, 0.3, 0.3);
+        MainGame::renderer.addToRender(_enemies[_enemyCount].getType(), _enemies[_enemyCount].getId(), model, _enemies[_enemyCount].getTransformation());
+    }
+
+    glm::vec3 pos = _player->getPosition();
+    _game->getGameCamera().setCameraPosition(glm::vec3(pos.x + 0, pos.y + 10, pos.z + 6));
+    _game->getGameCamera().setCameraTarget(_player->getPosition());
+    _game->getGameCamera().setCameraUp(glm::vec3(0, 1, 0));
 }
 
 bool Scene::worldCollisionDown(glm::vec3 pos, glm::vec3 offset, Scene *scene)
@@ -431,6 +455,10 @@ bool Scene::PlayerExplosionCollision(glm::vec3 pos, Scene *scene)
         return true;
     }
     if (playery == bomby + 1 && playerx == bombx)
+    {
+        return true;
+    }
+     if (playery == bomby && playerx == bombx)
     {
         return true;
     }

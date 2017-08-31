@@ -106,6 +106,9 @@ void MainGame::loadResources()
 	addModel("bomberman", *getShader("basic"), "resource/models/bomberman/bomberman.gltf");
     addModel("lavaBackground", *getShader("basic"), "resource/models/bomberman/lavaBackground.gltf");
 	addMap("map1", "resource/maps/map1");
+
+	addModel("enemy1", *getShader("basic"), "resource/models/enemies/enemy1.gltf");
+
 }
 
 void MainGame::gameLoop()
