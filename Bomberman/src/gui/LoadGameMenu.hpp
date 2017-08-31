@@ -2,17 +2,17 @@
 // Created by Angus BURROUGHS on 2017/08/28.
 //
 
-#ifndef GAME_MAINMENU_HPP
-#define GAME_MAINMENU_HPP
+#ifndef GAME_LOADGAMEMENU_HPP
+#define GAME_LOADGAMEMENU_HPP
 
 
 #include <nanogui/screen.h>
 #include <nanogui/nanogui.h>
 
-class OptionsMenu {
+class LoadGameMenu {
 public:
-	OptionsMenu(GLFWwindow *glfwWindow);
-	~OptionsMenu();
+	LoadGameMenu(GLFWwindow *glfwWindow);
+	~LoadGameMenu();
 
 private:
 	void _init(GLFWwindow *glfwWindow);
@@ -25,4 +25,4 @@ private:
 };
 
 
-#endif //GAME_MAINMENU_HPP
+#endif //GAME_LOADGAMEMENU_HPP

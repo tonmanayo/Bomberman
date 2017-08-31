@@ -22,13 +22,12 @@ void OptionsMenu::_init(GLFWwindow *glfwWindow) {
 	this->_screen->initialize(glfwWindow, true);
 
 	this->_gui = new nanogui::FormHelper(this->_screen);
-	this->_nanoguiWindow = this->_gui->addWindow(Eigen::Vector2i(10, 10), "BomberMan");
+	this->_nanoguiWindow = this->_gui->addWindow(Eigen::Vector2i(10, 10), "Options");
 
-	this->_gui->addButton("New Game", []() { std::cout << "New Game pressed." << std::endl; });
-	this->_gui->addButton("Load Game", []() { std::cout << "Load Game pressed." << std::endl; });
-	this->_gui->addButton("Options", []() { std::cout << "Options pressed." << std::endl; });
-	this->_gui->addButton("Extras", []() { std::cout << "Extras pressed." << std::endl; });
-	this->_gui->addButton("Quit", []() { std::cout << "Quit pressed." << std::endl; });
+	this->_gui->addButton("Game", []() { std::cout << "Game pressed." << std::endl; });
+	this->_gui->addButton("Graphics", []() { std::cout << "Graphics pressed." << std::endl; });
+	this->_gui->addButton("Sound", []() { std::cout << "Sound pressed." << std::endl; });
+	this->_gui->addButton("Back", []() { std::cout << "Back pressed." << std::endl; });
 
 	this->_screen->setVisible(true);
 	this->_screen->performLayout();

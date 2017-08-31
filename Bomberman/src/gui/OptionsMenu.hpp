@@ -2,8 +2,8 @@
 // Created by Angus BURROUGHS on 2017/08/28.
 //
 
-#ifndef GAME_MAINMENU_HPP
-#define GAME_MAINMENU_HPP
+#ifndef GAME_OPTIONSMENU_HPP
+#define GAME_OPTIONSMENU_HPP
 
 
 #include <nanogui/screen.h>
@@ -11,7 +11,7 @@
 
 class OptionsMenu {
 public:
-	OptionsMenu(GLFWwindow *glfwWindow);
+    OptionsMenu(GLFWwindow *glfwWindow);
 	~OptionsMenu();
 
 private:
@@ -25,4 +25,4 @@ private:
 };
 
 
-#endif //GAME_MAINMENU_HPP
+#endif //GAME_OPTIONSMENU_HPP
