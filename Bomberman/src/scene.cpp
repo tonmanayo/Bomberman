@@ -46,7 +46,7 @@ bool Scene::buildMap()
 			else if (c == '@')
 				_addPlayer(x, z);
             else if (c == 'E')
-                _addPlayer(x, z);
+                _addEnemy(x, z);
 			_addFloor(x, z);
 			x += GRID_BLOCK_SIZE;
 			xx++;
@@ -58,6 +58,7 @@ bool Scene::buildMap()
 	params.push_back(this);
 	MainGame::functions.insert(std::pair<const char *, Func>("updateBomb", {Scene::updateBomb, params}));
 	MainGame::functions.insert(std::pair<const char *, Func>("updatePlayer", {Scene::updatePlayer, params}));
+	MainGame::functions.insert(std::pair<const char *, Func>("updateEnemies", {Scene::updateEnemy, params}));
     glm::mat4 tmp = glm::translate(glm::mat4(), {0, -1.3, -5});
     tmp = glm::scale(tmp, {50, 50, 50});
 	MainGame::renderer.addToRender("background", 0, _game->getModel("lavaBackground"), tmp);
@@ -181,7 +182,7 @@ void Scene::_addPlayer(float x, float z)
 		_player->setPosition(x, 0, z);
 		_player->scale(glm::vec3(0.3, 0.3, 0.3));
         _player->playerStart = glm::vec3(x, 0, z);
-        _player->playerScale = glm::vec3(0.3, 0.3, 0.3);
+        //_player->playerScale = glm::vec3(0.3, 0.3, 0.3);
 		MainGame::renderer.addToRender(_player->getType(), _player->getId(), model, _player->getTransformation());
 	}
 
@@ -194,23 +195,17 @@ void Scene::_addPlayer(float x, float z)
 void Scene::_addEnemy(float x, float z)
 {
     Zion::Renderable *model;
+    static int i = 0;
 
     model = _game->getModel("enemy1");
     glm::mat4 mat = glm::translate(glm::mat4(), glm::vec3(x, 0, z));
     if (model != nullptr)
     {
-        _enemies.emplace_back(_enemyCount, "enemy");
-        _enemies[_enemyCount].setPosition(x, 0, z);
-        _enemies[_enemyCount].scale(glm::vec3(0.3, 0.3, 0.3));
-        _player->playerStart = glm::vec3(x, 0, z);
-        _player->playerScale = glm::vec3(0.3, 0.3, 0.3);
-        MainGame::renderer.addToRender(_enemies[_enemyCount].getType(), _enemies[_enemyCount].getId(), model, _enemies[_enemyCount].getTransformation());
+        _enemies.emplace_back(i, "enemy1");
+        _enemies[i].setPosition(x, 0, z);
+        _enemies[i].playerStart = glm::vec3(x, 0, z);
+        MainGame::renderer.addToRender("enemy1", i, model, mat);
     }
-
-    glm::vec3 pos = _player->getPosition();
-    _game->getGameCamera().setCameraPosition(glm::vec3(pos.x + 0, pos.y + 10, pos.z + 6));
-    _game->getGameCamera().setCameraTarget(_player->getPosition());
-    _game->getGameCamera().setCameraUp(glm::vec3(0, 1, 0));
 }
 
 bool Scene::worldCollisionDown(glm::vec3 pos, glm::vec3 offset, Scene *scene)
@@ -257,15 +252,15 @@ bool Scene::worldCollisionUp(glm::vec3 pos, glm::vec3 offset, Scene *scene)
 	if (scene->_blocks[y + 1][x - 1] != nullptr &&
             checkBlockCollision(scene->_blocks[y + 1][x - 1]->getPosition(), newPos))
 	{
-			scene->_player->changePosZ(-0.005f);
-			scene->_player->changePosX(0.005f);
+			scene->_player->changePosZ(-0.01f);
+			scene->_player->changePosX(0.01f);
 			return true;
 	}                                            //"collide up right"
 	if (scene->_blocks[y + 1][x + 1] != nullptr &&
             checkBlockCollision(scene->_blocks[y + 1][x + 1]->getPosition(), newPos))
 	{
-			scene->_player->changePosZ(-0.005f);
-			scene->_player->changePosX(-0.005f);
+			scene->_player->changePosZ(-0.01f);
+			scene->_player->changePosX(-0.01f);
 			return true;
 	}
 	return false;
@@ -281,8 +276,8 @@ bool Scene::worldCollisionLeft(glm::vec3 pos, glm::vec3 offset, Scene *scene)
 	if (scene->_blocks[y - 1][x - 1] != nullptr &&
             checkBlockCollision1(scene->_blocks[y - 1][x - 1]->getPosition(), newPos))
 	{
-			scene->_player->changePosZ(-0.005f);
-			scene->_player->changePosX(0.005f);
+			scene->_player->changePosZ(-0.01f);
+			scene->_player->changePosX(0.01f);
 			return true;
 	}
 	if (scene->_blocks[y][x - 1] != nullptr &&
@@ -293,8 +288,8 @@ bool Scene::worldCollisionLeft(glm::vec3 pos, glm::vec3 offset, Scene *scene)
 	if (scene->_blocks[y + 1][x - 1] != nullptr &&
             checkBlockCollision1(scene->_blocks[y + 1][x - 1]->getPosition(), newPos))
 	{
-			scene->_player->changePosZ(0.005f);
-			scene->_player->changePosX(0.005f);
+			scene->_player->changePosZ(0.01f);
+			scene->_player->changePosX(0.01f);
 			return true;
 	}
 	return false;
@@ -310,8 +305,8 @@ bool Scene::worldCollisionRight(glm::vec3 pos, glm::vec3 offset, Scene *scene)
 	if (scene->_blocks[y - 1][x + 1] != nullptr &&
             checkBlockCollision1(scene->_blocks[y - 1][x + 1]->getPosition(), newPos))
 	{
-			scene->_player->changePosZ(-0.005f);
-			scene->_player->changePosX(0.005f);
+			scene->_player->changePosZ(-0.01f);
+			scene->_player->changePosX(0.01f);
 			return true;
 	}
 	if (scene->_blocks[y][x + 1] != nullptr &&
@@ -322,8 +317,8 @@ bool Scene::worldCollisionRight(glm::vec3 pos, glm::vec3 offset, Scene *scene)
 	if (scene->_blocks[y + 1][x + 1] != nullptr &&
             checkBlockCollision1(scene->_blocks[y + 1][x + 1]->getPosition(), newPos))
 	{
-			scene->_player->changePosZ(0.005f);
-			scene->_player->changePosX(0.005f);
+			scene->_player->changePosZ(0.01f);
+			scene->_player->changePosX(0.01f);
 			return true;
 	}
 	return false;

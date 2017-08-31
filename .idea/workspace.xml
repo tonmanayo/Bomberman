@@ -16,8 +16,10 @@
     <list default="true" id="aec4745f-ff9d-4e1d-96c6-865fba65c644" name="Default" comment="fixed camera following player">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Bomberman/include/scene.hpp" afterPath="$PROJECT_DIR$/Bomberman/include/scene.hpp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Bomberman/resource/maps/map1" afterPath="$PROJECT_DIR$/Bomberman/resource/maps/map1" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Bomberman/src/MainGame.cpp" afterPath="$PROJECT_DIR$/Bomberman/src/MainGame.cpp" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Bomberman/src/scene.cpp" afterPath="$PROJECT_DIR$/Bomberman/src/scene.cpp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Bomberman/src/sceneUpdate.cpp" afterPath="$PROJECT_DIR$/Bomberman/src/sceneUpdate.cpp" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -31,21 +33,31 @@
     <splitter split-orientation="horizontal" split-proportion="0.4785047">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="scene.cpp" pinned="false" current-in-tab="false">
+          <file leaf-file-name="scene.cpp" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/Bomberman/src/scene.cpp">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="397">
-                  <caret line="71" column="41" lean-forward="true" selection-start-line="71" selection-start-column="41" selection-end-line="71" selection-end-column="41" />
+                <state relative-caret-position="454">
+                  <caret line="204" column="41" lean-forward="true" selection-start-line="204" selection-start-column="41" selection-end-line="204" selection-end-column="41" />
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="MainGame.cpp" pinned="false" current-in-tab="true">
+          <file leaf-file-name="map1" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/Bomberman/resource/maps/map1">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="75">
+                  <caret line="5" column="6" lean-forward="false" selection-start-line="5" selection-start-column="6" selection-end-line="5" selection-end-column="6" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="MainGame.cpp" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/Bomberman/src/MainGame.cpp">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="450">
-                  <caret line="105" column="83" lean-forward="false" selection-start-line="105" selection-start-column="83" selection-end-line="105" selection-end-column="83" />
+                <state relative-caret-position="416">
+                  <caret line="105" column="84" lean-forward="false" selection-start-line="105" selection-start-column="84" selection-end-line="105" selection-end-column="84" />
                   <folding />
                 </state>
               </provider>
@@ -76,8 +88,8 @@
           <file leaf-file-name="sceneUpdate.cpp" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/Bomberman/src/sceneUpdate.cpp">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1485">
-                  <caret line="99" column="13" lean-forward="false" selection-start-line="99" selection-start-column="13" selection-end-line="99" selection-end-column="13" />
+                <state relative-caret-position="608">
+                  <caret line="123" column="69" lean-forward="true" selection-start-line="123" selection-start-column="69" selection-end-line="123" selection-end-column="69" />
                   <folding />
                 </state>
               </provider>
@@ -112,8 +124,8 @@
           <file leaf-file-name="scene.hpp" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/Bomberman/include/scene.hpp">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="262">
-                  <caret line="23" column="24" lean-forward="false" selection-start-line="23" selection-start-column="24" selection-end-line="23" selection-end-column="24" />
+                <state relative-caret-position="190">
+                  <caret line="23" column="22" lean-forward="false" selection-start-line="23" selection-start-column="22" selection-end-line="23" selection-end-column="22" />
                   <folding>
                     <element signature="e#0#23#0" expanded="true" />
                   </folding>
@@ -188,6 +200,7 @@
       <find>bomb</find>
       <find>bomb-&gt;</find>
       <find>timegl</find>
+      <find>upda</find>
     </findStrings>
     <replaceStrings>
       <replace>scene-&gt;checkBlockCollision</replace>
@@ -202,7 +215,6 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/CMakeLists.txt" />
-        <option value="$PROJECT_DIR$/Bomberman/resource/maps/map1" />
         <option value="$PROJECT_DIR$/Core/includes/camera.hpp" />
         <option value="$PROJECT_DIR$/Core/entities/camera.cpp" />
         <option value="$PROJECT_DIR$/Bomberman/src/player.cpp" />
@@ -213,11 +225,12 @@
         <option value="$PROJECT_DIR$/Bomberman/src/block.cpp" />
         <option value="$PROJECT_DIR$/Bomberman/include/block.hpp" />
         <option value="$PROJECT_DIR$/Bomberman/include/Bomb.hpp" />
-        <option value="$PROJECT_DIR$/Bomberman/src/sceneUpdate.cpp" />
         <option value="$PROJECT_DIR$/Bomberman/src/Bomb.cpp" />
-        <option value="$PROJECT_DIR$/Bomberman/include/scene.hpp" />
-        <option value="$PROJECT_DIR$/Bomberman/src/scene.cpp" />
+        <option value="$PROJECT_DIR$/Bomberman/resource/maps/map1" />
         <option value="$PROJECT_DIR$/Bomberman/src/MainGame.cpp" />
+        <option value="$PROJECT_DIR$/Bomberman/include/scene.hpp" />
+        <option value="$PROJECT_DIR$/Bomberman/src/sceneUpdate.cpp" />
+        <option value="$PROJECT_DIR$/Bomberman/src/scene.cpp" />
       </list>
     </option>
   </component>
@@ -277,7 +290,7 @@
               <item name="Bomberman" type="462c0819:PsiDirectoryNode" />
               <item name="Bomberman" type="462c0819:PsiDirectoryNode" />
               <item name="resource" type="462c0819:PsiDirectoryNode" />
-              <item name="models" type="462c0819:PsiDirectoryNode" />
+              <item name="maps" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="game" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
@@ -285,7 +298,6 @@
               <item name="Bomberman" type="462c0819:PsiDirectoryNode" />
               <item name="resource" type="462c0819:PsiDirectoryNode" />
               <item name="models" type="462c0819:PsiDirectoryNode" />
-              <item name="enemies" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="game" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
@@ -349,7 +361,7 @@
       <workItem from="1503904477035" duration="10420000" />
       <workItem from="1504072958770" duration="8428000" />
       <workItem from="1504095076783" duration="9238000" />
-      <workItem from="1504177937479" duration="1546000" />
+      <workItem from="1504177937479" duration="7154000" />
     </task>
     <task id="LOCAL-00001" summary="fixed camera following player">
       <created>1503911082034</created>
@@ -362,7 +374,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="30580000" />
+    <option name="totallyTimeSpent" value="36188000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -377,15 +389,16 @@
     <frame x="0" y="0" width="1920" height="1080" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14696486" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32969216" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3286991" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="CMake" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32969216" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32969216" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2979146" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32969216" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14696486" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32969216" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -394,7 +407,6 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32969216" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -416,14 +428,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Bomberman/include/block.hpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" column="30" lean-forward="false" selection-start-line="15" selection-start-column="30" selection-end-line="15" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Bomberman/include/nonStatic.hpp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="690">
@@ -765,13 +769,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Bomberman/resource/maps/map1">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="9" lean-forward="false" selection-start-line="5" selection-start-column="9" selection-end-line="5" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
@@ -814,6 +811,19 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Bomberman/resource/models/enemies/SH3.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Bomberman/resource/maps/map1">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="6" lean-forward="false" selection-start-line="5" selection-start-column="6" selection-end-line="5" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Bomberman/src/Bomb.cpp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="285">
@@ -822,36 +832,36 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Bomberman/src/sceneUpdate.cpp">
+    <entry file="file://$PROJECT_DIR$/Bomberman/src/MainGame.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1485">
-          <caret line="99" column="13" lean-forward="false" selection-start-line="99" selection-start-column="13" selection-end-line="99" selection-end-column="13" />
+        <state relative-caret-position="416">
+          <caret line="105" column="84" lean-forward="false" selection-start-line="105" selection-start-column="84" selection-end-line="105" selection-end-column="84" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Bomberman/include/scene.hpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="262">
-          <caret line="23" column="24" lean-forward="false" selection-start-line="23" selection-start-column="24" selection-end-line="23" selection-end-column="24" />
+        <state relative-caret-position="190">
+          <caret line="23" column="22" lean-forward="false" selection-start-line="23" selection-start-column="22" selection-end-line="23" selection-end-column="22" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Bomberman/src/scene.cpp">
+    <entry file="file://$PROJECT_DIR$/Bomberman/src/sceneUpdate.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="397">
-          <caret line="71" column="41" lean-forward="true" selection-start-line="71" selection-start-column="41" selection-end-line="71" selection-end-column="41" />
+        <state relative-caret-position="608">
+          <caret line="123" column="69" lean-forward="true" selection-start-line="123" selection-start-column="69" selection-end-line="123" selection-end-column="69" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Bomberman/src/MainGame.cpp">
+    <entry file="file://$PROJECT_DIR$/Bomberman/src/scene.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="105" column="83" lean-forward="false" selection-start-line="105" selection-start-column="83" selection-end-line="105" selection-end-column="83" />
+        <state relative-caret-position="454">
+          <caret line="204" column="41" lean-forward="true" selection-start-line="204" selection-start-column="41" selection-end-line="204" selection-end-column="41" />
           <folding />
         </state>
       </provider>

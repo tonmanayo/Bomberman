@@ -114,3 +114,13 @@ void Scene::updateBomb(MainGame *game, std::vector<void *> params) {
 		}
 	}
 }
+
+
+void Scene::updateEnemy(MainGame *game, std::vector<void *> params) {
+    auto *scene = (Scene *)params[0];
+
+    for (int i = 0; i < scene->_enemies.size(); ++i) {
+        scene->_enemies[i].changePosZ(0.02f);
+        std::cout << scene->_enemies[i].getPosition().z << std::endl;
+    }
+}
