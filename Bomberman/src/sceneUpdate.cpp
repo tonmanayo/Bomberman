@@ -12,8 +12,7 @@ void Scene::updatePlayer(MainGame *game, std::vector<void *> params)
 		MainGame::renderer.applyTransformationToRenderable(scene->_player->getType(),
 		              scene->_player->getId(), scene->_player->getTransformation());
 		glm::vec3 pos = scene->_player->getPosition();
-		scene->_game->getGameCamera().setCameraPosition(
-				glm::vec3(pos.x + 0, pos.y + 10, pos.z + 6));
+		scene->_game->getGameCamera().setCameraPosition(glm::vec3(pos.x + 0, pos.y + 10, pos.z + 6));
 		scene->_game->getGameCamera().setCameraTarget(scene->_player->getPosition());
 		scene->_game->getGameCamera().setCameraUp(glm::vec3(0, 1, 0));
 	}
@@ -98,7 +97,15 @@ void Scene::updateBomb(MainGame *game, std::vector<void *> params) {
             scene->_nbBombs--;
             bombExplode(params, scene->_bomb[i]);
             if(scene->PlayerExplosionCollision(scene->_bomb[i].getPosition(), scene))
+            {
                 std::cout << "dead\n";
+                scene->_player->reset();
+                glm::vec3 pos = scene->_player->getPosition();
+                scene->_game->getGameCamera().setCameraPosition(glm::vec3(pos.x + 0, pos.y + 10, pos.z + 6));
+                scene->_game->getGameCamera().setCameraTarget(scene->_player->getPosition());
+                scene->_game->getGameCamera().setCameraUp(glm::vec3(0, 1, 0));
+                MainGame::renderer.applyTransformationToRenderable("player", scene->_player->getId(), scene->_player->getTransformation());
+            }
 			MainGame::renderer.removeFromRender("bomb", scene->_bomb[i].getId());
 			delete scene->_blocks[scene->getWorldy(scene->_bomb[i].getPosition().z)][scene->getWorldx(scene->_bomb[i].getPosition().x)];
 			scene->_blocks[scene->getWorldy(scene->_bomb[i].getPosition().z)][scene->getWorldx(scene->_bomb[i].getPosition().x)] = nullptr;

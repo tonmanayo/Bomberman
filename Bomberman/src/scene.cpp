@@ -56,7 +56,10 @@ bool Scene::buildMap()
 	params.push_back(this);
 	MainGame::functions.insert(std::pair<const char *, Func>("updateBomb", {Scene::updateBomb, params}));
 	MainGame::functions.insert(std::pair<const char *, Func>("updatePlayer", {Scene::updatePlayer, params}));
-	return true;
+    glm::mat4 tmp = glm::translate(glm::mat4(), {0, -1.3, -5});
+    tmp = glm::scale(tmp, {50, 50, 50});
+	MainGame::renderer.addToRender("background", 0, _game->getModel("lavaBackground"), tmp);
+    return true;
 }
 
 void Scene::_addWall(float x, float z, int xx, int yy)
@@ -136,7 +139,7 @@ void Scene::_addBomb(float x, float z)
 	z = getGridy(z);
 
 	glm::mat4 mat = glm::translate(glm::mat4(), glm::vec3(x, 0, z));
-	Zion::Renderable *model = _game->getModel("block1");
+	Zion::Renderable *model = _game->getModel("bomb");
 	if (model != nullptr)
 	{
 		Block *block = new Block(i, "bomb", false);
@@ -175,13 +178,13 @@ void Scene::_addPlayer(float x, float z)
 		_player = new Player(0, "player");
 		_player->setPosition(x, 0, z);
 		_player->scale(glm::vec3(0.3, 0.3, 0.3));
-		MainGame::renderer.addToRender(_player->getType(), _player->getId(), model,
-				_player->getTransformation());
+        _player->playerStart = glm::vec3(x, 0, z);
+        _player->playerScale = glm::vec3(0.3, 0.3, 0.3);
+		MainGame::renderer.addToRender(_player->getType(), _player->getId(), model, _player->getTransformation());
 	}
 
 	glm::vec3 pos = _player->getPosition();
-	_game->getGameCamera().setCameraPosition(
-			glm::vec3(pos.x + 0, pos.y + 10, pos.z + 6));
+	_game->getGameCamera().setCameraPosition(glm::vec3(pos.x + 0, pos.y + 10, pos.z + 6));
 	_game->getGameCamera().setCameraTarget(_player->getPosition());
 	_game->getGameCamera().setCameraUp(glm::vec3(0, 1, 0));
 }

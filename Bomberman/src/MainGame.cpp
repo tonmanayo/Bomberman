@@ -100,9 +100,11 @@ void MainGame::loadResources()
 	addModel("block1", *getShader("basic"), "resource/models/blocks/block1.gltf");
 	addModel("block2", *getShader("basic"), "resource/models/blocks/block2.gltf");
 	addModel("block3", *getShader("basic"), "resource/models/blocks/block3.gltf");
+	addModel("bomb", *getShader("basic"), "resource/models/blocks/bomb.gltf");
 	addModel("floor1", *getShader("basic"), "resource/models/blocks/floor1.gltf");
 	addModel("floor2", *getShader("basic"), "resource/models/blocks/floor2.gltf");
 	addModel("bomberman", *getShader("basic"), "resource/models/bomberman/bomberman.gltf");
+    addModel("lavaBackground", *getShader("basic"), "resource/models/bomberman/lavaBackground.gltf");
 	addMap("map1", "resource/maps/map1");
 }
 
