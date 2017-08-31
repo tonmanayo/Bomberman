@@ -224,4 +224,9 @@ namespace   Zion
 			if (pair.second != nullptr)
 				_updateJointAnimation(pair.second);
 	}
+
+	void Animation::setCurrentAnimationTime(float val)
+	{
+		_currentTimeStamp = val;
+	}
 }

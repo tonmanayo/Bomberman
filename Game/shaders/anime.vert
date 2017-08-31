@@ -5,7 +5,7 @@ in  vec3    normal;
 in  vec2    uv;
 in  float   matIndex;
 in  int     node;
-in  vec4   joint;
+in  vec4    joint;
 in  vec4    weight;
 
 out vec3    fposition;

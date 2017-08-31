@@ -57,5 +57,6 @@ namespace   Zion
 		glm::mat4       getJointRotationMatrix(int id);
 		void            increaseCurrentTimeStamp(float val);
 		void            update();
+		void            setCurrentAnimationTime(float val);
 	};
 }

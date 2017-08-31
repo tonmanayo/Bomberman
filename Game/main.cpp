@@ -32,11 +32,9 @@ int     main(int ac, char **av)
 	shader.setUniformMat4((GLchar *)"proj_matrix", proj_mat);
 	shader1.setUniformMat4((GLchar *)"proj_matrix", proj_mat);
 
-	//generateBlocks();
 
 	Zion::Gltf *model = new Zion::Gltf();
-	//model->loadFromFile(shader1, "models/bomberman/Onile.glb");
-	model->loadFromFile(shader1, "models/blocks/dumb3.gltf");
+	model->loadFromFile(shader1, "models/blocks/dumb.gltf");
 	Zion::Material *mat = new Zion::Material();
 	mat->texure.loadTextureFromPath("models/bomberman/OnileDiffuseColor.png");
 	//model->addMaterial(0, *mat);

@@ -188,60 +188,68 @@ namespace Zion
 			Model::loadOneManyToVector(_nodes, node, (int)Acc.count);
 			/// adding position vertices to _vertex array
 			bufView = bufViews[Acc.bufferView];
-			auto *posData = (GLbyte *)(bufs[bufView.buffer].data.data() + bufView.byteOffset);
-			_vertex.insert(_vertex.end(), posData, (posData + bufView.byteLength));
+			auto *posData = (float *)(bufs[bufView.buffer].data.data() + bufView.byteOffset);
+			_vertex.insert(_vertex.end(), posData, (posData + (Acc.count * 3)));
 			/// adding normals to _normals
 			if ((it = prim.attributes.find("NORMAL")) != prim.attributes.end())
 			{
 				Acc = acc[prim.attributes["NORMAL"]];
 				bufView = bufViews[Acc.bufferView];
-				auto *data = (GLbyte *)&bufs[bufView.buffer].data[bufView.byteOffset];
-				_normals.insert(_normals.end(), data, (data + bufView.byteLength));
+				auto *data = (float *)&bufs[bufView.buffer].data[bufView.byteOffset];
+				_normals.insert(_normals.end(), data, (data + (Acc.count * 3)));
 			}
 			/// adding uv coords to _uvs
 			if ((it = prim.attributes.find("TEXCOORD_0")) != prim.attributes.end())
 			{
 				Acc = acc[prim.attributes["TEXCOORD_0"]];
 				bufView = bufViews[Acc.bufferView];
-				auto *data = (GLbyte *)&bufs[bufView.buffer].data[bufView.byteOffset];
-				_uvs.insert(_uvs.end(), data, (data + bufView.byteLength));
+				auto *data = (float *)&bufs[bufView.buffer].data[bufView.byteOffset];
+				_uvs.insert(_uvs.end(), data, (data + (Acc.count * 2)));
 			}
 			/// adding joint coords to _joints
-			if ((it = prim.attributes.find("JOINTS_1")) != prim.attributes.end())
-			{
-				Acc = acc[prim.attributes["JOINTS_1"]];
-				bufView = bufViews[Acc.bufferView];
-				auto *data = (GLushort *)(bufs[bufView.buffer].data.data() + bufView.byteLength);
-				_joints.insert(_joints.end(), data, (data + Acc.count));
-			}
 			if ((it = prim.attributes.find("JOINTS_0")) != prim.attributes.end())
 			{
 				Acc = acc[prim.attributes["JOINTS_0"]];
 				bufView = bufViews[Acc.bufferView];
-                auto *data = (GLushort *)(bufs[bufView.buffer].data.data() + bufView.byteLength);
-				_joints.insert(_joints.end(), data, (data + Acc.count));
+				auto *data = (GLushort *)(bufs[bufView.buffer].data.data() + bufView.byteOffset);
+				//_joints.insert(_joints.end(), data, (data + (Acc.count * 4)));
+				size_t count = Acc.count * 4;
+				for (size_t i = 0; i < count; i++)
+					_joints.push_back((float)data[i]);
+			}
+			if ((it = prim.attributes.find("JOINTS_1")) != prim.attributes.end())
+			{
+				Acc = acc[prim.attributes["JOINTS_1"]];
+				bufView = bufViews[Acc.bufferView];
+                auto *data = (GLushort *)(bufs[bufView.buffer].data.data() + bufView.byteOffset);
+				_joints.insert(_joints.end(), data, (data + (Acc.count * 4)));
 			}
 			/// adding weight coords to _weights
 			if ((it = prim.attributes.find("WEIGHTS_0")) != prim.attributes.end())
 			{
 				Acc = acc[prim.attributes["WEIGHTS_0"]];
 				bufView = bufViews[Acc.bufferView];
-				auto *data = (GLbyte *)&bufs[bufView.buffer].data[bufView.byteOffset];
-				_weights.insert(_weights.end(), data, (data + bufView.byteLength));
+				auto *data = (float *)(bufs[bufView.buffer].data.data() + bufView.byteOffset);
+				_weights.insert(_weights.end(), data, (data + (Acc.count * 4)));
 			}
 			if ((it = prim.attributes.find("WEIGHTS_1")) != prim.attributes.end())
 			{
 				Acc = acc[prim.attributes["WEIGHTS_1"]];
 				bufView = bufViews[Acc.bufferView];
-				auto *data = (GLbyte *)&bufs[bufView.buffer].data[bufView.byteOffset];
-				_weights.insert(_weights.end(), data, (data + bufView.byteLength));
+				auto *data = (float *)(bufs[bufView.buffer].data.data() + bufView.byteOffset);
+				_weights.insert(_weights.end(), data, (data + (Acc.count * 4)));
 			}
 			/// adding indices of mesh to _indices
 			Acc = acc[prim.indices];
 			bufView = bufViews[Acc.bufferView];
-			auto *indicesData = (GLushort *)(bufs[bufView.buffer].data.data() + bufView.byteOffset);
+			auto indicesData = (GLushort*)(bufs[bufView.buffer].data.data() + bufView.byteOffset);
+			std::cout << "Indices ";
 			for (int i = 0; i < Acc.count; i++)
+			{
+				std::cout << indicesData[i] << " ";
 				_indices.push_back((GLushort)(indicesData[i] + currVecSize));
+			}
+			std::cout << std::endl;
 		}
 	}
 
@@ -263,7 +271,7 @@ namespace Zion
 		if (!_vertex.empty() && position != -1)
 		{
 			glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
-			glBufferData(GL_ARRAY_BUFFER, _vertex.size() * sizeof(GLbyte), _vertex.data(), GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, _vertex.size() * sizeof(GLfloat), _vertex.data(), GL_STATIC_DRAW);
 			glEnableVertexAttribArray((GLuint)position);
 			glVertexAttribPointer((GLuint)position, 3, GL_FLOAT, GL_FALSE, 0, (void *)nullptr);
 			Window::getError((char *)"after adding vertex in Gltf model");
@@ -271,7 +279,7 @@ namespace Zion
 		if (!_normals.empty() && normal != -1)
 		{
 			glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
-			glBufferData(GL_ARRAY_BUFFER, _normals.size() * sizeof(GLbyte), _normals.data(), GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, _normals.size() * sizeof(GLfloat), _normals.data(), GL_STATIC_DRAW);
 			glEnableVertexAttribArray((GLuint)normal);
 			glVertexAttribPointer((GLuint)normal, 3, GL_FLOAT, GL_FALSE, 0, (void *)nullptr);
 			Window::getError((char *)"after adding normal in Gltf model");
@@ -287,7 +295,7 @@ namespace Zion
 		if (!_nodes.empty() && node != -1)
 		{
 			glBindBuffer(GL_ARRAY_BUFFER, vbo[3]);
-			glBufferData(GL_ARRAY_BUFFER, _nodes.size() * sizeof(int), _nodes.data(), GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, _nodes.size() * sizeof(GLint), _nodes.data(), GL_STATIC_DRAW);
 			glEnableVertexAttribArray((GLuint)node);
 			glVertexAttribPointer((GLuint)node, 1, GL_INT, GL_FALSE, 0, (void *)nullptr);
 			Window::getError((char *)"after adding node in Gltf model");
@@ -295,7 +303,7 @@ namespace Zion
 		if (!_uvs.empty() && uv != -1)
 		{
 			glBindBuffer(GL_ARRAY_BUFFER, vbo[4]);
-			glBufferData(GL_ARRAY_BUFFER, _uvs.size() * sizeof(GLbyte), _uvs.data(), GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, _uvs.size() * sizeof(GLfloat), _uvs.data(), GL_STATIC_DRAW);
 			glEnableVertexAttribArray((GLuint)uv);
 			glVertexAttribPointer((GLuint)uv, 2, GL_FLOAT, GL_FALSE, 0, (void *)nullptr);
 			Window::getError((char *)"after adding uv in Gltf model");
@@ -303,7 +311,7 @@ namespace Zion
 		if (!_joints.empty() && joint != -1)
 		{
 			glBindBuffer(GL_ARRAY_BUFFER, vbo[5]);
-			glBufferData(GL_ARRAY_BUFFER, _joints.size() * sizeof(GLushort), _joints.data(), GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, _joints.size() * sizeof(GLfloat), _joints.data(), GL_STATIC_DRAW);
 			glEnableVertexAttribArray((GLuint)joint);
 			glVertexAttribPointer((GLuint)joint, 4, GL_FLOAT, GL_FALSE, 0, (void *)nullptr);
 			Window::getError((char *)"after adding joint in Gltf model");
@@ -311,14 +319,14 @@ namespace Zion
 		if (!_weights.empty() && weight != -1)
 		{
 			glBindBuffer(GL_ARRAY_BUFFER, vbo[6]);
-			glBufferData(GL_ARRAY_BUFFER, _weights.size() * sizeof(GLbyte), _weights.data(), GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, _weights.size() * sizeof(GLfloat), _weights.data(), GL_STATIC_DRAW);
 			glEnableVertexAttribArray((GLuint)weight);
 			glVertexAttribPointer((GLuint)weight, 4, GL_FLOAT, GL_FALSE, 0, (void *)nullptr);
 			Window::getError((char *)"after adding weight in Gltf model");
 		}
 		glGenBuffers(1, &_ibo);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ibo);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, (GLushort)(_indices.size() * sizeof(GLushort)), &_indices[0],
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, _indices.size() * sizeof(GLushort), _indices.data(),
 			GL_STATIC_DRAW);
 		Window::getError((char *)"after adding indices in Gltf model");
 		glBindVertexArray(0);
@@ -388,11 +396,9 @@ namespace Zion
 	{
 		std::string str = std::string("jointMat[") + std::to_string(bone->id) + std::string("]");
 
-		//glm::mat4 currentLocalTransform = _animeMatrice[bone->index];
 		glm::mat4 currentLocalTransform = _animations[0]->getJointAnimationMatrix(bone->index);
 		glm::mat4 currentTransform = parentTransform * _animations[0]->getJointTranslationMatrix(bone->index)
 			* _animations[0]->getJointRotationMatrix(bone->index);
-
 
 		for (Joint *child : bone->children)
 			_loadMatrices(child, currentTransform);
@@ -406,16 +412,15 @@ namespace Zion
 		if (!_animations.empty())
 		{
 			_shader.setUniform1i((GLchar *)"hasAnime", (int)true);
-			//_calcAnimation(_model.animations[0], 0);
-			_animations[0]->update();
+			//_animations[0]->update();
 			for (Joint *bone : _bones)
 				_loadMatrices(bone, glm::mat4());
-			_animations[0]->increaseCurrentTimeStamp(0.002f);
+			//_animations[0]->increaseCurrentTimeStamp(0.002f);
 		}
 		for (std::pair<int, Material> material : _materials)
 			Material::sendMaterialToShader(_shader, material.second, material.first);
 		glBindVertexArray(_vao);
-		glDrawElements(GL_TRIANGLES, _indicesCount, GL_UNSIGNED_SHORT, (const GLvoid *)nullptr);
+		glDrawElements(GL_TRIANGLES, (GLsizei)_indicesCount, GL_UNSIGNED_SHORT, (const GLvoid *)nullptr);
 		glBindVertexArray(0);
 		for (std::pair<int, Material> material : _materials)
 			material.second.texure.unbindTexture();

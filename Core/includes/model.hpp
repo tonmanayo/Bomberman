@@ -14,15 +14,15 @@ namespace Zion
 		GLuint      _ibo;
 		std::vector<GLuint>     _vbos;
 		std::vector<GLushort>   _indices;
-		std::vector<GLbyte>      _vertex;
+		std::vector<float>      _vertex;
 		std::vector<float>      _matIndexs;
-		std::vector<GLbyte>      _normals;
-		std::vector<GLbyte>      _uvs;
+		std::vector<float>      _normals;
+		std::vector<float>      _uvs;
 		std::map<int, Material> _materials;
 		bool                    _loaded = false;
 		bool                    _hasJoint = false;
 		glm::mat4               _locMat;
-		GLushort                _indicesCount;
+		size_t                  _indicesCount;
 		std::map<int, glm::mat4>   _animeMatrice;
 	public:
 		template <typename T>
