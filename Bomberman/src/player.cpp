@@ -1,6 +1,6 @@
 #include <player.hpp>
 
-Player::Player(int id, std::string type) : NonStatic(id, type) {}
+Player::Player(int id, std::string type) : NonStatic(id, type){}
 
 void Player::setPosition(float x, float y, float z)
 {
@@ -30,3 +30,5 @@ void Player::reset() {
 }
 
 glm::vec3 Player::getPosition() { return _pos; }
+
+void	Player::mv() {_pos.z += 0.02f;}

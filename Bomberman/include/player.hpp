@@ -17,6 +17,7 @@ public:
 	void        changePosX(float val);
 	void        changePosY(float val);
 	void        changePosZ(float val);
+	void 		mv();
     void        reset();
 	glm::vec3   getPosition();
 };

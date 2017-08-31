@@ -175,7 +175,6 @@ void Scene::_addPlayer(float x, float z)
 	Zion::Renderable *model;
 
 	model = _game->getModel("bomberman");
-	glm::mat4 mat = glm::translate(glm::mat4(), glm::vec3(x, 0, z));
 	if (model != nullptr)
 	{
 		_player = new Player(0, "player");
@@ -201,10 +200,13 @@ void Scene::_addEnemy(float x, float z)
     glm::mat4 mat = glm::translate(glm::mat4(), glm::vec3(x, 0, z));
     if (model != nullptr)
     {
-        _enemies.emplace_back(i, "enemy1");
-        _enemies[i].setPosition(x, 0, z);
-        _enemies[i].playerStart = glm::vec3(x, 0, z);
-        MainGame::renderer.addToRender("enemy1", i, model, mat);
+
+		std::string s = "enemy1";
+        _enemies.push_back( new Player(i, s));
+        _enemies.back()->setPosition(x, 0, z);
+        _enemies.back()->playerStart = glm::vec3(x, 0, z);
+        MainGame::renderer.addToRender(_enemies.back()->getType(), _enemies.back()->getId(), model, _enemies.back()->getTransformation());
+		i++;
     }
 }
 

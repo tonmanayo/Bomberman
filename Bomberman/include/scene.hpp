@@ -15,16 +15,16 @@
 class   Scene
 {
 private:
-	MainGame    		*_game;
-	size_t      		_mapWidth;
-	size_t      		_mapLength;
-	int         		_enemyCount;
-	Player      		*_player;
-	std::vector<Bomb>	_bomb;
-	std::vector<Player>	_enemies;
-    int                 _nbBombs;
-	std::vector<std::string> *_map;
-	std::map<int, std::map<int, Block *>>    _blocks;
+	MainGame    								*_game;
+	size_t      								_mapWidth;
+	size_t      								_mapLength;
+	int         								_enemyCount;
+	Player      								*_player;
+	std::vector<Bomb>							_bomb;
+	std::vector<Player*>						_enemies;
+    int                 						_nbBombs;
+	std::vector<std::string> *					_map;
+	std::map<int, std::map<int, Block *>>		_blocks;
 
 private:
 	void    _addWall(float x, float z, int xx, int yy);
