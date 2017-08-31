@@ -22,7 +22,7 @@ namespace Zion
 		tinygltf::Model     _model;
 		std::vector<int>    _nodes;
 		std::string         _path;
-		std::vector<GLbyte>  _joints;
+		std::vector<GLushort>  _joints;
 		std::vector<GLbyte>      _weights;
 		std::vector<Joint *>    _bones;
 		std::vector<Animation *>    _animations;

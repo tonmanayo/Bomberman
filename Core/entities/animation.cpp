@@ -60,8 +60,8 @@ namespace   Zion
 		buffer = model.buffers[bufferView.buffer];
 		/// adding timestamps
 		//joint->rotation.timeStamps = (float *)buffer.data.data() + bufferView.byteOffset;
-		auto *data = (GLbyte *)(buffer.data.data() + bufferView.byteOffset);
-		joint->rotation.timeStamps.insert(joint->rotation.timeStamps.end(), data , (data + bufferView.byteLength));
+		auto *data = (float *)(buffer.data.data() + bufferView.byteOffset);
+		joint->rotation.timeStamps.insert(joint->rotation.timeStamps.end(), data , (data + acc.count));
 		//joint->rotation.timeStamps = joint->translation.timeStamps;
 		/// setting maxTime, subtracting timestamps[0] to make it always have minTime of 0.0f
 		joint->rotation.maxTime = (float)acc.maxValues[0] - joint->rotation.timeStamps[0];
@@ -94,8 +94,8 @@ namespace   Zion
 		buffer = model.buffers[bufferView.buffer];
 		/// adding timestamps
 		//joint->translation.timeStamps = (float *)buffer.data.data() + bufferView.byteOffset;
-		auto *data = (GLbyte *)(buffer.data.data() + bufferView.byteOffset);
-		joint->translation.timeStamps.insert(joint->translation.timeStamps.end(), data , (data + bufferView.byteLength));
+		auto *data = (float *)(buffer.data.data() + bufferView.byteOffset);
+		joint->translation.timeStamps.insert(joint->translation.timeStamps.end(), data , (data + acc.count));
 		/// setting maxTime, subtracting timestamps[0] to make it always have minTime of 0.0f
 		joint->translation.maxTime = (float)acc.maxValues[0] - joint->translation.timeStamps[0];
 		joint->translation.count = acc.count;

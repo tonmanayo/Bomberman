@@ -211,15 +211,15 @@ namespace Zion
 			{
 				Acc = acc[prim.attributes["JOINTS_1"]];
 				bufView = bufViews[Acc.bufferView];
-				auto *data = (GLbyte *)&bufs[bufView.buffer].data[bufView.byteOffset];
-				_joints.insert(_joints.end(), data, (data + bufView.byteLength));
+				auto *data = (GLushort *)(bufs[bufView.buffer].data.data() + bufView.byteLength);
+				_joints.insert(_joints.end(), data, (data + Acc.count));
 			}
 			if ((it = prim.attributes.find("JOINTS_0")) != prim.attributes.end())
 			{
 				Acc = acc[prim.attributes["JOINTS_0"]];
 				bufView = bufViews[Acc.bufferView];
-				auto *data = (GLbyte *)&bufs[bufView.buffer].data[bufView.byteOffset];
-				_joints.insert(_joints.end(), data, (data + bufView.byteLength));
+                auto *data = (GLushort *)(bufs[bufView.buffer].data.data() + bufView.byteLength);
+				_joints.insert(_joints.end(), data, (data + Acc.count));
 			}
 			/// adding weight coords to _weights
 			if ((it = prim.attributes.find("WEIGHTS_0")) != prim.attributes.end())
@@ -303,7 +303,7 @@ namespace Zion
 		if (!_joints.empty() && joint != -1)
 		{
 			glBindBuffer(GL_ARRAY_BUFFER, vbo[5]);
-			glBufferData(GL_ARRAY_BUFFER, _joints.size() * sizeof(GLbyte), _joints.data(), GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, _joints.size() * sizeof(GLushort), _joints.data(), GL_STATIC_DRAW);
 			glEnableVertexAttribArray((GLuint)joint);
 			glVertexAttribPointer((GLuint)joint, 4, GL_FLOAT, GL_FALSE, 0, (void *)nullptr);
 			Window::getError((char *)"after adding joint in Gltf model");
