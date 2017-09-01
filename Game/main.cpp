@@ -34,7 +34,8 @@ int     main(int ac, char **av)
 
 
 	Zion::Gltf *model = new Zion::Gltf();
-	model->loadFromFile(shader1, "models/blocks/dumb.gltf");
+	//model->loadFromFile(shader1, "models/blocks/dumb.gltf");
+	model->loadFromFile(shader1, "models/bomberman/bomberman1.gltf");
 	Zion::Material *mat = new Zion::Material();
 	mat->texure.loadTextureFromPath("models/bomberman/OnileDiffuseColor.png");
 	//model->addMaterial(0, *mat);

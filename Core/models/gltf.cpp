@@ -221,8 +221,21 @@ namespace Zion
 			{
 				Acc = acc[prim.attributes["JOINTS_1"]];
 				bufView = bufViews[Acc.bufferView];
-                auto *data = (GLushort *)(bufs[bufView.buffer].data.data() + bufView.byteOffset);
-				_joints.insert(_joints.end(), data, (data + (Acc.count * 4)));
+				auto *data = (GLushort *)(bufs[bufView.buffer].data.data() + bufView.byteOffset);
+				//_joints.insert(_joints.end(), data, (data + (Acc.count * 4)));
+				size_t count = Acc.count * 4;
+				for (size_t i = 0; i < count; i++)
+					_joints.push_back((float)data[i]);
+			}
+			if ((it = prim.attributes.find("JOINTS_2")) != prim.attributes.end())
+			{
+				Acc = acc[prim.attributes["JOINTS_2"]];
+				bufView = bufViews[Acc.bufferView];
+				auto *data = (GLushort *)(bufs[bufView.buffer].data.data() + bufView.byteOffset);
+				//_joints.insert(_joints.end(), data, (data + (Acc.count * 4)));
+				size_t count = Acc.count * 4;
+				for (size_t i = 0; i < count; i++)
+					_joints.push_back((float)data[i]);
 			}
 			/// adding weight coords to _weights
 			if ((it = prim.attributes.find("WEIGHTS_0")) != prim.attributes.end())
@@ -235,6 +248,13 @@ namespace Zion
 			if ((it = prim.attributes.find("WEIGHTS_1")) != prim.attributes.end())
 			{
 				Acc = acc[prim.attributes["WEIGHTS_1"]];
+				bufView = bufViews[Acc.bufferView];
+				auto *data = (float *)(bufs[bufView.buffer].data.data() + bufView.byteOffset);
+				_weights.insert(_weights.end(), data, (data + (Acc.count * 4)));
+			}
+			if ((it = prim.attributes.find("WEIGHTS_2")) != prim.attributes.end())
+			{
+				Acc = acc[prim.attributes["WEIGHTS_2"]];
 				bufView = bufViews[Acc.bufferView];
 				auto *data = (float *)(bufs[bufView.buffer].data.data() + bufView.byteOffset);
 				_weights.insert(_weights.end(), data, (data + (Acc.count * 4)));
@@ -412,10 +432,10 @@ namespace Zion
 		if (!_animations.empty())
 		{
 			_shader.setUniform1i((GLchar *)"hasAnime", (int)true);
-			//_animations[0]->update();
+			_animations[0]->update();
 			for (Joint *bone : _bones)
 				_loadMatrices(bone, glm::mat4());
-			//_animations[0]->increaseCurrentTimeStamp(0.002f);
+			_animations[0]->increaseCurrentTimeStamp(0.002f);
 		}
 		for (std::pair<int, Material> material : _materials)
 			Material::sendMaterialToShader(_shader, material.second, material.first);
