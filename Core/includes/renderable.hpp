@@ -5,6 +5,13 @@
 #include <vector>
 #include <glm/gtc/matrix_transform.hpp>
 #include <map>
+#include <glm/gtx/quaternion.hpp>
+#include <glm/common.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
+#define SCALE 1
+#define TRANS 2
 
 namespace Zion
 {
@@ -12,6 +19,7 @@ namespace Zion
 	{
 	protected:
 		Shader  _shader;
+		bool    _hasAnimation = false;
 	protected:
 		static std::string  GetFilePathExtension(const std::string &fileName)
 		{
@@ -23,6 +31,7 @@ namespace Zion
 		static  float   startTime;
 		static  float   runTime;
 		static  float   deltaTime;
+		static  float   secondsPassed;
 
 		virtual void    render(glm::mat4 matrix) = 0;
 	};

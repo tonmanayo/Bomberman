@@ -5,6 +5,7 @@ namespace Zion
 	float   Renderable::startTime;
 	float   Renderable::runTime;
 	float   Renderable::deltaTime;
+	float   Renderable::secondsPassed;
 
 	SquareSprite::SquareSprite(Shader &shader, float posx, float posy, float width, float height)
 	{

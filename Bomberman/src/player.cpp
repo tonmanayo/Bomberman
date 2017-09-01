@@ -24,4 +24,9 @@ void Player::changePosZ(float val)
 	translate(_pos);
 }
 
+void Player::reset() {
+    _pos = playerStart;
+    translate(playerStart);
+}
+
 glm::vec3 Player::getPosition() { return _pos; }
