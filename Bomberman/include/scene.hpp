@@ -2,8 +2,8 @@
 #include <player.hpp>
 #include <block.hpp>
 
-#define GRID_START_X (-4)
-#define GRID_START_Z (-1)
+#define GRID_START_X (0)
+#define GRID_START_Z (0)
 #define GRID_BLOCK_SIZE (2)
 
 class   Scene
