@@ -8,6 +8,7 @@ private:
 	glm::vec3   _pos;
 public:
     glm::vec3   playerStart;
+
     glm::vec3  playerScale;
 public:
 	Player(int id, std::string type);

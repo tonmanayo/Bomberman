@@ -31,4 +31,3 @@ void Player::reset() {
 
 glm::vec3 Player::getPosition() { return _pos; }
 
-void	Player::mv() {_pos.z += 0.02f;}
