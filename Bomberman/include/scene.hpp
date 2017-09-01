@@ -34,6 +34,7 @@ private:
 	void    _addPlayer(float x, float z);
 	void 	_addBomb(float x, float z);
 	void 	_addEnemy(float x, float z);
+
 public:
 	Scene(MainGame *game, std::vector<std::string> *map, int enemyCount);
 	Scene(const Scene & rhs);
@@ -67,9 +68,12 @@ public:
     static  void    updateEnemy(MainGame *game, std::vector<void *> params);
     static  void    bombExplode(std::vector<void *> params, const Bomb &bomb);
 
-    static bool     enemyWorldCollisionDown(glm::vec3 pos, glm::vec3 offset, Scene *scene, int i);
-    static bool     enemyWorldCollisionUp(glm::vec3 pos, glm::vec3 offset, Scene *scene, int i);
-    static bool     enemyWorldCollisionRight(glm::vec3 pos, glm::vec3 offset, Scene *scene, int i);
-    static bool     enemyWorldCollisionLeft(glm::vec3 pos, glm::vec3 offset, Scene *scene, int i);
+    static bool     enemyWorldCollisionDown(glm::vec3 pos, glm::vec3 offset, Scene *scene);
+    static bool     enemyWorldCollisionUp(glm::vec3 pos, glm::vec3 offset, Scene *scene);
+    static bool     enemyWorldCollisionRight(glm::vec3 pos, glm::vec3 offset, Scene *scene);
+    static bool     enemyWorldCollisionLeft(glm::vec3 pos, glm::vec3 offset, Scene *scene);
+
+    bool            enemyPlayerCollision(glm::vec3 pos, Scene *scene);
+
 
 };

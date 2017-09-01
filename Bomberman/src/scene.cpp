@@ -462,7 +462,22 @@ bool Scene::PlayerExplosionCollision(glm::vec3 pos, Scene *scene)
     return false;
 }
 
-bool Scene::enemyWorldCollisionDown(glm::vec3 pos, glm::vec3 offset, Scene *scene, int i)
+bool Scene::enemyPlayerCollision(glm::vec3 pos, Scene *scene){
+    int enemyX = scene->getWorldx(pos.x);
+    int enemyY = scene->getWorldy(pos.z);
+
+    int playerx = scene->getWorldx(scene->_player->getPosition().x);
+    int playery = scene->getWorldy(scene->_player->getPosition().z);
+
+
+    if (playery == enemyY && playerx == enemyX)
+    {
+        return true;
+    }
+    return false;
+}
+
+bool Scene::enemyWorldCollisionDown(glm::vec3 pos, glm::vec3 offset, Scene *scene)
 {
     glm::vec3 newPos = pos + offset;
 
@@ -477,7 +492,7 @@ bool Scene::enemyWorldCollisionDown(glm::vec3 pos, glm::vec3 offset, Scene *scen
     return false;
 }
 
-bool Scene::enemyWorldCollisionUp(glm::vec3 pos, glm::vec3 offset, Scene *scene, int i)
+bool Scene::enemyWorldCollisionUp(glm::vec3 pos, glm::vec3 offset, Scene *scene)
 {
     glm::vec3 newPos = pos + offset;
 
@@ -493,7 +508,7 @@ bool Scene::enemyWorldCollisionUp(glm::vec3 pos, glm::vec3 offset, Scene *scene,
     return false;
 }
 
-bool Scene::enemyWorldCollisionLeft(glm::vec3 pos, glm::vec3 offset, Scene *scene, int i)
+bool Scene::enemyWorldCollisionLeft(glm::vec3 pos, glm::vec3 offset, Scene *scene)
 {
     glm::vec3 newPos = pos + offset;
 
@@ -509,7 +524,7 @@ bool Scene::enemyWorldCollisionLeft(glm::vec3 pos, glm::vec3 offset, Scene *scen
     return false;
 }
 
-bool Scene::enemyWorldCollisionRight(glm::vec3 pos, glm::vec3 offset, Scene *scene, int i)
+bool Scene::enemyWorldCollisionRight(glm::vec3 pos, glm::vec3 offset, Scene *scene)
 {
     glm::vec3 newPos = pos + offset;
 

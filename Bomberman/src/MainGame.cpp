@@ -28,6 +28,7 @@ bool MainGame::initGame(float width, float height, float fov)
 {
 	glm::mat4       projectionMatrix;
 
+	srand(time(NULL));
 	/// Creating glfw window
 	_width = width;
 	_height = height;

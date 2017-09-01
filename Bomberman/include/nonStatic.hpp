@@ -11,14 +11,9 @@ private:
 	glm::mat4       _position;
 	glm::mat4       _rotation;
 	glm::mat4       _scale;
-protected:
-	float         	_directionx;
-	float        	_directiony;
 
 public:
 	NonStatic(int id, std::string type){
-		_directiony = 0.0f;
-		_directionx = 0.020f;
 		_id = id;
 		_type = type;
 		_position = glm::mat4();
@@ -47,10 +42,6 @@ public:
 	void    rotate(glm::quat rot) { _rotation = glm::toMat4(rot); }
 	void    scale(glm::vec3 scale) { _scale = glm::scale(glm::mat4(), scale); }
 	void    scale(glm::mat4 scale) { _scale = scale; }
-	void    setDirectionx(float i) {_directionx = i;}
-	void    setDirectiony(float i) { _directiony = i;}
-	float   getDirectionX() { return  _directionx;}
-	float   getDirectionY() { return _directiony;}
 
 	glm::mat4   getTransformation() { return _position * _rotation * _scale; }
 	int         getId(){ return _id; }
