@@ -6,16 +6,14 @@ class   Player : public NonStatic
 {
 private:
 	glm::vec3       _pos;
-    float         	_directionx;
-    float        	_directiony;
+    char        	_direction;
 public:
     glm::vec3   playerStart;
     glm::vec3  playerScale;
 
-    void    setDirectionx(float i);
-    void    setDirectiony(float i);
-    float   getDirectionx();
-    float   getDirectiony();
+    char   setDirection(char c);
+
+    char   getDirection();
 
 public:
 	Player(int id, std::string type);

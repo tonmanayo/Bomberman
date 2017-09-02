@@ -155,7 +155,6 @@ void Scene::_addBomb(float x, float z)
 }
 
 
-
 void Scene::_addFloor(float x, float z)
 {
 	static int i = 0;
@@ -197,14 +196,13 @@ void Scene::_addEnemy(float x, float z)
     static int i = 0;
 
     model = _game->getModel("enemy1");
-    glm::mat4 mat = glm::translate(glm::mat4(), glm::vec3(x, 0, z));
     if (model != nullptr)
     {
-
 		std::string s = "enemy1";
         _enemies.push_back( new Player(i, s));
-        _enemies.back()->setPosition(x, 0, z);
-        _enemies.back()->playerStart = glm::vec3(x, 0, z);
+        _enemies.back()->setPosition(getGridx(x), 0, getGridy(z));
+       // _enemies.back()->scale(glm::vec3(0.3, 0.3, 0.3));
+        _enemies.back()->playerStart = glm::vec3(getGridx(x), 0, getGridy(z));
         MainGame::renderer.addToRender(_enemies.back()->getType(), _enemies.back()->getId(), model, _enemies.back()->getTransformation());
 		i++;
     }

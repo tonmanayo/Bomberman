@@ -122,9 +122,13 @@ void Scene::updateEnemy(MainGame *game, std::vector<void *> params) {
     srand(time(NULL));
     bool collision = false;
 
-    char dir[3] = {'N','N','N'};
+    static char dir[3] = {'L','L','L'};
 
     for (int i = 0; i < scene->_enemies.size(); i++) {
+
+        int y = scene->getWorldy(scene->_enemies[i]->getPosition().z);
+        int x = scene->getWorldx(scene->_enemies[i]->getPosition().x);
+
 
         if (scene->enemyPlayerCollision(scene->_enemies[i]->getPosition(), scene)) {
             std::cout << "dead\n";
@@ -134,96 +138,111 @@ void Scene::updateEnemy(MainGame *game, std::vector<void *> params) {
             scene->_game->getGameCamera().setCameraTarget(scene->_player->getPosition());
             scene->_game->getGameCamera().setCameraUp(glm::vec3(0, 1, 0));
             MainGame::renderer.applyTransformationToRenderable("player", scene->_player->getId(), scene->_player->getTransformation());
+            break ;
         }
-        int x = rand() % 3;
-        if (enemyWorldCollisionDown(scene->_enemies[i]->getPosition(), {0.0f, 0.0f, 0.02f}, scene)) {
+        if (enemyWorldCollisionDown(scene->_enemies[i]->getPosition(), {0.0f, 0.0f, 0.0f}, scene)) {
             collision = true;
+            scene->_enemies[i]->changePosZ(-0.01f);
+            std::cout << "down\n";
             dir[0] = 'U';
             dir[1] = 'L';
             dir[2] = 'R';
-            if (scene->_blocks[scene->getWorldy(scene->_enemies[i]->getPosition().z)][scene->getGridx(scene->_enemies[i]->getPosition().x - 1)] ==
-                    nullptr) {
-                dir[1] = 'U';
+
+            if (scene->_blocks[y][x - 1] != nullptr) {
+                dir[1] = 'R';
             }
-            if (scene->_blocks[scene->getWorldy(scene->_enemies[i]->getPosition().z)][scene->getGridx(scene->_enemies[i]->getPosition().x + 1)] ==
-                nullptr) {
+            if (scene->_blocks[y][x + 1] != nullptr) {
                 dir[2] = 'U';
             }
+            if (scene->_blocks[y + 1][x] != nullptr) {
+                dir[0] = 'L';
+
+            }
         }
-        if (enemyWorldCollisionUp(scene->_enemies[i]->getPosition(), {0.0f, 0.0f, -0.02f}, scene)) {
+        if (enemyWorldCollisionUp(scene->_enemies[i]->getPosition(), {0.0f, 0.0f, -0.0f}, scene)) {
             collision = true;
+            std::cout << "up\n";
+            scene->_enemies[i]->changePosZ(0.01f);
+
             dir[0] = 'D';
             dir[1] = 'L';
             dir[2] = 'R';
-            if (scene->_blocks[scene->getWorldy(scene->_enemies[i]->getPosition().z)][scene->getGridx(scene->_enemies[i]->getPosition().x) - 1] !=
-                nullptr) {
-                dir[1] = 'D';
+            scene->_enemies[i]->changePosZ(0.01f);
+            if (scene->_blocks[y][x - 1] != nullptr) {
+                dir[1] = 'R';
             }
-            if (scene->_blocks[scene->getWorldy(scene->_enemies[i]->getPosition().z)][scene->getGridx(scene->_enemies[i]->getPosition().x) + 1] !=
-                nullptr) {
+            if (scene->_blocks[y][x + 1] != nullptr) {
                 dir[2] = 'D';
             }
-        }
-        if (enemyWorldCollisionRight(scene->_enemies[i]->getPosition(), {0.01f, 0.0f, 0.0f}, scene)) {
-            collision = true;
-            dir[0] = 'L';
-            dir[1] = 'U';
-            dir[2] = 'D';
-            if (scene->_blocks[scene->getWorldy(scene->_enemies[i]->getPosition().z) + 1][scene->getGridx(scene->_enemies[i]->getPosition().x)] !=
-                nullptr) {
-                dir[1] = 'L';
+            if (scene->_blocks[y - 1][x] != nullptr) {
+                dir[0] = 'L';
             }
-            if (scene->_blocks[scene->getWorldy(scene->_enemies[i]->getPosition().z) - 1][scene->getGridx(scene->_enemies[i]->getPosition().x)] !=
-                nullptr) {
-                dir[2] = 'L';
+        }
+        else if (enemyWorldCollisionRight(scene->_enemies[i]->getPosition(), {0.0f, 0.0f, 0.0f}, scene)) {
+            collision = true;
+            std::cout << "right\n";
+
+            dir[0] = 'D';
+            dir[1] = 'L';
+            dir[2] = 'U';
+            if (scene->_blocks[y][x - 1] != nullptr) {
+                dir[1] = 'D';
+            }
+            if (scene->_blocks[y + 1][x] != nullptr) {
+                dir[2] = 'U';
+            }
+            if (scene->_blocks[y - 1][x] != nullptr) {
+                dir[0] = 'L';
             }
 
         }
-        if (enemyWorldCollisionLeft(scene->_enemies[i]->getPosition(), {-0.01f, 0.0f, 0.0f}, scene)) {
+        else if (enemyWorldCollisionLeft(scene->_enemies[i]->getPosition(), {-0.0f, 0.0f, 0.0f}, scene)) {
             collision = true;
-            dir[0] = 'R';
-            dir[1] = 'U';
-            dir[2] = 'D';
-            if (scene->_blocks[scene->getWorldy(scene->_enemies[i]->getPosition().z) + 1][scene->getGridx(scene->_enemies[i]->getPosition().x)] !=
-                nullptr) {
-                dir[1] = 'R';
+            dir[0] = 'D';
+            dir[1] = 'R';
+            dir[2] = 'U';
+            std::cout << "left\n";
+
+
+            if (scene->_blocks[y][x + 1] != nullptr) {
+                dir[1] = 'D';
             }
-            if (scene->_blocks[scene->getWorldy(scene->_enemies[i]->getPosition().z) - 1][scene->getGridx(scene->_enemies[i]->getPosition().x)] !=
-                nullptr) {
+            if (scene->_blocks[y - 1][x] != nullptr) {
                 dir[2] = 'R';
+            }
+            if (scene->_blocks[y + 1][x] != nullptr) {
+                dir[0] = 'U';
             }
 
         }
         if (collision) {
-            if (dir[x] == 'U') {
-                //scene->_enemies[i]->changePosZ(-0.010f);
-                scene->_enemies[i]->setDirectionx(0.0f);
-                scene->_enemies[i]->setDirectiony(-0.01f);
-                scene->_enemies[i]->rotate(glm::radians(-180.0f), {0, 1, 0});
-
-            } else if (dir[x] == 'D') {
-                  //scene->_enemies[i]->changePosZ(0.020f);
-                scene->_enemies[i]->rotate(glm::radians(0.0f), {0, 1, 0});
-                scene->_enemies[i]->setDirectionx(0.0f);
-                scene->_enemies[i]->setDirectiony(0.01f);
-
-            } else if (dir[x] == 'L') {
-                //scene->_enemies[i]->changePosX(-0.01f);
-                scene->_enemies[i]->rotate(glm::radians(-90.0f), {0, 1, 0});
-                scene->_enemies[i]->setDirectionx(-0.01f);
-                scene->_enemies[i]->setDirectiony(0.0f);
-
-            } else if (dir[x] == 'R') {
-                //scene->_enemies[i]->changePosX(0.020f);
-                scene->_enemies[i]->rotate(glm::radians(90.0f), {0, 1, 0});
-                scene->_enemies[i]->setDirectionx(0.01f);
-                scene->_enemies[i]->setDirectiony(0.0f);
-
-            }
+            int randNbr = rand() % 3;
+            scene->_enemies[i]->setDirection(dir[randNbr]);
+            std::cout << dir[randNbr] << std::endl;
             collision = false;
         }
-        scene->_enemies[i]->changePosZ(scene->_enemies[i]->getDirectiony());
-        scene->_enemies[i]->changePosX(scene->_enemies[i]->getDirectionx());
+
+            if (scene->_enemies[i]->getDirection() == 'D') {
+                scene->_enemies[i]->changePosZ(-0.01f);
+                scene->_enemies[i]->rotate(glm::radians(-180.0f), {0, 1, 0});
+            } else if (scene->_enemies[i]->getDirection() == 'U') {
+                scene->_enemies[i]->rotate(glm::radians(0.0f), {0, 1, 0});
+                scene->_enemies[i]->changePosZ(0.01f);
+            } else if (scene->_enemies[i]->getDirection() == 'L') {
+                scene->_enemies[i]->rotate(glm::radians(-90.0f), {0, 1, 0});
+                scene->_enemies[i]->changePosX(-0.01f);
+            } else if (scene->_enemies[i]->getDirection() == 'R') {
+                scene->_enemies[i]->rotate(glm::radians(90.0f), {0, 1, 0});
+                scene->_enemies[i]->changePosX(0.01f);
+            }
+
+//        if (!test)
+//            scene->_enemies[i]->setPosition(scene->_enemies[i]->getPosition().x, scene->_enemies[i]->getPosition().y, std::round(scene->_enemies[i]->getPosition().z / 2) * 2);
+//        else
+//            scene->_enemies[i]->setPosition(std::round(scene->_enemies[i]->getPosition().x / 2) * 2, scene->_enemies[i]->getPosition().y, scene->_enemies[i]->getPosition().z);
+
+
+
 
         MainGame::renderer.applyTransformationToRenderable(scene->_enemies[i]->getType(),
 														   scene->_enemies[i]->getId(), scene->_enemies[i]->getTransformation());

@@ -1,8 +1,7 @@
 #include <player.hpp>
 
 Player::Player(int id, std::string type) : NonStatic(id, type){
-    _directiony = 0.02f;
-    _directionx = 0.0f;
+  _direction = 'U';
 }
 
 void Player::setPosition(float x, float y, float z)
@@ -32,20 +31,12 @@ void Player::reset() {
     translate(playerStart);
 }
 
-void Player::setDirectionx(float i) {
-    _directionx = i;
+char Player::setDirection(char c) {
+    _direction = c;
 }
 
-void Player::setDirectiony(float i){
-    _directiony = i;
-}
-
-float Player::getDirectionx() {
-    return  _directionx;
-}
-
-float Player::getDirectiony() {
-    return  _directiony;
+char Player::getDirection() {
+    return  _direction;
 }
 
 glm::vec3 Player::getPosition() { return _pos; }

@@ -25,6 +25,7 @@ int     main(int ac, char **av)
 
 	game.initGame(1280.0f, 760.0f, 70.0f);
 	game.setupGameCamera(glm::vec3(5, 13, -6), -80.0f, -90.0f);
+    srand(time(NULL));
 
 	scene = new Scene(&game, game.getMap("map1"), 5);
 
