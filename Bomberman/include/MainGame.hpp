@@ -13,6 +13,8 @@ struct  Func
 	std::vector<void *> params;
 };
 
+
+
 class   MainGame
 {
 private:
@@ -45,6 +47,7 @@ public:
 	bool    addMap(const char *name, const char *path);
 	void    loadResources();
 	void    gameLoop();
+	void	gameLoopMenu();
 
 	Zion::Window&               getGameWindow();
 	Zion::Camera&               getGameCamera();

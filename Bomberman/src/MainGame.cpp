@@ -140,6 +140,39 @@ void MainGame::gameLoop()
 	}
 }
 
+void MainGame::gameLoopMenu()
+{
+    glm::mat4   viewMatrix;
+    glm::vec3   viewPos;
+
+    Zion::Renderable::startTime = (float)glfwGetTime();
+    Zion::Renderable::runTime = Zion::Renderable::startTime;
+    while (!_window.shouldClose() && !_window.isKeyPressed(GLFW_KEY_ESCAPE))
+    {
+        // Main Menu stuff
+        // OptionsMenu *mainMenu = new OptionsMenu(&_window.getWindow());
+
+
+        auto currentTime = (float)glfwGetTime();
+        Zion::Renderable::deltaTime = currentTime - Zion::Renderable::runTime;
+        Zion::Renderable::runTime = currentTime;
+
+        _window.clearWindow(0.0f, 0.0f, 0.0f, 1.0f);
+        /// calling all functions for loop
+        for (std::pair<const char *, Func> func : functions)
+            func.second.func(this, func.second.params);
+        viewMatrix = _camera->getViewMatrix();
+        viewPos = _camera->getCameraPosition();
+        for (std::pair<std::string, Zion::Shader *> shader : _shaders)
+        {
+            shader.second->setUniformMat4((GLchar *)"view_matrix", viewMatrix);
+            shader.second->setUniform3f((GLchar *)"viewPos", viewPos);
+        }
+        MainGame::renderer.render();
+        _window.updateWindow();
+    }
+}
+
 Zion::Window& MainGame::getGameWindow() { return _window; }
 
 Zion::Camera& MainGame::getGameCamera() { return *_camera; }

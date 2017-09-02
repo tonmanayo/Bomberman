@@ -62,7 +62,7 @@ if (APPLE)
     target_link_libraries(${PROJECT_NAME} ${OPENGL_FLAGS})
 endif()
 
-set(B_SOURCE_FILES Bomberman/main.cpp Bomberman/src/MainGame.cpp Bomberman/src/scene.cpp Bomberman/src/player.cpp Bomberman/src/gui/MainMenu.cpp)
+set(B_SOURCE_FILES Bomberman/main.cpp Bomberman/src/MainGame.cpp Bomberman/src/scene.cpp Bomberman/src/player.cpp Bomberman/src/gui/MainMenu.cpp Bomberman/src/gui/Menu.cpp Bomberman/src/gui/Menu.h)
 add_executable(Bomberman ${B_SOURCE_FILES})
 target_link_libraries(Bomberman
         ${OPENGL_LIBRARIES}
