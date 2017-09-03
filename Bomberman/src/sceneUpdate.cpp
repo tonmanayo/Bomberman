@@ -119,16 +119,14 @@ void Scene::updateBomb(MainGame *game, std::vector<void *> params) {
 
 void Scene::updateEnemy(MainGame *game, std::vector<void *> params) {
     auto *scene = (Scene *)params[0];
-    srand(time(NULL));
     bool collision = false;
 
-    static char dir[3] = {'L','L','L'};
+    char dir[3] = {'L','L','L'};
 
     for (int i = 0; i < scene->_enemies.size(); i++) {
 
         int y = scene->getWorldy(scene->_enemies[i]->getPosition().z);
         int x = scene->getWorldx(scene->_enemies[i]->getPosition().x);
-
 
         if (scene->enemyPlayerCollision(scene->_enemies[i]->getPosition(), scene)) {
             std::cout << "dead\n";
@@ -181,6 +179,7 @@ void Scene::updateEnemy(MainGame *game, std::vector<void *> params) {
         else if (enemyWorldCollisionRight(scene->_enemies[i]->getPosition(), {0.0f, 0.0f, 0.0f}, scene)) {
             collision = true;
             std::cout << "right\n";
+            scene->_enemies[i]->changePosX(-0.01f);
 
             dir[0] = 'D';
             dir[1] = 'L';
@@ -194,6 +193,10 @@ void Scene::updateEnemy(MainGame *game, std::vector<void *> params) {
             if (scene->_blocks[y - 1][x] != nullptr) {
                 dir[0] = 'L';
             }
+            if (scene->_blocks[y - 1][x] != nullptr && scene->_blocks[y - 1][x + 1]) {
+                dir[0] = 'L';
+                dir[2] = 'U';
+            }
 
         }
         else if (enemyWorldCollisionLeft(scene->_enemies[i]->getPosition(), {-0.0f, 0.0f, 0.0f}, scene)) {
@@ -202,7 +205,7 @@ void Scene::updateEnemy(MainGame *game, std::vector<void *> params) {
             dir[1] = 'R';
             dir[2] = 'U';
             std::cout << "left\n";
-
+            scene->_enemies[i]->changePosX(0.01f);
 
             if (scene->_blocks[y][x + 1] != nullptr) {
                 dir[1] = 'D';
@@ -223,11 +226,11 @@ void Scene::updateEnemy(MainGame *game, std::vector<void *> params) {
         }
 
             if (scene->_enemies[i]->getDirection() == 'D') {
-                scene->_enemies[i]->changePosZ(-0.01f);
-                scene->_enemies[i]->rotate(glm::radians(-180.0f), {0, 1, 0});
-            } else if (scene->_enemies[i]->getDirection() == 'U') {
-                scene->_enemies[i]->rotate(glm::radians(0.0f), {0, 1, 0});
                 scene->_enemies[i]->changePosZ(0.01f);
+                scene->_enemies[i]->rotate(glm::radians(0.0f), {0, 1, 0});
+            } else if (scene->_enemies[i]->getDirection() == 'U') {
+                scene->_enemies[i]->rotate(glm::radians(180.0f), {0, 1, 0});
+                scene->_enemies[i]->changePosZ(-0.01f);
             } else if (scene->_enemies[i]->getDirection() == 'L') {
                 scene->_enemies[i]->rotate(glm::radians(-90.0f), {0, 1, 0});
                 scene->_enemies[i]->changePosX(-0.01f);

@@ -467,7 +467,6 @@ bool Scene::enemyPlayerCollision(glm::vec3 pos, Scene *scene){
     int playerx = scene->getWorldx(scene->_player->getPosition().x);
     int playery = scene->getWorldy(scene->_player->getPosition().z);
 
-
     if (playery == enemyY && playerx == enemyX)
     {
         return true;
