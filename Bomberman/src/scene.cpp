@@ -56,9 +56,9 @@ bool Scene::buildMap()
 	}
 	std::vector<void *> params;
 	params.push_back(this);
-	MainGame::functions.insert(std::pair<const char *, Func>("updateBomb", {Scene::updateBomb, params}));
-	MainGame::functions.insert(std::pair<const char *, Func>("updatePlayer", {Scene::updatePlayer, params}));
-	MainGame::functions.insert(std::pair<const char *, Func>("updateEnemies", {Scene::updateEnemy, params}));
+	MainGame::functions.insert(std::pair<const char *, Func>("sceneUpdate", {Scene::sceneUpdate, params}));
+	//MainGame::functions.insert(std::pair<const char *, Func>("updatePlayer", {Scene::updatePlayer, params}));
+	//MainGame::functions.insert(std::pair<const char *, Func>("updateEnemies", {Scene::updateEnemy, params}));
     glm::mat4 tmp = glm::translate(glm::mat4(), {0, -1.3, -5});
     tmp = glm::scale(tmp, {50, 50, 50});
 	MainGame::renderer.addToRender("background", 0, _game->getModel("lavaBackground"), tmp);
@@ -205,4 +205,13 @@ void Scene::_addEnemy(float x, float z)
         _enemies[i].playerStart = glm::vec3(x, 0, z);
         MainGame::renderer.addToRender("enemy1", i, model, mat);
     }
+}
+
+void Scene::sceneUpdate(MainGame *game, std::vector<void *> params)
+{
+	auto *scene = (Scene *)params[0];
+
+	updateBomb(game, scene);
+	updateEnemy(game, scene);
+	updatePlayer(game, scene);
 }

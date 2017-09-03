@@ -1,9 +1,7 @@
 #include <scene.hpp>
 
-void Scene::updatePlayer(MainGame *game, std::vector<void *> params)
+void Scene::updatePlayer(MainGame *game, Scene *scene)
 {
-	auto *scene = (Scene *)params[0];
-
 	if (game->getGameWindow().isKeyPressed(GLFW_KEY_S))
 	{
 		if (!worldCollisionDown(scene->_player->getPosition(), {0, 0, 0.02f}, scene))
@@ -55,9 +53,7 @@ void Scene::updatePlayer(MainGame *game, std::vector<void *> params)
 	}
 }
 
-void Scene::bombExplode(std::vector<void *> params, const Bomb &bomb) {
-    auto *scene = (Scene *)params[0];
-
+void Scene::bombExplode(Scene *scene, const Bomb &bomb) {
     //todo add for loop for power up
     if (scene->breakableBrickCollisionDown(bomb.getPosition(), scene))
     {
@@ -82,13 +78,12 @@ void Scene::bombExplode(std::vector<void *> params, const Bomb &bomb) {
 
 }
 
-void Scene::updateBomb(MainGame *game, std::vector<void *> params) {
-	auto *scene = (Scene *)params[0];
+void Scene::updateBomb(MainGame *game, Scene *scene) {
 	for (int i = 0; i < scene->_bomb.size(); ++i) {
 		if (scene->_bomb[i].explodeTime())
 		{
             scene->_nbBombs--;
-            bombExplode(params, scene->_bomb[i]);
+            bombExplode(scene, scene->_bomb[i]);
             if(scene->PlayerExplosionCollision(scene->_bomb[i].getPosition(), scene))
             {
                 std::cout << "dead\n";
@@ -109,9 +104,7 @@ void Scene::updateBomb(MainGame *game, std::vector<void *> params) {
 }
 
 
-void Scene::updateEnemy(MainGame *game, std::vector<void *> params) {
-    auto *scene = (Scene *)params[0];
-
+void Scene::updateEnemy(MainGame *game, Scene *scene) {
     for (int i = 0; i < scene->_enemies.size(); ++i) {
         scene->_enemies[i].changePosZ(0.02f);
         //std::cout << scene->_enemies[i].getPosition().z << std::endl;

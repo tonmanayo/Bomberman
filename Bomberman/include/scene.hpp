@@ -53,7 +53,6 @@ public:
 	static bool     worldCollisionRight(glm::vec3 pos, glm::vec3 offset, Scene *scene);
 	static bool     checkBlockCollision(glm::vec3 blockPos, glm::vec3 entityPos);
 	static bool     checkBlockCollision1(glm::vec3 blockPos, glm::vec3 entityPos);
-	static void		updateBomb(MainGame *game, std::vector<void *> params);
 
     static bool     breakableBrickCollisionDown(glm::vec3 pos, Scene *scene);
     static bool     breakableBrickCollisionUp(glm::vec3 pos, Scene *scene);
@@ -63,7 +62,9 @@ public:
 	static bool     PlayerExplosionCollision(glm::vec3 pos, Scene *scene);
 
 public:
-	static  void    updatePlayer(MainGame *game, std::vector<void *> params);
-    static  void    updateEnemy(MainGame *game, std::vector<void *> params);
-    static  void    bombExplode(std::vector<void *> params, const Bomb &bomb);
+	static  void	updateBomb(MainGame *game, Scene *scene);
+	static  void    updatePlayer(MainGame *game, Scene *scene);
+    static  void    updateEnemy(MainGame *game,  Scene *scene);
+    static  void    bombExplode(Scene *scene, const Bomb &bomb);
+	static  void    sceneUpdate(MainGame *game, std::vector<void *> params);
 };
