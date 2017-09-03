@@ -24,6 +24,9 @@ add_subdirectory(ext/nanogui)
 set_property(TARGET glfw glfw_objects nanogui PROPERTY FOLDER "dependencies")
 # --- End Nanogui ---
 
+# Add the configurations from yaml-cpp
+add_subdirectory(ext/yaml-cpp)
+
 include_directories(
         ${PROJECT_SOURCE_DIR}/Core/includes
         ${GLEW_INCLUDE_DIRS}
@@ -32,6 +35,7 @@ include_directories(
         ${PROJECT_SOURCE_DIR}/ext/nanogui/include
         ${PROJECT_SOURCE_DIR}/ext/nanogui/ext/eigen
         ${PROJECT_SOURCE_DIR}/ext/nanogui/ext/nanovg/src
+        ${PROJECT_SOURCE_DIR}/ext/yaml-cpp/include
         ${NANOGUI_EXTRA_INCS}
         ${PROJECT_SOURCE_DIR}/Bomberman/include
 )

@@ -4,3 +4,6 @@
 [submodule "ext/iniparser"]
 	path = ext/iniparser
 	url = https://github.com/ndevilla/iniparser.git
+[submodule "ext/yaml-cpp"]
+	path = ext/yaml-cpp
+	url = https://github.com/jbeder/yaml-cpp.git

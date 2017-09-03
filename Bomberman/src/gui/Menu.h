@@ -30,11 +30,12 @@ public:
         nanogui::Screen *screenPtr;
         bool loop;
         MenuState menuState;
+		YAML::Node config;
     };
 
     Menu();
     ~Menu();
-    void initScreen(GLFWwindow *glfwWindow);
+    void init(GLFWwindow *glfwWindow);
 
     nanogui::Screen *get_screen() const;
 
