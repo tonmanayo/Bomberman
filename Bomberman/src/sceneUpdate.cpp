@@ -9,8 +9,7 @@ void Scene::updatePlayer(MainGame *game, std::vector<void *> params)
 		if (!worldCollisionDown(scene->_player->getPosition(), {0, 0, 0.02f}, scene))
 			scene->_player->changePosZ(0.02f);
 		scene->_player->rotate(glm::radians(0.0f), {0, 1, 0});
-		MainGame::renderer.applyTransformationToRenderable(scene->_player->getType(),
-		              scene->_player->getId(), scene->_player->getTransformation());
+		MainGame::renderer.applyTransformationToRenderable(scene->_player->getType(),  scene->_player->getId(), scene->_player->getTransformation());
 		glm::vec3 pos = scene->_player->getPosition();
 		scene->_game->getGameCamera().setCameraPosition(glm::vec3(pos.x + 0, pos.y + 10, pos.z + 6));
 		scene->_game->getGameCamera().setCameraTarget(scene->_player->getPosition());
@@ -21,11 +20,9 @@ void Scene::updatePlayer(MainGame *game, std::vector<void *> params)
 		if (!worldCollisionUp(scene->_player->getPosition(), {0, 0, -0.2f}, scene))
 			scene->_player->changePosZ(-0.02f);
 		scene->_player->rotate(glm::radians(180.0f), {0, 1, 0});
-		MainGame::renderer.applyTransformationToRenderable(scene->_player->getType(),
-		              scene->_player->getId(), scene->_player->getTransformation());
+		MainGame::renderer.applyTransformationToRenderable(scene->_player->getType(), scene->_player->getId(), scene->_player->getTransformation());
 		glm::vec3 pos = scene->_player->getPosition();
-		scene->_game->getGameCamera().setCameraPosition(
-				glm::vec3(pos.x + 0, pos.y + 10, pos.z + 6));
+		scene->_game->getGameCamera().setCameraPosition(glm::vec3(pos.x + 0, pos.y + 10, pos.z + 6));
 		scene->_game->getGameCamera().setCameraTarget(scene->_player->getPosition());
 		scene->_game->getGameCamera().setCameraUp(glm::vec3(0, 1, 0));
 	}
@@ -34,11 +31,9 @@ void Scene::updatePlayer(MainGame *game, std::vector<void *> params)
 		if (!worldCollisionLeft(scene->_player->getPosition(), {-0.1f, 0, 0}, scene))
 			scene->_player->changePosX(-0.02f);
 		scene->_player->rotate(glm::radians(-90.0f), {0, 1, 0});
-		MainGame::renderer.applyTransformationToRenderable(scene->_player->getType(),
-		              scene->_player->getId(), scene->_player->getTransformation());
+		MainGame::renderer.applyTransformationToRenderable(scene->_player->getType(), scene->_player->getId(), scene->_player->getTransformation());
 		glm::vec3 pos = scene->_player->getPosition();
-		scene->_game->getGameCamera().setCameraPosition(
-				glm::vec3(pos.x + 0, pos.y + 10, pos.z + 6));
+		scene->_game->getGameCamera().setCameraPosition(glm::vec3(pos.x + 0, pos.y + 10, pos.z + 6));
 		scene->_game->getGameCamera().setCameraTarget(scene->_player->getPosition());
 		scene->_game->getGameCamera().setCameraUp(glm::vec3(0, 1, 0));
 	}
@@ -47,11 +42,9 @@ void Scene::updatePlayer(MainGame *game, std::vector<void *> params)
 		if (!worldCollisionRight(scene->_player->getPosition(), {0.1f, 0, 0}, scene))
 			scene->_player->changePosX(0.02f);
 		scene->_player->rotate(glm::radians(90.0f), {0, 1, 0});
-		MainGame::renderer.applyTransformationToRenderable(scene->_player->getType(),
-		              scene->_player->getId(), scene->_player->getTransformation());
+		MainGame::renderer.applyTransformationToRenderable(scene->_player->getType(), scene->_player->getId(), scene->_player->getTransformation());
 		glm::vec3 pos = scene->_player->getPosition();
-		scene->_game->getGameCamera().setCameraPosition(
-				glm::vec3(pos.x + 0, pos.y + 10, pos.z + 6));
+		scene->_game->getGameCamera().setCameraPosition(glm::vec3(pos.x + 0, pos.y + 10, pos.z + 6));
 		scene->_game->getGameCamera().setCameraTarget(scene->_player->getPosition());
 		scene->_game->getGameCamera().setCameraUp(glm::vec3(0, 1, 0));
 	}
@@ -121,6 +114,6 @@ void Scene::updateEnemy(MainGame *game, std::vector<void *> params) {
 
     for (int i = 0; i < scene->_enemies.size(); ++i) {
         scene->_enemies[i].changePosZ(0.02f);
-        std::cout << scene->_enemies[i].getPosition().z << std::endl;
+        //std::cout << scene->_enemies[i].getPosition().z << std::endl;
     }
 }
