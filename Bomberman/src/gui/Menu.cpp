@@ -50,6 +50,14 @@ void Menu::Loop(Zion::Window *window) {
             this->MainMenu();
             menuGlobal.loop = true;
         }
+		else if (menuGlobal.menuState == MenuState::NEW_GAME) {
+			this->NewGameMenu();
+			menuGlobal.loop = true;
+		}
+		else if (menuGlobal.menuState == MenuState::LOAD_GAME) {
+			this->LoadGameMenu();
+			menuGlobal.loop = true;
+		}
         else if (menuGlobal.menuState == MenuState::OPTIONS) {
             this->OptionsMenu();
             menuGlobal.loop = true;
@@ -391,7 +399,6 @@ void Menu::SoundMenu() {
 
 void Menu::ControlsMenu() {
     menuGlobal.menuState = MenuState::CONTROLS;
-	//TODO: Map to a file
 	std::string up = "UpArrow";
 	std::string down = "DownArrow";
 	std::string left = "LeftArrow";
@@ -469,4 +476,146 @@ void Menu::ControlsMenu() {
                                        menuGlobal.screenPtr->resizeCallbackEvent(width, height);
                                    }
     );
+}
+
+void Menu::NewGameMenu() {
+	menuGlobal.menuState = MenuState::NEW_GAME;
+
+	this->_gui = new nanogui::FormHelper(this->_screen);
+	this->_nanoguiWindow = this->_gui->addWindow(Eigen::Vector2i(10, 10), "Controls");
+
+	this->_gui->addButton("Game 1", []() {
+		std::cout << "Starting new game in Game 1 slot" << std::endl;
+	});
+	this->_gui->addButton("Game 2", []() {
+		std::cout << "Starting new game in Game 2 slot" << std::endl;
+	});
+	this->_gui->addButton("Game 3", []() {
+		std::cout << "Starting new game in Game 3 slot" << std::endl;
+	});
+	this->_gui->addButton("Back", []() {
+		std::cout << "Back pressed" << std::endl;
+		menuGlobal.loop = false;
+		menuGlobal.menuState = MenuState::MAIN;
+	});
+
+	menuGlobal.screenPtr->setVisible(true);
+	menuGlobal.screenPtr->performLayout();
+	this->_nanoguiWindow->center();
+
+	glfwSetWindowUserPointer(this->_glfwWindow, this);
+
+
+	glfwSetCursorPosCallback(this->_glfwWindow,
+							 [](GLFWwindow *, double x, double y) {
+								 menuGlobal.screenPtr->cursorPosCallbackEvent(x, y);
+							 }
+	);
+
+	glfwSetMouseButtonCallback(this->_glfwWindow,
+							   [](GLFWwindow *, int button, int action, int modifiers) {
+								   menuGlobal.screenPtr->mouseButtonCallbackEvent(button, action, modifiers);
+							   }
+	);
+
+	glfwSetKeyCallback(this->_glfwWindow,
+					   [](GLFWwindow *, int key, int scancode, int action, int mods) {
+						   menuGlobal.screenPtr->keyCallbackEvent(key, scancode, action, mods);
+					   }
+	);
+
+	glfwSetCharCallback(this->_glfwWindow,
+						[](GLFWwindow *, unsigned int codepoint) {
+							menuGlobal.screenPtr->charCallbackEvent(codepoint);
+						}
+	);
+
+	glfwSetDropCallback(this->_glfwWindow,
+						[](GLFWwindow *, int count, const char **filenames) {
+							menuGlobal.screenPtr->dropCallbackEvent(count, filenames);
+						}
+	);
+
+	glfwSetScrollCallback(this->_glfwWindow,
+						  [](GLFWwindow *, double x, double y) {
+							  menuGlobal.screenPtr->scrollCallbackEvent(x, y);
+						  }
+	);
+
+	glfwSetFramebufferSizeCallback(this->_glfwWindow,
+								   [](GLFWwindow *, int width, int height) {
+									   menuGlobal.screenPtr->resizeCallbackEvent(width, height);
+								   }
+	);
+}
+
+void Menu::LoadGameMenu() {
+	menuGlobal.menuState = MenuState::NEW_GAME;
+
+	this->_gui = new nanogui::FormHelper(this->_screen);
+	this->_nanoguiWindow = this->_gui->addWindow(Eigen::Vector2i(10, 10), "Controls");
+
+	this->_gui->addButton("Game 1", []() {
+		std::cout << "Loading game in Game 1 slot" << std::endl;
+	});
+	this->_gui->addButton("Game 2", []() {
+		std::cout << "Loading game in Game 2 slot" << std::endl;
+	});
+	this->_gui->addButton("Game 3", []() {
+		std::cout << "Loading game in Game 3 slot" << std::endl;
+	});
+	this->_gui->addButton("Back", []() {
+		std::cout << "Back pressed" << std::endl;
+		menuGlobal.loop = false;
+		menuGlobal.menuState = MenuState::MAIN;
+	});
+
+	menuGlobal.screenPtr->setVisible(true);
+	menuGlobal.screenPtr->performLayout();
+	this->_nanoguiWindow->center();
+
+	glfwSetWindowUserPointer(this->_glfwWindow, this);
+
+
+	glfwSetCursorPosCallback(this->_glfwWindow,
+							 [](GLFWwindow *, double x, double y) {
+								 menuGlobal.screenPtr->cursorPosCallbackEvent(x, y);
+							 }
+	);
+
+	glfwSetMouseButtonCallback(this->_glfwWindow,
+							   [](GLFWwindow *, int button, int action, int modifiers) {
+								   menuGlobal.screenPtr->mouseButtonCallbackEvent(button, action, modifiers);
+							   }
+	);
+
+	glfwSetKeyCallback(this->_glfwWindow,
+					   [](GLFWwindow *, int key, int scancode, int action, int mods) {
+						   menuGlobal.screenPtr->keyCallbackEvent(key, scancode, action, mods);
+					   }
+	);
+
+	glfwSetCharCallback(this->_glfwWindow,
+						[](GLFWwindow *, unsigned int codepoint) {
+							menuGlobal.screenPtr->charCallbackEvent(codepoint);
+						}
+	);
+
+	glfwSetDropCallback(this->_glfwWindow,
+						[](GLFWwindow *, int count, const char **filenames) {
+							menuGlobal.screenPtr->dropCallbackEvent(count, filenames);
+						}
+	);
+
+	glfwSetScrollCallback(this->_glfwWindow,
+						  [](GLFWwindow *, double x, double y) {
+							  menuGlobal.screenPtr->scrollCallbackEvent(x, y);
+						  }
+	);
+
+	glfwSetFramebufferSizeCallback(this->_glfwWindow,
+								   [](GLFWwindow *, int width, int height) {
+									   menuGlobal.screenPtr->resizeCallbackEvent(width, height);
+								   }
+	);
 }
