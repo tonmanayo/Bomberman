@@ -24,6 +24,23 @@ MainGame& MainGame::operator=(const MainGame &rhs)
 	return *this;
 }
 
+bool MainGame::initGame(GLFWwindow *window, float width, float height, float fov)
+{
+	glm::mat4       projectionMatrix;
+
+	_window.initWindow(window, "Bomberman", (int)width, (int)height);
+	/// Calculating perspective
+	projectionMatrix = glm::perspective(glm::radians(fov), width / height, 0.1f, 1000.0f);
+	/// Loading Shaders
+	if (addShader("basic", "shaders/basic.vert", "shaders/basic.frag"))
+		getShader("basic")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
+	/// setup default camera
+	setupGameCamera();
+	/// load resources
+	loadResources();
+	return true;
+}
+
 bool MainGame::initGame(float width, float height, float fov)
 {
 	glm::mat4       projectionMatrix;
@@ -34,7 +51,7 @@ bool MainGame::initGame(float width, float height, float fov)
 	_fov = fov;
 	_window.initWindow("Bomberman", (int)width, (int)height);
 	/// Calculating perspective
-	projectionMatrix = glm::perspective(glm::radians(60.0f), width / height, 0.1f, 1000.0f);
+	projectionMatrix = glm::perspective(glm::radians(fov), width / height, 0.1f, 1000.0f);
 	/// Loading Shaders
 	if (addShader("basic", "shaders/basic.vert", "shaders/basic.frag"))
 		getShader("basic")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
@@ -124,7 +141,7 @@ void MainGame::gameLoop()
 		Zion::Renderable::deltaTime = currentTime - Zion::Renderable::runTime;
 		Zion::Renderable::runTime = currentTime;
 
-		_window.clearWindow(0.0f, 0.0f, 0.0f, 1.0f);
+		_window.clearWindow(0.3f, 0.3f, 0.3f, 1.0f);
 		/// calling all functions for loop
 		for (std::pair<const char *, Func> func : functions)
 			func.second.func(this, func.second.params);
@@ -187,4 +204,14 @@ std::vector<std::string>* MainGame::getMap(const std::string mapName)
 	}
 	return map;
 
+}
+
+GAMESTATE MainGame::getGameState()
+{
+	return _state;
+}
+
+void MainGame::setGameState(GAMESTATE state)
+{
+	_state = state;
 }

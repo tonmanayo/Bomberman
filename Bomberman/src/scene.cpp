@@ -57,8 +57,6 @@ bool Scene::buildMap()
 	std::vector<void *> params;
 	params.push_back(this);
 	MainGame::functions.insert(std::pair<const char *, Func>("sceneUpdate", {Scene::sceneUpdate, params}));
-	//MainGame::functions.insert(std::pair<const char *, Func>("updatePlayer", {Scene::updatePlayer, params}));
-	//MainGame::functions.insert(std::pair<const char *, Func>("updateEnemies", {Scene::updateEnemy, params}));
     glm::mat4 tmp = glm::translate(glm::mat4(), {0, -1.3, -5});
     tmp = glm::scale(tmp, {50, 50, 50});
 	MainGame::renderer.addToRender("background", 0, _game->getModel("lavaBackground"), tmp);

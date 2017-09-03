@@ -45,17 +45,24 @@ if (APPLE)
     target_link_libraries(${PROJECT_NAME} ${OPENGL_FLAGS})
 endif()
 
+add_subdirectory(lib/nanogui)
+include_directories(lib/nanogui/include)
+include_directories(${NANOGUI_EXTRA_INCS})
+add_definitions(${NANOGUI_EXTRA_DEFS})
+
 set(B_SOURCE_FILES Bomberman/main.cpp Bomberman/src/MainGame.cpp Bomberman/src/scene.cpp
         Bomberman/src/player.cpp Bomberman/src/block.cpp Bomberman/src/sceneUpdate.cpp
-        Bomberman/src/Bomb.cpp Bomberman/src/sceneCollision.cpp)
+        Bomberman/src/Bomb.cpp Bomberman/src/sceneCollision.cpp Bomberman/src/menu.cpp)
 
 add_executable(Bomberman ${B_SOURCE_FILES})
 target_link_libraries(Bomberman
         ${OPENGL_LIBRARIES}
         ${GLEW_LIBRARIES}
-        ${GLFW3_LIBRARIES}
+        #${GLFW3_LIBRARIES}
         ${GLM_LIBRARIES}
         zion
+        nanogui
+        ${NANOGUI_EXTRA_LIBS}
         )
 if (APPLE)
     target_link_libraries(Bomberman ${OPENGL_FLAGS})

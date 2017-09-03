@@ -7,6 +7,10 @@ namespace Zion
 	double  Input::_mouseX = 0.0f;
 	double  Input::_mouseY = 0.0f;
 
+	bool (*Input::mouseCallback2)(int, int, int) = nullptr;
+	bool (*Input::keyCallback2)(int, int, int, int) = nullptr;
+	bool (*Input::cursorPositionCallback2)(int, int) = nullptr;
+
 	Input::Input()
 	{
 		for (bool& key : _keys)
@@ -21,17 +25,23 @@ namespace Zion
 	void Input::keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods)
 	{
 		_keys[key] = action != GLFW_RELEASE;
+		if (keyCallback2 != nullptr)
+			keyCallback2(key, scancode, action, mods);
 	}
 
 	void Input::mouseButtonCallback(GLFWwindow *window, int button, int action, int mods)
 	{
 		_mouse[button] = action != GLFW_RELEASE;
+		if (mouseCallback2 != nullptr)
+			mouseCallback2(button, action, mods);
 	}
 
 	void Input::cursorPositionCallback(GLFWwindow *window, double xpos, double ypos)
 	{
 		_mouseX = xpos;
 		_mouseY = ypos;
+		if (cursorPositionCallback2 != nullptr)
+			cursorPositionCallback2(xpos, ypos);
 	}
 
 	bool Input::getKeyStatus(int key) const

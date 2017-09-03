@@ -1,6 +1,6 @@
 #include <iostream>
 #include <MainGame.hpp>
-#include <scene.hpp>
+#include <menu.hpp>
 
 void    checkKeys(MainGame *game, std::vector<void *> params)
 {
@@ -21,15 +21,18 @@ void    checkKeys(MainGame *game, std::vector<void *> params)
 int     main(int ac, char **av)
 {
 	MainGame    game;
+	Menu        menu;
 	Scene       *scene;
 
-	game.initGame(1280.0f, 760.0f, 70.0f);
-	game.setupGameCamera(glm::vec3(5, 13, -6), -80.0f, -90.0f);
+	nanogui::init();
+	menu.initMenu(1280.0f, 760.0f, &game, false);
+	game.initGame(menu.getGlfwWindow(), 1280.0f, 760.0f, 60.0f);
+	menu.buildMenuWindows(1280.0f, 760.0f);
 
-	scene = new Scene(&game, game.getMap("map1"), 5);
+	//scene = new Scene(&game, game.getMap("map1"), 5);
 
 	MainGame::functions.insert(std::pair<const char *, Func>("checkKeys", {checkKeys, std::vector<void *>()}));
-
 	game.gameLoop();
+	nanogui::shutdown();
 	return 0;
 }
