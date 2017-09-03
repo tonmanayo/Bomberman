@@ -61,6 +61,8 @@ int     main(int ac, char **av)
 	for (GLuint id : Zion::Texture::textureIDs)
 		glDeleteTextures(1, &id);
 	Zion::Texture::textureIDs.clear();
+	delete model;
+	delete mat;
 	return 0;
 }
 

@@ -7,7 +7,7 @@ void Scene::updatePlayer(MainGame *game, std::vector<void *> params)
 
 	if (game->getGameWindow().isKeyPressed(GLFW_KEY_S))
 	{
-		if (!worldCollisionDown(scene->_player->getPosition(), {0, 0, 0.02f}, scene))
+		if (!worldCollisionDown(scene->_player->getPosition(), {0, 0, -0.02f}, scene))
 			scene->_player->changePosZ(0.02f);
 		scene->_player->rotate(glm::radians(0.0f), {0, 1, 0});
 		MainGame::renderer.applyTransformationToRenderable(scene->_player->getType(),
@@ -32,7 +32,7 @@ void Scene::updatePlayer(MainGame *game, std::vector<void *> params)
 	}
 	if (game->getGameWindow().isKeyPressed(GLFW_KEY_A))
 	{
-		if (!worldCollisionLeft(scene->_player->getPosition(), {-0.1f, 0, 0}, scene))
+		if (!worldCollisionLeft(scene->_player->getPosition(), {-0.2f, 0, 0}, scene))
 			scene->_player->changePosX(-0.02f);
 		scene->_player->rotate(glm::radians(-90.0f), {0, 1, 0});
 		MainGame::renderer.applyTransformationToRenderable(scene->_player->getType(),
@@ -45,7 +45,7 @@ void Scene::updatePlayer(MainGame *game, std::vector<void *> params)
 	}
 	if (game->getGameWindow().isKeyPressed(GLFW_KEY_D))
 	{
-		if (!worldCollisionRight(scene->_player->getPosition(), {0.1f, 0, 0}, scene))
+		if (!worldCollisionRight(scene->_player->getPosition(), {0.0f, 0, 0}, scene))
 			scene->_player->changePosX(0.02f);
 		scene->_player->rotate(glm::radians(90.0f), {0, 1, 0});
 		MainGame::renderer.applyTransformationToRenderable(scene->_player->getType(),
@@ -66,35 +66,40 @@ void Scene::updatePlayer(MainGame *game, std::vector<void *> params)
 void Scene::bombExplode(std::vector<void *> params, const Bomb &bomb) {
     auto *scene = (Scene *)params[0];
 
+    int x = scene->getWorldx(bomb.getPosition().x);
+    int y = scene->getWorldy(bomb.getPosition().z);
     //todo add for loop for power up
     if (scene->breakableBrickCollisionDown(bomb.getPosition(), scene))
     {
-        MainGame::renderer.removeFromRender("breakBlock", scene->_blocks[scene->getWorldy(bomb.getPosition().z) - 1][scene->getWorldx(bomb.getPosition().x)]->getId());
-        scene->_blocks[scene->getWorldy(bomb.getPosition().z) - 1][scene->getWorldx(bomb.getPosition().x)] = nullptr;
+        MainGame::renderer.removeFromRender("breakBlock", scene->_blocks[y - 1][x]->getId());
+        scene->_blocks[y - 1][x] = nullptr;
     }
     if (scene->breakableBrickCollisionUp(bomb.getPosition(), scene))
     {
-        MainGame::renderer.removeFromRender("breakBlock", scene->_blocks[scene->getWorldy(bomb.getPosition().z) + 1][scene->getWorldx(bomb.getPosition().x)]->getId());
-        scene->_blocks[scene->getWorldy(bomb.getPosition().z) + 1][scene->getWorldx(bomb.getPosition().x)] = nullptr;
+        MainGame::renderer.removeFromRender("breakBlock", scene->_blocks[y + 1][x]->getId());
+        scene->_blocks[y + 1][x] = nullptr;
     }
     if (scene->breakableBrickCollisionLeft(bomb.getPosition(), scene))
     {
-        MainGame::renderer.removeFromRender("breakBlock", scene->_blocks[scene->getWorldy(bomb.getPosition().z)][scene->getWorldx(bomb.getPosition().x) - 1]->getId());
-        scene->_blocks[scene->getWorldy(bomb.getPosition().z)][scene->getWorldx(bomb.getPosition().x) - 1] = nullptr;
+        MainGame::renderer.removeFromRender("breakBlock", scene->_blocks[y][x - 1]->getId());
+        scene->_blocks[y][x - 1] = nullptr;
     }
     if (scene->breakableBrickCollisionRight(bomb.getPosition(), scene))
     {
-        MainGame::renderer.removeFromRender("breakBlock", scene->_blocks[scene->getWorldy(bomb.getPosition().z)][scene->getWorldx(bomb.getPosition().x) + 1]->getId());
-        scene->_blocks[scene->getWorldy(bomb.getPosition().z)][scene->getWorldx(bomb.getPosition().x) + 1] = nullptr;
+        MainGame::renderer.removeFromRender("breakBlock", scene->_blocks[y][x + 1]->getId());
+        scene->_blocks[y][x + 1] = nullptr;
     }
 
 }
 
 void Scene::updateBomb(MainGame *game, std::vector<void *> params) {
 	auto *scene = (Scene *)params[0];
+
 	for (int i = 0; i < scene->_bomb.size(); ++i) {
 		if (scene->_bomb[i].explodeTime())
 		{
+            int y = scene->getWorldy(scene->_bomb[i].getPosition().z);
+            int x = scene->getWorldx(scene->_bomb[i].getPosition().x);
             scene->_nbBombs--;
             bombExplode(params, scene->_bomb[i]);
             if(scene->PlayerExplosionCollision(scene->_bomb[i].getPosition(), scene))
@@ -108,14 +113,25 @@ void Scene::updateBomb(MainGame *game, std::vector<void *> params) {
                 MainGame::renderer.applyTransformationToRenderable("player", scene->_player->getId(), scene->_player->getTransformation());
             }
 			MainGame::renderer.removeFromRender("bomb", scene->_bomb[i].getId());
-			delete scene->_blocks[scene->getWorldy(scene->_bomb[i].getPosition().z)][scene->getWorldx(scene->_bomb[i].getPosition().x)];
-			scene->_blocks[scene->getWorldy(scene->_bomb[i].getPosition().z)][scene->getWorldx(scene->_bomb[i].getPosition().x)] = nullptr;
+			delete scene->_blocks[y][x];
+			scene->_blocks[y][x] = nullptr;
 			scene->_bomb[i] = scene->_bomb.back();
 			scene->_bomb.pop_back();
 		}
 	}
 }
 
+char oppDir(char dir) {
+    if (dir == 'L')
+        dir = 'R';
+    if (dir == 'R')
+        dir = 'L';
+    if (dir == 'U')
+        dir = 'D';
+    if (dir == 'D')
+        dir = 'U';
+    return dir;
+}
 
 void Scene::updateEnemy(MainGame *game, std::vector<void *> params) {
     auto *scene = (Scene *)params[0];
@@ -127,6 +143,7 @@ void Scene::updateEnemy(MainGame *game, std::vector<void *> params) {
 
         int y = scene->getWorldy(scene->_enemies[i]->getPosition().z);
         int x = scene->getWorldx(scene->_enemies[i]->getPosition().x);
+
 
         if (scene->enemyPlayerCollision(scene->_enemies[i]->getPosition(), scene)) {
             std::cout << "dead\n";
@@ -141,88 +158,99 @@ void Scene::updateEnemy(MainGame *game, std::vector<void *> params) {
         if (enemyWorldCollisionDown(scene->_enemies[i]->getPosition(), {0.0f, 0.0f, 0.0f}, scene)) {
             collision = true;
             scene->_enemies[i]->changePosZ(-0.01f);
-            std::cout << "down\n";
             dir[0] = 'U';
-            dir[1] = 'L';
-            dir[2] = 'R';
+            dir[1] = 'R';
+            dir[2] = 'L';
 
-            if (scene->_blocks[y][x - 1] != nullptr) {
-                dir[1] = 'R';
-            }
-            if (scene->_blocks[y][x + 1] != nullptr) {
-                dir[2] = 'U';
-            }
             if (scene->_blocks[y + 1][x] != nullptr) {
                 dir[0] = 'L';
+            }
+            if (scene->_blocks[y][x + 1] != nullptr) {
+                dir[1] = 'U';
+            }
+            if (scene->_blocks[y][x - 1] != nullptr) {
+                dir[2] = 'R';
 
             }
         }
         if (enemyWorldCollisionUp(scene->_enemies[i]->getPosition(), {0.0f, 0.0f, -0.0f}, scene)) {
             collision = true;
-            std::cout << "up\n";
             scene->_enemies[i]->changePosZ(0.01f);
 
             dir[0] = 'D';
-            dir[1] = 'L';
-            dir[2] = 'R';
+            dir[1] = 'R';
+            dir[2] = 'L';
             scene->_enemies[i]->changePosZ(0.01f);
-            if (scene->_blocks[y][x - 1] != nullptr) {
-                dir[1] = 'R';
+            if (scene->_blocks[y - 1][x] != nullptr) {
+                dir[0] = 'R';
             }
             if (scene->_blocks[y][x + 1] != nullptr) {
-                dir[2] = 'D';
+                dir[1] = 'L';
             }
-            if (scene->_blocks[y - 1][x] != nullptr) {
-                dir[0] = 'L';
+            if (scene->_blocks[y][x - 1] != nullptr) {
+                dir[2] = 'D';
             }
         }
         else if (enemyWorldCollisionRight(scene->_enemies[i]->getPosition(), {0.0f, 0.0f, 0.0f}, scene)) {
             collision = true;
-            std::cout << "right\n";
             scene->_enemies[i]->changePosX(-0.01f);
 
-            dir[0] = 'D';
-            dir[1] = 'L';
-            dir[2] = 'U';
+            dir[0] = 'L';
+            dir[1] = 'U';
+            dir[2] = 'D';
+
             if (scene->_blocks[y][x - 1] != nullptr) {
-                dir[1] = 'D';
+                dir[0] = 'D';
             }
             if (scene->_blocks[y + 1][x] != nullptr) {
-                dir[2] = 'U';
+                dir[1] = 'L';
             }
             if (scene->_blocks[y - 1][x] != nullptr) {
-                dir[0] = 'L';
-            }
-            if (scene->_blocks[y - 1][x] != nullptr && scene->_blocks[y - 1][x + 1]) {
-                dir[0] = 'L';
                 dir[2] = 'U';
             }
-
         }
         else if (enemyWorldCollisionLeft(scene->_enemies[i]->getPosition(), {-0.0f, 0.0f, 0.0f}, scene)) {
             collision = true;
-            dir[0] = 'D';
-            dir[1] = 'R';
-            dir[2] = 'U';
-            std::cout << "left\n";
             scene->_enemies[i]->changePosX(0.01f);
 
+            dir[0] = 'R';
+            dir[1] = 'D';
+            dir[2] = 'U';
+
             if (scene->_blocks[y][x + 1] != nullptr) {
-                dir[1] = 'D';
+                dir[0] = 'D';
             }
             if (scene->_blocks[y - 1][x] != nullptr) {
-                dir[2] = 'R';
+                dir[1] = 'U';
             }
             if (scene->_blocks[y + 1][x] != nullptr) {
-                dir[0] = 'U';
+                dir[2] = 'R';
             }
-
         }
+
         if (collision) {
             int randNbr = rand() % 3;
             scene->_enemies[i]->setDirection(dir[randNbr]);
-            std::cout << dir[randNbr] << std::endl;
             collision = false;
+        }
+
+        for (int j = i + 1; j < scene->_enemies.size(); j++) {
+
+            int xx = scene->getWorldx(scene->_enemies[j]->getPosition().x);
+            int yy = scene->getWorldy(scene->_enemies[j]->getPosition().z);
+            int p = scene->getWorldy(1);
+            if ((x == xx + p && y == yy) ||
+                    (x == xx - p && y == yy) ||
+                    (y == yy + p && x == xx) ||
+                    (y == yy - p && x == xx) ||
+                    (y == yy - p && x == xx - p) ||
+                    (y == yy - p && x == xx + p) ||
+                    (x == xx - p && y == yy - p) ||
+                    (x == xx - p && y == yy + p) ||
+                    (y == yy  && x == xx)) {
+                scene->_enemies[j]->setDirection(oppDir(scene->_enemies[j]->getDirection()));
+              //  scene->_enemies[j]->setDirection(oppDir(scene->_enemies[j]->getDirection()));
+            }
         }
 
             if (scene->_enemies[i]->getDirection() == 'D') {
@@ -239,16 +267,9 @@ void Scene::updateEnemy(MainGame *game, std::vector<void *> params) {
                 scene->_enemies[i]->changePosX(0.01f);
             }
 
-//        if (!test)
-//            scene->_enemies[i]->setPosition(scene->_enemies[i]->getPosition().x, scene->_enemies[i]->getPosition().y, std::round(scene->_enemies[i]->getPosition().z / 2) * 2);
-//        else
-//            scene->_enemies[i]->setPosition(std::round(scene->_enemies[i]->getPosition().x / 2) * 2, scene->_enemies[i]->getPosition().y, scene->_enemies[i]->getPosition().z);
-
-
-
-
         MainGame::renderer.applyTransformationToRenderable(scene->_enemies[i]->getType(),
-														   scene->_enemies[i]->getId(), scene->_enemies[i]->getTransformation());
+														   scene->_enemies[i]->getId(),
+                                                           scene->_enemies[i]->getTransformation());
     }
 
 }
