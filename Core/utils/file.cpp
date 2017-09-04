@@ -1,4 +1,5 @@
 #include <util.h>
+#include <string.h>
 
 char        *zionReadFile(const char *filePath)
 {

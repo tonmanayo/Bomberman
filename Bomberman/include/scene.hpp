@@ -9,7 +9,7 @@
 #define GRID_START_Z (0)
 #define GRID_BLOCK_SIZE (2.0)
 #define HALF_GRID_BLOCK_SIZE (GRID_BLOCK_SIZE / (2.0))
-#define PLAYER_SIZE (2.05)
+#define PLAYER_SIZE (2.2)
 #define HALF_PLAYER_SIZE (PLAYER_SIZE / (2.0))
 
 class   Scene
@@ -67,4 +67,14 @@ public:
     static  void    updateEnemy(MainGame *game,  Scene *scene);
     static  void    bombExplode(Scene *scene, const Bomb &bomb);
 	static  void    sceneUpdate(MainGame *game, std::vector<void *> params);
+    static  void    bombExplode(std::vector<void *> params, const Bomb &bomb);
+
+    static bool     enemyWorldCollisionDown(glm::vec3 pos, glm::vec3 offset, Scene *scene);
+    static bool     enemyWorldCollisionUp(glm::vec3 pos, glm::vec3 offset, Scene *scene);
+    static bool     enemyWorldCollisionRight(glm::vec3 pos, glm::vec3 offset, Scene *scene);
+    static bool     enemyWorldCollisionLeft(glm::vec3 pos, glm::vec3 offset, Scene *scene);
+
+    bool            enemyPlayerCollision(glm::vec3 pos, Scene *scene);
+
+
 };
