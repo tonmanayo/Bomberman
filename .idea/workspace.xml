@@ -67,7 +67,7 @@
                 <state relative-caret-position="0">
                   <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
                   <folding>
-                    <marker date="1504504133000" expanded="true" signature="54042:54056" ph="..." />
+                    <marker date="1504504227000" expanded="true" signature="49466:49480" ph="..." />
                   </folding>
                 </state>
               </provider>
@@ -161,24 +161,14 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="renderable.hpp" pinned="false" current-in-tab="false">
+          <file leaf-file-name="renderable.hpp" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/Core/includes/renderable.hpp">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="375">
+                <state relative-caret-position="336">
                   <caret line="25" column="0" lean-forward="false" selection-start-line="24" selection-start-column="33" selection-end-line="24" selection-end-column="34" />
                   <folding>
                     <element signature="e#14#35#0" expanded="true" />
                   </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="basic.vert" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/Game/shaders/basic.vert">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="345">
-                  <caret line="23" column="13" lean-forward="false" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
-                  <folding />
                 </state>
               </provider>
             </entry>
@@ -263,6 +253,19 @@
               <item name="game" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
               <item name="BomberManMain" type="462c0819:PsiDirectoryNode" />
               <item name="Bomberman" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="game" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
+              <item name="BomberManMain" type="462c0819:PsiDirectoryNode" />
+              <item name="Bomberman" type="462c0819:PsiDirectoryNode" />
+              <item name="resource" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="game" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
+              <item name="BomberManMain" type="462c0819:PsiDirectoryNode" />
+              <item name="Bomberman" type="462c0819:PsiDirectoryNode" />
+              <item name="resource" type="462c0819:PsiDirectoryNode" />
+              <item name="models" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="game" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
@@ -393,7 +396,7 @@
       <workItem from="1503904477035" duration="17535000" />
       <workItem from="1503991963921" duration="2135000" />
       <workItem from="1503997230210" duration="2874000" />
-      <workItem from="1504504104077" duration="66000" />
+      <workItem from="1504504104077" duration="197000" />
     </task>
     <task id="LOCAL-00001" summary="fixed camera following player">
       <created>1503911082034</created>
@@ -416,11 +419,18 @@
       <option name="project" value="LOCAL" />
       <updated>1503960979732</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="temp">
+      <created>1504504182551</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1504504182551</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="31925000" />
+    <option name="totallyTimeSpent" value="32056000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1920" height="977" extended-state="0" />
@@ -458,7 +468,8 @@
     <MESSAGE value="fixed camera following player" />
     <MESSAGE value="added collision" />
     <MESSAGE value="collision working now" />
-    <option name="LAST_COMMIT_MESSAGE" value="collision working now" />
+    <MESSAGE value="temp" />
+    <option name="LAST_COMMIT_MESSAGE" value="temp" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -656,16 +667,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Core/includes/renderable.hpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="25" column="0" lean-forward="false" selection-start-line="24" selection-start-column="33" selection-end-line="24" selection-end-column="34" />
-          <folding>
-            <element signature="e#14#35#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Bomberman/shaders/basic.vert">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="345">
@@ -677,6 +678,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-229">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -817,7 +819,7 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <marker date="1504504133000" expanded="true" signature="54042:54056" ph="..." />
+            <marker date="1504504227000" expanded="true" signature="49466:49480" ph="..." />
           </folding>
         </state>
       </provider>
@@ -861,6 +863,16 @@
         <state relative-caret-position="345">
           <caret line="23" column="13" lean-forward="false" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Core/includes/renderable.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="336">
+          <caret line="25" column="0" lean-forward="false" selection-start-line="24" selection-start-column="33" selection-end-line="24" selection-end-column="34" />
+          <folding>
+            <element signature="e#14#35#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
