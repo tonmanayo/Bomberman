@@ -36,6 +36,8 @@ bool MainGame::initGame(GLFWwindow *window, float width, float height, float fov
 		getShader("basic")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
 	if (addShader("gui", "shaders/gui.vert", "shaders/basic.frag"))
 		getShader("gui")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
+	if (addShader("anime", "shaders/anime.vert", "shaders/basic.frag"))
+		getShader("anime")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
 	/// setup default camera
 	setupGameCamera();
 	/// load resources
@@ -60,6 +62,8 @@ bool MainGame::initGame(float width, float height, float fov)
 		getShader("basic")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
 	if (addShader("gui", "shaders/gui.vert", "shaders/basic.frag"))
 		getShader("gui")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
+	if (addShader("anime", "shaders/anime.vert", "shaders/basic.frag"))
+		getShader("anime")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
 	/// setup default camera
 	setupGameCamera();
 	/// load resources
@@ -126,11 +130,14 @@ void MainGame::loadResources()
 	addModel("floor1", *getShader("basic"), "resource/models/blocks/floor1.gltf");
 	addModel("floor2", *getShader("basic"), "resource/models/blocks/floor2.gltf");
 	addModel("bomberman", *getShader("basic"), "resource/models/bomberman/bomberman.gltf");
+	addModel("onile", *getShader("anime"), "resource/models/bomberman/Onile.glb");
     addModel("lavaBackground", *getShader("basic"), "resource/models/bomberman/lavaBackground.gltf");
 	addMap("map1", "resource/maps/map1");
-
 	addModel("enemy1", *getShader("basic"), "resource/models/enemies/enemy2.gltf");
-
+	auto *mat = new Zion::Material();
+	mat->texure.loadTextureFromPath("resource/models/bomberman/OnileDiffuseColor.png");
+	auto *onileModel = (Zion::Model *)getModel("onile");
+	onileModel->addMaterial(0, *mat);
 }
 
 void MainGame::gameLoop()

@@ -192,11 +192,11 @@ void Scene::_addEnemy(float x, float z)
     Zion::Renderable *model;
     static int i = 0;
 
-    model = _game->getModel("enemy1");
+    model = _game->getModel("onile");
     if (model != nullptr)
     {
 		std::string s = "enemy1";
-        _enemies.push_back( new Player(i, s));
+        _enemies.push_back(new Player(i, s));
        // _enemies.back()->setPosition(getGridx(x), 0, getGridy(z));
         _enemies.back()->setPosition(glm::vec3{getGridx(x), 0, getGridy(z)});
        // _enemies.back()->scale(glm::vec3(0.3, 0.3, 0.3));

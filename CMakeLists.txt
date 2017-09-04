@@ -24,7 +24,11 @@ link_directories(
         ${GLM_LIBRARY_DIRS}
 )
 
-set(LIB_SOURCE_FILES Core/entities/window.cpp Core/entities/input.cpp Core/entities/shader.cpp Core/utils/file.cpp Core/sprite/squareSprite.cpp Core/entities/material.cpp Core/sprite/cubeSprite.cpp Core/entities/camera.cpp Core/render/renderer.cpp Core/models/gltf.cpp Core/models/gltfAnimation.cpp)
+set(LIB_SOURCE_FILES Core/entities/window.cpp Core/entities/input.cpp
+        Core/entities/shader.cpp Core/utils/file.cpp Core/sprite/squareSprite.cpp
+        Core/entities/material.cpp Core/sprite/cubeSprite.cpp Core/entities/camera.cpp
+        Core/render/renderer.cpp Core/models/gltf.cpp Core/models/gltfAnimation.cpp
+        Core/entities/animation.cpp)
 
 add_library(zion STATIC ${LIB_SOURCE_FILES})
 if (APPLE)
@@ -52,7 +56,8 @@ add_definitions(${NANOGUI_EXTRA_DEFS})
 
 set(B_SOURCE_FILES Bomberman/main.cpp Bomberman/src/MainGame.cpp Bomberman/src/scene.cpp
         Bomberman/src/player.cpp Bomberman/src/block.cpp Bomberman/src/sceneUpdate.cpp
-        Bomberman/src/Bomb.cpp Bomberman/src/sceneCollision.cpp Bomberman/src/menu.cpp Bomberman/src/EnemyStuff.cpp)
+        Bomberman/src/Bomb.cpp Bomberman/src/sceneCollision.cpp Bomberman/src/menu.cpp
+        Bomberman/src/EnemyStuff.cpp)
 
 add_executable(Bomberman ${B_SOURCE_FILES})
 target_link_libraries(Bomberman
