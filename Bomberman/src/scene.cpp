@@ -213,13 +213,21 @@ void Scene::sceneUpdate(MainGame *game, std::vector<void *> params)
 	{
 		if (game->getGameWindow().isKeyPressed(GLFW_KEY_ESCAPE))
 		{
-			std::cout << "esc pressed" << std::endl;
-			//game->setGameState(GAMESTATE::PAUSE);
+			std::cout << "esc paused" << std::endl;
+			game->setGameState(GAMESTATE::PAUSE);
 			return;
 		}
 		updateBomb(game, scene);
 		updateEnemy(game, scene);
 		updatePlayer(game, scene);
+	}else if (game->getGameState() == GAMESTATE::PAUSE)
+	{
+		if (game->getGameWindow().isKeyPressed(GLFW_KEY_ESCAPE))
+		{
+			std::cout << "esc resume" << std::endl;
+			game->setGameState(GAMESTATE::GAME);
+			return;
+		}
 	}
 }
 

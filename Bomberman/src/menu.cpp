@@ -164,11 +164,6 @@ void Menu::updateMenu(MainGame *game, std::vector<void *> params)
 	if (state == GAMESTATE::PAUSE)
 	{
 		//menu->_menuBg->render(glm::translate(glm::mat4(), {0, 0, -1}));
-		if (menu->_mainGame->getGameWindow().isKeyPressed(GLFW_KEY_ESCAPE))
-		{
-			game->setGameState(GAMESTATE::GAME);
-			return;
-		}
 		menu->_screen->drawWidgets();
 		glEnable(GL_DEPTH_TEST);
 		glDepthFunc(GL_LESS);

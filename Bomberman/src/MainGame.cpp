@@ -145,7 +145,10 @@ void MainGame::gameLoop()
 		_window.clearWindow(0.3f, 0.3f, 0.3f, 1.0f);
 		/// calling all functions for loop
 		for (std::pair<const char *, Func> func : functions)
-			func.second.func(this, func.second.params);
+		{
+			if (!std::strcmp(func.first, "sceneUpdate"))
+				func.second.func(this, func.second.params);
+		}
 		viewMatrix = _camera->getViewMatrix();
 		viewPos = _camera->getCameraPosition();
 		for (std::pair<std::string, Zion::Shader *> shader : _shaders)
@@ -153,8 +156,10 @@ void MainGame::gameLoop()
 			shader.second->setUniformMat4((GLchar *)"view_matrix", viewMatrix);
 			shader.second->setUniform3f((GLchar *)"viewPos", viewPos);
 		}
-		MainGame::renderer.render();
-
+		//if (_state == GAMESTATE::GAME)
+			MainGame::renderer.render();
+		functions["menuUpdate"].func(this, functions["menuUpdate"].params);
+		Zion::Input::clear();
 		_window.updateWindow();
 	}
 }
