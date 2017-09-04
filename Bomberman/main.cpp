@@ -24,15 +24,11 @@ int     main(int ac, char **av)
 	Menu        menu;
 	Scene       *scene;
 
-    game.initGame(1280.0f, 760.0f, 70.0f);
-	game.setupGameCamera(glm::vec3(5, 13, -6), -80.0f, -90.0f);
-    srand(time(NULL));
 	nanogui::init();
 	menu.initMenu(1280.0f, 760.0f, &game, false);
 	game.initGame(menu.getGlfwWindow(), 1280.0f, 760.0f, 60.0f);
 	menu.buildMenuWindows(1280.0f, 760.0f);
-
-	//scene = new Scene(&game, game.getMap("map1"), 5);
+	srand(time(NULL));
 
 	MainGame::functions.insert(std::pair<const char *, Func>("checkKeys", {checkKeys, std::vector<void *>()}));
 	game.gameLoop();

@@ -143,14 +143,6 @@ void MainGame::gameLoop()
 		Zion::Renderable::runTime = currentTime;
 
 		_window.clearWindow(0.3f, 0.3f, 0.3f, 1.0f);
-		while (true)
-		{
-			Zion::Input::isPoll = false;
-			glfwPollEvents();
-			if (!Zion::Input::isPoll)
-				break;
-			//std::cout << "polling" << std::endl;
-		}
 		/// calling all functions for loop
 		for (std::pair<const char *, Func> func : functions)
 			func.second.func(this, func.second.params);

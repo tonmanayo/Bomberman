@@ -21,7 +21,7 @@ private:
 	int         		_enemyCount;
 	Player      		*_player;
 	std::vector<Bomb>	_bomb;
-	std::vector<Player>	_enemies;
+	std::vector<Player *>   _enemies;
     int                 _nbBombs;
 	std::vector<std::string> *_map;
 	std::map<int, std::map<int, Block *>>    _blocks;

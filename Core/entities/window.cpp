@@ -124,15 +124,8 @@ namespace Zion
 	void Window::updateWindow()
 	{
 		Window::getError((char *)"window update");
+		glfwPollEvents();
 		glfwSwapBuffers(_window);
-		/*while (true)
-		{
-			Input::isPoll = false;
-			glfwPollEvents();
-			if (!Input::isPoll)
-				break;
-			std::cout << "polling" << std::endl;
-		}*/
 	}
 
 	void Window::clearWindow(float r, float g, float b, float a)

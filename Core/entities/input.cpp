@@ -29,7 +29,7 @@ namespace Zion
 		if (keyCallback2 != nullptr)
 			keyCallback2(key, scancode, action, mods);
 		isPoll = true;
-		std::cout << "key call back" << std::endl;
+		//std::cout << "key call back" << std::endl;
 	}
 
 	void Input::mouseButtonCallback(GLFWwindow *window, int button, int action, int mods)
