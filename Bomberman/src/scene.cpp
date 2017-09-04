@@ -175,7 +175,7 @@ void Scene::_addPlayer(float x, float z)
 	if (model != nullptr)
 	{
 		_player = new Player(0, "player");
-		_player->setPosition(x, 0, z);
+		_player->setPosition(glm::vec3{x, 0, z});
 		_player->scale(glm::vec3(0.3, 0.3, 0.3));
         _player->playerStart = glm::vec3(x, 0, z);
 		MainGame::renderer.addToRender(_player->getType(), _player->getId(), model, _player->getTransformation());
@@ -198,6 +198,8 @@ void Scene::_addEnemy(float x, float z)
 		std::string s = "enemy1";
         _enemies.push_back( new Player(i, s));
         _enemies.back()->setPosition(getGridx(x), 0, getGridy(z));
+        _enemies.back()->setPosition(glm::vec3{getGridx(x), 0, getGridy(z)});
+       // _enemies.back()->scale(glm::vec3(0.3, 0.3, 0.3));
         _enemies.back()->playerStart = glm::vec3(getGridx(x), 0, getGridy(z));
         MainGame::renderer.addToRender(_enemies.back()->getType(), _enemies.back()->getId(), model, _enemies.back()->getTransformation());
 		i++;
@@ -236,60 +238,3 @@ bool Scene::enemyPlayerCollision(glm::vec3 pos, Scene *scene){
 	return false;
 }
 
-bool Scene::enemyWorldCollisionDown(glm::vec3 pos, glm::vec3 offset, Scene *scene)
-{
-	glm::vec3 newPos = pos + offset;
-
-	int x = scene->getWorldx(pos.x);
-	int y = scene->getWorldy(pos.z);
-
-	if (scene->_blocks[y -  1][x] != nullptr && checkBlockCollision(scene->_blocks[y - 1][x]->getPosition(), newPos))
-	{
-		return true;
-	}
-	return false;
-}
-
-bool Scene::enemyWorldCollisionUp(glm::vec3 pos, glm::vec3 offset, Scene *scene)
-{
-	glm::vec3 newPos = pos + offset;
-
-	int x = scene->getWorldx(pos.x);
-	int y = scene->getWorldy(pos.z);
-	//"collide up"
-	if (scene->_blocks[y + 1][x] != nullptr && checkBlockCollision1(scene->_blocks[y + 1][x]->getPosition(), newPos))
-	{
-		return true;
-	}
-
-	return false;
-}
-
-bool Scene::enemyWorldCollisionLeft(glm::vec3 pos, glm::vec3 offset, Scene *scene)
-{
-	glm::vec3 newPos = pos + offset;
-
-	int x = scene->getWorldx(pos.x);
-	int y = scene->getWorldy(pos.z);
-
-	if (scene->_blocks[y][x - 1] != nullptr && checkBlockCollision(scene->_blocks[y][x - 1]->getPosition(), newPos))
-	{
-		return true;
-	}
-
-	return false;
-}
-
-bool Scene::enemyWorldCollisionRight(glm::vec3 pos, glm::vec3 offset, Scene *scene)
-{
-	glm::vec3 newPos = pos + offset;
-
-	int x = scene->getWorldx(pos.x);
-	int y = scene->getWorldy(pos.z);
-
-	if (scene->_blocks[y][x + 1] != nullptr && checkBlockCollision(scene->_blocks[y][x + 1]->getPosition(), newPos))
-	{
-		return true;
-	}
-	return false;
-}

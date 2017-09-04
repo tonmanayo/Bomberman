@@ -15,14 +15,14 @@
 class   Scene
 {
 private:
-	MainGame    		*_game;
-	size_t      		_mapWidth;
-	size_t      		_mapLength;
-	int         		_enemyCount;
-	Player      		*_player;
-	std::vector<Bomb>	_bomb;
+	MainGame    			*_game;
+	size_t      			_mapWidth;
+	size_t      			_mapLength;
+	int         			_enemyCount;
+	Player      			*_player;
+	std::vector<Bomb>		_bomb;
 	std::vector<Player *>   _enemies;
-    int                 _nbBombs;
+    int                 	_nbBombs;
 	std::vector<std::string> *_map;
 	std::map<int, std::map<int, Block *>>    _blocks;
 
@@ -41,7 +41,7 @@ public:
 	~Scene();
 
     std::map<int, std::map<int, Block *>> getBlocks() {return _blocks;};
-    int             getWorldx(float x);
+    int          	getWorldx(float x);
     int             getWorldy(float y);
     float           getGridx(float x);
     float           getGridy(float y);
