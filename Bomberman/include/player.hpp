@@ -1,7 +1,5 @@
 #pragma once
 
-#define GLM_ENABLE_EXPERIMENTAL
-
 #include <nonStatic.hpp>
 
 class   Player : public NonStatic

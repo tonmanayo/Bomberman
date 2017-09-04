@@ -1,8 +1,6 @@
 #include <MainGame.hpp>
 #include <player.hpp>
 
-#define GLM_ENABLE_EXPERIMENTAL
-
 class   Scene
 {
 private:

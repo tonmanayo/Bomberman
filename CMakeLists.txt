@@ -6,6 +6,9 @@ set(CMAKE_CXX_STANDARD 14)
 find_package(OpenGL REQUIRED)
 find_package(PkgConfig REQUIRED)
 
+# For compatitability with yaml
+set(CMAKE_MACOSX_RPATH 1)
+
 # Adding dependencies
 pkg_search_module(GLEW REQUIRED glew)
 pkg_search_module(GLFW3 REQUIRED glfw3)
