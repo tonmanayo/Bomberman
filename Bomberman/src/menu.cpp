@@ -66,6 +66,8 @@ void Menu::_createStartMenu(float width, float height)
 	startButton->setSize({150, 50});
 	startButton->setCallback([]{
 		activeMenu->_mainGame->setGameState(GAMESTATE::GAME);
+		activeMenu->_startGameMenu->setVisible(false);
+		activeMenu->_pauseGameMenu->setVisible(true);
 		glEnable(GL_DEPTH_TEST);
 		glDepthFunc(GL_LESS);
 		glEnable(GL_BLEND);
@@ -93,6 +95,16 @@ void Menu::_createPauseGameMenu(float width, float height)
 {
 	_pauseGameMenu = new nanogui::Window(_screen, "Pause");
 	_pauseGameMenu->setVisible(false);
+	_pauseGameMenu->setSize({250, 250});
+	_pauseGameMenu->center();
+	/// resume game button
+	nanogui::Button *resume = new nanogui::Button(_pauseGameMenu, "Resume");
+	resume->setPosition({50, 40});
+	resume->setSize({150, 50});
+	resume->setCallback([]{
+		activeMenu->_mainGame->setGameState(GAMESTATE::GAME);
+		activeMenu->_pauseGameMenu->setVisible(false);
+	});
 }
 
 void Menu::_createExitWindow(float width, float height)
@@ -151,7 +163,17 @@ void Menu::updateMenu(MainGame *game, std::vector<void *> params)
 	}
 	if (state == GAMESTATE::PAUSE)
 	{
-		menu->_menuBg->render(glm::translate(glm::mat4(), {0, 0, -1}));
+		//menu->_menuBg->render(glm::translate(glm::mat4(), {0, 0, -1}));
+		if (menu->_mainGame->getGameWindow().isKeyPressed(GLFW_KEY_ESCAPE))
+		{
+			game->setGameState(GAMESTATE::GAME);
+			return;
+		}
+		menu->_screen->drawWidgets();
+		glEnable(GL_DEPTH_TEST);
+		glDepthFunc(GL_LESS);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
 }
 

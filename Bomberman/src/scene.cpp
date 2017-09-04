@@ -209,7 +209,15 @@ void Scene::sceneUpdate(MainGame *game, std::vector<void *> params)
 {
 	auto *scene = (Scene *)params[0];
 
-	updateBomb(game, scene);
-	updateEnemy(game, scene);
-	updatePlayer(game, scene);
+	if (game->getGameState() == GAMESTATE::GAME)
+	{
+		if (game->getGameWindow().isKeyPressed(GLFW_KEY_ESCAPE))
+		{
+			game->setGameState(GAMESTATE::PAUSE);
+			return;
+		}
+		updateBomb(game, scene);
+		updateEnemy(game, scene);
+		updatePlayer(game, scene);
+	}
 }
