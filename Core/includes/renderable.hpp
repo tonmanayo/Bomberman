@@ -55,6 +55,8 @@ namespace Zion
 
 		void    addToRender(std::string type, int id, Renderable *model, glm::mat4 mat = glm::mat4(1.0f));
 		void    removeFromRender(std::string type, int id);
+		void    removeGroup(std::string type);
+		void    removeAll();
 		void    applyTransformationToRenderable(std::string type, int id, glm::mat4 mat);
 		void    render();
 	};

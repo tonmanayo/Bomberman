@@ -3,7 +3,9 @@
 namespace Zion
 {
 	bool    Input::_keys[MAX_KEYS];
+	bool    Input::_prevKeys[MAX_KEYS];
 	bool    Input::_mouse[MAX_BUTTONS];
+	float   Input::_keyTime[MAX_KEYS];
 	double  Input::_mouseX = 0.0f;
 	double  Input::_mouseY = 0.0f;
 	bool    Input::isPoll = false;
@@ -16,6 +18,11 @@ namespace Zion
 	{
 		for (bool& key : _keys)
 			key = false;
+		for (bool& key : _prevKeys)
+			key = false;
+		float t = (float)glfwGetTime();
+		for (float& time : _keyTime)
+			time = t;
 		for (bool& mouse : _mouse)
 			mouse = false;
 	}
@@ -25,9 +32,11 @@ namespace Zion
 
 	void Input::keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods)
 	{
+		_prevKeys[key] = _keys[key];
 		_keys[key] = action != GLFW_RELEASE;
 		if (keyCallback2 != nullptr)
 			keyCallback2(key, scancode, action, mods);
+		_keyTime[key] = (float)glfwGetTime();
 		isPoll = true;
 	}
 
@@ -65,11 +74,17 @@ namespace Zion
 	double Input::getMousePosX() const { return _mouseX; }
 	double Input::getMousePosY() const { return _mouseY; }
 
-	void Input::clear()
+	void Input::updateKeys()
 	{
-		for (bool& key : _keys)
-			key = false;
-		for (bool& mouse : _mouse)
-			mouse = false;
+		for (int i = 0; i < MAX_KEYS; i++)
+			if (glfwGetTime() - _keyTime[i] > 0.1f)
+				_prevKeys[i] = _keys[i];
+	}
+
+	bool Input::getKeyPressOnce(int key)
+	{
+		if (key >= MAX_KEYS)
+			return false;
+		return _prevKeys[key] && !_keys[key];
 	}
 }

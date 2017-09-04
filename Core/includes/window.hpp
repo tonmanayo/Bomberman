@@ -14,7 +14,9 @@ namespace Zion
 	struct Input
 	{
 	private:
+		static bool     _prevKeys[MAX_KEYS];
 		static bool     _keys[MAX_KEYS];
+		static float    _keyTime[MAX_KEYS];
 		static bool     _mouse[MAX_BUTTONS];
 		static double   _mouseX;
 		static double   _mouseY;
@@ -32,7 +34,8 @@ namespace Zion
 		static void     keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 		static void     mouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
 		static void     cursorPositionCallback(GLFWwindow* window, double xpos, double ypos);
-		static void     clear();
+		static void     updateKeys();
+		static bool     getKeyPressOnce(int key);
 		bool            getKeyStatus(int key) const;
 		bool            getMouseButtonStatus(int button) const;
 		double          getMousePosX() const;

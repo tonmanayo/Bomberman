@@ -50,6 +50,22 @@ namespace Zion
 		}
 	}
 
+	void Renderer::removeGroup(std::string type)
+	{
+		std::map<std::string, std::vector<RendererObj>>::iterator it;
+
+		it = _objects.find(type);
+		if (it != _objects.end())
+			_objects.erase(it);
+	}
+
+	void Renderer::removeAll()
+	{
+		for (std::pair<std::string, std::vector<RendererObj>> pair : _objects)
+			pair.second.clear();
+		_objects.clear();
+	}
+
 	void Renderer::applyTransformationToRenderable(std::string type, int id, glm::mat4 mat)
 	{
 		try {

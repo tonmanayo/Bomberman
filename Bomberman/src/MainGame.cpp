@@ -34,6 +34,8 @@ bool MainGame::initGame(GLFWwindow *window, float width, float height, float fov
 	/// Loading Shaders
 	if (addShader("basic", "shaders/basic.vert", "shaders/basic.frag"))
 		getShader("basic")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
+	if (addShader("gui", "shaders/gui.vert", "shaders/basic.frag"))
+		getShader("gui")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
 	/// setup default camera
 	setupGameCamera();
 	/// load resources
@@ -56,6 +58,8 @@ bool MainGame::initGame(float width, float height, float fov)
 	/// Loading Shaders
 	if (addShader("basic", "shaders/basic.vert", "shaders/basic.frag"))
 		getShader("basic")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
+	if (addShader("gui", "shaders/gui.vert", "shaders/basic.frag"))
+		getShader("gui")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
 	/// setup default camera
 	setupGameCamera();
 	/// load resources
@@ -146,21 +150,27 @@ void MainGame::gameLoop()
 		/// calling all functions for loop
 		for (std::pair<const char *, Func> func : functions)
 		{
-			if (!std::strcmp(func.first, "sceneUpdate"))
+			if (!(bool)std::strcmp(func.first, "sceneUpdate"))
 				func.second.func(this, func.second.params);
 		}
 		viewMatrix = _camera->getViewMatrix();
 		viewPos = _camera->getCameraPosition();
 		for (std::pair<std::string, Zion::Shader *> shader : _shaders)
 		{
+			if (!shader.first.compare("gui"))
+				continue;
 			shader.second->setUniformMat4((GLchar *)"view_matrix", viewMatrix);
 			shader.second->setUniform3f((GLchar *)"viewPos", viewPos);
 		}
-		//if (_state == GAMESTATE::GAME)
-			MainGame::renderer.render();
+		glEnable(GL_DEPTH_TEST);
+		glDepthFunc(GL_LESS);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		MainGame::renderer.render();
+		/// render and update nanogui menu
 		functions["menuUpdate"].func(this, functions["menuUpdate"].params);
-		Zion::Input::clear();
 		_window.updateWindow();
+		Zion::Input::updateKeys();
 	}
 }
 

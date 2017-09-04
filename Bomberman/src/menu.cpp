@@ -66,12 +66,8 @@ void Menu::_createStartMenu(float width, float height)
 	startButton->setSize({150, 50});
 	startButton->setCallback([]{
 		activeMenu->_mainGame->setGameState(GAMESTATE::GAME);
-		activeMenu->_startGameMenu->setVisible(false);
+		activeMenu->_startMenu->setVisible(false);
 		activeMenu->_pauseGameMenu->setVisible(true);
-		glEnable(GL_DEPTH_TEST);
-		glDepthFunc(GL_LESS);
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		activeMenu->_scene = new Scene(activeMenu->_mainGame, activeMenu->_mainGame->getMap("map1"), 5);
 	});
 	/// options button
@@ -94,16 +90,41 @@ void Menu::_createStartGameMenu(float width, float height)
 void Menu::_createPauseGameMenu(float width, float height)
 {
 	_pauseGameMenu = new nanogui::Window(_screen, "Pause");
-	_pauseGameMenu->setVisible(false);
+	_pauseGameMenu->setLayout(new nanogui::GroupLayout());
 	_pauseGameMenu->setSize({250, 250});
+	_pauseGameMenu->setVisible(false);
 	_pauseGameMenu->center();
 	/// resume game button
 	nanogui::Button *resume = new nanogui::Button(_pauseGameMenu, "Resume");
-	resume->setPosition({50, 40});
+	resume->setPosition({50, 50});
 	resume->setSize({150, 50});
 	resume->setCallback([]{
 		activeMenu->_mainGame->setGameState(GAMESTATE::GAME);
+	});
+	/// save game button
+	nanogui::Button *save = new nanogui::Button(_pauseGameMenu, "Save");
+	save->setPosition({50, 120});
+	save->setSize({150, 50});
+	save->setCallback([]{
+	});
+	/// quit game button
+	nanogui::Button *quit = new nanogui::Button(_pauseGameMenu, "Quit");
+	quit->setPosition({50, 190});
+	quit->setSize({150, 50});
+	quit->setCallback([]{
+		if (activeMenu->_scene != nullptr)
+		{
+			delete activeMenu->_scene;
+			std::cout << "scene deleted" << std::endl;
+			std::map<const char *, Func>::iterator it;
+			it = MainGame::functions.find("sceneUpdate");
+			MainGame::functions.erase(it);
+			MainGame::renderer.removeAll();
+		}
+		activeMenu->_mainGame->setGameState(GAMESTATE::MENU);
 		activeMenu->_pauseGameMenu->setVisible(false);
+		activeMenu->_startMenu->setVisible(true);
+		std::cout << "game quit" << std::endl;
 	});
 }
 
@@ -138,9 +159,11 @@ void Menu::_createExitWindow(float width, float height)
 
 void Menu::_createBackground(float width, float height)
 {
-	_menuBg = new Zion::SquareSprite(*_mainGame->getShader("basic"), 0, 0, 8, 5);
+	glm::mat4 viewMatrix = _mainGame->getGameCamera().getViewMatrix();
+	_mainGame->getShader("gui")->setUniformMat4((GLchar *)"view_matrix", viewMatrix);
+	_menuBg = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 8, 5);
 	_menuBg->addTextureFromFile("resource/images/menu_bg.jpg");
-	_menuTitle = new Zion::SquareSprite(*_mainGame->getShader("basic"), 0, 0, 3, 1.5);
+	_menuTitle = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 3, 1.5);
 	_menuTitle->addTextureFromFile("resource/images/title1.png");
 }
 
@@ -161,14 +184,9 @@ void Menu::updateMenu(MainGame *game, std::vector<void *> params)
 		menu->_menuTitle->render(glm::translate(glm::mat4(), {0, 1, 0}));
 		menu->_screen->drawWidgets();
 	}
-	if (state == GAMESTATE::PAUSE)
+	else if (state == GAMESTATE::PAUSE)
 	{
-		//menu->_menuBg->render(glm::translate(glm::mat4(), {0, 0, -1}));
 		menu->_screen->drawWidgets();
-		glEnable(GL_DEPTH_TEST);
-		glDepthFunc(GL_LESS);
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
 }
 

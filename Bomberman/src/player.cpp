@@ -33,6 +33,7 @@ void Player::reset() {
 
 char Player::setDirection(char c) {
     _direction = c;
+	return c;
 }
 
 char Player::getDirection() {
