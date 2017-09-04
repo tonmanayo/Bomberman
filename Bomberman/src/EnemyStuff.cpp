@@ -177,10 +177,8 @@ void Scene::updateEnemy(MainGame *game, Scene *scene) {
             collision = false;
         }
 
-        bool enemyCollision = false;
         for (int j = i + 1; j < scene->_enemies.size(); j++) {
             int randNbr = rand() % 3;
-
             const float MIN_DISTANCE = HALF_PLAYER_SIZE * 2.0f;
             glm::vec3 centrePos1 = scene->_enemies[i]->getPosition() + glm::vec3(HALF_PLAYER_SIZE);
             glm::vec3 centrePos2 = scene->_enemies[j]->getPosition() + glm::vec3(HALF_PLAYER_SIZE);
@@ -193,8 +191,8 @@ void Scene::updateEnemy(MainGame *game, Scene *scene) {
                         glm::normalize(vecDist) * collisionDepth;     // push them away from each other
                 scene->_enemies[i]->setPosition(scene->_enemies[i]->getPosition() += collisionDepthVec / 2.0f);                                      // Push them in opposite directions
                 scene->_enemies[j]->setPosition(scene->_enemies[j]->getPosition() -= collisionDepthVec / 2.0f);
-                scene->_enemies[j]->setDirection(oppDir(dir[randNbr]));
-                scene->_enemies[i]->setDirection(oppDir(dir[randNbr]));
+                scene->_enemies[j]->setDirection((dir[randNbr]));
+                scene->_enemies[i]->setDirection(oppDir(scene->_enemies[i]->getDirection()));
             }
         }
 
