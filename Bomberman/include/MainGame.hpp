@@ -3,6 +3,13 @@
 #include <zion.h>
 #include <fstream>
 
+enum GAMESTATE
+{
+	MENU,
+	PAUSE,
+	GAME
+};
+
 class   MainGame;
 
 struct  Func
@@ -19,6 +26,7 @@ private:
 	float           _fov;
 	Zion::Window    _window;
 	Zion::Camera    *_camera;
+	GAMESTATE      _state = GAMESTATE::MENU;
 	std::map<std::string, Zion::Shader *>      _shaders;
 	std::map<std::string, Zion::Renderable *>  _models;
 	std::map<std::string, Zion::Material *>    _materials;
@@ -35,6 +43,7 @@ public:
 	~MainGame() = default;
 
 	bool    initGame(float width, float height, float fov);
+	bool    initGame(GLFWwindow *window, float width, float height, float fov);
 	void    setupGameCamera();
 	void    setupGameCamera(glm::vec3 pos, float pitch, float yaw);
 	bool    addShader(const char *name, const char *vertPath, const char *fragPath);
@@ -50,5 +59,7 @@ public:
 	Zion::Renderable            *getModel(const std::string modelName) const;
 	Zion::Material              *getMaterial(const std::string materialName);
 	std::vector<std::string>    *getMap(const std::string mapName);
+	GAMESTATE                   getGameState();
+	void                        setGameState(GAMESTATE state);
 };
 
