@@ -33,7 +33,8 @@ void main() {
                     weight.y * jointMat[int(joint.y)] +
                     weight.z * jointMat[int(joint.z)] +
                     weight.w * jointMat[int(joint.w)];
-        gl_Position = proj_matrix * view_matrix *  model_matrix * skinMat * vec4(position, 1.0);
+        mat4 mvp = proj_matrix * view_matrix *  model_matrix;
+        gl_Position = mvp * skinMat * vec4(position, 1.0);
     }
     else
         gl_Position = proj_matrix * view_matrix *  model_matrix * vec4(position, 1.0);

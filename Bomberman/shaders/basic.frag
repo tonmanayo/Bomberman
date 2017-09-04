@@ -84,7 +84,7 @@ void main() {
     }
     vec3 viewDir = normalize(viewPos - fposition);
     color = (light, normalize(fnormal), fposition, viewDir, color);
-    float gamma = 1.2;
-    color.rgb = pow(color.rgb, vec3(1.0 / gamma));
+    //float gamma = 2.0;
+    //color.rgb = pow(color.rgb, vec3(1.0 / gamma));
 	out_color = color;
 }
