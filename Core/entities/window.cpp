@@ -15,6 +15,11 @@ namespace Zion
 			glfwTerminate();
 	}
 
+	Window::Window(GLFWwindow *window, const char *title, int width, int height)
+	{
+		initWindow(window, title, width, height);
+	}
+
 	Window::Window(const Window &rhs) { *this = rhs; }
 
 	Window& Window::operator=(const Window &rhs)
@@ -52,6 +57,30 @@ namespace Zion
 		return true;
 	}
 
+	bool Window::initWindow(GLFWwindow *window, const char *title, int width, int height)
+	{
+		_title = title;
+		_width = width;
+		_height = height;
+		_window = window;
+		glewExperimental = GL_TRUE;
+		if (glewInit() != GLEW_OK)
+		{
+			std::cerr << "Failed to initialize GLEW!" << std::endl;
+			return false;
+		}
+		glViewport(0, 0, _width, _height);
+		glEnable(GL_DEPTH_TEST);
+		glDepthFunc(GL_LESS);
+		//glEnable(GL_BLEND);
+		//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		enableVsync();
+		glfwSetKeyCallback(_window, _input.keyCallback);
+		glfwSetMouseButtonCallback(_window, _input.mouseButtonCallback);
+		glfwSetCursorPosCallback(_window, _input.cursorPositionCallback);
+		return true;
+	}
+
 	bool Window::createGlfwWindow()
 	{
 		if (!(bool)glfwInit())
@@ -82,9 +111,6 @@ namespace Zion
 		glDepthFunc(GL_LESS);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		//glEnable(GL_CULL_FACE); /// to tell opengl to render unseen part of a model
-		//glCullFace(GL_BACK); /// tells opengl with unseen part not to render
-		//glEnable(GL_MULTISAMPLE);
 		enableVsync();
 		glfwSetKeyCallback(_window, _input.keyCallback);
 		glfwSetMouseButtonCallback(_window, _input.mouseButtonCallback);

@@ -20,8 +20,10 @@ namespace Zion
 		std::vector<float>      _uvs;
 		std::map<int, Material> _materials;
 		bool                    _loaded = false;
+		bool                    _hasJoint = false;
 		glm::mat4               _locMat;
 		GLushort                _indicesCount;
+		std::map<int, glm::mat4>   _animeMatrice;
 	public:
 		template <typename T>
 		static  void    loadOneManyToVector(std::vector<T>& list, T val, int count)

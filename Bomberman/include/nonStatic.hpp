@@ -46,4 +46,5 @@ public:
 	glm::mat4   getTransformation() { return _position * _rotation * _scale; }
 	int         getId(){ return _id; }
 	std::string getType() { return _type; }
+	glm::vec3   getPosition() { return glm::vec3(_position[3]); }
 };

@@ -19,6 +19,11 @@ namespace Zion
 		static double   _mouseX;
 		static double   _mouseY;
 	public:
+		static bool     (*mouseCallback2)(int, int, int);
+		static bool     (*keyCallback2)(int, int, int, int);
+		static bool     (*cursorPositionCallback2)(int, int);
+		static bool     isPoll;
+	public:
 		Input();
 		Input(const Input & rhs);
 		Input&  operator=(const Input & rhs);
@@ -27,6 +32,7 @@ namespace Zion
 		static void     keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 		static void     mouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
 		static void     cursorPositionCallback(GLFWwindow* window, double xpos, double ypos);
+		static void     clear();
 		bool            getKeyStatus(int key) const;
 		bool            getMouseButtonStatus(int button) const;
 		double          getMousePosX() const;
@@ -45,6 +51,7 @@ namespace Zion
 		bool        createGlfwWindow();
 	public:
 		Window() = default;
+		Window(GLFWwindow *window, const char *title, int width, int height);
 		Window(const char *title, int width, int height);
 		Window(const Window & rhs);
 		Window&     operator=(const Window & rhs);
@@ -53,6 +60,7 @@ namespace Zion
 		static void getError(char *ref);
 
 		bool        initWindow(const char *title, int width, int height);
+		bool        initWindow(GLFWwindow *window, const char *title, int width, int height);
 		GLFWwindow& getWindow() const;
 		int         getHeight() const;
 		int         getWidth() const;
