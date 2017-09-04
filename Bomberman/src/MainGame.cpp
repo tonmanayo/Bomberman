@@ -142,6 +142,14 @@ void MainGame::gameLoop()
 		Zion::Renderable::runTime = currentTime;
 
 		_window.clearWindow(0.3f, 0.3f, 0.3f, 1.0f);
+		while (true)
+		{
+			Zion::Input::isPoll = false;
+			glfwPollEvents();
+			if (!Zion::Input::isPoll)
+				break;
+			//std::cout << "polling" << std::endl;
+		}
 		/// calling all functions for loop
 		for (std::pair<const char *, Func> func : functions)
 			func.second.func(this, func.second.params);
@@ -152,7 +160,8 @@ void MainGame::gameLoop()
 			shader.second->setUniformMat4((GLchar *)"view_matrix", viewMatrix);
 			shader.second->setUniform3f((GLchar *)"viewPos", viewPos);
 		}
-		//MainGame::renderer.render();
+		MainGame::renderer.render();
+
 		_window.updateWindow();
 	}
 }

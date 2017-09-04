@@ -25,7 +25,7 @@ int     main(int ac, char **av)
 	Scene       *scene;
 
 	nanogui::init();
-	menu.initMenu(1280.0f, 760.0f, &game, true);
+	menu.initMenu(1280.0f, 760.0f, &game, false);
 	game.initGame(menu.getGlfwWindow(), 1280.0f, 760.0f, 60.0f);
 	menu.buildMenuWindows(1280.0f, 760.0f);
 

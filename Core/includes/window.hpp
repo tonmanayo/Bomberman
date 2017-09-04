@@ -22,6 +22,7 @@ namespace Zion
 		static bool     (*mouseCallback2)(int, int, int);
 		static bool     (*keyCallback2)(int, int, int, int);
 		static bool     (*cursorPositionCallback2)(int, int);
+		static bool     isPoll;
 	public:
 		Input();
 		Input(const Input & rhs);
@@ -31,6 +32,7 @@ namespace Zion
 		static void     keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 		static void     mouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
 		static void     cursorPositionCallback(GLFWwindow* window, double xpos, double ypos);
+		static void     clear();
 		bool            getKeyStatus(int key) const;
 		bool            getMouseButtonStatus(int button) const;
 		double          getMousePosX() const;

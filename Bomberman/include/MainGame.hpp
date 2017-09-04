@@ -2,6 +2,7 @@
 
 #include <zion.h>
 #include <fstream>
+#include <unistd.h>
 
 enum GAMESTATE
 {
