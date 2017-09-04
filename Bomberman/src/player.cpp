@@ -4,9 +4,9 @@ Player::Player(int id, std::string type) : NonStatic(id, type){
   _direction = 'U';
 }
 
-void Player::setPosition(float x, float y, float z)
+void Player::setPosition(glm::vec3 pos)
 {
-	_pos = glm::vec3(x, y, z);
+	_pos = pos;
 	translate(_pos);
 }
 

@@ -19,7 +19,7 @@ public:
 	Player(int id, std::string type);
 	~Player() = default;
 
-	void        setPosition(float x, float y, float z);
+	void        setPosition(glm::vec3 pos);
 	void        changePosX(float val);
 	void        changePosY(float val);
 	void        changePosZ(float val);
