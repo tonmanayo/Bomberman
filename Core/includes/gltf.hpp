@@ -46,7 +46,9 @@ namespace Zion
 		Gltf&   operator=(const Gltf & rhs);
 		~Gltf();
 
-		bool    loadFromFile(Shader& shader, const char *path);
-		void    render(glm::mat4 matrix);
+		bool        loadFromFile(Shader& shader, const char *path);
+		void        render(glm::mat4 matrix);
+		void        simpleRender(glm::mat4 matrix);
+		bool        loadAnimationMatrix(int animeType, float time);
 	};
 }

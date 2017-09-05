@@ -103,7 +103,7 @@ void Scene::_addUnbreakableBlock(float x, float z, int xx, int yy)
 	Zion::Renderable *model = _game->getModel("block3");
 	if (model != nullptr)
 	{
-		Block *block = new Block(i, "breakBlock", false);
+		Block *block = new Block(i, "unbreakBlock", false);
 		_blocks[yy][xx] = block;
 		_blocks[yy][xx]->setPosition(x, 0, z);
 		MainGame::renderer.addToRender("unbreakBlock", i, model, mat);
@@ -192,7 +192,7 @@ void Scene::_addEnemy(float x, float z)
     Zion::Renderable *model;
     static int i = 0;
 
-    model = _game->getModel("enemy1");
+    model = _game->getModel("onile");
     if (model != nullptr)
     {
 		std::string s = "enemy1";

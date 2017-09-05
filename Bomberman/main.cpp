@@ -22,11 +22,10 @@ int     main(int ac, char **av)
 {
 	MainGame    game;
 	Menu        menu;
-	Scene       *scene;
 
 	nanogui::init();
 	menu.initMenu(1280.0f, 760.0f, &game, false);
-	game.initGame(menu.getGlfwWindow(), 1280.0f, 760.0f, 60.0f);
+	game.initGame(menu.getGlfwWindow(), 1280.0f, 760.0f, 70.0f);
 	menu.buildMenuWindows(1280.0f, 760.0f);
 	srand(time(NULL));
 

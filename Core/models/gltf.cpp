@@ -425,6 +425,18 @@ namespace Zion
 		_shader.setUniformMat4((GLchar *)str.c_str(), currentTransform * bone->invMatrix);
 	}
 
+	bool Gltf::loadAnimationMatrix(int animeType, float time)
+	{
+		if (animeType >= _animations.size())
+			return false;
+		_animations[animeType]->setCurrentAnimationTime(time);
+		_animations[animeType]->update();
+		for (Joint *bone : _bones)
+			_loadMatrices(bone, glm::mat4());
+		_animeMatrice.clear();
+		return true;
+	}
+
 	void Gltf::render(glm::mat4 matrix)
 	{
 		_shader.enable();
@@ -446,5 +458,13 @@ namespace Zion
 			material.second.texure.unbindTexture();
 		_shader.disable();
 		_animeMatrice.clear();
+	}
+
+	void Gltf::simpleRender(glm::mat4 matrix)
+	{
+		_shader.setUniformMat4((GLchar *)"model_matrix", matrix);
+		glBindVertexArray(_vao);
+		glDrawElements(GL_TRIANGLES, (GLsizei)_indicesCount, GL_UNSIGNED_SHORT, (const GLvoid *)nullptr);
+		glBindVertexArray(0);
 	}
 }

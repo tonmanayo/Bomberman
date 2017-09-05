@@ -34,8 +34,21 @@ namespace Zion
 	public:
 		virtual bool    loadFromFile(Shader& shader, const char *path) = 0;
 		virtual void    render(glm::mat4 matrix) = 0;
+		virtual void    simpleRender(glm::mat4 matrix) = 0;
 
 		void            setLocalMatrix(glm::mat4 mat) { _locMat = mat; }
+
+		void            loadMaterialToShader()
+		{
+			for (std::pair<int, Material> material : _materials)
+				Material::sendMaterialToShader(_shader, material.second, material.first);
+		}
+
+		void            unloadMaterialFromShader()
+		{
+			for (std::pair<int, Material> material : _materials)
+				material.second.texure.unbindTexture();
+		}
 
 		void            addMaterial(int index, Material material)
 		{

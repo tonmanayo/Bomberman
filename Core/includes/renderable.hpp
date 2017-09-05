@@ -34,11 +34,21 @@ namespace Zion
 		static  float   secondsPassed;
 
 		virtual void    render(glm::mat4 matrix) = 0;
+		virtual void    simpleRender(glm::mat4 matrix) = 0;
+
+		Shader  getShader(){return _shader;}
+		bool    hasAnimation(){return _hasAnimation;}
+		void    enableShader(){_shader.enable();}
+		void    disableShader(){_shader.disable();}
+		void    enableAnimeInShader(){_shader.setUniform1i((GLchar *)"hasAnime", (int)true);}
 	};
 
 	struct  RendererObj
 	{
 		int         id;
+		float       animeTime;
+		int         animeType;
+		bool        die;
 		Renderable  *model;
 		glm::mat4   matrix;
 	};
@@ -47,6 +57,9 @@ namespace Zion
 	{
 	private:
 		std::map<std::string, std::vector<RendererObj>>    _objects;
+	private:
+		void    _renderStatic(std::vector<RendererObj>& objects);
+		void    _renderAnime(std::vector<RendererObj>& objects, std::string type);
 	public:
 		Renderer() = default;
 		Renderer(const Renderer & rhs);
@@ -58,6 +71,7 @@ namespace Zion
 		void    removeGroup(std::string type);
 		void    removeAll();
 		void    applyTransformationToRenderable(std::string type, int id, glm::mat4 mat);
+		void    increaseAnimeTime(std::string& type, int id, float val);
 		void    render();
 	};
 }
