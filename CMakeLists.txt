@@ -70,7 +70,7 @@ if (APPLE)
 endif()
 
 set(B_SOURCE_FILES Bomberman/main.cpp Bomberman/src/MainGame.cpp Bomberman/src/scene.cpp Bomberman/src/player.cpp Bomberman/src/gui/MainMenu.cpp Bomberman/src/gui/Menu.cpp Bomberman/src/gui/Menu.h)
-add_subdirectory(lib/nanogui)
+
 include_directories(lib/nanogui/include)
 include_directories(${NANOGUI_EXTRA_INCS})
 add_definitions(${NANOGUI_EXTRA_DEFS})
