@@ -91,6 +91,7 @@ void Scene::updateBomb(MainGame *game, Scene *scene) {
             int x = scene->getWorldx(scene->_bomb[i].getPosition().x);
             scene->_nbBombs--;
             bombExplode(scene, scene->_bomb[i]);
+			enemiesExplosionCollision(scene->_bomb[i].getPosition(), scene);
             if(scene->PlayerExplosionCollision(scene->_bomb[i].getPosition(), scene))
             {
                 std::cout << "dead\n";
@@ -101,6 +102,7 @@ void Scene::updateBomb(MainGame *game, Scene *scene) {
                 scene->_game->getGameCamera().setCameraUp(glm::vec3(0, 1, 0));
                 MainGame::renderer.applyTransformationToRenderable("player", scene->_player->getId(), scene->_player->getTransformation());
             }
+
 			MainGame::renderer.removeFromRender("bomb", scene->_bomb[i].getId());
 			delete scene->_blocks[y][x];
 			scene->_blocks[y][x] = nullptr;

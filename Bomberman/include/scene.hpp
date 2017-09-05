@@ -60,6 +60,8 @@ public:
     static bool     breakableBrickCollisionLeft(glm::vec3 pos, Scene *scene);
 
 	static bool     PlayerExplosionCollision(glm::vec3 pos, Scene *scene);
+	static void 	enemiesExplosionCollision(glm::vec3 pos, Scene *scene);
+
 
 public:
 	static  void	updateBomb(MainGame *game, Scene *scene);
