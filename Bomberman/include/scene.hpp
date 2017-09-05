@@ -4,6 +4,7 @@
 #include <glm/geometric.hpp>
 #include <glm/common.hpp>
 #include "Bomb.hpp"
+#include <fstream>
 
 #define GRID_START_X (0)
 #define GRID_START_Z (0)
@@ -25,16 +26,25 @@ private:
     int                 	_nbBombs;
 	std::vector<std::string> *_map;
 	std::map<int, std::map<int, Block *>>    _blocks;
+private:
+	std::string     _floorType;
+	std::string     _wallType;
+	std::string     _unbreakableBlockType;
+	std::string     _breakableBlockType;
+	std::string     _backgroundType;
+	std::string     _mapName;
 
 private:
 	void    _addWall(float x, float z, int xx, int yy);
 	void    _addBreakableBlock(float x, float z, int xx, int yy);
 	void    _addUnbreakableBlock(float x, float z, int xx, int yy);
+	void    _addBackground();
 	void    _addFloor(float x, float z);
 	void    _addPlayer(float x, float z);
 	void 	_addBomb(float x, float z);
 	void 	_addEnemy(float x, float z);
 public:
+	Scene() = default;
 	Scene(MainGame *game, std::vector<std::string> *map, int enemyCount);
 	Scene(const Scene & rhs);
 	Scene&  operator=(const Scene & rhs);
@@ -47,6 +57,9 @@ public:
     float           getGridy(float y);
 
 	bool            buildMap();
+	bool            saveGame(std::string fileName);
+	bool	        loadGame(MainGame *game, std::string fileName);
+	bool            newGame(MainGame *game, std::string mapName);
 	static bool     worldCollisionUp(glm::vec3 pos, glm::vec3 offset, Scene *scene);
 	static bool     worldCollisionDown(glm::vec3 pos, glm::vec3 offset, Scene *scene);
 	static bool     worldCollisionLeft(glm::vec3 pos, glm::vec3 offset, Scene *scene);

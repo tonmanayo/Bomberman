@@ -133,6 +133,7 @@ void MainGame::loadResources()
 	addModel("onile", *getShader("anime"), "resource/models/bomberman/Onile.glb");
     addModel("lavaBackground", *getShader("basic"), "resource/models/bomberman/lavaBackground.gltf");
 	addMap("map1", "resource/maps/map1");
+	addMap("map2", "resource/maps/map2");
 	addModel("enemy1", *getShader("basic"), "resource/models/enemies/enemy2.gltf");
 	auto *mat = new Zion::Material();
 	mat->texure.loadTextureFromPath("resource/models/bomberman/OnileDiffuseColor.png");

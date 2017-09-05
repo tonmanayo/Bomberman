@@ -69,6 +69,7 @@ void Menu::_createStartMenu(float width, float height)
 		activeMenu->_startMenu->setVisible(false);
 		activeMenu->_pauseGameMenu->setVisible(true);
 		activeMenu->_scene = new Scene(activeMenu->_mainGame, activeMenu->_mainGame->getMap("map1"), 5);
+		activeMenu->_scene->saveGame("test.save");
 	});
 	/// options button
 	nanogui::Button *optionsButton = new nanogui::Button(_startMenu, "Options");
