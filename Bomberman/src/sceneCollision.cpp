@@ -251,3 +251,40 @@ bool Scene::PlayerExplosionCollision(glm::vec3 pos, Scene *scene)
 	}
 	return false;
 }
+
+void Scene::enemiesExplosionCollision(glm::vec3 pos, Scene *scene)
+{
+	int 	bombx = scene->getWorldx(pos.x);
+	int 	bomby = scene->getWorldy(pos.z);
+	bool 	del = false;
+
+	for (int i = 0; i < scene->_enemies.size(); ++i) {
+
+		int playerx = scene->getWorldx(scene->_enemies[i]->getPosition().x);
+		int playery = scene->getWorldy(scene->_enemies[i]->getPosition().z);
+
+		//todo increase distance by power up
+		if (playerx == bombx - 1 && playery == bomby) {
+			del = true;
+		}
+		if (playerx == bombx + 1 && playery == bomby) {
+			del = true;
+		}
+		if (playery == bomby - 1 && playerx == bombx) {
+			del = true;
+		}
+		if (playery == bomby + 1 && playerx == bombx) {
+			del = true;
+		}
+		if (playery == bomby && playerx == bombx) {
+			del = true;
+		}
+		if (del) {
+			MainGame::renderer.removeFromRender("enemy1", scene->_enemies[i]->getId());
+			delete scene->_enemies[i];
+			scene->_enemies[i] = scene->_enemies.back();
+			scene->_enemies.pop_back();
+			del = false;
+		}
+	}
+}

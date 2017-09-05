@@ -192,7 +192,7 @@ void Scene::_addEnemy(float x, float z)
     Zion::Renderable *model;
     static int i = 0;
 
-    model = _game->getModel("onile");
+    model = _game->getModel("enemy1");
     if (model != nullptr)
     {
 		std::string s = "enemy1";
