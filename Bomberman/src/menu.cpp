@@ -17,7 +17,7 @@ Menu& Menu::operator=(const Menu &rhs)
 	if (this != &rhs)
 	{
 		_screen = rhs._screen;
-		_startGameMenu = rhs._startGameMenu;
+		_newGameMenu = rhs._newGameMenu;
 		_startMenu = rhs._startMenu;
 		_pauseGameMenu = rhs._pauseGameMenu;
 		_mainGame = rhs._mainGame;
@@ -44,11 +44,10 @@ bool Menu::initMenu(float width, float height, MainGame *mainGame, bool fullScre
 bool Menu::buildMenuWindows(float width, float height)
 {
 	_createStartMenu(width, height);
-	_createStartGameMenu(width, height);
+	_createNewGameMenu(width, height);
 	_createPauseGameMenu(width, height);
 	_createBackground(width, height);
 	_createExitWindow(width, height);
-	//_screen->performLayout();
 	return true;
 }
 
@@ -60,16 +59,13 @@ void Menu::_createStartMenu(float width, float height)
 	_startMenu->setHeight(250);
 	_startMenu->setVisible(true);
 	_startMenu->center();
-	/// start game button
-	nanogui::Button *startButton = new nanogui::Button(_startMenu, "Start Game");
+	/// new game button
+	nanogui::Button *startButton = new nanogui::Button(_startMenu, "New Game");
 	startButton->setPosition({50, 40});
 	startButton->setSize({150, 50});
 	startButton->setCallback([]{
-		activeMenu->_mainGame->setGameState(GAMESTATE::GAME);
 		activeMenu->_startMenu->setVisible(false);
-		activeMenu->_pauseGameMenu->setVisible(true);
-		activeMenu->_scene = new Scene(activeMenu->_mainGame, activeMenu->_mainGame->getMap("map1"), 5);
-		activeMenu->_scene->saveGame("test.save");
+		activeMenu->_newGameMenu->setVisible(true);
 	});
 	/// options button
 	nanogui::Button *optionsButton = new nanogui::Button(_startMenu, "Options");
@@ -82,10 +78,47 @@ void Menu::_createStartMenu(float width, float height)
 	exitButton->setCallback([]{ Menu::exitButtonCallBack();});
 }
 
-void Menu::_createStartGameMenu(float width, float height)
+void Menu::_createNewGameMenu(float width, float height)
 {
-	_startGameMenu = new nanogui::Window(_screen, "Start Game");
-	_startGameMenu->setVisible(false);
+	_newGameMenu = new nanogui::Window(_screen, "New Game");
+	_newGameMenu->setLayout(new nanogui::GroupLayout());
+	_newGameMenu->setWidth(250);
+	_newGameMenu->setHeight(250);
+	_newGameMenu->setVisible(false);
+	_newGameMenu->center();
+	/// label
+	nanogui::Label *label = new nanogui::Label(_newGameMenu, "Enter Profile Name", "sans-bold", 20);
+	label->setPosition({60, 40});
+	label->setSize({200, 30});
+	label->setColor({0.0f, 0.7f, 0.0f, 1.0f});
+	/// textbox
+	_newGameTextBox = new nanogui::TextBox(_newGameMenu, "");
+	_newGameTextBox->setPosition({50, 80});
+	_newGameTextBox->setSize({150, 50});
+	_newGameTextBox->setEditable(true);
+	/// start button
+	nanogui::Button *start = new nanogui::Button(_newGameMenu, "Start");
+	start->setPosition({50, 150});
+	start->setSize({150, 30});
+	start->setCallback([]{
+		if ((activeMenu->_saveFileName = activeMenu->_newGameTextBox->value()) == std::string(""))
+			return;
+		activeMenu->_mainGame->setGameState(GAMESTATE::GAME);
+		activeMenu->_newGameMenu->setVisible(false);
+		activeMenu->_pauseGameMenu->setVisible(true);
+		activeMenu->_scene = new Scene();
+		activeMenu->_scene->newGame(activeMenu->_mainGame, "map2");
+		activeMenu->_scene->saveGame(activeMenu->_saveFileName);
+	});
+	/// cancel button
+	nanogui::Button *cancel = new nanogui::Button(_newGameMenu, "Cancel");
+	cancel->setPosition({50, 200});
+	cancel->setSize({150, 30});
+	cancel->setBackgroundColor({0.8f, 0.0f, 0.0f, 1.0f});
+	cancel->setCallback([]{
+		activeMenu->_newGameMenu->setVisible(false);
+		activeMenu->_startMenu->setVisible(true);
+	});
 }
 
 void Menu::_createPauseGameMenu(float width, float height)
@@ -95,18 +128,30 @@ void Menu::_createPauseGameMenu(float width, float height)
 	_pauseGameMenu->setSize({250, 250});
 	_pauseGameMenu->setVisible(false);
 	_pauseGameMenu->center();
+	/// game saved Window
+	_gameSaved = new nanogui::Window(_screen, "");
+	_gameSaved->setSize({250, 40});
+	_gameSaved->setVisible(false);
+	_gameSaved->setPosition({(width / 2) - 125, height - 100});
+	nanogui::Label *saveLabel = new nanogui::Label(_gameSaved, "Game Saved", "sans", 25);
+	saveLabel->setPosition({70, 5});
+	saveLabel->setSize({150, 30});
+	saveLabel->setColor({0.0f, 0.7f, 0.0f, 1.0f});
 	/// resume game button
 	nanogui::Button *resume = new nanogui::Button(_pauseGameMenu, "Resume");
 	resume->setPosition({50, 50});
 	resume->setSize({150, 50});
 	resume->setCallback([]{
 		activeMenu->_mainGame->setGameState(GAMESTATE::GAME);
+		activeMenu->_gameSaved->setVisible(false);
 	});
 	/// save game button
 	nanogui::Button *save = new nanogui::Button(_pauseGameMenu, "Save");
 	save->setPosition({50, 120});
 	save->setSize({150, 50});
 	save->setCallback([]{
+		activeMenu->_scene->saveGame(activeMenu->_saveFileName);
+		activeMenu->_gameSaved->setVisible(true);
 	});
 	/// quit game button
 	nanogui::Button *quit = new nanogui::Button(_pauseGameMenu, "Quit");
@@ -121,6 +166,7 @@ void Menu::_createPauseGameMenu(float width, float height)
 			it = MainGame::functions.find("sceneUpdate");
 			MainGame::functions.erase(it);
 			MainGame::renderer.removeAll();
+			activeMenu->_gameSaved->setVisible(false);
 		}
 		activeMenu->_mainGame->setGameState(GAMESTATE::MENU);
 		activeMenu->_pauseGameMenu->setVisible(false);

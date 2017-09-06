@@ -14,9 +14,11 @@ class   Menu
 private:
 	nanogui::Screen     *_screen;
 	nanogui::Window     *_startMenu;
-	nanogui::Window     *_startGameMenu;
+	nanogui::Window     *_newGameMenu;
 	nanogui::Window     *_pauseGameMenu;
 	nanogui::Window     *_exitWindow;
+	nanogui::TextBox    *_newGameTextBox;
+	nanogui::Window     *_gameSaved;
 	MainGame            *_mainGame;
 	Zion::SquareSprite  *_menuBg;
 	Zion::SquareSprite  *_menuTitle;
@@ -24,7 +26,7 @@ private:
 	std::string         _saveFileName;
 private:
 	void    _createStartMenu(float width, float height);
-	void    _createStartGameMenu(float width, float height);
+	void    _createNewGameMenu(float width, float height);
 	void    _createPauseGameMenu(float width, float height);
 	void    _createBackground(float width, float height);
 	void    _createExitWindow(float width, float height);

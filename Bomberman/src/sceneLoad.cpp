@@ -1,47 +1,60 @@
 #include <scene.hpp>
 
-bool Scene::buildMap()
+bool Scene::newGame(MainGame *game, std::string mapName)
 {
-	/// setting params for save game state
-	_mapWidth = _map->size();
-	_mapLength = _map[0].size();
-	_floorType = "floor1";
-	_wallType = "block1";
-	_breakableBlockType = "block2";
-	_unbreakableBlockType = "block3";
-	_backgroundType = "lavaBackground";
-
-	float  z = GRID_START_Z;
-	int yy = 0;
-	_addBackground();
-	for (std::string line : *_map)
+	std::vector<std::string>    *map = game->getMap(mapName);
+	if (map == nullptr)
+		return false;
+	_mapName = mapName;
+	_game = game;
+	for (std:: string& line : *map)
 	{
-		float x = GRID_START_X;
-		int xx = 0;
-		for (char c : line)
-		{
-			if (c == 'R')
-				_addWall(x, z, xx, yy);
-			else if (c == 'G')
-				_addBreakableBlock(x, z, xx, yy);
-			else if (c == 'L')
-				_addUnbreakableBlock(x, z, xx, yy);
-			else if (c == '@')
-				_addPlayer(x, z);
-			else if (c == 'E')
-				_addEnemy(x, z);
-			_addFloor(x, z);
-			x += GRID_BLOCK_SIZE;
-			xx++;
-		}
-		z -= GRID_BLOCK_SIZE;
-		yy++;
+		std::vector<std::string> strSplits = MainGame::stringSplit(line, ' ');
+		if (strSplits[0] == std::string("FloorType"))
+			_floorType = strSplits[1];
+		else if (strSplits[0] == std::string("WallType"))
+			_wallType = strSplits[1];
+		else if (strSplits[0] == std::string("BreakType"))
+			_breakableBlockType = strSplits[1];
+		else if (strSplits[0] == std::string("UnbreakType"))
+			_unbreakableBlockType = strSplits[1];
+		else if (strSplits[0] == std::string("BgType"))
+			_backgroundType = strSplits[1];
+		else if (line[0] == 'R')
+			_loadNewGameLine(line);
 	}
+	_addBackground();
 	/// adding scene update to render loop functions
 	std::vector<void *> params;
 	params.push_back(this);
 	MainGame::functions.insert(std::pair<const char *, Func>("sceneUpdate", {Scene::sceneUpdate, params}));
 	return true;
+}
+
+void Scene::_loadNewGameLine(std::string &line)
+{
+	static float  z = GRID_START_Z;
+	static int gridY = 0;
+	float x = GRID_START_X;
+	int   gridX = 0;
+	for (char c : line)
+	{
+		if (c == 'R')
+			_addWall(x, z, gridX, gridY);
+		else if (c == 'G')
+			_addBreakableBlock(x, z, gridX, gridY);
+		else if (c == 'L')
+			_addUnbreakableBlock(x, z, gridX, gridY);
+		else if (c == '@')
+			_addPlayer(x, z);
+		else if (c == 'E')
+			_addEnemy(x, z);
+		_addFloor(x, z);
+		x += GRID_BLOCK_SIZE;
+		gridX++;
+	}
+	z -= GRID_BLOCK_SIZE;
+	gridY++;
 }
 
 bool Scene::saveGame(std::string fileName)
@@ -65,6 +78,8 @@ bool Scene::saveGame(std::string fileName)
 	{
 		for (std::pair<int, Block *> block : pair.second)
 		{
+			if (block.second == nullptr)
+				continue;
 			if (!block.second->isBreakable())
 				continue;
 			pos = block.second->getPosition();

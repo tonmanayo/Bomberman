@@ -17,14 +17,14 @@ class   Scene
 {
 private:
 	MainGame    			*_game;
-	size_t      			_mapWidth;
-	size_t      			_mapLength;
-	int         			_enemyCount;
+	size_t      			_mapWidth = 0;
+	size_t      			_mapLength = 0;
+	int         			_enemyCount = 0;
 	Player      			*_player;
 	std::vector<Bomb>		_bomb;
 	std::vector<Player *>   _enemies;
     int                 	_nbBombs;
-	std::vector<std::string> *_map;
+	std::vector<std::string> *_map; // need to remove, not in use
 	std::map<int, std::map<int, Block *>>    _blocks;
 private:
 	std::string     _floorType;
@@ -43,9 +43,9 @@ private:
 	void    _addPlayer(float x, float z);
 	void 	_addBomb(float x, float z);
 	void 	_addEnemy(float x, float z);
+	void    _loadNewGameLine(std::string& line);
 public:
 	Scene() = default;
-	Scene(MainGame *game, std::vector<std::string> *map, int enemyCount);
 	Scene(const Scene & rhs);
 	Scene&  operator=(const Scene & rhs);
 	~Scene();
@@ -56,7 +56,6 @@ public:
     float           getGridx(float x);
     float           getGridy(float y);
 
-	bool            buildMap();
 	bool            saveGame(std::string fileName);
 	bool	        loadGame(MainGame *game, std::string fileName);
 	bool            newGame(MainGame *game, std::string mapName);

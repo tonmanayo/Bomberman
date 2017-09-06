@@ -263,13 +263,13 @@ namespace Zion
 			Acc = acc[prim.indices];
 			bufView = bufViews[Acc.bufferView];
 			auto indicesData = (GLushort*)(bufs[bufView.buffer].data.data() + bufView.byteOffset);
-			std::cout << "Indices ";
+			//std::cout << "Indices ";
 			for (int i = 0; i < Acc.count; i++)
 			{
-				std::cout << indicesData[i] << " ";
+				//std::cout << indicesData[i] << " ";
 				_indices.push_back((GLushort)(indicesData[i] + currVecSize));
 			}
-			std::cout << std::endl;
+			//std::cout << std::endl;
 		}
 	}
 

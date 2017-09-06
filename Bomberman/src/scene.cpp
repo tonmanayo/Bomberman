@@ -1,14 +1,5 @@
 #include <scene.hpp>
 
-Scene::Scene(MainGame *game, std::vector<std::string> *map, int enemyCount)
-{
-	_enemyCount = enemyCount;
-	_map = map;
-	_game = game;
-	buildMap();
-    _nbBombs = 0;
-}
-
 Scene::Scene(const Scene &rhs)
 {}
 
