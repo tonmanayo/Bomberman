@@ -27,6 +27,8 @@ namespace Zion
 	{
 		for (std::pair<std::string, std::vector<RendererObj>> pair : _objects)
 		{
+			if (!pair.first.compare("fast"))
+				_renderStatic(pair.second);
 			if (!pair.first.compare("wall"))
 				_renderStatic(pair.second);
 			if (!pair.first.compare("unbreakBlock"))

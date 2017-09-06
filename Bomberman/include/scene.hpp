@@ -24,6 +24,7 @@ private:
 	std::vector<Player *>   _enemies;
     int                 	_nbBombs;
 	glm::vec3				_finishPos;
+	glm::vec3				_powerFast;
 	std::vector<std::string> *_map;
 	std::map<int, std::map<int, Block *>>    _blocks;
 
@@ -49,8 +50,10 @@ public:
 
 	bool            buildMap();
     void 			CalcEndPos();
+    void            CalcPowerFast();
 
-    static bool     worldCollisionUp(glm::vec3 pos, glm::vec3 offset, Scene *scene);
+
+        static bool     worldCollisionUp(glm::vec3 pos, glm::vec3 offset, Scene *scene);
 	static bool     worldCollisionDown(glm::vec3 pos, glm::vec3 offset, Scene *scene);
 	static bool     worldCollisionLeft(glm::vec3 pos, glm::vec3 offset, Scene *scene);
 	static bool     worldCollisionRight(glm::vec3 pos, glm::vec3 offset, Scene *scene);

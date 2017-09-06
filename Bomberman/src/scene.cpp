@@ -7,6 +7,7 @@ Scene::Scene(MainGame *game, std::vector<std::string> *map, int enemyCount)
 	_game = game;
 	buildMap();
 	CalcEndPos();
+    CalcPowerFast();
     _nbBombs = 0;
 }
 
@@ -31,12 +32,14 @@ void Scene::CalcEndPos() {
 		for (int y = 0; y < _blocks.size() ; ++y) {
 			for (int x = 0; x < _blocks[y].size(); ++x) {
 				if (_blocks[y][x] != nullptr && _blocks[y][x]->isBreakable()) {
-					int k = rand() % 50;
-					if (k == 25) {
+					int k = rand() % 125;
+					if (k == 5) {
 						_finishPos = glm::vec3{x * GRID_BLOCK_SIZE, 0, -(y * GRID_BLOCK_SIZE)};
                         static int i = 0;
                         Zion::Renderable *model;
+						glm::mat4 scale = glm::scale(glm::mat4(), glm::vec3(0.01f, 0.01f, 0.01f));
                         glm::mat4 mat = glm::translate(glm::mat4(), glm::vec3(x * GRID_BLOCK_SIZE, -1,  -(y * GRID_BLOCK_SIZE)));
+						mat = mat * scale;
                         model = _game->getModel("floor2");
                         if (model != nullptr)
                         {
@@ -48,6 +51,31 @@ void Scene::CalcEndPos() {
 			}
 		}
 	}
+}
+
+void Scene::CalcPowerFast() {
+    bool set = false;
+    while (!set) {
+        for (int y = 0; y < _blocks.size() ; ++y) {
+            for (int x = 0; x < _blocks[y].size(); ++x) {
+                if (_blocks[y][x] != nullptr && _blocks[y][x]->isBreakable()) {
+                    int k = rand() % 50;
+                    if (k == 25) {
+                        _powerFast = glm::vec3{x * GRID_BLOCK_SIZE, 0, -(y * GRID_BLOCK_SIZE)};
+                        static int i = 0;
+                        Zion::Renderable *model;
+                        glm::mat4 mat = glm::translate(glm::mat4(), glm::vec3(x * GRID_BLOCK_SIZE, -1,  -(y * GRID_BLOCK_SIZE)));
+                        model = _game->getModel("fast");
+                        if (model != nullptr)
+                        {
+                            MainGame::renderer.addToRender("fast", 0, model, mat);
+                        }
+                        set = true ;
+                    }
+                }
+            }
+        }
+    }
 }
 
 glm::vec3       Scene::getFinishPos() {
@@ -170,9 +198,9 @@ void Scene::_addBomb(float x, float z)
 
 	x = getGridx(x);
 	z = getGridy(z);
+    glm::mat4 mat = glm::translate(glm::mat4(), glm::vec3(x, 0, z));
 
-	glm::mat4 mat = glm::translate(glm::mat4(), glm::vec3(x, 0, z));
-	Zion::Renderable *model = _game->getModel("bomb");
+    Zion::Renderable *model = _game->getModel("bomb");
 	if (model != nullptr)
 	{
 		Block *block = new Block(i, "bomb", false);

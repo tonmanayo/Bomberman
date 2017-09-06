@@ -18,11 +18,11 @@ float   Bomb::getTime() const{
 }
 
 bool    Bomb::explodeTime(){
-    return glfwGetTime() - _time > 1.5;
+    return glfwGetTime() - _time > 1.5 && glfwGetTime() - _time < 1.6;
 }
 
 bool    Bomb::removeExplosionTime(){
-    return glfwGetTime() - _time > 2.5;
+    return glfwGetTime() - _time > 2.5 && glfwGetTime() - _time < 2.6;
 }
 
 int     Bomb::getId() const

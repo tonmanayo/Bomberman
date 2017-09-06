@@ -85,8 +85,11 @@ void Scene::updateBomb(MainGame *game, Scene *scene) {
 	}
     for (int j = 0; j < scene->_bomb.size(); ++j) {
         if (scene->_bomb[j].removeExplosionTime()) {
-            std::cout << "here\n";
-            MainGame::renderer.removeFromRender("explosion", 0);
+            MainGame::renderer.removeFromRender("explosion", scene->_bomb[j].getId() + 1);
+            MainGame::renderer.removeFromRender("explosion", scene->_bomb[j].getId() + 2);
+            MainGame::renderer.removeFromRender("explosion", scene->_bomb[j].getId() + 3);
+            MainGame::renderer.removeFromRender("explosion", scene->_bomb[j].getId() + 4);
+            MainGame::renderer.removeFromRender("explosion", scene->_bomb[j].getId() + 5);
             scene->_bomb[j] = scene->_bomb.back();
             scene->_bomb.pop_back();
         }
