@@ -52,34 +52,9 @@ void Scene::updatePlayer(MainGame *game, Scene *scene)
             scene->_addBomb(scene->_player->getPosition().x, scene->_player->getPosition().z);
             scene->_nbBombs++;
 	}
-}
-
-void Scene::bombExplode(Scene *scene, const Bomb &bomb) {
-
-    int x = scene->getWorldx(bomb.getPosition().x);
-    int y = scene->getWorldy(bomb.getPosition().z);
-    //todo add for loop for power up
-    if (scene->breakableBrickCollisionDown(bomb.getPosition(), scene))
-    {
-        MainGame::renderer.removeFromRender("breakBlock", scene->_blocks[y - 1][x]->getId());
-        scene->_blocks[y - 1][x] = nullptr;
-    }
-    if (scene->breakableBrickCollisionUp(bomb.getPosition(), scene))
-    {
-        MainGame::renderer.removeFromRender("breakBlock", scene->_blocks[y + 1][x]->getId());
-        scene->_blocks[y + 1][x] = nullptr;
-    }
-    if (scene->breakableBrickCollisionLeft(bomb.getPosition(), scene))
-    {
-        MainGame::renderer.removeFromRender("breakBlock", scene->_blocks[y][x - 1]->getId());
-        scene->_blocks[y][x - 1] = nullptr;
-    }
-    if (scene->breakableBrickCollisionRight(bomb.getPosition(), scene))
-    {
-        MainGame::renderer.removeFromRender("breakBlock", scene->_blocks[y][x + 1]->getId());
-        scene->_blocks[y][x + 1] = nullptr;
-    }
-
+	if (scene->getFinishPos().z == std::round(scene->_player->getPosition().z) && scene->getFinishPos().x == std::round(scene->_player->getPosition().x)){
+		std::cout << "FINISHED\n" << std::endl;
+	}
 }
 
 void Scene::updateBomb(MainGame *game, Scene *scene) {
@@ -89,6 +64,7 @@ void Scene::updateBomb(MainGame *game, Scene *scene) {
 		{
             int y = scene->getWorldy(scene->_bomb[i].getPosition().z);
             int x = scene->getWorldx(scene->_bomb[i].getPosition().x);
+            RenderExplosion(scene, scene->_bomb[i], game);
             scene->_nbBombs--;
             bombExplode(scene, scene->_bomb[i]);
 			enemiesExplosionCollision(scene->_bomb[i].getPosition(), scene);
@@ -102,7 +78,6 @@ void Scene::updateBomb(MainGame *game, Scene *scene) {
                 scene->_game->getGameCamera().setCameraUp(glm::vec3(0, 1, 0));
                 MainGame::renderer.applyTransformationToRenderable("player", scene->_player->getId(), scene->_player->getTransformation());
             }
-
 			MainGame::renderer.removeFromRender("bomb", scene->_bomb[i].getId());
 			delete scene->_blocks[y][x];
 			scene->_blocks[y][x] = nullptr;

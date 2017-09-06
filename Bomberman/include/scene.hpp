@@ -23,6 +23,7 @@ private:
 	std::vector<Bomb>		_bomb;
 	std::vector<Player *>   _enemies;
     int                 	_nbBombs;
+	glm::vec3				_finishPos;
 	std::vector<std::string> *_map;
 	std::map<int, std::map<int, Block *>>    _blocks;
 
@@ -47,7 +48,9 @@ public:
     float           getGridy(float y);
 
 	bool            buildMap();
-	static bool     worldCollisionUp(glm::vec3 pos, glm::vec3 offset, Scene *scene);
+    void 			CalcEndPos();
+
+    static bool     worldCollisionUp(glm::vec3 pos, glm::vec3 offset, Scene *scene);
 	static bool     worldCollisionDown(glm::vec3 pos, glm::vec3 offset, Scene *scene);
 	static bool     worldCollisionLeft(glm::vec3 pos, glm::vec3 offset, Scene *scene);
 	static bool     worldCollisionRight(glm::vec3 pos, glm::vec3 offset, Scene *scene);
@@ -61,7 +64,10 @@ public:
 
 	static bool     PlayerExplosionCollision(glm::vec3 pos, Scene *scene);
 	static void 	enemiesExplosionCollision(glm::vec3 pos, Scene *scene);
+    static void     RenderExplosion(Scene *scene, const Bomb &bomb, MainGame *game);
 
+
+    glm::vec3       getFinishPos();
 
 public:
 	static  void	updateBomb(MainGame *game, Scene *scene);

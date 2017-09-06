@@ -57,7 +57,7 @@ add_definitions(${NANOGUI_EXTRA_DEFS})
 set(B_SOURCE_FILES Bomberman/main.cpp Bomberman/src/MainGame.cpp Bomberman/src/scene.cpp
         Bomberman/src/player.cpp Bomberman/src/block.cpp Bomberman/src/sceneUpdate.cpp
         Bomberman/src/Bomb.cpp Bomberman/src/sceneCollision.cpp Bomberman/src/menu.cpp
-        Bomberman/src/EnemyStuff.cpp)
+        Bomberman/src/EnemyStuff.cpp Bomberman/src/BombStuff.cpp)
 
 add_executable(Bomberman ${B_SOURCE_FILES})
 target_link_libraries(Bomberman

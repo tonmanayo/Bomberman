@@ -6,6 +6,7 @@ Scene::Scene(MainGame *game, std::vector<std::string> *map, int enemyCount)
 	_map = map;
 	_game = game;
 	buildMap();
+	CalcEndPos();
     _nbBombs = 0;
 }
 
@@ -24,6 +25,36 @@ Scene::~Scene()
 	}
 }
 
+void Scene::CalcEndPos() {
+	bool set = false;
+	while (!set) {
+		for (int y = 0; y < _blocks.size() ; ++y) {
+			for (int x = 0; x < _blocks[y].size(); ++x) {
+				if (_blocks[y][x] != nullptr && _blocks[y][x]->isBreakable()) {
+					int k = rand() % 50;
+					if (k == 25) {
+						_finishPos = glm::vec3{x * GRID_BLOCK_SIZE, 0, -(y * GRID_BLOCK_SIZE)};
+                        static int i = 0;
+                        Zion::Renderable *model;
+                        glm::mat4 mat = glm::translate(glm::mat4(), glm::vec3(x * GRID_BLOCK_SIZE, -1,  -(y * GRID_BLOCK_SIZE)));
+                        model = _game->getModel("floor2");
+                        if (model != nullptr)
+                        {
+                            MainGame::renderer.addToRender("floor2", 0, model, mat);
+                        }
+						set = true ;
+					}
+				}
+			}
+		}
+	}
+}
+
+glm::vec3       Scene::getFinishPos() {
+	return _finishPos;
+}
+
+
 bool Scene::buildMap()
 {
 	_mapWidth = _map->size();
@@ -41,8 +72,9 @@ bool Scene::buildMap()
 				_addWall(x, z, xx, yy);
 			else if (c == 'G')
 				_addBreakableBlock(x, z, xx, yy);
-			else if (c == 'L')
-				_addUnbreakableBlock(x, z, xx, yy);
+			else if (c == 'L') {
+                _addUnbreakableBlock(x, z, xx, yy);
+            }
 			else if (c == '@')
 				_addPlayer(x, z);
             else if (c == 'E')
