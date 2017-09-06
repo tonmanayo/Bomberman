@@ -37,6 +37,8 @@ namespace Zion
 				_renderStatic(pair.second);
 			if (!pair.first.compare("floor2"))
 				_renderStatic(pair.second);
+            if (!pair.first.compare("explosion"))
+                _renderStatic(pair.second);
 			if (!pair.first.compare("player"))
 				_renderStatic(pair.second);
 			if (!pair.first.compare("bomb"))

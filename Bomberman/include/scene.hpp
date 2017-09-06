@@ -64,8 +64,7 @@ public:
 
 	static bool     PlayerExplosionCollision(glm::vec3 pos, Scene *scene);
 	static void 	enemiesExplosionCollision(glm::vec3 pos, Scene *scene);
-    static void     RenderExplosion(Scene *scene, const Bomb &bomb, MainGame *game);
-
+    static void     renderExplosion(Scene *scene, const Bomb &bomb, MainGame *game);
 
     glm::vec3       getFinishPos();
 

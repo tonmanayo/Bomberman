@@ -59,13 +59,12 @@ void Scene::updatePlayer(MainGame *game, Scene *scene)
 
 void Scene::updateBomb(MainGame *game, Scene *scene) {
 
-	for (int i = 0; i < scene->_bomb.size(); ++i) {
+	for (int i = 0; i < scene->_nbBombs; ++i) {
 		if (scene->_bomb[i].explodeTime())
 		{
             int y = scene->getWorldy(scene->_bomb[i].getPosition().z);
             int x = scene->getWorldx(scene->_bomb[i].getPosition().x);
-            RenderExplosion(scene, scene->_bomb[i], game);
-            scene->_nbBombs--;
+            renderExplosion(scene, scene->_bomb[i], game);
             bombExplode(scene, scene->_bomb[i]);
 			enemiesExplosionCollision(scene->_bomb[i].getPosition(), scene);
             if(scene->PlayerExplosionCollision(scene->_bomb[i].getPosition(), scene))
@@ -81,8 +80,15 @@ void Scene::updateBomb(MainGame *game, Scene *scene) {
 			MainGame::renderer.removeFromRender("bomb", scene->_bomb[i].getId());
 			delete scene->_blocks[y][x];
 			scene->_blocks[y][x] = nullptr;
-			scene->_bomb[i] = scene->_bomb.back();
-			scene->_bomb.pop_back();
-		}
+            scene->_nbBombs--;
+        }
 	}
+    for (int j = 0; j < scene->_bomb.size(); ++j) {
+        if (scene->_bomb[j].removeExplosionTime()) {
+            std::cout << "here\n";
+            MainGame::renderer.removeFromRender("explosion", 0);
+            scene->_bomb[j] = scene->_bomb.back();
+            scene->_bomb.pop_back();
+        }
+    }
 }

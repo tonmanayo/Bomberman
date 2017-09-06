@@ -20,6 +20,7 @@ public:
     Bomb(glm::vec3  position, int id);
     virtual         ~Bomb();
     bool            explodeTime();
+    bool            removeExplosionTime();
     void            draw();
     float           getTime() const;
     int             getId() const;

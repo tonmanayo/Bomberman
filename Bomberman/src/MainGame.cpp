@@ -124,6 +124,7 @@ bool MainGame::addMap(const char *name, const char *path)
 void MainGame::loadResources()
 {
 	addModel("block1", *getShader("basic"), "resource/models/blocks/block1.gltf");
+	addModel("explosion", *getShader("basic"), "resource/models/blocks/block1.gltf");
 	addModel("block2", *getShader("basic"), "resource/models/blocks/block2.gltf");
 	addModel("block3", *getShader("basic"), "resource/models/blocks/block3.gltf");
 	addModel("bomb", *getShader("basic"), "resource/models/blocks/bomb.gltf");

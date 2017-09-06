@@ -21,6 +21,10 @@ bool    Bomb::explodeTime(){
     return glfwGetTime() - _time > 1.5;
 }
 
+bool    Bomb::removeExplosionTime(){
+    return glfwGetTime() - _time > 2.5;
+}
+
 int     Bomb::getId() const
 {
     return _id;
