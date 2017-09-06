@@ -10,6 +10,9 @@
 #include <nanogui/checkbox.h>
 #include <MainGame.hpp>
 #include <scene.hpp>
+#include <sys/types.h>
+#include <dirent.h>
+#include <stdio.h>
 
 class   Menu
 {

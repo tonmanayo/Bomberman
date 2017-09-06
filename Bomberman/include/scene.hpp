@@ -5,6 +5,7 @@
 #include <glm/common.hpp>
 #include "Bomb.hpp"
 #include <fstream>
+#include <stdlib.h>
 
 #define GRID_START_X (0)
 #define GRID_START_Z (0)
@@ -33,6 +34,8 @@ private:
 	std::string     _breakableBlockType;
 	std::string     _backgroundType;
 	std::string     _mapName;
+	float  z = GRID_START_Z;
+	int gridY = 0;
 
 private:
 	void    _addWall(float x, float z, int xx, int yy);
@@ -44,6 +47,7 @@ private:
 	void 	_addBomb(float x, float z);
 	void 	_addEnemy(float x, float z);
 	void    _loadNewGameLine(std::string& line);
+	void    _loadLoadGameLine(std::string& line);
 public:
 	Scene() = default;
 	Scene(const Scene & rhs);

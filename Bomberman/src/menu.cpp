@@ -138,18 +138,48 @@ void Menu::_createLoadGameMenu(float width, float height)
 	_loadGameMenu->setSize({width / 3, height / 3});
 	_loadGameMenu->setVisible(false);
 	_loadGameMenu->center();
-	nanogui::VScrollPanel *panel = new nanogui::VScrollPanel(_loadGameMenu);
-	panel->setSize({(width / 3) - 10, height / 3});
-	panel->setPosition({10, 35});	
-	nanogui::Widget *panelView = new nanogui::Widget(panel);
-	panelView->setLayout(new nanogui::BoxLayout(nanogui::Orientation::Vertical, nanogui::Alignment::Minimum, 0, 0));
-	/*for (auto & p : std)
+	auto *panel = new nanogui::VScrollPanel(_loadGameMenu);
+	panel->setSize({(width / 3) - 10, (height / 3) - 90});
+	panel->setPosition({10, 35});
+	auto *panelView = new nanogui::Window(panel, "");
+	panelView->setLayout(new nanogui::BoxLayout(nanogui::Orientation::Vertical, nanogui::Alignment::Fill, 20, 5));
+	panelView->setSize({(width / 3) - 10, (height / 3) - 90});
+	panelView->setPosition({10, 35});
+
+	DIR     *dir = opendir("save");
+	struct dirent *file;
+	if (dir)
 	{
-		nanogui::TextBox *lab = new nanogui::TextBox(panelView, "test");
-		lab->setSize({(width / 3) - 30, 30});
-		lab->setPosition({5, i * 33 + 3});
-		lab->setEditable(false);
-	}*/
+		int i = 0;
+		while ((file = readdir(dir)))
+		{
+			if (file->d_name[0] == '.')
+				continue;
+			nanogui::Button *lab = new nanogui::Button(panelView, file->d_name);
+			lab->setSize({(width / 3) - 30, 30});
+			lab->setPosition({5, i * 33 + 3});
+			lab->setCallback([lab]{
+				std::cout << "load : " << lab->caption() << std::endl;
+				activeMenu->_mainGame->setGameState(GAMESTATE::GAME);
+				activeMenu->_loadGameMenu->setVisible(false);
+				activeMenu->_pauseGameMenu->setVisible(true);
+				activeMenu->_saveFileName = lab->caption();
+				activeMenu->_scene = new Scene();
+				activeMenu->_scene->loadGame(activeMenu->_mainGame, activeMenu->_saveFileName);
+			});
+			i++;
+		}
+	}else{
+		perror("directory error");
+	}
+	closedir(dir);
+	nanogui::Button *back = new nanogui::Button(_loadGameMenu, "back");
+	back->setPosition({(width / 3) - 100, (height / 3) - 50});
+	back->setSize({70, 30});
+	back->setCallback([]{
+		activeMenu->_loadGameMenu->setVisible(false);
+		activeMenu->_startMenu->setVisible(true);
+	});
 }
 
 void Menu::_createPauseGameMenu(float width, float height)
@@ -192,6 +222,13 @@ void Menu::_createPauseGameMenu(float width, float height)
 		if (activeMenu->_scene != nullptr)
 		{
 			delete activeMenu->_scene;
+			activeMenu->_screen->removeChild(activeMenu->_loadGameMenu);
+			activeMenu->_screen->removeChild(activeMenu->_newGameMenu);
+			//delete activeMenu->_loadGameMenu;
+			activeMenu->_createNewGameMenu(activeMenu->_mainGame->getGameWindow().getWidth(),
+			                               activeMenu->_mainGame->getGameWindow().getHeight());
+			activeMenu->_createLoadGameMenu(activeMenu->_mainGame->getGameWindow().getWidth(),
+			                                activeMenu->_mainGame->getGameWindow().getHeight());
 			std::cout << "scene deleted" << std::endl;
 			std::map<const char *, Func>::iterator it;
 			it = MainGame::functions.find("sceneUpdate");

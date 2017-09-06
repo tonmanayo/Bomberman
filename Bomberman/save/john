@@ -1,8 +1,0 @@
-FloorType floor1
-WallType block1
-MapWidth 0
-MapHeight 0
-BreakableBlockType block2
-UnbreakableBlockType block3
-BackgroundType lavaBackground
-@ 16.2001 0 -7.86
