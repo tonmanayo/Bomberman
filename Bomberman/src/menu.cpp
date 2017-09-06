@@ -48,6 +48,8 @@ bool Menu::buildMenuWindows(float width, float height)
 	_createPauseGameMenu(width, height);
 	_createBackground(width, height);
 	_createExitWindow(width, height);
+	_createLoadGameMenu(width, height);
+	//_screen->performLayout();
 	return true;
 }
 
@@ -56,7 +58,7 @@ void Menu::_createStartMenu(float width, float height)
 	_startMenu = new nanogui::Window(_screen, "Menu");
 	_startMenu->setLayout(new nanogui::GroupLayout());
 	_startMenu->setWidth(250);
-	_startMenu->setHeight(250);
+	_startMenu->setHeight(320);
 	_startMenu->setVisible(true);
 	_startMenu->center();
 	/// new game button
@@ -67,13 +69,21 @@ void Menu::_createStartMenu(float width, float height)
 		activeMenu->_startMenu->setVisible(false);
 		activeMenu->_newGameMenu->setVisible(true);
 	});
+	/// load game button
+	nanogui::Button *loadButton = new nanogui::Button(_startMenu, "Load Game");
+	loadButton->setPosition({50, 110});
+	loadButton->setSize({150, 50});
+	loadButton->setCallback([]{
+		activeMenu->_startMenu->setVisible(false);
+		activeMenu->_loadGameMenu->setVisible(true);
+	});
 	/// options button
 	nanogui::Button *optionsButton = new nanogui::Button(_startMenu, "Options");
-	optionsButton->setPosition({50, 110});
+	optionsButton->setPosition({50, 180});
 	optionsButton->setSize({150, 50});
 	/// exit button
 	nanogui::Button *exitButton = new nanogui::Button(_startMenu, "Exit");
-	exitButton->setPosition({50, 180});
+	exitButton->setPosition({50, 250});
 	exitButton->setSize({150, 50});
 	exitButton->setCallback([]{ Menu::exitButtonCallBack();});
 }
@@ -119,6 +129,27 @@ void Menu::_createNewGameMenu(float width, float height)
 		activeMenu->_newGameMenu->setVisible(false);
 		activeMenu->_startMenu->setVisible(true);
 	});
+}
+
+void Menu::_createLoadGameMenu(float width, float height)
+{
+	_loadGameMenu = new nanogui::Window(_screen, "Load Game");
+	_loadGameMenu->setLayout(new nanogui::GroupLayout());
+	_loadGameMenu->setSize({width / 3, height / 3});
+	_loadGameMenu->setVisible(false);
+	_loadGameMenu->center();
+	nanogui::VScrollPanel *panel = new nanogui::VScrollPanel(_loadGameMenu);
+	panel->setSize({(width / 3) - 10, height / 3});
+	panel->setPosition({10, 35});	
+	nanogui::Widget *panelView = new nanogui::Widget(panel);
+	panelView->setLayout(new nanogui::BoxLayout(nanogui::Orientation::Vertical, nanogui::Alignment::Minimum, 0, 0));
+	/*for (auto & p : std)
+	{
+		nanogui::TextBox *lab = new nanogui::TextBox(panelView, "test");
+		lab->setSize({(width / 3) - 30, 30});
+		lab->setPosition({5, i * 33 + 3});
+		lab->setEditable(false);
+	}*/
 }
 
 void Menu::_createPauseGameMenu(float width, float height)
@@ -208,7 +239,7 @@ void Menu::_createBackground(float width, float height)
 {
 	glm::mat4 viewMatrix = _mainGame->getGameCamera().getViewMatrix();
 	_mainGame->getShader("gui")->setUniformMat4((GLchar *)"view_matrix", viewMatrix);
-	_menuBg = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 8, 5);
+	_menuBg = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 10, 6);
 	_menuBg->addTextureFromFile("resource/images/menu_bg.jpg");
 	_menuTitle = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 3, 1.5);
 	_menuTitle->addTextureFromFile("resource/images/title1.png");
@@ -228,7 +259,7 @@ void Menu::updateMenu(MainGame *game, std::vector<void *> params)
 	if (state == GAMESTATE::MENU)
 	{
 		menu->_menuBg->render(glm::translate(glm::mat4(), {0, 0, -1}));
-		menu->_menuTitle->render(glm::translate(glm::mat4(), {0, 1, 0}));
+		menu->_menuTitle->render(glm::translate(glm::mat4(), {0, 1.4, 0}));
 		menu->_screen->drawWidgets();
 	}
 	else if (state == GAMESTATE::PAUSE)

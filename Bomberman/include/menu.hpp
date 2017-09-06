@@ -6,6 +6,8 @@
 #include <nanogui/button.h>
 #include <nanogui/label.h>
 #include <nanogui/textbox.h>
+#include <nanogui/vscrollpanel.h>
+#include <nanogui/checkbox.h>
 #include <MainGame.hpp>
 #include <scene.hpp>
 
@@ -15,6 +17,7 @@ private:
 	nanogui::Screen     *_screen;
 	nanogui::Window     *_startMenu;
 	nanogui::Window     *_newGameMenu;
+	nanogui::Window     *_loadGameMenu;
 	nanogui::Window     *_pauseGameMenu;
 	nanogui::Window     *_exitWindow;
 	nanogui::TextBox    *_newGameTextBox;
@@ -27,6 +30,7 @@ private:
 private:
 	void    _createStartMenu(float width, float height);
 	void    _createNewGameMenu(float width, float height);
+	void    _createLoadGameMenu(float width, float height);
 	void    _createPauseGameMenu(float width, float height);
 	void    _createBackground(float width, float height);
 	void    _createExitWindow(float width, float height);
