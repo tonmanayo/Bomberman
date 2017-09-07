@@ -26,6 +26,7 @@ private:
 	std::vector<std::string> *_map;
 	std::map<int, std::map<int, Block *>>    _blocks;
     std::map<int, std::map<int, Block *>>    _levelAdd;
+    bool                    _endLevel;
 
 private:
 	void    _addWall(float x, float z, int xx, int yy);
@@ -35,6 +36,7 @@ private:
 	void    _addPlayer(float x, float z);
 	void 	_addBomb(float x, float z);
 	void 	_addEnemy(float x, float z);
+    void    _addPowerUps(float x, float z, int xx, int yy);
 public:
 	Scene(MainGame *game, std::vector<std::string> *map, int enemyCount);
 	Scene(const Scene & rhs);
@@ -58,6 +60,8 @@ public:
 	static bool     checkBlockCollision1(glm::vec3 blockPos, glm::vec3 entityPos);
 
     static bool     worldEndLevel(glm::vec3 pos, Scene *scene);
+
+    static void     worldGetPower(glm::vec3 pos, Scene *scene);
 
     static bool     breakableBrickCollisionDown(glm::vec3 pos, Scene *scene);
     static bool     breakableBrickCollisionUp(glm::vec3 pos, Scene *scene);

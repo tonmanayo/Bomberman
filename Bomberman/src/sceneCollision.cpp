@@ -15,6 +15,22 @@ bool Scene::worldEndLevel(glm::vec3 pos, Scene *scene)
 	return false;
 }
 
+void Scene::worldGetPower(glm::vec3 pos, Scene *scene)
+{
+	int x = scene->getWorldx(pos.x);
+	int y = scene->getWorldy(pos.z);
+
+	if (scene->_blocks[y][x] != nullptr && scene->_blocks[y][x]->getPowerUp())
+	{
+		if (scene->_blocks[y][x]->getPowerName() == "RangeUp") {
+			scene->_player->incBombNbr();
+			std::cout << "GotPOWER!\n";
+			delete scene->_blocks[y][x];
+			scene->_blocks[y][x] = nullptr;
+		}
+	}
+}
+
 bool Scene::worldCollisionDown(glm::vec3 pos, glm::vec3 offset, Scene *scene)
 {
 	glm::vec3 newPos = pos + offset;

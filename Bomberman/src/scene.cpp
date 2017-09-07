@@ -8,6 +8,7 @@ Scene::Scene(MainGame *game, std::vector<std::string> *map, int enemyCount)
 	_game = game;
 	buildMap();
     _nbBombs = 0;
+    _endLevel = false;
 }
 
 Scene::Scene(const Scene &rhs)
@@ -83,22 +84,19 @@ void Scene::_addWall(float x, float z, int xx, int yy)
 	}
 }
 
-void Scene::_addBreakableBlock(float x, float z, int xx, int yy)
-{
-	static int i = 0;
-    char powerUp[3] = {'F', 'G', 'B'};
+
+void Scene::_addPowerUps(float x, float z, int xx, int yy) {
+    char powerUp[3] = {'F', 'G', 'B'};              // F - fire range B - Multiple bombs S - player speed increase
     std::random_device r;
     std::default_random_engine e1(r());
     std::uniform_int_distribution<int> uniform_dist(0, 2);
     int randNbr = uniform_dist(e1);
-    static bool END_SET = false;
+    glm::mat4 mat = glm::translate(glm::mat4(), glm::vec3(x, 0, z));
 
-    Block *block = new Block(i, "breakBlock", true);
-    _blocks[yy][xx] = block;
-    _blocks[yy][xx]->setPosition(x, 0, z);
-    if (randNbr == 0 && !END_SET) {
+
+    if (randNbr == 0 && !_endLevel) {
         Zion::Renderable *endLevel = _game->getModel("floor2");
-        END_SET = true;
+        _endLevel = true;
         _blocks[yy][xx]->setEndMap(true);
         if (endLevel != nullptr)
         {
@@ -106,6 +104,28 @@ void Scene::_addBreakableBlock(float x, float z, int xx, int yy)
             MainGame::renderer.addToRender("endLevel", 0, endLevel, mat1);
         }
     }
+
+    if (powerUp[randNbr] == 'F' && !_blocks[yy][xx]->getEndMap()) {
+        _blocks[yy][xx]->setPowerName("RangeUp");
+        _blocks[yy][xx]->setPowerUp(true);
+        glm::mat4 scale = glm::scale(glm::mat4(), glm::vec3(0.3f,0.3f,0.3f));
+        mat = mat * scale;
+        Zion::Renderable *present = _game->getModel("present");
+        if (present != nullptr)
+        {
+            MainGame::renderer.addToRender("present", _blocks[yy][xx]->getId() , present, mat);
+        }
+    }
+
+
+}
+void Scene::_addBreakableBlock(float x, float z, int xx, int yy)
+{
+	static int i = 0;
+    Block *block = new Block(i, "breakBlock", true);
+    _blocks[yy][xx] = block;
+    _blocks[yy][xx]->setPosition(x, 0, z);
+    _addPowerUps(x, z, xx, yy);
     glm::mat4 mat = glm::translate(glm::mat4(), glm::vec3(x, 0, z));
     Zion::Renderable *breakableBlock = _game->getModel("block2");
 	if (breakableBlock != nullptr)
@@ -158,9 +178,14 @@ void Scene::_addBomb(float x, float z)
 
 	x = getGridx(x);
 	z = getGridy(z);
+
+    if (_blocks[newy][newx] != nullptr && _blocks[newy][newx]->getType() == "bomb") {
+        return;
+    }
     glm::mat4 mat = glm::translate(glm::mat4(), glm::vec3(x, 0, z));
 
     Zion::Renderable *model = _game->getModel("bomb");
+
 	if (model != nullptr)
 	{
 		Block *block = new Block(i, "bomb", false);
@@ -168,7 +193,8 @@ void Scene::_addBomb(float x, float z)
 		_blocks[newy][newx]->setPosition(x, 0, z);
 		_bomb.emplace_back(_player->getPosition(), i);
 		MainGame::renderer.addToRender("bomb", i, model, mat);
-		i++;
+        _nbBombs++;
+        i++;
 	}
 }
 

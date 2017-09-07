@@ -7,9 +7,12 @@ class   Player : public NonStatic
 private:
 	glm::vec3       _pos;
     char        	_direction;
+	int 			_powerBombExplosion;
+	int 			_powerBombNumber;
+	int 			_powerSpeed;
 public:
     glm::vec3   playerStart;
-    glm::vec3  playerScale;
+    glm::vec3  	playerScale;
 
     char   setDirection(char c);
 
@@ -25,5 +28,11 @@ public:
 	void        changePosZ(float val);
 	void 		mv();
     void        reset();
-	glm::vec3   getPosition();
+	void		incBombExplosion();
+	void		incBombNbr();
+	void		incBombSpeed();
+	int			getPowerExplosion();
+	int			getPowerBombNbr();
+	int			getPowerSpeed();
+
 };

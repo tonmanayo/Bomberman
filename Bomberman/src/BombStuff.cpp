@@ -35,7 +35,7 @@ void Scene::renderExplosion(Scene *scene, const Bomb &bomb, MainGame *game) {
     Zion::Renderable *model;
     model = game->getModel("explosion");
 
-    for (int j = 1; j < 2; ++j ) {
+    for (int j = 1; j < 2 ; ++j ) {
             glm::mat4 middle = glm::translate(glm::mat4(), glm::vec3(x, 0, y));
             glm::mat4 matup = glm::translate(glm::mat4(), glm::vec3(x, 0,  y - (j * GRID_BLOCK_SIZE)));
             glm::mat4 matdown = glm::translate(glm::mat4(), glm::vec3(x, 0,  y + j * GRID_BLOCK_SIZE));

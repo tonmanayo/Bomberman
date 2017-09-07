@@ -46,13 +46,13 @@ void Scene::updatePlayer(MainGame *game, Scene *scene) {
         scene->_game->getGameCamera().setCameraTarget(scene->_player->getPosition());
         scene->_game->getGameCamera().setCameraUp(glm::vec3(0, 1, 0));
     }
-    if (game->getGameWindow().isKeyPressed(GLFW_KEY_SPACE) && scene->_nbBombs < 1) {
+    if (game->getGameWindow().isKeyPressed(GLFW_KEY_SPACE) && scene->_nbBombs < 1 + scene->_player->getPowerBombNbr()) {
         scene->_addBomb(scene->_player->getPosition().x, scene->_player->getPosition().z);
-        scene->_nbBombs++;
     }
     if (scene->worldEndLevel(scene->_player->getPosition(), scene)) {
         std::cout << "FINISHED LEVEL!!!\n";
     }
+    worldGetPower(scene->_player->getPosition(), scene);
 }
 
 void Scene::updateBomb(MainGame *game, Scene *scene) {
@@ -82,6 +82,9 @@ void Scene::updateBomb(MainGame *game, Scene *scene) {
         }
 	}
     for (int j = 0; j < scene->_bomb.size(); ++j) {
+        if (scene->_bomb[j].explodeTime() && scene->_bomb[j].removeExplosionTime()) {
+
+        }
         if (scene->_bomb[j].removeExplosionTime()) {
             MainGame::renderer.removeFromRender("explosion", scene->_bomb[j].getId() + 1);
             MainGame::renderer.removeFromRender("explosion", scene->_bomb[j].getId() + 2);
