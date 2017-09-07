@@ -8,12 +8,14 @@
 #include <nanogui/textbox.h>
 #include <MainGame.hpp>
 #include <scene.hpp>
+#include <yaml-cpp/yaml.h>
 
 class   Menu
 {
 private:
 	nanogui::Screen     *_screen;
 	nanogui::Window     *_startMenu;
+	nanogui::Window		*_optionsMenu;
 	nanogui::Window     *_startGameMenu;
 	nanogui::Window     *_pauseGameMenu;
 	nanogui::Window     *_exitWindow;
@@ -27,6 +29,7 @@ private:
 	void    _createPauseGameMenu(float width, float height);
 	void    _createBackground(float width, float height);
 	void    _createExitWindow(float width, float height);
+	void	_createOptionsMenu(float width, float height);
 
 public:
 	Menu() = default;
@@ -42,6 +45,7 @@ public:
 
 	GLFWwindow  *getGlfwWindow();
 public:
+	static YAML::Node	config;
 	static Menu    *activeMenu;
 	static void    updateMenu(MainGame *game, std::vector<void *> params);
 	static void    exitButtonCallBack();

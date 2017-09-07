@@ -1,5 +1,6 @@
 #include <menu.hpp>
 
+
 Menu*   Menu::activeMenu = nullptr;
 
 Menu::Menu(float width, float height, MainGame *mainGame, bool fullScreen, bool resizable)
@@ -29,6 +30,7 @@ bool Menu::initMenu(float width, float height, MainGame *mainGame, bool fullScre
 {
 	_mainGame = mainGame;
 	Menu::activeMenu = this;
+	Menu::config = YAML::LoadFile("config.yaml");
 	_screen = new nanogui::Screen({width, height}, "Bomberman", resizable, fullScreen,
 		8, 8, 24, 8, 4, 4, 1);
 	_screen->setVisible(true);
@@ -89,6 +91,41 @@ void Menu::_createStartGameMenu(float width, float height)
 {
 	_startGameMenu = new nanogui::Window(_screen, "Start Game");
 	_startGameMenu->setVisible(false);
+}
+
+void Menu::_createOptionsMenu(float width, float height)
+{
+	_optionsMenu = new nanogui::Window(_screen, "Options");
+	_optionsMenu->setVisible(false);
+
+	nanogui::Slider *volumeSlider = new nanogui::Slider(this->_nanoguiWindow);
+	volumeSlider->setValue(menuGlobal.config["sound"]["volume"].as<float>());
+	nanogui::TextBox *volumeTxtBox = new nanogui::TextBox(this->_nanoguiWindow);
+	volumeTxtBox->setValue(std::to_string(volumeSlider->value()));
+	volumeTxtBox->setUnits("%");
+	volumeSlider->setCallback([volumeTxtBox](float value) {
+		volumeTxtBox->setValue(std::to_string(static_cast<int>(value)));
+	});
+	volumeSlider->setFinalCallback([&](float value) {
+		std::cout << "Final volumeSlider value: " << static_cast<int>(value) << std::endl;
+	});
+
+	nanogui::CheckBox *muteCb = new nanogui::CheckBox(this->_nanoguiWindow, "Mute",
+													  [](bool state) { std::cout << "Mute: " << state << std::endl; }
+	);
+
+	this->_gui->addButton("Apply", []() {
+		std::cout << "Settings Applied" << std::endl;
+		menuGlobal.config["sound"]["volume"] = std::to_string(volumeSlider->value());
+		menuGlobal.config["sound"]["mute"] = muteCb->checked();
+	});
+
+	this->_gui->addButton("Back", []() {
+		std::cout << "Back pressed." << std::endl;
+		menuGlobal.loop = false;
+		menuGlobal.menuState = MenuState::OPTIONS;
+	});
+
 }
 
 void Menu::_createPauseGameMenu(float width, float height)
