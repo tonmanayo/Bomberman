@@ -134,7 +134,7 @@ void MainGame::loadResources()
 	addModel("onile", *getShader("anime"), "resource/models/bomberman/Onile.glb");
     addModel("lavaBackground", *getShader("basic"), "resource/models/bomberman/lavaBackground.gltf");
 
-    addModel("fast", *getShader("basic"), "resource/models/blocks/fast.gltf");
+    addModel("present", *getShader("basic"), "resource/models/blocks/present.gltf");
 
     addMap("map1", "resource/maps/map1");
 	addModel("enemy1", *getShader("basic"), "resource/models/enemies/enemy2.gltf");

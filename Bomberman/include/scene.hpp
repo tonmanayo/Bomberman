@@ -23,10 +23,9 @@ private:
 	std::vector<Bomb>		_bomb;
 	std::vector<Player *>   _enemies;
     int                 	_nbBombs;
-	glm::vec3				_finishPos;
-	glm::vec3				_powerFast;
 	std::vector<std::string> *_map;
 	std::map<int, std::map<int, Block *>>    _blocks;
+    std::map<int, std::map<int, Block *>>    _levelAdd;
 
 private:
 	void    _addWall(float x, float z, int xx, int yy);
@@ -50,15 +49,15 @@ public:
 
 	bool            buildMap();
     void 			CalcEndPos();
-    void            CalcPowerFast();
 
-
-        static bool     worldCollisionUp(glm::vec3 pos, glm::vec3 offset, Scene *scene);
+    static bool     worldCollisionUp(glm::vec3 pos, glm::vec3 offset, Scene *scene);
 	static bool     worldCollisionDown(glm::vec3 pos, glm::vec3 offset, Scene *scene);
 	static bool     worldCollisionLeft(glm::vec3 pos, glm::vec3 offset, Scene *scene);
 	static bool     worldCollisionRight(glm::vec3 pos, glm::vec3 offset, Scene *scene);
 	static bool     checkBlockCollision(glm::vec3 blockPos, glm::vec3 entityPos);
 	static bool     checkBlockCollision1(glm::vec3 blockPos, glm::vec3 entityPos);
+
+    static bool     worldEndLevel(glm::vec3 pos, Scene *scene);
 
     static bool     breakableBrickCollisionDown(glm::vec3 pos, Scene *scene);
     static bool     breakableBrickCollisionUp(glm::vec3 pos, Scene *scene);
@@ -68,8 +67,6 @@ public:
 	static bool     PlayerExplosionCollision(glm::vec3 pos, Scene *scene);
 	static void 	enemiesExplosionCollision(glm::vec3 pos, Scene *scene);
     static void     renderExplosion(Scene *scene, const Bomb &bomb, MainGame *game);
-
-    glm::vec3       getFinishPos();
 
 public:
 	static  void	updateBomb(MainGame *game, Scene *scene);

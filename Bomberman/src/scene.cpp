@@ -1,4 +1,5 @@
 #include <scene.hpp>
+#include <random>
 
 Scene::Scene(MainGame *game, std::vector<std::string> *map, int enemyCount)
 {
@@ -6,8 +7,6 @@ Scene::Scene(MainGame *game, std::vector<std::string> *map, int enemyCount)
 	_map = map;
 	_game = game;
 	buildMap();
-	CalcEndPos();
-    CalcPowerFast();
     _nbBombs = 0;
 }
 
@@ -26,61 +25,6 @@ Scene::~Scene()
 	}
 }
 
-void Scene::CalcEndPos() {
-	bool set = false;
-	while (!set) {
-		for (int y = 0; y < _blocks.size() ; ++y) {
-			for (int x = 0; x < _blocks[y].size(); ++x) {
-				if (_blocks[y][x] != nullptr && _blocks[y][x]->isBreakable()) {
-					int k = rand() % 125;
-					if (k == 5) {
-						_finishPos = glm::vec3{x * GRID_BLOCK_SIZE, 0, -(y * GRID_BLOCK_SIZE)};
-                        static int i = 0;
-                        Zion::Renderable *model;
-						glm::mat4 scale = glm::scale(glm::mat4(), glm::vec3(0.01f, 0.01f, 0.01f));
-                        glm::mat4 mat = glm::translate(glm::mat4(), glm::vec3(x * GRID_BLOCK_SIZE, -1,  -(y * GRID_BLOCK_SIZE)));
-						mat = mat * scale;
-                        model = _game->getModel("floor2");
-                        if (model != nullptr)
-                        {
-                            MainGame::renderer.addToRender("floor2", 0, model, mat);
-                        }
-						set = true ;
-					}
-				}
-			}
-		}
-	}
-}
-
-void Scene::CalcPowerFast() {
-    bool set = false;
-    while (!set) {
-        for (int y = 0; y < _blocks.size() ; ++y) {
-            for (int x = 0; x < _blocks[y].size(); ++x) {
-                if (_blocks[y][x] != nullptr && _blocks[y][x]->isBreakable()) {
-                    int k = rand() % 50;
-                    if (k == 25) {
-                        _powerFast = glm::vec3{x * GRID_BLOCK_SIZE, 0, -(y * GRID_BLOCK_SIZE)};
-                        static int i = 0;
-                        Zion::Renderable *model;
-                        glm::mat4 mat = glm::translate(glm::mat4(), glm::vec3(x * GRID_BLOCK_SIZE, -1,  -(y * GRID_BLOCK_SIZE)));
-                        model = _game->getModel("fast");
-                        if (model != nullptr)
-                        {
-                            MainGame::renderer.addToRender("fast", 0, model, mat);
-                        }
-                        set = true ;
-                    }
-                }
-            }
-        }
-    }
-}
-
-glm::vec3       Scene::getFinishPos() {
-	return _finishPos;
-}
 
 
 bool Scene::buildMap()
@@ -142,15 +86,31 @@ void Scene::_addWall(float x, float z, int xx, int yy)
 void Scene::_addBreakableBlock(float x, float z, int xx, int yy)
 {
 	static int i = 0;
+    char powerUp[3] = {'F', 'G', 'B'};
+    std::random_device r;
+    std::default_random_engine e1(r());
+    std::uniform_int_distribution<int> uniform_dist(0, 2);
+    int randNbr = uniform_dist(e1);
+    static bool END_SET = false;
 
-	glm::mat4 mat = glm::translate(glm::mat4(), glm::vec3(x, 0, z));
-	Zion::Renderable *model = _game->getModel("block2");
-	if (model != nullptr)
+    Block *block = new Block(i, "breakBlock", true);
+    _blocks[yy][xx] = block;
+    _blocks[yy][xx]->setPosition(x, 0, z);
+    if (randNbr == 0 && !END_SET) {
+        Zion::Renderable *endLevel = _game->getModel("floor2");
+        END_SET = true;
+        _blocks[yy][xx]->setEndMap(true);
+        if (endLevel != nullptr)
+        {
+            glm::mat4 mat1 = glm::translate(glm::mat4(), glm::vec3(x, -1, z));
+            MainGame::renderer.addToRender("endLevel", 0, endLevel, mat1);
+        }
+    }
+    glm::mat4 mat = glm::translate(glm::mat4(), glm::vec3(x, 0, z));
+    Zion::Renderable *breakableBlock = _game->getModel("block2");
+	if (breakableBlock != nullptr)
 	{
-		Block *block = new Block(i, "breakBlock", true);
-		_blocks[yy][xx] = block;
-		_blocks[yy][xx]->setPosition(x, 0, z);
-		MainGame::renderer.addToRender("breakBlock", i, model, mat);
+		MainGame::renderer.addToRender("breakBlock", i, breakableBlock, mat);
 		i++;
 	}
 }

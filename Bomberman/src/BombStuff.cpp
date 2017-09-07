@@ -8,22 +8,22 @@ void Scene::bombExplode(Scene *scene, const Bomb &bomb) {
     if (scene->breakableBrickCollisionDown(bomb.getPosition(), scene))
     {
         MainGame::renderer.removeFromRender("breakBlock", scene->_blocks[y - 1][x]->getId());
-        scene->_blocks[y - 1][x] = nullptr;
+        scene->_blocks[y - 1][x]->setCollision(false);
     }
     if (scene->breakableBrickCollisionUp(bomb.getPosition(), scene))
     {
         MainGame::renderer.removeFromRender("breakBlock", scene->_blocks[y + 1][x]->getId());
-        scene->_blocks[y + 1][x] = nullptr;
+        scene->_blocks[y + 1][x]->setCollision(false);
     }
     if (scene->breakableBrickCollisionLeft(bomb.getPosition(), scene))
     {
         MainGame::renderer.removeFromRender("breakBlock", scene->_blocks[y][x - 1]->getId());
-        scene->_blocks[y][x - 1] = nullptr;
+        scene->_blocks[y][x - 1]->setCollision(false);
     }
     if (scene->breakableBrickCollisionRight(bomb.getPosition(), scene))
     {
         MainGame::renderer.removeFromRender("breakBlock", scene->_blocks[y][x + 1]->getId());
-        scene->_blocks[y][x + 1] = nullptr;
+        scene->_blocks[y][x + 1]->setCollision(false);
     }
 
 }
