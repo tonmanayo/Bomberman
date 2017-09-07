@@ -6,6 +6,9 @@
 #include <nanogui/button.h>
 #include <nanogui/label.h>
 #include <nanogui/textbox.h>
+#include <nanogui/slider.h>
+#include <nanogui/checkbox.h>
+#include <nanogui/combobox.h>
 #include <MainGame.hpp>
 #include <scene.hpp>
 #include <yaml-cpp/yaml.h>
@@ -44,13 +47,16 @@ public:
 	bool    buildMenuWindows(float width, float height);
 
 	GLFWwindow  *getGlfwWindow();
-public:
 	static YAML::Node	config;
-	static Menu    *activeMenu;
-	static void    updateMenu(MainGame *game, std::vector<void *> params);
-	static void    exitButtonCallBack();
+public:
+
+	static Menu		*activeMenu;
+	static void		updateMenu(MainGame *game, std::vector<void *> params);
+	static void		exitButtonCallBack();
+	static void		backButtonCallBack();
+	static void 	applyButtonCallBack();
 	/// creating callbacks for menu
-	static bool     mouseCallback(int button, int action, int mod);
-	static bool     cursorPositionCallback(int xpos, int ypos);
-	static bool     keyCallback(int key, int scancode, int action, int mods);
+	static bool		mouseCallback(int button, int action, int mod);
+	static bool		cursorPositionCallback(int xpos, int ypos);
+	static bool		keyCallback(int key, int scancode, int action, int mods);
 };

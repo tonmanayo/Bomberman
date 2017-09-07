@@ -98,9 +98,9 @@ void Menu::_createOptionsMenu(float width, float height)
 	_optionsMenu = new nanogui::Window(_screen, "Options");
 	_optionsMenu->setVisible(false);
 
-	nanogui::Slider *volumeSlider = new nanogui::Slider(this->_nanoguiWindow);
-	volumeSlider->setValue(menuGlobal.config["sound"]["volume"].as<float>());
-	nanogui::TextBox *volumeTxtBox = new nanogui::TextBox(this->_nanoguiWindow);
+	nanogui::Slider *volumeSlider = new nanogui::Slider(this->_optionsMenu);
+	volumeSlider->setValue(Menu::config["sound"]["volume"].as<float>());
+	nanogui::TextBox *volumeTxtBox = new nanogui::TextBox(this->_optionsMenu);
 	volumeTxtBox->setValue(std::to_string(volumeSlider->value()));
 	volumeTxtBox->setUnits("%");
 	volumeSlider->setCallback([volumeTxtBox](float value) {
@@ -110,22 +110,25 @@ void Menu::_createOptionsMenu(float width, float height)
 		std::cout << "Final volumeSlider value: " << static_cast<int>(value) << std::endl;
 	});
 
-	nanogui::CheckBox *muteCb = new nanogui::CheckBox(this->_nanoguiWindow, "Mute",
+	nanogui::CheckBox *muteCb = new nanogui::CheckBox(this->_optionsMenu, "Mute",
 													  [](bool state) { std::cout << "Mute: " << state << std::endl; }
 	);
 
-	this->_gui->addButton("Apply", []() {
-		std::cout << "Settings Applied" << std::endl;
-		menuGlobal.config["sound"]["volume"] = std::to_string(volumeSlider->value());
-		menuGlobal.config["sound"]["mute"] = muteCb->checked();
-	});
+	std::vector<std::string> resList = this->config["graphics"]["resolutionList"].as<std::vector<std::string>>();
+	nanogui::ComboBox *resCoBo = new nanogui::ComboBox(this->_optionsMenu, resList);
 
-	this->_gui->addButton("Back", []() {
-		std::cout << "Back pressed." << std::endl;
-		menuGlobal.loop = false;
-		menuGlobal.menuState = MenuState::OPTIONS;
-	});
+	nanogui::Button *backButton = new nanogui::Button(this->_optionsMenu, "Back");
+//	backButton->setPosition({50, 180});
+	backButton->setSize({150, 50});
+	backButton->setCallback([]{ Menu::backButtonCallBack();});
 
+	nanogui::Button *applyButton = new nanogui::Button(this->_optionsMenu, "Apply");
+	applyButton->setPosition({50, 180});
+	applyButton->setSize({150, 50});
+	applyButton->setCallback([]{
+		Menu::config["sound"]["volume"] = std::to_string(volumeSlider->value());
+		Menu::config["sound"]["mute"] = muteCb->checked();
+	});
 }
 
 void Menu::_createPauseGameMenu(float width, float height)
@@ -239,4 +242,16 @@ void Menu::exitButtonCallBack()
 {
 	activeMenu->_startMenu->setVisible(false);
 	activeMenu->_exitWindow->setVisible(true);
+}
+
+void Menu::backButtonCallBack()
+{
+	activeMenu->_optionsMenu->setVisible(false);
+	activeMenu->_exitWindow->setVisible(true);
+}
+
+void Menu::applyButtonCallBack()
+{
+	Menu::config["sound"]["volume"] = std::to_string(volumeSlider->value());
+	Menu::config["sound"]["mute"] = muteCb->checked();
 }
