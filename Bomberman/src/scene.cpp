@@ -41,13 +41,12 @@ void Scene::_addWall(float x, float z, int xx, int yy)
 
 
 void Scene::_addPowerUps(float x, float z, int xx, int yy) {
-    char powerUp[6] = {'F', 'G', 'B', 'O', 'O', 'O' };              // F - fire range B - Multiple bombs S - player speed increase
+    char powerUp[6] = {'F', 'F', 'F', 'F', 'F', 'O' };              // F - fire range B - Multiple bombs S - player speed increase
     std::random_device r;
     std::default_random_engine e1(r());
-    std::uniform_int_distribution<int> uniform_dist(0, 2);
+    std::uniform_int_distribution<int> uniform_dist(0, 5);
     int randNbr = uniform_dist(e1);
     glm::mat4 mat = glm::translate(glm::mat4(), glm::vec3(x, 0, z));
-
 
     if (randNbr == 0 && !_endLevel) {
         Zion::Renderable *endLevel = _game->getModel("floor2");
@@ -190,8 +189,12 @@ void Scene::_addBomb(float x, float z)
 	x = getGridx(x);
 	z = getGridy(z);
 
+	if (_blocks[newy][newx] != nullptr && _blocks[newy][newx]->getType() == "bomb") {
+		return;
+	}
 	glm::mat4 mat = glm::translate(glm::mat4(), glm::vec3(x, 0, z));
 	Zion::Renderable *model = _game->getModel("bomb");
+
 	if (model != nullptr)
 	{
 		Block *block = new Block(i, "bomb", false);

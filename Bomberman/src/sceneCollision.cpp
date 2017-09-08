@@ -24,7 +24,7 @@ void Scene::worldGetPower(glm::vec3 pos, Scene *scene)
 	{
 		if (scene->_blocks[y][x]->getPowerName() == "PowerBombNbrInc") {
 			scene->_player->incBombNbr();
-			std::cout << "GotPOWER Bomb inc!\n";
+			std::cout << "Got: "<< scene->_player->getPowerBombNbr() <<" POWER Bomb inc!\n";
 			delete scene->_blocks[y][x];
 			scene->_blocks[y][x] = nullptr;
 		} else if (scene->_blocks[y][x]->getPowerName() == "PowerBombExplosionInc") {
