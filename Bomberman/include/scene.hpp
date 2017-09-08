@@ -26,6 +26,7 @@ private:
 	std::vector<Player *>   _enemies;
 	std::vector<std::string> *_map;
 	std::map<int, std::map<int, Block *>>    _blocks;
+	bool				   _endLevel = false;
 private:
 	std::string     _floorType;
 	std::string     _wallType;
@@ -61,7 +62,6 @@ public:
     float           getGridy(float y);
 
     void 			CalcEndPos();
-    static bool     worldCollisionUp(glm::vec3 pos, glm::vec3 offset, Scene *scene);
 	bool            saveGame(std::string fileName);
 	bool	        loadGame(MainGame *game, std::string fileName);
 	bool            newGame(MainGame *game, std::string mapName);
