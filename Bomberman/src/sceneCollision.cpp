@@ -25,18 +25,21 @@ void Scene::worldGetPower(glm::vec3 pos, Scene *scene)
 		if (scene->_blocks[y][x]->getPowerName() == "PowerBombNbrInc") {
 			scene->_player->incBombNbr();
 			std::cout << "Got: "<< scene->_player->getPowerBombNbr() <<" POWER Bomb inc!\n";
+			MainGame::renderer.removeFromRender("present", scene->_blocks[y][x]->getId());
 			delete scene->_blocks[y][x];
 			scene->_blocks[y][x] = nullptr;
 		} else if (scene->_blocks[y][x]->getPowerName() == "PowerBombExplosionInc") {
             scene->_player->incBombExplosion();
             std::cout << "GotPOWER Bomb explosion inc!\n";
-            delete scene->_blocks[y][x];
+			MainGame::renderer.removeFromRender("lemon", scene->_blocks[y][x]->getId());
+			delete scene->_blocks[y][x];
             scene->_blocks[y][x] = nullptr;
         } else if (scene->_blocks[y][x]->getPowerName() == "PowerSpeed") {
-        scene->_player->incBombSpeed();
-        std::cout << "GotPOWER Speed!\n";
-        delete scene->_blocks[y][x];
-        scene->_blocks[y][x] = nullptr;
+			scene->_player->incBombSpeed();
+			std::cout << "GotPOWER Speed!\n";
+			MainGame::renderer.removeFromRender("star", scene->_blocks[y][x]->getId());
+			delete scene->_blocks[y][x];
+			scene->_blocks[y][x] = nullptr;
         }
 	}
 }
@@ -215,9 +218,6 @@ bool Scene::checkBlockCollision1(glm::vec3 blockPos, glm::vec3 entityPos)
 }
 
 
-
-
-
 bool Scene::PlayerExplosionCollision(glm::vec3 pos, Scene *scene)
 {
 	int bombx = scene->getWorldx(pos.x);
@@ -225,27 +225,38 @@ bool Scene::PlayerExplosionCollision(glm::vec3 pos, Scene *scene)
 
 	int playerx = scene->getWorldx(scene->_player->getPosition().x);
 	int playery = scene->getWorldy(scene->_player->getPosition().z);
+	bool r = true, l = true, u = true, d = true;
 
-	//todo increase distance by power up
-	if (playerx == bombx - 1 && playery == bomby)
-	{
-		return true;
-	}
-	if (playerx == bombx + 1 && playery == bomby)
-	{
-		return true;
-	}
-	if (playery == bomby - 1 && playerx == bombx)
-	{
-		return true;
-	}
-	if (playery == bomby + 1 && playerx == bombx)
-	{
-		return true;
-	}
-	if (playery == bomby && playerx == bombx)
-	{
-		return true;
+
+	for (int i = 0; i < scene->_player->getPowerExplosion() + 1; ++i) {						// powerup loop
+
+		if (playerx == bombx - 1 - i && playery == bomby && l) {
+			return true;
+		}
+		if (playerx == bombx + 1 + i && playery == bomby && r) {
+			return true;
+		}
+		if (playery == bomby - 1 - i && playerx == bombx && d) {
+			return true;
+		}
+		if (playery == bomby + 1 + i && playerx == bombx && u) {
+			return true;
+		}
+		if (playery == bomby && playerx == bombx) {
+			return true;
+		}
+		if (scene->_blocks[bomby - 1 - i][bombx] != nullptr && d) {
+			d = false;
+		}
+		if (scene->_blocks[bomby + 1 + i][bombx] != nullptr && u) {
+			u = false;
+		}
+		if (scene->_blocks[bomby][bombx - 1 - i] != nullptr && l) {
+			l = false;
+		}
+		if (scene->_blocks[bomby][bombx + 1 + i] != nullptr && r) {
+			r = false;
+		}
 	}
 	return false;
 }
@@ -261,28 +272,30 @@ void Scene::enemiesExplosionCollision(glm::vec3 pos, Scene *scene)
 		int playerx = scene->getWorldx(scene->_enemies[i]->getPosition().x);
 		int playery = scene->getWorldy(scene->_enemies[i]->getPosition().z);
 
-		//todo increase distance by power up
-		if (playerx == bombx - 1 && playery == bomby) {
-			del = true;
-		}
-		if (playerx == bombx + 1 && playery == bomby) {
-			del = true;
-		}
-		if (playery == bomby - 1 && playerx == bombx) {
-			del = true;
-		}
-		if (playery == bomby + 1 && playerx == bombx) {
-			del = true;
-		}
-		if (playery == bomby && playerx == bombx) {
-			del = true;
-		}
-		if (del) {
-			MainGame::renderer.removeFromRender("enemy1", scene->_enemies[i]->getId());
-			delete scene->_enemies[i];
-			scene->_enemies[i] = scene->_enemies.back();
-			scene->_enemies.pop_back();
-			del = false;
+		for (int j = 0; j < scene->_player->getPowerExplosion() + 1; ++j) {
+
+			if (playerx == bombx - 1 - j && playery == bomby) {
+				del = true;
+			}
+			if (playerx == bombx + 1 + j && playery == bomby) {
+				del = true;
+			}
+			if (playery == bomby - 1 - j && playerx == bombx) {
+				del = true;
+			}
+			if (playery == bomby + 1 + j && playerx == bombx) {
+				del = true;
+			}
+			if (playery == bomby && playerx == bombx) {
+				del = true;
+			}
+			if (del) {
+				MainGame::renderer.removeFromRender("enemy1", scene->_enemies[i]->getId());
+				delete scene->_enemies[i];
+				scene->_enemies[i] = scene->_enemies.back();
+				scene->_enemies.pop_back();
+				del = false;
+			}
 		}
 	}
 }

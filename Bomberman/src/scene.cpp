@@ -41,10 +41,10 @@ void Scene::_addWall(float x, float z, int xx, int yy)
 
 
 void Scene::_addPowerUps(float x, float z, int xx, int yy) {
-    char powerUp[6] = {'F', 'F', 'F', 'F', 'F', 'O' };              // F - fire range B - Multiple bombs S - player speed increase
+    char powerUp[6] = {'F', 'G', 'B', 'O', 'O', 'O' };              // F - fire range B - Multiple bombs S - player speed increase
     std::random_device r;
     std::default_random_engine e1(r());
-    std::uniform_int_distribution<int> uniform_dist(0, 5);
+    std::uniform_int_distribution<int> uniform_dist(0, 2);
     int randNbr = uniform_dist(e1);
     glm::mat4 mat = glm::translate(glm::mat4(), glm::vec3(x, 0, z));
 
