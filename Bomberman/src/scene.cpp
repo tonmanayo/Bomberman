@@ -1,4 +1,5 @@
 #include <scene.hpp>
+#include <random>
 
 Scene::Scene(const Scene &rhs)
 {}
@@ -38,18 +39,72 @@ void Scene::_addWall(float x, float z, int xx, int yy)
 	}
 }
 
+
+void Scene::_addPowerUps(float x, float z, int xx, int yy) {
+    char powerUp[6] = {'F', 'G', 'B', 'O', 'O', 'O' };              // F - fire range B - Multiple bombs S - player speed increase
+    std::random_device r;
+    std::default_random_engine e1(r());
+    std::uniform_int_distribution<int> uniform_dist(0, 2);
+    int randNbr = uniform_dist(e1);
+    glm::mat4 mat = glm::translate(glm::mat4(), glm::vec3(x, 0, z));
+
+
+    if (randNbr == 0 && !_endLevel) {
+        Zion::Renderable *endLevel = _game->getModel("floor2");
+        _endLevel = true;
+        _blocks[yy][xx]->setEndMap(true);
+        if (endLevel != nullptr)
+        {
+            glm::mat4 mat1 = glm::translate(glm::mat4(), glm::vec3(x, -1, z));
+            MainGame::renderer.addToRender("endLevel", 0, endLevel, mat1);
+        }
+    }
+
+    if (powerUp[randNbr] == 'F' && !_blocks[yy][xx]->getEndMap()) {
+        _blocks[yy][xx]->setPowerName("PowerBombNbrInc");
+        _blocks[yy][xx]->setPowerUp(true);
+        glm::mat4 scale = glm::scale(glm::mat4(), glm::vec3(0.3f,0.3f,0.3f));
+        mat = mat * scale;
+        Zion::Renderable *present = _game->getModel("present");
+        if (present != nullptr)
+        {
+            MainGame::renderer.addToRender("present", _blocks[yy][xx]->getId() , present, mat);
+        }
+    }
+
+    if (powerUp[randNbr] == 'G' && !_blocks[yy][xx]->getEndMap()) {
+        _blocks[yy][xx]->setPowerName("PowerBombExplosionInc");
+        _blocks[yy][xx]->setPowerUp(true);
+        Zion::Renderable *present = _game->getModel("lemon");
+        if (present != nullptr)
+        {
+            MainGame::renderer.addToRender("lemon", _blocks[yy][xx]->getId() , present, mat);
+        }
+    }
+	if (powerUp[randNbr] == 'B' && !_blocks[yy][xx]->getEndMap()) {
+		_blocks[yy][xx]->setPowerName("PowerSpeed");
+		_blocks[yy][xx]->setPowerUp(true);
+		Zion::Renderable *present = _game->getModel("star");
+		if (present != nullptr)
+		{
+			MainGame::renderer.addToRender("star", _blocks[yy][xx]->getId() , present, mat);
+		}
+	}
+
+
+}
 void Scene::_addBreakableBlock(float x, float z, int xx, int yy)
 {
 	static int i = 0;
-
-	glm::mat4 mat = glm::translate(glm::mat4(), glm::vec3(x, 0, z));
-	Zion::Renderable *model = _game->getModel(_breakableBlockType);
-	if (model != nullptr)
+    Block *block = new Block(i, "breakBlock", true);
+    _blocks[yy][xx] = block;
+    _blocks[yy][xx]->setPosition(x, 0, z);
+    _addPowerUps(x, z, xx, yy);
+    glm::mat4 mat = glm::translate(glm::mat4(), glm::vec3(x, 0, z));
+    Zion::Renderable *breakableBlock = _game->getModel(_breakableBlockType);
+	if (breakableBlock != nullptr)
 	{
-		Block *block = new Block(i, "breakBlock", true);
-		_blocks[yy][xx] = block;
-		_blocks[yy][xx]->setPosition(x, 0, z);
-		MainGame::renderer.addToRender("breakBlock", i, model, mat);
+		MainGame::renderer.addToRender("breakBlock", i, breakableBlock, mat);
 		i++;
 	}
 }
@@ -197,3 +252,4 @@ bool Scene::enemyPlayerCollision(glm::vec3 pos, Scene *scene){
 	}
 	return false;
 }
+

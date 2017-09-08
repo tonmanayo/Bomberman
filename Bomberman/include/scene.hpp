@@ -24,8 +24,7 @@ private:
 	Player      			*_player;
 	std::vector<Bomb>		_bomb;
 	std::vector<Player *>   _enemies;
-    int                 	_nbBombs;
-	std::vector<std::string> *_map; // need to remove, not in use
+	std::vector<std::string> *_map;
 	std::map<int, std::map<int, Block *>>    _blocks;
 private:
 	std::string     _floorType;
@@ -46,6 +45,7 @@ private:
 	void    _addPlayer(float x, float z);
 	void 	_addBomb(float x, float z);
 	void 	_addEnemy(float x, float z);
+    void    _addPowerUps(float x, float z, int xx, int yy);
 	void    _loadNewGameLine(std::string& line);
 	void    _loadLoadGameLine(std::string& line);
 public:
@@ -60,6 +60,8 @@ public:
     float           getGridx(float x);
     float           getGridy(float y);
 
+    void 			CalcEndPos();
+    static bool     worldCollisionUp(glm::vec3 pos, glm::vec3 offset, Scene *scene);
 	bool            saveGame(std::string fileName);
 	bool	        loadGame(MainGame *game, std::string fileName);
 	bool            newGame(MainGame *game, std::string mapName);
@@ -70,6 +72,10 @@ public:
 	static bool     checkBlockCollision(glm::vec3 blockPos, glm::vec3 entityPos);
 	static bool     checkBlockCollision1(glm::vec3 blockPos, glm::vec3 entityPos);
 
+    static bool     worldEndLevel(glm::vec3 pos, Scene *scene);
+
+    static void     worldGetPower(glm::vec3 pos, Scene *scene);
+
     static bool     breakableBrickCollisionDown(glm::vec3 pos, Scene *scene);
     static bool     breakableBrickCollisionUp(glm::vec3 pos, Scene *scene);
     static bool     breakableBrickCollisionRight(glm::vec3 pos, Scene *scene);
@@ -77,7 +83,7 @@ public:
 
 	static bool     PlayerExplosionCollision(glm::vec3 pos, Scene *scene);
 	static void 	enemiesExplosionCollision(glm::vec3 pos, Scene *scene);
-
+    static void     renderExplosion(Scene *scene, const Bomb &bomb, MainGame *game);
 
 public:
 	static  void	updateBomb(MainGame *game, Scene *scene);

@@ -27,6 +27,14 @@ namespace Zion
 	{
 		for (std::pair<std::string, std::vector<RendererObj>> pair : _objects)
 		{
+            if (!pair.first.compare("endLevel"))
+                _renderStatic(pair.second);
+			if (!pair.first.compare("star"))
+                _renderStatic(pair.second);
+			if (!pair.first.compare("lemon"))
+				_renderStatic(pair.second);
+			if (!pair.first.compare("present"))
+				_renderStatic(pair.second);
 			if (!pair.first.compare("wall"))
 				_renderStatic(pair.second);
 			if (!pair.first.compare("unbreakBlock"))
@@ -34,6 +42,16 @@ namespace Zion
 			if (!pair.first.compare("background"))
 				_renderStatic(pair.second);
 			if (!pair.first.compare("floors"))
+				_renderStatic(pair.second);
+            if (!pair.first.compare("explosion"))
+                _renderStatic(pair.second);
+			if (!pair.first.compare("explosion1"))
+				_renderStatic(pair.second);
+			if (!pair.first.compare("explosion2"))
+				_renderStatic(pair.second);
+			if (!pair.first.compare("explosion3"))
+				_renderStatic(pair.second);
+			if (!pair.first.compare("explosion4"))
 				_renderStatic(pair.second);
 			if (!pair.first.compare("player"))
 				_renderStatic(pair.second);
