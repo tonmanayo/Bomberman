@@ -35,19 +35,19 @@ void Scene::renderExplosion(Scene *scene, const Bomb &bomb, MainGame *game) {
     Zion::Renderable *model;
     model = game->getModel("explosion");
 
-    for (int j = 1; j < 2 ; ++j ) {
+    for (int j = 0; j < 1 ; ++j ) {
             glm::mat4 middle = glm::translate(glm::mat4(), glm::vec3(x, 0, y));
-            glm::mat4 matup = glm::translate(glm::mat4(), glm::vec3(x, 0,  y - (j * GRID_BLOCK_SIZE)));
-            glm::mat4 matdown = glm::translate(glm::mat4(), glm::vec3(x, 0,  y + j * GRID_BLOCK_SIZE));
-            glm::mat4 matleft = glm::translate(glm::mat4(), glm::vec3(x - (j * GRID_BLOCK_SIZE), 0,  y));
-            glm::mat4 matright = glm::translate(glm::mat4(), glm::vec3(x + j * GRID_BLOCK_SIZE, 0,  y));
+            glm::mat4 matup = glm::translate(glm::mat4(), glm::vec3(x, 0,  y - (j + GRID_BLOCK_SIZE)));
+            glm::mat4 matdown = glm::translate(glm::mat4(), glm::vec3(x, 0,  y + j + GRID_BLOCK_SIZE));
+            glm::mat4 matleft = glm::translate(glm::mat4(), glm::vec3(x - (j + GRID_BLOCK_SIZE), 0,  y));
+            glm::mat4 matright = glm::translate(glm::mat4(), glm::vec3(x + j + GRID_BLOCK_SIZE, 0,  y));
         if (model != nullptr)
         {
-            MainGame::renderer.addToRender("explosion", bomb.getId() + 1, model, middle);
-            MainGame::renderer.addToRender("explosion", bomb.getId() + 2, model, matup);
-            MainGame::renderer.addToRender("explosion", bomb.getId() + 3, model, matdown);
-            MainGame::renderer.addToRender("explosion", bomb.getId() + 4, model, matleft);
-            MainGame::renderer.addToRender("explosion", bomb.getId() + 5, model, matright);
+            MainGame::renderer.addToRender("explosion", bomb.getId() , model, middle);
+            MainGame::renderer.addToRender("explosion", bomb.getId() + 1, model, matup);
+            MainGame::renderer.addToRender("explosion", bomb.getId() + 2, model, matdown);
+            MainGame::renderer.addToRender("explosion", bomb.getId() + 3, model, matleft);
+            MainGame::renderer.addToRender("explosion", bomb.getId() + 4, model, matright);
         }
     }
 }

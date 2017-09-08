@@ -57,42 +57,42 @@ void Scene::updatePlayer(MainGame *game, Scene *scene) {
 
 void Scene::updateBomb(MainGame *game, Scene *scene) {
 
-	for (int i = 0; i < scene->_nbBombs; ++i) {
-		if (scene->_bomb[i].explodeTime())
+	for (int i = 0; i < scene->_bomb.size(); ++i) {
+		if (scene->_bomb[i].explodeTime() && !scene->_bomb[i].getExploded())
 		{
-            int y = scene->getWorldy(scene->_bomb[i].getPosition().z);
-            int x = scene->getWorldx(scene->_bomb[i].getPosition().x);
+            scene->_bomb[i].setExploded(true);
             renderExplosion(scene, scene->_bomb[i], game);
             bombExplode(scene, scene->_bomb[i]);
-			enemiesExplosionCollision(scene->_bomb[i].getPosition(), scene);
-            if(scene->PlayerExplosionCollision(scene->_bomb[i].getPosition(), scene))
-            {
+            enemiesExplosionCollision(scene->_bomb[i].getPosition(), scene);
+            if (scene->PlayerExplosionCollision(scene->_bomb[i].getPosition(), scene)) {
                 std::cout << "dead\n";
                 scene->_player->reset();
                 glm::vec3 pos = scene->_player->getPosition();
                 scene->_game->getGameCamera().setCameraPosition(glm::vec3(pos.x + 0, pos.y + 10, pos.z + 6));
                 scene->_game->getGameCamera().setCameraTarget(scene->_player->getPosition());
                 scene->_game->getGameCamera().setCameraUp(glm::vec3(0, 1, 0));
-                MainGame::renderer.applyTransformationToRenderable("player", scene->_player->getId(), scene->_player->getTransformation());
+                MainGame::renderer.applyTransformationToRenderable("player", scene->_player->getId(),
+                                                                   scene->_player->getTransformation());
             }
-			MainGame::renderer.removeFromRender("bomb", scene->_bomb[i].getId());
-			delete scene->_blocks[y][x];
-			scene->_blocks[y][x] = nullptr;
+            MainGame::renderer.removeFromRender("bomb", scene->_bomb[i].getId());
+        }
+        if (scene->_bomb[i].removeExplosionTime() && !scene->_bomb[i].getExplosionRemoved()) {
+            scene->_bomb[i].setExplosionRemoved(true);
+            MainGame::renderer.removeFromRender("explosion", scene->_bomb[i].getId());
+            MainGame::renderer.removeFromRender("explosion", scene->_bomb[i].getId() + 1);
+            MainGame::renderer.removeFromRender("explosion", scene->_bomb[i].getId() + 2);
+            MainGame::renderer.removeFromRender("explosion", scene->_bomb[i].getId() + 3);
+            MainGame::renderer.removeFromRender("explosion", scene->_bomb[i].getId() + 4);
+        }
+        if (scene->_bomb[i].explodeTime() && scene->_bomb[i].removeExplosionTime() && scene->_bomb[i].getExplosionRemoved() && scene->_bomb[i].getExploded()) {
+            int y = scene->getWorldy(scene->_bomb[i].getPosition().z);
+            int x = scene->getWorldx(scene->_bomb[i].getPosition().x);
+            scene->_bomb[i] = scene->_bomb.back();
+            scene->_bomb.pop_back();
+            delete scene->_blocks[y][x];
+            scene->_blocks[y][x] = nullptr;
             scene->_nbBombs--;
         }
-	}
-    for (int j = 0; j < scene->_bomb.size(); ++j) {
-        if (scene->_bomb[j].explodeTime() && scene->_bomb[j].removeExplosionTime()) {
 
-        }
-        if (scene->_bomb[j].removeExplosionTime()) {
-            MainGame::renderer.removeFromRender("explosion", scene->_bomb[j].getId() + 1);
-            MainGame::renderer.removeFromRender("explosion", scene->_bomb[j].getId() + 2);
-            MainGame::renderer.removeFromRender("explosion", scene->_bomb[j].getId() + 3);
-            MainGame::renderer.removeFromRender("explosion", scene->_bomb[j].getId() + 4);
-            MainGame::renderer.removeFromRender("explosion", scene->_bomb[j].getId() + 5);
-            scene->_bomb[j] = scene->_bomb.back();
-            scene->_bomb.pop_back();
-        }
-    }
+	}
 }

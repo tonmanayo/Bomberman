@@ -183,7 +183,6 @@ void Scene::_addBomb(float x, float z)
         return;
     }
     glm::mat4 mat = glm::translate(glm::mat4(), glm::vec3(x, 0, z));
-
     Zion::Renderable *model = _game->getModel("bomb");
 
 	if (model != nullptr)
