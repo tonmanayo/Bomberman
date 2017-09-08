@@ -22,12 +22,17 @@ void Scene::worldGetPower(glm::vec3 pos, Scene *scene)
 
 	if (scene->_blocks[y][x] != nullptr && scene->_blocks[y][x]->getPowerUp())
 	{
-		if (scene->_blocks[y][x]->getPowerName() == "RangeUp") {
+		if (scene->_blocks[y][x]->getPowerName() == "PowerBombNbrInc") {
 			scene->_player->incBombNbr();
-			std::cout << "GotPOWER!\n";
+			std::cout << "GotPOWER Bomb inc!\n";
 			delete scene->_blocks[y][x];
 			scene->_blocks[y][x] = nullptr;
-		}
+		} else if (scene->_blocks[y][x]->getPowerName() == "PowerBombExplosionInc") {
+            scene->_player->incBombExplosion();
+            std::cout << "GotPOWER Bomb explosion inc!\n";
+            delete scene->_blocks[y][x];
+            scene->_blocks[y][x] = nullptr;
+        }
 	}
 }
 

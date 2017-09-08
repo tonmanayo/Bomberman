@@ -46,7 +46,7 @@ void Scene::updatePlayer(MainGame *game, Scene *scene) {
         scene->_game->getGameCamera().setCameraTarget(scene->_player->getPosition());
         scene->_game->getGameCamera().setCameraUp(glm::vec3(0, 1, 0));
     }
-    if (game->getGameWindow().isKeyPressed(GLFW_KEY_SPACE) && scene->_nbBombs < 1 + scene->_player->getPowerBombNbr()) {
+    if (game->getGameWindow().isKeyPressed(GLFW_KEY_SPACE) && scene->_bomb.size() < 1 + scene->_player->getPowerBombNbr()) {
         scene->_addBomb(scene->_player->getPosition().x, scene->_player->getPosition().z);
     }
     if (scene->worldEndLevel(scene->_player->getPosition(), scene)) {
@@ -78,11 +78,13 @@ void Scene::updateBomb(MainGame *game, Scene *scene) {
         }
         if (scene->_bomb[i].removeExplosionTime() && !scene->_bomb[i].getExplosionRemoved()) {
             scene->_bomb[i].setExplosionRemoved(true);
-            MainGame::renderer.removeFromRender("explosion", scene->_bomb[i].getId());
-            MainGame::renderer.removeFromRender("explosion", scene->_bomb[i].getId() + 1);
-            MainGame::renderer.removeFromRender("explosion", scene->_bomb[i].getId() + 2);
-            MainGame::renderer.removeFromRender("explosion", scene->_bomb[i].getId() + 3);
-            MainGame::renderer.removeFromRender("explosion", scene->_bomb[i].getId() + 4);
+            for (int k = 0; k < (scene->_player->getPowerExplosion() + 1); ++k) {
+                MainGame::renderer.removeFromRender("explosion", scene->_bomb[i].getId());
+                MainGame::renderer.removeFromRender("explosion1", scene->_bomb[i].getId() + 1 + k);
+                MainGame::renderer.removeFromRender("explosion2", scene->_bomb[i].getId() + 2 + k);
+                MainGame::renderer.removeFromRender("explosion3", scene->_bomb[i].getId() + 3 + k);
+                MainGame::renderer.removeFromRender("explosion4", scene->_bomb[i].getId() + 4 + k);
+            }
         }
         if (scene->_bomb[i].explodeTime() && scene->_bomb[i].removeExplosionTime() && scene->_bomb[i].getExplosionRemoved() && scene->_bomb[i].getExploded()) {
             int y = scene->getWorldy(scene->_bomb[i].getPosition().z);
@@ -91,8 +93,6 @@ void Scene::updateBomb(MainGame *game, Scene *scene) {
             scene->_bomb.pop_back();
             delete scene->_blocks[y][x];
             scene->_blocks[y][x] = nullptr;
-            scene->_nbBombs--;
         }
-
 	}
 }

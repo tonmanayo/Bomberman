@@ -7,7 +7,6 @@ Scene::Scene(MainGame *game, std::vector<std::string> *map, int enemyCount)
 	_map = map;
 	_game = game;
 	buildMap();
-    _nbBombs = 0;
     _endLevel = false;
 }
 
@@ -86,7 +85,7 @@ void Scene::_addWall(float x, float z, int xx, int yy)
 
 
 void Scene::_addPowerUps(float x, float z, int xx, int yy) {
-    char powerUp[3] = {'F', 'G', 'B'};              // F - fire range B - Multiple bombs S - player speed increase
+    char powerUp[6] = {'F', 'G', 'B', 'O', 'O', 'O' };              // F - fire range B - Multiple bombs S - player speed increase
     std::random_device r;
     std::default_random_engine e1(r());
     std::uniform_int_distribution<int> uniform_dist(0, 2);
@@ -106,7 +105,7 @@ void Scene::_addPowerUps(float x, float z, int xx, int yy) {
     }
 
     if (powerUp[randNbr] == 'F' && !_blocks[yy][xx]->getEndMap()) {
-        _blocks[yy][xx]->setPowerName("RangeUp");
+        _blocks[yy][xx]->setPowerName("PowerBombNbrInc");
         _blocks[yy][xx]->setPowerUp(true);
         glm::mat4 scale = glm::scale(glm::mat4(), glm::vec3(0.3f,0.3f,0.3f));
         mat = mat * scale;
@@ -114,6 +113,16 @@ void Scene::_addPowerUps(float x, float z, int xx, int yy) {
         if (present != nullptr)
         {
             MainGame::renderer.addToRender("present", _blocks[yy][xx]->getId() , present, mat);
+        }
+    }
+
+    if (powerUp[randNbr] == 'G' && !_blocks[yy][xx]->getEndMap()) {
+        _blocks[yy][xx]->setPowerName("PowerBombExplosionInc");
+        _blocks[yy][xx]->setPowerUp(true);
+        Zion::Renderable *present = _game->getModel("lemon");
+        if (present != nullptr)
+        {
+            MainGame::renderer.addToRender("lemon", _blocks[yy][xx]->getId() , present, mat);
         }
     }
 
@@ -192,7 +201,6 @@ void Scene::_addBomb(float x, float z)
 		_blocks[newy][newx]->setPosition(x, 0, z);
 		_bomb.emplace_back(_player->getPosition(), i);
 		MainGame::renderer.addToRender("bomb", i, model, mat);
-        _nbBombs++;
         i++;
 	}
 }

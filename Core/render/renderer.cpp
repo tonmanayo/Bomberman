@@ -29,6 +29,8 @@ namespace Zion
 		{
             if (!pair.first.compare("endLevel"))
                 _renderStatic(pair.second);
+			if (!pair.first.compare("lemon"))
+				_renderStatic(pair.second);
 			if (!pair.first.compare("present"))
 				_renderStatic(pair.second);
 			if (!pair.first.compare("wall"))
@@ -41,6 +43,14 @@ namespace Zion
 				_renderStatic(pair.second);
             if (!pair.first.compare("explosion"))
                 _renderStatic(pair.second);
+			if (!pair.first.compare("explosion1"))
+				_renderStatic(pair.second);
+			if (!pair.first.compare("explosion2"))
+				_renderStatic(pair.second);
+			if (!pair.first.compare("explosion3"))
+				_renderStatic(pair.second);
+			if (!pair.first.compare("explosion4"))
+				_renderStatic(pair.second);
 			if (!pair.first.compare("player"))
 				_renderStatic(pair.second);
 			if (!pair.first.compare("bomb"))

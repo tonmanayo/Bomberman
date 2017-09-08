@@ -135,6 +135,7 @@ void MainGame::loadResources()
     addModel("lavaBackground", *getShader("basic"), "resource/models/bomberman/lavaBackground.gltf");
 
     addModel("present", *getShader("basic"), "resource/models/blocks/present.gltf");
+    addModel("lemon", *getShader("basic"), "resource/models/blocks/lemon.gltf");
 
     addMap("map1", "resource/maps/map1");
 	addModel("enemy1", *getShader("basic"), "resource/models/enemies/enemy2.gltf");
