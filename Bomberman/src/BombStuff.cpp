@@ -4,26 +4,31 @@ void Scene::bombExplode(Scene *scene, const Bomb &bomb) {
 
     int x = scene->getWorldx(bomb.getPosition().x);
     int y = scene->getWorldy(bomb.getPosition().z);
-    //todo add for loop for power up
-    if (scene->breakableBrickCollisionDown(bomb.getPosition(), scene))
-    {
-        MainGame::renderer.removeFromRender("breakBlock", scene->_blocks[y - 1][x]->getId());
-        scene->_blocks[y - 1][x]->setCollision(false);
-    }
-    if (scene->breakableBrickCollisionUp(bomb.getPosition(), scene))
-    {
-        MainGame::renderer.removeFromRender("breakBlock", scene->_blocks[y + 1][x]->getId());
-        scene->_blocks[y + 1][x]->setCollision(false);
-    }
-    if (scene->breakableBrickCollisionLeft(bomb.getPosition(), scene))
-    {
-        MainGame::renderer.removeFromRender("breakBlock", scene->_blocks[y][x - 1]->getId());
-        scene->_blocks[y][x - 1]->setCollision(false);
-    }
-    if (scene->breakableBrickCollisionRight(bomb.getPosition(), scene))
-    {
-        MainGame::renderer.removeFromRender("breakBlock", scene->_blocks[y][x + 1]->getId());
-        scene->_blocks[y][x + 1]->setCollision(false);
+
+    bool r = true, l = true, u = true, d = true;
+    for (int i = 0; i <= scene->_player->getPowerExplosion(); ++i) {
+
+        if (scene->_blocks[y - 1 - i][x] != nullptr && scene->_blocks[y - 1 - i][x]->isBreakable() && d) {
+            d = false;
+            MainGame::renderer.removeFromRender("breakBlock", scene->_blocks[y - 1 - i][x]->getId());
+            scene->_blocks[y - 1 - i][x]->setCollision(false);
+
+        }
+        if (scene->_blocks[y + 1 + i][x] != nullptr && scene->_blocks[y + 1 + i][x]->isBreakable() && u) {
+            u = false;
+            MainGame::renderer.removeFromRender("breakBlock", scene->_blocks[y + 1 + i][x]->getId());
+            scene->_blocks[y + 1 + i][x]->setCollision(false);
+        }
+        if (scene->_blocks[y][x - 1 - i] != nullptr && scene->_blocks[y][x - 1 - i]->isBreakable() && l) {
+            l = false;
+            MainGame::renderer.removeFromRender("breakBlock", scene->_blocks[y][x - 1 - i]->getId());
+            scene->_blocks[y][x - 1 - i]->setCollision(false);
+        }
+        if (scene->_blocks[y][x + 1 + i] != nullptr && scene->_blocks[y][x + 1 + i]->isBreakable() && r) {
+            r = false;
+            MainGame::renderer.removeFromRender("breakBlock", scene->_blocks[y][x + 1 + i]->getId());
+            scene->_blocks[y][x + 1 + i]->setCollision(false);
+        }
     }
 
 }
@@ -44,10 +49,10 @@ void Scene::renderExplosion(Scene *scene, const Bomb &bomb, MainGame *game) {
         if (model != nullptr)
         {
             MainGame::renderer.addToRender("explosion", bomb.getId() , model, middle);
-            MainGame::renderer.addToRender("explosion1", bomb.getId() + 1 + j - 1, model, matup);
-            MainGame::renderer.addToRender("explosion2", bomb.getId() + 2 + j - 1, model, matdown);
-            MainGame::renderer.addToRender("explosion3", bomb.getId() + 3 + j - 1, model, matleft);
-            MainGame::renderer.addToRender("explosion4", bomb.getId() + 4 + j - 1, model, matright);
+            MainGame::renderer.addToRender("explosion1", bomb.getId() + j - 1, model, matup);
+            MainGame::renderer.addToRender("explosion2", bomb.getId() + j - 1, model, matdown);
+            MainGame::renderer.addToRender("explosion3", bomb.getId() + j - 1, model, matleft);
+            MainGame::renderer.addToRender("explosion4", bomb.getId() + j - 1, model, matright);
         }
     }
 }

@@ -9,7 +9,7 @@ private:
     char        	_direction;
 	int 			_powerBombExplosion;
 	int 			_powerBombNumber;
-	int 			_powerSpeed;
+	float 			_powerSpeed;
 public:
     glm::vec3   playerStart;
     glm::vec3  	playerScale;
@@ -33,6 +33,6 @@ public:
 	void		incBombSpeed();
 	int			getPowerExplosion();
 	int			getPowerBombNbr();
-	int			getPowerSpeed();
+	float		getPowerSpeed();
 
 };

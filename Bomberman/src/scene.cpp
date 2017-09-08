@@ -125,6 +125,15 @@ void Scene::_addPowerUps(float x, float z, int xx, int yy) {
             MainGame::renderer.addToRender("lemon", _blocks[yy][xx]->getId() , present, mat);
         }
     }
+	if (powerUp[randNbr] == 'B' && !_blocks[yy][xx]->getEndMap()) {
+		_blocks[yy][xx]->setPowerName("PowerSpeed");
+		_blocks[yy][xx]->setPowerUp(true);
+		Zion::Renderable *present = _game->getModel("star");
+		if (present != nullptr)
+		{
+			MainGame::renderer.addToRender("star", _blocks[yy][xx]->getId() , present, mat);
+		}
+	}
 
 
 }

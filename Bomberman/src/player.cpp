@@ -16,7 +16,7 @@ void Player::incBombNbr(){
 }
 
 void Player::incBombSpeed(){
-	_powerSpeed++;
+	_powerSpeed += 0.01f;
 }
 
 void Player::setPosition(glm::vec3 pos)
@@ -61,6 +61,6 @@ int			Player::getPowerExplosion() {
 int			Player::getPowerBombNbr() {
 	return _powerBombNumber;
 }
-int			Player::getPowerSpeed() {
+float			Player::getPowerSpeed() {
 	return _powerSpeed;
 }

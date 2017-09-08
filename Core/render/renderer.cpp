@@ -29,6 +29,8 @@ namespace Zion
 		{
             if (!pair.first.compare("endLevel"))
                 _renderStatic(pair.second);
+			if (!pair.first.compare("star"))
+                _renderStatic(pair.second);
 			if (!pair.first.compare("lemon"))
 				_renderStatic(pair.second);
 			if (!pair.first.compare("present"))

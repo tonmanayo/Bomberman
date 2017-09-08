@@ -4,7 +4,7 @@
 void Scene::updatePlayer(MainGame *game, Scene *scene) {
     if (game->getGameWindow().isKeyPressed(GLFW_KEY_S)) {
         if (!worldCollisionDown(scene->_player->getPosition(), {0, 0, -0.02f}, scene))
-            scene->_player->changePosZ(0.02f);
+            scene->_player->changePosZ(0.02f + scene->_player->getPowerSpeed());
         scene->_player->rotate(glm::radians(0.0f), {0, 1, 0});
         MainGame::renderer.applyTransformationToRenderable(scene->_player->getType(), scene->_player->getId(),
                                                            scene->_player->getTransformation());
@@ -15,7 +15,7 @@ void Scene::updatePlayer(MainGame *game, Scene *scene) {
     }
     if (game->getGameWindow().isKeyPressed(GLFW_KEY_W)) {
         if (!worldCollisionUp(scene->_player->getPosition(), {0, 0, -0.2f}, scene))
-            scene->_player->changePosZ(-0.02f);
+            scene->_player->changePosZ(-0.02f - scene->_player->getPowerSpeed());
         scene->_player->rotate(glm::radians(180.0f), {0, 1, 0});
         MainGame::renderer.applyTransformationToRenderable(scene->_player->getType(), scene->_player->getId(),
                                                            scene->_player->getTransformation());
@@ -26,7 +26,7 @@ void Scene::updatePlayer(MainGame *game, Scene *scene) {
     }
     if (game->getGameWindow().isKeyPressed(GLFW_KEY_A)) {
         if (!worldCollisionLeft(scene->_player->getPosition(), {-0.2f, 0, 0}, scene))
-            scene->_player->changePosX(-0.02f);
+            scene->_player->changePosX(-0.02f - scene->_player->getPowerSpeed());
         scene->_player->rotate(glm::radians(-90.0f), {0, 1, 0});
         MainGame::renderer.applyTransformationToRenderable(scene->_player->getType(), scene->_player->getId(),
                                                            scene->_player->getTransformation());
@@ -37,7 +37,7 @@ void Scene::updatePlayer(MainGame *game, Scene *scene) {
     }
     if (game->getGameWindow().isKeyPressed(GLFW_KEY_D)) {
         if (!worldCollisionRight(scene->_player->getPosition(), {0.0f, 0, 0}, scene))
-            scene->_player->changePosX(0.02f);
+            scene->_player->changePosX(0.02f + + scene->_player->getPowerSpeed());
         scene->_player->rotate(glm::radians(90.0f), {0, 1, 0});
         MainGame::renderer.applyTransformationToRenderable(scene->_player->getType(), scene->_player->getId(),
                                                            scene->_player->getTransformation());
@@ -61,8 +61,8 @@ void Scene::updateBomb(MainGame *game, Scene *scene) {
 		if (scene->_bomb[i].explodeTime() && !scene->_bomb[i].getExploded())
 		{
             scene->_bomb[i].setExploded(true);
-            renderExplosion(scene, scene->_bomb[i], game);
             bombExplode(scene, scene->_bomb[i]);
+            renderExplosion(scene, scene->_bomb[i], game);
             enemiesExplosionCollision(scene->_bomb[i].getPosition(), scene);
             if (scene->PlayerExplosionCollision(scene->_bomb[i].getPosition(), scene)) {
                 std::cout << "dead\n";
@@ -80,10 +80,10 @@ void Scene::updateBomb(MainGame *game, Scene *scene) {
             scene->_bomb[i].setExplosionRemoved(true);
             for (int k = 0; k < (scene->_player->getPowerExplosion() + 1); ++k) {
                 MainGame::renderer.removeFromRender("explosion", scene->_bomb[i].getId());
-                MainGame::renderer.removeFromRender("explosion1", scene->_bomb[i].getId() + 1 + k);
-                MainGame::renderer.removeFromRender("explosion2", scene->_bomb[i].getId() + 2 + k);
-                MainGame::renderer.removeFromRender("explosion3", scene->_bomb[i].getId() + 3 + k);
-                MainGame::renderer.removeFromRender("explosion4", scene->_bomb[i].getId() + 4 + k);
+                MainGame::renderer.removeFromRender("explosion1", scene->_bomb[i].getId() + k);
+                MainGame::renderer.removeFromRender("explosion2", scene->_bomb[i].getId() + k);
+                MainGame::renderer.removeFromRender("explosion3", scene->_bomb[i].getId() + k);
+                MainGame::renderer.removeFromRender("explosion4", scene->_bomb[i].getId() + k);
             }
         }
         if (scene->_bomb[i].explodeTime() && scene->_bomb[i].removeExplosionTime() && scene->_bomb[i].getExplosionRemoved() && scene->_bomb[i].getExploded()) {

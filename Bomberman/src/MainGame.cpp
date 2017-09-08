@@ -129,13 +129,14 @@ void MainGame::loadResources()
 	addModel("block3", *getShader("basic"), "resource/models/blocks/block3.gltf");
 	addModel("bomb", *getShader("basic"), "resource/models/blocks/bomb.gltf");
 	addModel("floor1", *getShader("basic"), "resource/models/blocks/floor1.gltf");
-	addModel("floor2", *getShader("basic"), "resource/models/blocks/floor2.gltf");
+	addModel("floor2", *getShader("basic"), "resource/models/blocks/ManHole.gltf");
 	addModel("bomberman", *getShader("basic"), "resource/models/bomberman/bomberman.gltf");
 	addModel("onile", *getShader("anime"), "resource/models/bomberman/Onile.glb");
     addModel("lavaBackground", *getShader("basic"), "resource/models/bomberman/lavaBackground.gltf");
 
     addModel("present", *getShader("basic"), "resource/models/blocks/present.gltf");
     addModel("lemon", *getShader("basic"), "resource/models/blocks/lemon.gltf");
+    addModel("star", *getShader("basic"), "resource/models/blocks/star.gltf");
 
     addMap("map1", "resource/maps/map1");
 	addModel("enemy1", *getShader("basic"), "resource/models/enemies/enemy2.gltf");
