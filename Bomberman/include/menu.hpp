@@ -12,6 +12,12 @@
 #include <MainGame.hpp>
 #include <scene.hpp>
 #include <yaml-cpp/yaml.h>
+#include <nanogui/vscrollpanel.h>
+#include <MainGame.hpp>
+#include <sys/types.h>
+#include <dirent.h>
+#include <stdio.h>
+
 
 class   Menu
 {
@@ -19,20 +25,26 @@ private:
 	nanogui::Screen     *_screen;
 	nanogui::Window     *_startMenu;
 	nanogui::Window		*_optionsMenu;
-	nanogui::Window     *_startGameMenu;
+	nanogui::Window     *_newGameMenu;
+	nanogui::Window     *_loadGameMenu;
 	nanogui::Window     *_pauseGameMenu;
 	nanogui::Window     *_exitWindow;
+	nanogui::TextBox    *_newGameTextBox;
+	nanogui::Window     *_gameSaved;
 	MainGame            *_mainGame;
 	Zion::SquareSprite  *_menuBg;
 	Zion::SquareSprite  *_menuTitle;
 	Scene               *_scene = nullptr;
+	std::string         _saveFileName;
 private:
 	void    _createStartMenu(float width, float height);
-	void    _createStartGameMenu(float width, float height);
+	void    _createNewGameMenu(float width, float height);
+	void    _createLoadGameMenu(float width, float height);
 	void    _createPauseGameMenu(float width, float height);
 	void    _createBackground(float width, float height);
 	void    _createExitWindow(float width, float height);
 	void	_createOptionsMenu(float width, float height);
+
 
 public:
 	Menu() = default;

@@ -1,5 +1,4 @@
 #include <gltf.hpp>
-#include <tiny_gltf.h>
 
 glm::mat4   lerpVec3(glm::vec3 start, glm::vec3 end, float lowTime, float highTime, float currTime,
                      int trans)
@@ -48,7 +47,7 @@ namespace Zion
 		auto maxTime = (float)input.maxValues[0] - frameTimes[0];
 		float curr = time;
 		if (curr > maxTime)
-			curr -= maxTime * floor(curr / maxTime);
+			curr = fmodf(curr, maxTime);
 
 		for (int i = 0; i < input.count; i++)
 		{
@@ -57,24 +56,21 @@ namespace Zion
 				auto lowerFrameTime = frameTimes[i - 1] - frameTimes[0];
 				auto upperFrameTime = frameTimes[i] - frameTimes[0];
 
-
 				if (type == std::string("translation"))
 					return lerpVec3(vec3s[i - 1], vec3s[i], lowerFrameTime, upperFrameTime, curr, TRANS);
-				else if (type == std::string("scale"))
-					return lerpVec3(vec3s[i - 1], vec3s[i], lowerFrameTime, upperFrameTime, curr, SCALE);
-				else if (type == std::string("rotation"))
+				//if (type == std::string("scale"))
+				//	return lerpVec3(vec3s[i - 1], vec3s[i], lowerFrameTime, upperFrameTime, curr, SCALE);
+				if (type == std::string("rotation"))
 					return lerpQuat(quats[i - 1], quats[i], lowerFrameTime, upperFrameTime, curr);
-				return glm::mat4();
 			}
 			if (frameTimes[i] + minTime == curr)
 			{
 				if (type == std::string("translation"))
 					return glm::translate(glm::mat4(), vec3s[i]);
-				else if (type == std::string("scale"))
-					return glm::scale(glm::mat4(), vec3s[i]);
-				else if (type == std::string("rotation"))
-					return glm::toMat4(quats[i]);
-				return glm::mat4();
+				//if (type == std::string("scale"))
+				//	return glm::scale(glm::mat4(), vec3s[i]);
+				//if (type == std::string("rotation"))
+				//	return glm::toMat4(quats[i]);
 			}
 		}
 		return glm::mat4();

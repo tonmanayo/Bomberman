@@ -35,6 +35,10 @@ bool MainGame::initGame(GLFWwindow *window, float width, float height, float fov
 	/// Loading Shaders
 	if (addShader("basic", "shaders/basic.vert", "shaders/basic.frag"))
 		getShader("basic")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
+	if (addShader("gui", "shaders/gui.vert", "shaders/basic.frag"))
+		getShader("gui")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
+	if (addShader("anime", "shaders/anime.vert", "shaders/basic.frag"))
+		getShader("anime")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
 	/// setup default camera
 	setupGameCamera();
 	/// load resources
@@ -57,6 +61,10 @@ bool MainGame::initGame(float width, float height, float fov)
 	/// Loading Shaders
 	if (addShader("basic", "shaders/basic.vert", "shaders/basic.frag"))
 		getShader("basic")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
+	if (addShader("gui", "shaders/gui.vert", "shaders/basic.frag"))
+		getShader("gui")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
+	if (addShader("anime", "shaders/anime.vert", "shaders/basic.frag"))
+		getShader("anime")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
 	/// setup default camera
 	setupGameCamera();
 	/// load resources
@@ -117,17 +125,28 @@ bool MainGame::addMap(const char *name, const char *path)
 void MainGame::loadResources()
 {
 	addModel("block1", *getShader("basic"), "resource/models/blocks/block1.gltf");
+	addModel("explosion", *getShader("basic"), "resource/models/blocks/block1.gltf");
 	addModel("block2", *getShader("basic"), "resource/models/blocks/block2.gltf");
 	addModel("block3", *getShader("basic"), "resource/models/blocks/block3.gltf");
 	addModel("bomb", *getShader("basic"), "resource/models/blocks/bomb.gltf");
 	addModel("floor1", *getShader("basic"), "resource/models/blocks/floor1.gltf");
-	addModel("floor2", *getShader("basic"), "resource/models/blocks/floor2.gltf");
+	addModel("floor2", *getShader("basic"), "resource/models/blocks/ManHole.gltf");
 	addModel("bomberman", *getShader("basic"), "resource/models/bomberman/bomberman.gltf");
+	addModel("onile", *getShader("anime"), "resource/models/bomberman/Onile.glb");
     addModel("lavaBackground", *getShader("basic"), "resource/models/bomberman/lavaBackground.gltf");
 	addMap("map1", "resource/maps/map1");
+	addMap("map2", "resource/maps/map2");
 
+    addModel("present", *getShader("basic"), "resource/models/blocks/present.gltf");
+    addModel("lemon", *getShader("basic"), "resource/models/blocks/lemon.gltf");
+    addModel("star", *getShader("basic"), "resource/models/blocks/star.gltf");
+
+    addMap("map1", "resource/maps/map1");
 	addModel("enemy1", *getShader("basic"), "resource/models/enemies/enemy2.gltf");
-
+	auto *mat = new Zion::Material();
+	mat->texure.loadTextureFromPath("resource/models/bomberman/OnileDiffuseColor.png");
+	auto *onileModel = (Zion::Model *)getModel("onile");
+	onileModel->addMaterial(0, *mat);
 }
 
 void MainGame::gameLoop()
@@ -150,17 +169,28 @@ void MainGame::gameLoop()
 		_window.clearWindow(0.3f, 0.3f, 0.3f, 1.0f);
 		/// calling all functions for loop
 		for (std::pair<const char *, Func> func : functions)
-			func.second.func(this, func.second.params);
+		{
+			if (!(bool)std::strcmp(func.first, "sceneUpdate"))
+				func.second.func(this, func.second.params);
+		}
 		viewMatrix = _camera->getViewMatrix();
 		viewPos = _camera->getCameraPosition();
 		for (std::pair<std::string, Zion::Shader *> shader : _shaders)
 		{
+			if (!shader.first.compare("gui"))
+				continue;
 			shader.second->setUniformMat4((GLchar *)"view_matrix", viewMatrix);
 			shader.second->setUniform3f((GLchar *)"viewPos", viewPos);
 		}
+		glEnable(GL_DEPTH_TEST);
+		glDepthFunc(GL_LESS);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		MainGame::renderer.render();
-
+		/// render and update nanogui menu
+		functions["menuUpdate"].func(this, functions["menuUpdate"].params);
 		_window.updateWindow();
+		Zion::Input::updateKeys();
 	}
 }
 
@@ -254,4 +284,19 @@ GAMESTATE MainGame::getGameState()
 void MainGame::setGameState(GAMESTATE state)
 {
 	_state = state;
+}
+
+std::vector<std::string> MainGame::stringSplit(const std::string &s, const char c)
+{
+	std::string buff{""};
+	std::vector<std::string> v;
+
+	for(auto n:s)
+	{
+		if(n != c) buff+=n; else
+		if(n == c && buff != "") { v.push_back(buff); buff = ""; }
+	}
+	if(buff != "") v.push_back(buff);
+
+	return v;
 }

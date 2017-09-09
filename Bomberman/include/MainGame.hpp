@@ -37,7 +37,8 @@ private:
 public:
 	static Zion::Renderer  renderer;
 	static std::map<const char *, Func>   functions;
-	static std::string     getNameFromPath(const char *path);
+	static std::string          getNameFromPath(const char *path);
+	static std::vector<std::string>     stringSplit(const std::string& s, const char c);
 public:
 	MainGame() = default;
 	MainGame(float width, float height, float fov);

@@ -32,6 +32,7 @@ namespace Zion
 		}
 	public:
 		virtual void    render(glm::mat4 matrix) = 0;
+		void            simpleRender(glm::mat4 matrix){}
 		void            addTextureFromFile(const char *path)
 		{
 			_material.texure.loadTextureFromPath(path);

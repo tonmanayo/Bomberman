@@ -1,12 +1,27 @@
 #include <player.hpp>
 
 Player::Player(int id, std::string type) : NonStatic(id, type){
-  _direction = 'U';
+  	_direction = 'U';
+	_powerBombExplosion = 0;
+	_powerBombNumber = 0;
+	_powerSpeed = 0;
 }
 
-void Player::setPosition(float x, float y, float z)
+void Player::incBombExplosion() {
+	_powerBombExplosion++;
+}
+
+void Player::incBombNbr(){
+	_powerBombNumber++;
+}
+
+void Player::incBombSpeed(){
+	_powerSpeed += 0.005f;
+}
+
+void Player::setPosition(glm::vec3 pos)
 {
-	_pos = glm::vec3(x, y, z);
+	_pos = pos;
 	translate(_pos);
 }
 
@@ -33,11 +48,19 @@ void Player::reset() {
 
 char Player::setDirection(char c) {
     _direction = c;
+	return c;
 }
 
 char Player::getDirection() {
     return  _direction;
 }
 
-glm::vec3 Player::getPosition() { return _pos; }
-
+int			Player::getPowerExplosion() {
+	return _powerBombExplosion;
+}
+int			Player::getPowerBombNbr() {
+	return _powerBombNumber;
+}
+float			Player::getPowerSpeed() {
+	return _powerSpeed;
+}

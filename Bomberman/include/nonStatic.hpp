@@ -11,7 +11,8 @@ private:
 	glm::mat4       _position;
 	glm::mat4       _rotation;
 	glm::mat4       _scale;
-
+public:
+	std::string     modelType;
 public:
 	NonStatic(int id, std::string type){
 		_id = id;
