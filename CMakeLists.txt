@@ -30,6 +30,7 @@ set_property(TARGET glfw glfw_objects nanogui PROPERTY FOLDER "dependencies")
 # Add the configurations from yaml-cpp
 add_subdirectory(ext/yaml-cpp)
 
+
 include_directories(
         ${PROJECT_SOURCE_DIR}/Core/includes
         ${GLEW_INCLUDE_DIRS}
@@ -39,6 +40,7 @@ include_directories(
         ${PROJECT_SOURCE_DIR}/ext/nanogui/ext/eigen
         ${PROJECT_SOURCE_DIR}/ext/nanogui/ext/nanovg/src
         ${PROJECT_SOURCE_DIR}/ext/yaml-cpp/include
+        ${PROJECT_SOURCE_DIR}/ext/yaml-cpp
         ${NANOGUI_EXTRA_INCS}
         ${PROJECT_SOURCE_DIR}/Bomberman/include
 )
@@ -88,7 +90,7 @@ target_link_libraries(Bomberman
         zion
         nanogui
         ${NANOGUI_EXTRA_LIBS}
-        )
+        yaml-cpp)
 if (APPLE)
     target_link_libraries(Bomberman ${OPENGL_FLAGS})
 endif()

@@ -47,7 +47,7 @@ public:
 	bool    buildMenuWindows(float width, float height);
 
 	GLFWwindow  *getGlfwWindow();
-	static YAML::Node	config;
+	YAML::Node	config;
 public:
 
 	static Menu		*activeMenu;
