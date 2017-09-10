@@ -99,6 +99,7 @@ public:
     static bool     enemyWorldCollisionLeft(glm::vec3 pos, glm::vec3 offset, Scene *scene);
 
     bool            enemyPlayerCollision(glm::vec3 pos, Scene *scene);
+	Player          *getPlayer(){ return _player; }
 
 
 };

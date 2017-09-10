@@ -45,6 +45,7 @@ namespace Zion
 		{
 			_material.base_color = color;
 		}
+		GLuint           getVao(){ return _vao; }
 	};
 
 	///struct of a square sprite

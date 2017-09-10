@@ -1,5 +1,5 @@
-#include <scene.hpp>
 #include <random>
+#include <menu.hpp>
 
 Scene::Scene(const Scene &rhs)
 {}
@@ -235,6 +235,10 @@ void Scene::sceneUpdate(MainGame *game, std::vector<void *> params)
 			std::cout << "paused" << std::endl;
 			game->setGameState(GAMESTATE::PAUSE);
 			return;
+		}
+		if (game->game->getGameWindow().isKeyPressed(GLFW_KEY_Y))
+		{
+			new Zion::Particle(Menu::activeMenu->_scene->getPlayer()->getPosition(), {0, 30, 0}, 1, 4, 0, 1);
 		}
 		updateBomb(game, scene);
 		updateEnemy(game, scene);

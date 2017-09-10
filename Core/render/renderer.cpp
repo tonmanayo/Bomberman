@@ -1,5 +1,6 @@
 #include <renderable.hpp>
 #include <zion.h>
+#include <MainGame.hpp>
 
 namespace Zion
 {
@@ -20,12 +21,12 @@ namespace Zion
 
 	void Renderer::addToRender(std::string type, int id, Renderable *model, glm::mat4 mat)
 	{
-		_objects[type].push_back({id, 0.0f, 0, false, model, mat});
+		_objects[type].push_back({id, 0.0f, 0, false, 1.0f, -1.0f, model, mat});
 	}
 
 	void Renderer::render()
 	{
-		for (std::pair<std::string, std::vector<RendererObj>> pair : _objects)
+		/*for (std::pair<std::string, std::vector<RendererObj>> pair : _objects)
 		{
             if (!pair.first.compare("endLevel"))
                 _renderStatic(pair.second);
@@ -61,7 +62,66 @@ namespace Zion
 				_renderStatic(pair.second);
 			if (!pair.first.compare("enemy1"))
 				_renderAnime(pair.second, pair.first);
+		}*/
+		_renderStatic(_objects["background"]);
+		_renderStatic(_objects["floors"]);
+		_renderStatic(_objects["wall"]);
+		_renderStatic(_objects["unbreakBlock"]);
+		_renderBreakable(_objects["breakBlock"]);
+		_renderStatic(_objects["bomb"]);
+		_renderStatic(_objects["explosion"]);
+		_renderStatic(_objects["explosion1"]);
+		_renderStatic(_objects["explosion2"]);
+		_renderStatic(_objects["explosion3"]);
+		_renderStatic(_objects["explosion4"]);
+		_renderAnime(_objects["enemy1"], "enemy1");
+		_renderStatic(_objects["player"]);
+	}
+
+	void Renderer::_renderBreakable(std::vector<RendererObj> &objects)
+	{
+		std::vector<RendererObj>    deadBlocks;
+		Shader  *shader = MainGame::game->getShader("fire");
+
+		if (objects.empty())
+			return;
+		auto *model = (Zion::Gltf *)objects[0].model;
+		//model->enableShader();
+		shader->enable();
+		/// render alive blocks
+		shader->setUniform1f((GLchar *)"alpha", 1.0);
+		//model->getShader().setUniform1f((GLchar *)"viewpos", 1.0);
+		model->loadMaterialToShader();
+		for (RendererObj& obj : objects)
+		{
+			if (!obj.die)
+				obj.model->simpleRender(obj.matrix);
+			else
+				deadBlocks.push_back(obj);
 		}
+		model->unloadMaterialFromShader();
+		/// render dead blocks
+		Material *fireBlock = MainGame::game->getMaterial("fireBlock");
+		Material::sendMaterialToShader(*shader, *fireBlock, 0);
+		for (RendererObj &obj : objects)
+		{
+			if (obj.die)
+			{
+				if (obj.startTime == -1.0f)
+					obj.startTime = (float)glfwGetTime();
+				else if ((float)glfwGetTime() - obj.startTime >= 1.0f)
+					removeObject("breakBlock", obj.id);
+				else
+				{
+					shader->setUniform1f((GLchar *)"alpha", obj.alpha);
+					obj.model->simpleRender(obj.matrix);
+					obj.alpha -= ((float)glfwGetTime() - obj.startTime) / 500.0f;
+				}
+			}
+		}
+		glBindTexture(GL_TEXTURE_2D, 0);
+		//model->disableShader();
+		shader->disable();
 	}
 
 	void Renderer::_renderStatic(std::vector<RendererObj> &objects)
@@ -73,7 +133,10 @@ namespace Zion
 		model->loadMaterialToShader();
 		/// rendering
 		for (RendererObj& obj : objects)
-			obj.model->simpleRender(obj.matrix);
+		{
+			if (!obj.die)
+				obj.model->simpleRender(obj.matrix);
+		}
 		model->unloadMaterialFromShader();
 		model->disableShader();
 	}
@@ -97,16 +160,36 @@ namespace Zion
 		model->disableShader();
 	}
 
+	void Renderer::removeObject(std::string type, int id)
+	{
+		int     pos = 0;
+		try {
+			std::vector<RendererObj>& objects = _objects[type];
+			for (RendererObj& obj : objects)
+			{
+				if (obj.id == id)
+				{
+					objects.erase(objects.begin() + pos);
+					return;
+				}
+				pos++;
+			}
+		} catch (const std::out_of_range& oor) {
+			return;
+		}
+	}
+
 	void Renderer::removeFromRender(std::string type, int id)
 	{
 		int     pos = 0;
 		try {
 			std::vector<RendererObj>& objects = _objects[type];
-			for (RendererObj obj : objects)
+			for (RendererObj& obj : objects)
 			{
 				if (obj.id == id)
 				{
-					objects.erase(objects.begin() + pos);
+					//objects.erase(objects.begin() + pos);
+					obj.die = true;
 					return;
 				}
 				pos++;

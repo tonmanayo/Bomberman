@@ -6,6 +6,7 @@ void    generateBlocks();
 Zion::Window    win;
 Zion::Shader    shader;
 Zion::Shader    shader1;
+Zion::Shader    shader2;
 Zion::Renderer  renderer;
 Zion::Camera    camera =  Zion::Camera(glm::vec3(0, 0, 3), 0, -90.0f);
 
@@ -27,10 +28,15 @@ int     main(int ac, char **av)
 	win.initWindow("Test",  1280, 760);
 	shader.initShader("shaders/basic.vert", "shaders/basic.frag");
 	shader1.initShader("shaders/anime.vert", "shaders/basic.frag");
+	shader2.initShader("shaders/particle.vert", "shaders/particle.frag");
 
 	glm::mat4   proj_mat = glm::perspective(glm::radians(70.0f), (float)1280 / (float)960, 0.1f, 1000.0f);
 	shader.setUniformMat4((GLchar *)"proj_matrix", proj_mat);
 	shader1.setUniformMat4((GLchar *)"proj_matrix", proj_mat);
+	shader2.setUniformMat4((GLchar *)"proj_matrix", proj_mat);
+
+
+	Zion::ParticleMaster::init(shader2);
 
 	//generateBlocks();
 
@@ -43,6 +49,9 @@ int     main(int ac, char **av)
 	Zion::Renderable::startTime = (float)glfwGetTime();
 	Zion::Renderable::runTime = Zion::Renderable::startTime;
 
+	Zion::Window::startTime = (float)glfwGetTime();
+	Zion::Window::frameStartTime = Zion::Window::startTime;
+	Zion::Window::frameChangeTime = 0.0f;
 	while (!win.shouldClose() && !win.isKeyPressed(GLFW_KEY_ESCAPE))
 	{
 		auto currentTime = (float)glfwGetTime();
@@ -54,9 +63,18 @@ int     main(int ac, char **av)
 		checkKeys(win, camera);
 		shader.setUniformMat4((GLchar *)"view_matrix", camera.getViewMatrix());
 		shader1.setUniformMat4((GLchar *)"view_matrix", camera.getViewMatrix());
+		//shader2.setUniformMat4((GLchar *)"view_matrix", camera.getViewMatrix());
+
+		Zion::ParticleMaster::update();
+
 		model->render(glm::translate(glm::mat4(), glm::vec3(0, 0, -1)));
+
+		Zion::ParticleMaster::renderParticles(camera);
+
 		//renderer.render();
 		win.updateWindow();
+		Zion::Window::frameChangeTime = (float)glfwGetTime() - Zion::Window::frameStartTime;
+		Zion::Window::frameStartTime = (float)glfwGetTime();
 	}
 	for (GLuint id : Zion::Texture::textureIDs)
 		glDeleteTextures(1, &id);
@@ -76,6 +94,8 @@ void    checkKeys(Zion::Window& win, Zion::Camera& camera)
 		camera.changeCameraZPos(-2.5f);
 	if (win.isKeyPressed(GLFW_KEY_S))
 		camera.changeCameraZPos(2.5f);
+	if (win.isKeyPressed(GLFW_KEY_Y))
+		new Zion::Particle({0, 0, -1}, {0, 30, 0}, 1, 4, 0, 1);
 }
 
 void    generateBlocks()

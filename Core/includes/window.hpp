@@ -53,6 +53,10 @@ namespace Zion
 	private:
 		bool        createGlfwWindow();
 	public:
+		static  float   startTime;
+		static  float   frameStartTime;
+		static  float   frameChangeTime;
+	public:
 		Window() = default;
 		Window(GLFWwindow *window, const char *title, int width, int height);
 		Window(const char *title, int width, int height);

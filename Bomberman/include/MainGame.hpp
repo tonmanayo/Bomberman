@@ -12,6 +12,7 @@ enum GAMESTATE
 };
 
 class   MainGame;
+class   Menu;
 
 struct  Func
 {
@@ -33,6 +34,8 @@ private:
 	std::map<std::string, Zion::Material *>    _materials;
 	std::map<std::string, std::vector<std::string> *> _levelMaps;
 public:
+	static MainGame     *game;
+public:
 	static Zion::Renderer  renderer;
 	static std::map<const char *, Func>   functions;
 	static std::string          getNameFromPath(const char *path);
@@ -46,6 +49,7 @@ public:
 
 	bool    initGame(float width, float height, float fov);
 	bool    initGame(GLFWwindow *window, float width, float height, float fov);
+	bool    initGame2(float width, float height, float fov);
 	void    setupGameCamera();
 	void    setupGameCamera(glm::vec3 pos, float pitch, float yaw);
 	bool    addShader(const char *name, const char *vertPath, const char *fragPath);

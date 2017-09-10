@@ -28,7 +28,7 @@ private:
 	MainGame            *_mainGame;
 	Zion::SquareSprite  *_menuBg;
 	Zion::SquareSprite  *_menuTitle;
-	Scene               *_scene = nullptr;
+	//Scene               *_scene = nullptr;
 	std::string         _saveFileName;
 private:
 	void    _createStartMenu(float width, float height);
@@ -37,7 +37,8 @@ private:
 	void    _createPauseGameMenu(float width, float height);
 	void    _createBackground(float width, float height);
 	void    _createExitWindow(float width, float height);
-
+public:
+	Scene               *_scene = nullptr;
 
 public:
 	Menu() = default;

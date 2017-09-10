@@ -2,6 +2,7 @@
 
 Zion::Renderer  MainGame::renderer;
 std::map<const char *, Func>    MainGame::functions;
+MainGame*    MainGame::game;
 
 std::string MainGame::getNameFromPath(const char *path)
 {
@@ -26,49 +27,19 @@ MainGame& MainGame::operator=(const MainGame &rhs)
 
 bool MainGame::initGame(GLFWwindow *window, float width, float height, float fov)
 {
-	glm::mat4       projectionMatrix;
-
 	_window.initWindow(window, "Bomberman", (int)width, (int)height);
-	/// Calculating perspective
-	projectionMatrix = glm::perspective(glm::radians(fov), width / height, 0.1f, 1000.0f);
-	/// Loading Shaders
-	if (addShader("basic", "shaders/basic.vert", "shaders/basic.frag"))
-		getShader("basic")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
-	if (addShader("gui", "shaders/gui.vert", "shaders/basic.frag"))
-		getShader("gui")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
-	if (addShader("anime", "shaders/anime.vert", "shaders/basic.frag"))
-		getShader("anime")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
-	/// setup default camera
-	setupGameCamera();
-	/// load resources
-	loadResources();
-	return true;
+	return initGame2(width, height, fov);
 }
 
 bool MainGame::initGame(float width, float height, float fov)
 {
-	glm::mat4       projectionMatrix;
-
 	srand(time(NULL));
 	/// Creating glfw window
 	_width = width;
 	_height = height;
 	_fov = fov;
 	_window.initWindow("Bomberman", (int)width, (int)height);
-	/// Calculating perspective
-	projectionMatrix = glm::perspective(glm::radians(fov), width / height, 0.1f, 1000.0f);
-	/// Loading Shaders
-	if (addShader("basic", "shaders/basic.vert", "shaders/basic.frag"))
-		getShader("basic")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
-	if (addShader("gui", "shaders/gui.vert", "shaders/basic.frag"))
-		getShader("gui")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
-	if (addShader("anime", "shaders/anime.vert", "shaders/basic.frag"))
-		getShader("anime")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
-	/// setup default camera
-	setupGameCamera();
-	/// load resources
-	loadResources();
-	return true;
+	return initGame2(width, height, fov);
 }
 
 void MainGame::setupGameCamera()
@@ -121,11 +92,36 @@ bool MainGame::addMap(const char *name, const char *path)
 	return true;
 }
 
+
+bool MainGame::initGame2(float width, float height, float fov)
+{
+	glm::mat4       projectionMatrix;
+	/// Calculating perspective
+	projectionMatrix = glm::perspective(glm::radians(fov), width / height, 0.1f, 1000.0f);
+	/// Loading Shaders
+	if (addShader("basic", "shaders/basic.vert", "shaders/basic.frag"))
+		getShader("basic")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
+	if (addShader("particle", "shaders/particle.vert", "shaders/particle.frag"))
+		getShader("particle")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
+	if (addShader("fire", "shaders/basic.vert", "shaders/fire.frag"))
+		getShader("fire")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
+	if (addShader("gui", "shaders/gui.vert", "shaders/basic.frag"))
+		getShader("gui")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
+	if (addShader("anime", "shaders/anime.vert", "shaders/basic.frag"))
+		getShader("anime")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
+	/// setup default camera
+	setupGameCamera();
+	/// load resources
+	loadResources();
+	MainGame::game = this;
+	return true;
+}
+
 void MainGame::loadResources()
 {
 	addModel("block1", *getShader("basic"), "resource/models/blocks/block1.gltf");
-	addModel("explosion", *getShader("basic"), "resource/models/blocks/block1.gltf");
-	addModel("block2", *getShader("basic"), "resource/models/blocks/block2.gltf");
+	addModel("explosion", *getShader("basic"), "resource/models/blocks/fireBlock.gltf");
+	addModel("block2", *getShader("fire"), "resource/models/blocks/block2.gltf");
 	addModel("block3", *getShader("basic"), "resource/models/blocks/block3.gltf");
 	addModel("bomb", *getShader("basic"), "resource/models/blocks/bomb.gltf");
 	addModel("floor1", *getShader("basic"), "resource/models/blocks/floor1.gltf");
@@ -146,6 +142,7 @@ void MainGame::loadResources()
 	mat->texure.loadTextureFromPath("resource/models/bomberman/OnileDiffuseColor.png");
 	auto *onileModel = (Zion::Model *)getModel("onile");
 	onileModel->addMaterial(0, *mat);
+	addMaterial("fireBlock", "resource/images/fireTex.png");
 }
 
 void MainGame::gameLoop()
@@ -155,6 +152,9 @@ void MainGame::gameLoop()
 
 	Zion::Renderable::startTime = (float)glfwGetTime();
 	Zion::Renderable::runTime = Zion::Renderable::startTime;
+	Zion::Window::frameStartTime = Zion::Window::startTime;
+	Zion::Window::frameChangeTime = 0.0f;
+	Zion::ParticleMaster::init(*getShader("particle"));
 	while (!_window.shouldClose())
 	{
 		auto currentTime = (float)glfwGetTime();
@@ -170,22 +170,33 @@ void MainGame::gameLoop()
 		}
 		viewMatrix = _camera->getViewMatrix();
 		viewPos = _camera->getCameraPosition();
+
 		for (std::pair<std::string, Zion::Shader *> shader : _shaders)
 		{
 			if (!shader.first.compare("gui"))
 				continue;
+			if (!shader.first.compare("particle"))
+				continue;
 			shader.second->setUniformMat4((GLchar *)"view_matrix", viewMatrix);
 			shader.second->setUniform3f((GLchar *)"viewPos", viewPos);
 		}
+
 		glEnable(GL_DEPTH_TEST);
 		glDepthFunc(GL_LESS);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		MainGame::renderer.render();
+
+		/// render particles
+		Zion::ParticleMaster::update();
+		Zion::ParticleMaster::renderParticles(*_camera);
+
 		/// render and update nanogui menu
 		functions["menuUpdate"].func(this, functions["menuUpdate"].params);
 		_window.updateWindow();
 		Zion::Input::updateKeys();
+		Zion::Window::frameChangeTime = (float)glfwGetTime() - Zion::Window::frameStartTime;
+		Zion::Window::frameStartTime = (float)glfwGetTime();
 	}
 }
 

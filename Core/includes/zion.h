@@ -6,3 +6,4 @@
 #include <staticSprite.hpp>
 #include <camera.hpp>
 #include <gltf.hpp>
+#include <particle.hpp>

@@ -51,15 +51,6 @@ void Scene::renderExplosion(Scene *scene, const Bomb &bomb, MainGame *game) {
             glm::mat4 matright = glm::translate(glm::mat4(), glm::vec3(x + (i + 1) * GRID_BLOCK_SIZE, 0,  y));
         if (model != nullptr)
         {
-                MainGame::renderer.addToRender("explosion", bomb.getId() , model, middle);
-            if (u)
-                MainGame::renderer.addToRender("explosion1", bomb.getId() + i , model, matup);
-            if (d)
-                MainGame::renderer.addToRender("explosion2", bomb.getId() + i , model, matdown);
-            if (l)
-                MainGame::renderer.addToRender("explosion3", bomb.getId() + i , model, matleft);
-            if (r)
-                MainGame::renderer.addToRender("explosion4", bomb.getId() + i , model, matright);
             if (scene->_blocks[yy - 1 - i][xx] != nullptr && d) {
                 d = false;
             }
@@ -72,6 +63,15 @@ void Scene::renderExplosion(Scene *scene, const Bomb &bomb, MainGame *game) {
             if (scene->_blocks[yy][xx + 1 + i] != nullptr && r) {
                 r = false;
             }
+                MainGame::renderer.addToRender("explosion", bomb.getId() , model, middle);
+            if (u)
+                MainGame::renderer.addToRender("explosion1", bomb.getId() + i , model, matup);
+            if (d)
+                MainGame::renderer.addToRender("explosion2", bomb.getId() + i , model, matdown);
+            if (l)
+                MainGame::renderer.addToRender("explosion3", bomb.getId() + i , model, matleft);
+            if (r)
+                MainGame::renderer.addToRender("explosion4", bomb.getId() + i , model, matright);
         }
     }
 }

@@ -13,6 +13,8 @@
 #define SCALE 1
 #define TRANS 2
 
+class MainGame;
+
 namespace Zion
 {
 	class   Renderable
@@ -49,6 +51,8 @@ namespace Zion
 		float       animeTime;
 		int         animeType;
 		bool        die;
+		float       alpha;
+		float       startTime;
 		Renderable  *model;
 		glm::mat4   matrix;
 	};
@@ -58,6 +62,7 @@ namespace Zion
 	private:
 		std::map<std::string, std::vector<RendererObj>>    _objects;
 	private:
+		void    _renderBreakable(std::vector<RendererObj>& objects);
 		void    _renderStatic(std::vector<RendererObj>& objects);
 		void    _renderAnime(std::vector<RendererObj>& objects, std::string type);
 	public:
@@ -68,6 +73,7 @@ namespace Zion
 
 		void    addToRender(std::string type, int id, Renderable *model, glm::mat4 mat = glm::mat4(1.0f));
 		void    removeFromRender(std::string type, int id);
+		void    removeObject(std::string type, int id);
 		void    removeGroup(std::string type);
 		void    removeAll();
 		void    applyTransformationToRenderable(std::string type, int id, glm::mat4 mat);

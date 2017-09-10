@@ -28,7 +28,7 @@ set(LIB_SOURCE_FILES Core/entities/window.cpp Core/entities/input.cpp
         Core/entities/shader.cpp Core/utils/file.cpp Core/sprite/squareSprite.cpp
         Core/entities/material.cpp Core/sprite/cubeSprite.cpp Core/entities/camera.cpp
         Core/render/renderer.cpp Core/models/gltf.cpp Core/models/gltfAnimation.cpp
-        Core/entities/animation.cpp)
+        Core/entities/animation.cpp Core/entities/particle.cpp Core/entities/particleRenderer.cpp Core/entities/particleMaster.cpp)
 
 add_library(zion STATIC ${LIB_SOURCE_FILES})
 if (APPLE)

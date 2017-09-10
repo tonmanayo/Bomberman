@@ -2,6 +2,10 @@
 
 namespace Zion
 {
+	float   Window::startTime;
+	float   Window::frameStartTime;
+	float   Window::frameChangeTime;
+
 	void Window::getError(char *ref)
 	{
 		GLenum error = glGetError();
