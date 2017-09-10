@@ -4,7 +4,7 @@ namespace Zion{
 
 	ParticleRenderer::ParticleRenderer(Shader & shader)
 	{
-		_quad = new SquareSprite(shader, 0, 0, 0.5, 0.5);
+		_quad = new SquareSprite(shader, 0, 0, 0.9, 0.9);
 		_shader = shader;
 	}
 
@@ -13,19 +13,30 @@ namespace Zion{
 		delete _quad;
 	}
 
-	void ParticleRenderer::render(std::vector<Particle> particles, Camera camera, glm::mat4 viewMat)
+	void ParticleRenderer::render(std::map<Material *, std::vector<Particle>>& particles, Camera *camera, glm::mat4 viewMat)
 	{
-		glm::mat4 viewMatrix = camera.getViewMatrix();
+		glm::mat4 viewMatrix = camera->getViewMatrix();
 		_shader.enable();
 		glBindVertexArray(_quad->getVao());
 		glDepthMask((GLboolean)false);
-		//glDisable(GL_DEPTH_TEST);
-		for (Particle& particle : particles)
+		for (std::pair<Material *, std::vector<Particle>> listParticles : particles)
 		{
-			updateModelViewMatrix(particle.getPosition(), particle.getRotation(), particle.getScale(), viewMat);
-			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, (const GLvoid *)nullptr);
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, listParticles.first->texure.getTextureId());
+			for (Particle& particle : listParticles.second)
+			{
+				if (particle.getAddictive())
+					glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+				updateModelViewMatrix(particle.getPosition(), particle.getRotation(), particle.getScale(), viewMat);
+				_shader.setUniform2f((GLchar *)"texOffset1", particle.getOffset1());
+				_shader.setUniform2f((GLchar *)"texOffset2", particle.getOffset2());
+				_shader.setUniform2f((GLchar *)"texCoordInfo", {listParticles.first->numRows, particle.getBlend()});
+				glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, (const GLvoid *)nullptr);
+			}
+			glBindTexture(GL_TEXTURE_2D, 0);
 		}
 		glDepthMask((GLboolean)true);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glBindVertexArray(0);
 		_shader.disable();
 	}

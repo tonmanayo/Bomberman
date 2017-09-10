@@ -66,6 +66,10 @@ void main() {
     light.diffuse = vec3(0.7f, 0.42f, 0.26f);
     light.specular = vec3(0.5f, 0.5f, 0.5f);
 
+    light.ambient = vec3(0.7f, 0.7f, 0.7f);
+    light.diffuse = vec3(0.7f, 0.7f, 0.7f);
+    light.specular = vec3(0.7f, 0.7f, 0.7f);
+
     int i = 0;
     for (; i < 10; i++)
     {
@@ -83,7 +87,7 @@ void main() {
             color *= texture(textures[2], fuv);
     }
     vec3 viewDir = normalize(viewPos - fposition);
-    color = (light, normalize(fnormal), fposition, viewDir, color);
+    //color = vec4(CalcPointLight1(light, normalize(fnormal), fposition, viewDir, color), 1.0);
     //float gamma = 2.0;
     //color.rgb = pow(color.rgb, vec3(1.0 / gamma));
 	out_color = color;

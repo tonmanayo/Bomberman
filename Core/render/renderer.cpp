@@ -69,10 +69,10 @@ namespace Zion
 		_renderStatic(_objects["unbreakBlock"]);
 		_renderBreakable(_objects["breakBlock"]);
 		_renderStatic(_objects["bomb"]);
-		_renderStatic(_objects["explosion"]);
-		_renderStatic(_objects["explosion1"]);
-		_renderStatic(_objects["explosion2"]);
-		_renderStatic(_objects["explosion3"]);
+		_renderStatic(_objects["star"]);
+		_renderStatic(_objects["endLevel"]);
+		_renderStatic(_objects["lemon"]);
+		_renderStatic(_objects["present"]);
 		_renderStatic(_objects["explosion4"]);
 		_renderAnime(_objects["enemy1"], "enemy1");
 		_renderStatic(_objects["player"]);
@@ -188,8 +188,10 @@ namespace Zion
 			{
 				if (obj.id == id)
 				{
-					//objects.erase(objects.begin() + pos);
-					obj.die = true;
+					if (type != std::string("breakBlock"))
+						objects.erase(objects.begin() + pos);
+					else
+						obj.die = true;
 					return;
 				}
 				pos++;

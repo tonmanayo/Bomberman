@@ -18,8 +18,7 @@ class   Scene
 {
 private:
 	MainGame    			*_game;
-	size_t      			_mapWidth = 0;
-	size_t      			_mapLength = 0;
+
 	int         			_enemyCount = 0;
 	Player      			*_player;
 	std::vector<Bomb>		_bomb;
@@ -36,6 +35,9 @@ private:
 	std::string     _mapName;
 	float  z = GRID_START_Z;
 	int gridY = 0;
+public:
+	size_t   _mapWidth = 0;
+	size_t   _mapLength = 0;
 
 private:
 	void    _addWall(float x, float z, int xx, int yy);
@@ -97,6 +99,8 @@ public:
     static bool     enemyWorldCollisionUp(glm::vec3 pos, glm::vec3 offset, Scene *scene);
     static bool     enemyWorldCollisionRight(glm::vec3 pos, glm::vec3 offset, Scene *scene);
     static bool     enemyWorldCollisionLeft(glm::vec3 pos, glm::vec3 offset, Scene *scene);
+
+	static void     renderFlameExplosion(glm::vec3 flamePosition);
 
     bool            enemyPlayerCollision(glm::vec3 pos, Scene *scene);
 	Player          *getPlayer(){ return _player; }

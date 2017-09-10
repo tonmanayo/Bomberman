@@ -4,6 +4,9 @@
 Zion::Renderer  MainGame::renderer;
 std::map<const char *, Func>    MainGame::functions;
 MainGame*    MainGame::game;
+Zion::ParticleSystem*     MainGame::explosionParticles;
+Zion::ParticleSystem*     MainGame::bombSparks;
+Zion::ParticleSystem*     MainGame::smokeParticles;
 
 std::string MainGame::getNameFromPath(const char *path)
 {
@@ -144,6 +147,31 @@ void MainGame::loadResources()
 	auto *onileModel = (Zion::Model *)getModel("onile");
 	onileModel->addMaterial(0, *mat);
 	addMaterial("fireBlock", "resource/images/fireTex.png");
+	addMaterial("flame1", "resource/images/flame1.png");
+	addMaterial("particleAtlas", "resource/images/particleAtlas.png");
+	getMaterial("particleAtlas")->numRows =  4;
+	addMaterial("explosion1", "resource/images/explosion1.png");
+	getMaterial("explosion1")->numRows =  4;
+	addMaterial("explosion2", "resource/images/explosion2.jpg");
+	getMaterial("explosion2")->numRows =  4;
+	addMaterial("explosion3", "resource/images/explosion3.jpg");
+	getMaterial("explosion3")->numRows =  4;
+	addMaterial("explosion4", "resource/images/explosion4.jpg");
+	getMaterial("explosion4")->numRows =  4;
+	loadParticles();
+	_window.enableVsync();
+}
+
+void MainGame::loadParticles()
+{
+	Zion::ParticleMaster::init(*getShader("particle"));
+
+	explosionParticles = new Zion::ParticleSystem(getMaterial("explosion2"), 70, 4, 0.1f, 1, 1.2f);
+	explosionParticles->randomizeRotation();
+	explosionParticles->setDirection({0, 1, 0}, 0.1f);
+	explosionParticles->setLifeError(0.1f);
+	explosionParticles->setSpeedError(0.25f);
+	explosionParticles->setScaleError(0.5f);
 }
 
 void MainGame::gameLoop()
@@ -155,14 +183,6 @@ void MainGame::gameLoop()
 	Zion::Renderable::runTime = Zion::Renderable::startTime;
 	Zion::Window::frameStartTime = Zion::Window::startTime;
 	Zion::Window::frameChangeTime = 0.0f;
-	Zion::ParticleMaster::init(*getShader("particle"));
-
-	Zion::ParticleSystem *particleSystem = new Zion::ParticleSystem(200, 25, 0.3f, 4, 1);
-	particleSystem->randomizeRotation();
-	particleSystem->setDirection({0, 1, 0}, 0.1f);
-	particleSystem->setLifeError(0.1f);
-	particleSystem->setSpeedError(0.4f);
-	particleSystem->setScaleError(0.8f);
 
 	srand(0);
 	while (!_window.shouldClose())
@@ -186,8 +206,6 @@ void MainGame::gameLoop()
 		{
 			if (!shader.first.compare("gui"))
 				continue;
-			//if (!shader.first.compare("particle"))
-			//	continue;
 			shader.second->setUniformMat4((GLchar *)"view_matrix", viewMatrix);
 			shader.second->setUniform3f((GLchar *)"viewPos", viewPos);
 		}
@@ -198,15 +216,10 @@ void MainGame::gameLoop()
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		MainGame::renderer.render();
 
-		if (Menu::activeMenu != nullptr && Menu::activeMenu->_scene != nullptr)
-		{
-			if (Menu::activeMenu->_scene->getPlayer() != nullptr)
-				particleSystem->generateParticles(Menu::activeMenu->_scene->getPlayer()->getPosition());
-		}
-
 		/// render particles
-		Zion::ParticleMaster::update();
-		Zion::ParticleMaster::renderParticles(*_camera, viewMatrix);
+		if (_state == GAMESTATE::GAME)
+			Zion::ParticleMaster::update(_camera);
+		Zion::ParticleMaster::renderParticles(_camera, viewMatrix);
 
 		/// render and update nanogui menu
 		functions["menuUpdate"].func(this, functions["menuUpdate"].params);

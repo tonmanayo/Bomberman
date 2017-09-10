@@ -28,6 +28,7 @@ namespace Zion
 		GLint   getUniformLocation(GLchar *name);
 		void    setUniform1i(GLchar *name, int value);
 		void    setUniform1f(GLchar *name, float value);
+		void    setUniform2f(GLchar *name, glm::vec2 vec);
 		void    setUniform3f(GLchar *name, glm::vec3& vec);
 		void    setUniform4f(GLchar *name, glm::vec4& vec);
 		void    setUniformMat4(GLchar *name, glm::mat4 matrix);

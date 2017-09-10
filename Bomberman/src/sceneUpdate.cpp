@@ -48,6 +48,7 @@ void Scene::updatePlayer(MainGame *game, Scene *scene) {
     }
     if (game->getGameWindow().isKeyPressed(GLFW_KEY_SPACE) && scene->_bomb.size() < 1 + scene->_player->getPowerBombNbr()) {
         scene->_addBomb(scene->_player->getPosition().x, scene->_player->getPosition().z);
+        MainGame::explosionParticles->generateParticles(scene->_player->getPosition(), true);
     }
     if (scene->worldEndLevel(scene->_player->getPosition(), scene)) {
         std::cout << "FINISHED LEVEL!!!\n";
@@ -71,11 +72,14 @@ void Scene::updateBomb(MainGame *game, Scene *scene) {
                 scene->_game->getGameCamera().setCameraPosition(glm::vec3(pos.x + 0, pos.y + 10, pos.z + 6));
                 scene->_game->getGameCamera().setCameraTarget(scene->_player->getPosition());
                 scene->_game->getGameCamera().setCameraUp(glm::vec3(0, 1, 0));
-                MainGame::renderer.applyTransformationToRenderable("player", scene->_player->getId(),
-                                                                   scene->_player->getTransformation());
+                MainGame::renderer.applyTransformationToRenderable("player", scene->_player->getId(), scene->_player->getTransformation());
             }
             MainGame::renderer.removeFromRender("bomb", scene->_bomb[i].getId());
         }
+		if (!scene->_bomb[i].removeExplosionTime() && scene->_bomb[i].getExploded())
+		{
+			renderExplosion(scene, scene->_bomb[i], game);
+		}
         if (scene->_bomb[i].removeExplosionTime() && !scene->_bomb[i].getExplosionRemoved()) {
             scene->_bomb[i].setExplosionRemoved(true);
             for (int k = 0; k < (scene->_player->getPowerExplosion() + 1); ++k) {

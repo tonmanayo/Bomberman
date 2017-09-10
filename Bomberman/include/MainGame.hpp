@@ -34,7 +34,10 @@ private:
 	std::map<std::string, Zion::Material *>    _materials;
 	std::map<std::string, std::vector<std::string> *> _levelMaps;
 public:
-	static MainGame     *game;
+	static MainGame                 *game;
+	static Zion::ParticleSystem     *explosionParticles;
+	static Zion::ParticleSystem     *bombSparks;
+	static Zion::ParticleSystem     *smokeParticles;
 public:
 	static Zion::Renderer  renderer;
 	static std::map<const char *, Func>   functions;
@@ -57,6 +60,7 @@ public:
 	bool    addMaterial(const char *name, const char *path);
 	bool    addMap(const char *name, const char *path);
 	void    loadResources();
+	void    loadParticles();
 	void    gameLoop();
 
 	Zion::Window&               getGameWindow();

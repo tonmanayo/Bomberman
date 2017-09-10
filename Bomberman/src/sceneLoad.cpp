@@ -21,7 +21,11 @@ bool Scene::newGame(MainGame *game, std::string mapName)
 		else if (strSplits[0] == std::string("BgType"))
 			_backgroundType = strSplits[1];
 		else if (line[0] == 'R')
+		{
 			_loadNewGameLine(line);
+			_mapLength++;
+			_mapWidth = line.size();
+		}
 	}
 	_addBackground();
 	/// adding scene update to render loop functions

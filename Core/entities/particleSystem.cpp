@@ -2,13 +2,14 @@
 
 namespace       Zion
 {
-	ParticleSystem::ParticleSystem(float pps, float speed, float gravity, float lifeLength, float scale)
+	ParticleSystem::ParticleSystem(Material *material, float pps, float speed, float gravity, float lifeLength, float scale)
 	{
 		_pps = pps;
 		_averageSpeed = speed;
 		_gravity = gravity;
 		_lifeLength = lifeLength;
 		_scale = scale;
+		_material = material;
 	}
 
 	ParticleSystem::~ParticleSystem()
@@ -41,20 +42,20 @@ namespace       Zion
 		_scale = error * _averageSpeed;
 	}
 
-	void ParticleSystem::generateParticles(glm::vec3 centerPosition)
+	void ParticleSystem::generateParticles(glm::vec3 centerPosition, bool additive)
 	{
 		float   delta = Renderable::deltaTime;
 		float   particlesToCreate = _pps * delta;
 		int     count = (int)std::floor(particlesToCreate);
 		float   partialParticle = fmodf(particlesToCreate, 1);
 		for (int i = 0; i < count; i++)
-			emitParticle(centerPosition);
+			emitParticle(centerPosition, additive);
 		float r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
 		if (r < partialParticle)
-			emitParticle(centerPosition);
+			emitParticle(centerPosition, additive);
 	}
 
-	void ParticleSystem::emitParticle(glm::vec3 center)
+	void ParticleSystem::emitParticle(glm::vec3 center, bool additive)
 	{
 		glm::vec3   velocity;
 		if (_direction != glm::vec3())
@@ -65,7 +66,7 @@ namespace       Zion
 		velocity *=  generateValue(_averageSpeed, _speedError);
 		float   scale = generateValue(_scale, _scaleError);
 		float   lifeLength = generateValue(_lifeLength, _lifeError);
-		new Particle(center, velocity, _gravity, lifeLength, generateRotation(), scale);
+		new Particle(_material, center, velocity, _gravity, lifeLength, generateRotation(), scale, additive);
 
 		/// this is for simple particle system
 		/*float dirX = (float) static_cast <float> (rand()) / static_cast <float> (RAND_MAX) * 2.0f - 1.0f;

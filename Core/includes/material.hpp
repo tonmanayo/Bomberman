@@ -41,6 +41,7 @@ namespace Zion
 		Texture     texure;
 		glm::vec4   base_color = glm::vec4(1.0, 1.0, 1.0, 1.0);
 		glm::vec4   spec_color;
+		int         numRows = 1;
 
 		Material() = default;
 		~Material() = default;
