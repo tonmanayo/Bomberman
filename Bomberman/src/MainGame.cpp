@@ -1,4 +1,5 @@
 #include <MainGame.hpp>
+#include <menu.hpp>
 
 Zion::Renderer  MainGame::renderer;
 std::map<const char *, Func>    MainGame::functions;
@@ -155,6 +156,15 @@ void MainGame::gameLoop()
 	Zion::Window::frameStartTime = Zion::Window::startTime;
 	Zion::Window::frameChangeTime = 0.0f;
 	Zion::ParticleMaster::init(*getShader("particle"));
+
+	Zion::ParticleSystem *particleSystem = new Zion::ParticleSystem(200, 25, 0.3f, 4, 1);
+	particleSystem->randomizeRotation();
+	particleSystem->setDirection({0, 1, 0}, 0.1f);
+	particleSystem->setLifeError(0.1f);
+	particleSystem->setSpeedError(0.4f);
+	particleSystem->setScaleError(0.8f);
+
+	srand(0);
 	while (!_window.shouldClose())
 	{
 		auto currentTime = (float)glfwGetTime();
@@ -168,6 +178,7 @@ void MainGame::gameLoop()
 			if (!(bool)std::strcmp(func.first, "sceneUpdate"))
 				func.second.func(this, func.second.params);
 		}
+
 		viewMatrix = _camera->getViewMatrix();
 		viewPos = _camera->getCameraPosition();
 
@@ -175,8 +186,8 @@ void MainGame::gameLoop()
 		{
 			if (!shader.first.compare("gui"))
 				continue;
-			if (!shader.first.compare("particle"))
-				continue;
+			//if (!shader.first.compare("particle"))
+			//	continue;
 			shader.second->setUniformMat4((GLchar *)"view_matrix", viewMatrix);
 			shader.second->setUniform3f((GLchar *)"viewPos", viewPos);
 		}
@@ -187,9 +198,15 @@ void MainGame::gameLoop()
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		MainGame::renderer.render();
 
+		if (Menu::activeMenu != nullptr && Menu::activeMenu->_scene != nullptr)
+		{
+			if (Menu::activeMenu->_scene->getPlayer() != nullptr)
+				particleSystem->generateParticles(Menu::activeMenu->_scene->getPlayer()->getPosition());
+		}
+
 		/// render particles
 		Zion::ParticleMaster::update();
-		Zion::ParticleMaster::renderParticles(*_camera);
+		Zion::ParticleMaster::renderParticles(*_camera, viewMatrix);
 
 		/// render and update nanogui menu
 		functions["menuUpdate"].func(this, functions["menuUpdate"].params);

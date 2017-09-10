@@ -23,9 +23,9 @@ namespace   Zion
 		}
 	}
 
-	void ParticleMaster::renderParticles(Camera &camera)
+	void ParticleMaster::renderParticles(Camera &camera, glm::mat4 viewMat)
 	{
-		_renderer->render(_particles, camera);
+		_renderer->render(_particles, camera, viewMat);
 	}
 
 	void ParticleMaster::addParticle(Particle particle)

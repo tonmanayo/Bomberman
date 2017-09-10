@@ -276,7 +276,6 @@ void Menu::_createBackground(float width, float height)
 {
 	glm::mat4 viewMatrix = _mainGame->getGameCamera().getViewMatrix();
 	_mainGame->getShader("gui")->setUniformMat4((GLchar *)"view_matrix", viewMatrix);
-	_mainGame->getShader("particle")->setUniformMat4((GLchar *)"view_matrix", viewMatrix);
 	_menuBg = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 10, 6);
 	_menuBg->addTextureFromFile("resource/images/menu_bg.jpg");
 	_menuTitle = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 3, 1.5);

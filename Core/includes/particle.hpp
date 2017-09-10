@@ -47,7 +47,7 @@ namespace Zion
 		ParticleRenderer(Shader & shader);
 		~ParticleRenderer();
 
-		void        render(std::vector<Particle> particles, Camera camera);
+		void        render(std::vector<Particle> particles, Camera camera, glm::mat4 viewMat);
 		void        updateModelViewMatrix(glm::vec3 position, float rotation, float scale, glm::mat4 viewMatrix);
 	};
 
@@ -62,7 +62,40 @@ namespace Zion
 
 		static void        init(Shader & shader);
 		static void        update();
-		static void        renderParticles(Camera &camera);
+		static void        renderParticles(Camera &camera, glm::mat4 viewMat);
 		static void        addParticle(Particle particle);
+	};
+
+	class   ParticleSystem
+	{
+	private:
+		float       _pps;
+		float       _averageSpeed;
+		float       _gravity;
+		float       _lifeLength;
+		float       _scale;
+		float       _speedError = 0;
+		float       _lifeError = 0;
+		float       _scaleError = 0;
+		bool        _randomRotation = false;
+		glm::vec3   _direction;
+		float       _directionDeviation = 0;
+	public:
+		ParticleSystem(float pps, float speed, float gravity, float lifeLength, float scale);
+		~ParticleSystem();
+
+		void        setDirection(glm::vec3 direction, float deviation);
+		void        randomizeRotation();
+		void        setSpeedError(float error);
+		void        setLifeError(float error);
+		void        setScaleError(float error);
+		void        generateParticles(glm::vec3 centerPosition);
+		void        emitParticle(glm::vec3 center);
+		float       generateValue(float average, float errorMargin);
+		float       generateRotation();
+		glm::vec3   generateRandomUnitVector();
+
+	public:
+		static  glm::vec3   generateRandomUnitVectorWithinCone(glm::vec3 coneDirection, float angle);
 	};
 }

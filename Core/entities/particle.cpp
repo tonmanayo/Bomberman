@@ -14,8 +14,7 @@ namespace Zion {
 	}
 
 	Particle::~Particle()
-	{
-	}
+	{}
 
 	glm::vec3 Particle::getPosition()
 	{
@@ -34,11 +33,11 @@ namespace Zion {
 
 	bool Particle::update()
 	{
-		_velocity.y += GRAVITY * _gravityEffect * Window::frameChangeTime;
+		_velocity.y += GRAVITY * _gravityEffect * Zion::Renderable::deltaTime;
 		glm::vec3 change = glm::vec3(_velocity);
-		change *= Window::frameChangeTime;
+		change *= Zion::Renderable::deltaTime;
 		_position += change;
-		_timeElapsed += Window::frameChangeTime;
+		_timeElapsed += Zion::Renderable::deltaTime;
 		return _timeElapsed < _lifeLength;
 	}
 }
