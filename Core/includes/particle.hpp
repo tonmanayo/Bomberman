@@ -59,13 +59,27 @@ namespace Zion
 	{
 	private:
 		SquareSprite    *_quad;
-		Shader         _shader;
+		Shader          _shader;
+		GLuint          _vbo;
+		int             _pointer = 0;
+	private:
+		static  int     MAX_INSTANCES;
+		static  int     INSTANCE_DATA_LENGTH;
 	public:
 		ParticleRenderer(Shader & shader);
 		~ParticleRenderer();
 
 		void        render(std::map<Material *, std::vector<Particle>>& particles, Camera *camera, glm::mat4 viewMat);
-		void        updateModelViewMatrix(glm::vec3 position, float rotation, float scale, glm::mat4 viewMatrix);
+		void        updateModelViewMatrix(glm::vec3 position, float rotation, float scale,
+		                                  glm::mat4 viewMatrix, float *vboData);
+		void        bindTexture(Material *material, Particle& particle);
+		void        prepare();
+		void        finishRendering();
+		void        storeMatrix(glm::mat4 & matrix, float *vboData);
+		void        updateTexCoordInfo(Particle & particle, float *vboData);
+	public:
+		static void addInstanceAttribute(int vao, int vbo, int attribute, int dataSize,
+			int instancedDataLength, int offset);
 	};
 
 	class   ParticleMaster
@@ -95,6 +109,7 @@ namespace Zion
 		float       _speedError = 0;
 		float       _lifeError = 0;
 		float       _scaleError = 0;
+		float       _positionError = 0;
 		bool        _randomRotation = false;
 		glm::vec3   _direction;
 		float       _directionDeviation = 0;
@@ -108,6 +123,7 @@ namespace Zion
 		void        setSpeedError(float error);
 		void        setLifeError(float error);
 		void        setScaleError(float error);
+		void        setPositionError(float error);
 		void        generateParticles(glm::vec3 centerPosition, bool additive = false);
 		void        emitParticle(glm::vec3 center, bool additive);
 		float       generateValue(float average, float errorMargin);

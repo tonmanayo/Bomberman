@@ -88,7 +88,7 @@ public:
 
 	static bool     						PlayerExplosionCollision(glm::vec3 pos, Scene *scene);
 	static void 							enemiesExplosionCollision(glm::vec3 pos, Scene *scene);
-    static void     						renderExplosion(Scene *scene, const Bomb &bomb, MainGame *game);
+    static void     						renderExplosion(Scene *scene, Bomb &bomb, MainGame *game);
 
 public:
 	static	char	oppDir(char dir);

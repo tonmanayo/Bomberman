@@ -48,7 +48,6 @@ void Scene::updatePlayer(MainGame *game, Scene *scene) {
     }
     if (game->getGameWindow().isKeyPressed(GLFW_KEY_SPACE) && scene->_bomb.size() < 1 + scene->_player->getPowerBombNbr()) {
         scene->_addBomb(scene->_player->getPosition().x, scene->_player->getPosition().z);
-        MainGame::explosionParticles->generateParticles(scene->_player->getPosition(), true);
     }
     if (scene->worldEndLevel(scene->_player->getPosition(), scene)) {
         std::cout << "FINISHED LEVEL!!!\n";

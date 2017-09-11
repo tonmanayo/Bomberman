@@ -21,8 +21,7 @@ int		Scene::getDifficulty() {
 		return 10;
 	if (_difficulty == "Medium")
 		return 25;
-	if (_difficulty == "Hard")
-		return 100;
+	return 100;
 }
 void	Scene::setDifficulty(std::string difficulty) {
 	_difficulty = difficulty;

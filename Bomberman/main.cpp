@@ -1,6 +1,9 @@
 #include <iostream>
 #include <MainGame.hpp>
 #include <menu.hpp>
+#include <irrKlang.h>
+
+#pragma comment(lib, "irrKlang.lib")
 
 void    checkKeys(MainGame *game, std::vector<void *> params)
 {
@@ -22,6 +25,7 @@ int     main(int ac, char **av)
 {
 	MainGame    game;
 	Menu        menu;
+	irrklang::ISoundEngine* engine = irrklang::createIrrKlangDevice();
 
 	nanogui::init();
 	menu.initMenu(1280.0f, 760.0f, &game, false);
@@ -30,6 +34,8 @@ int     main(int ac, char **av)
 	srand(time(NULL));
 
 	MainGame::functions.insert(std::pair<const char *, Func>("checkKeys", {checkKeys, std::vector<void *>()}));
+	if (engine)
+		engine->play3D("resource/sounds/breakout.mp3", {0,0,0}, true, false, true);
 	game.gameLoop();
 	nanogui::shutdown();
 	return 0;

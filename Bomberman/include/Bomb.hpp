@@ -18,6 +18,7 @@ private:
     int         _id;
     bool        _exploded;
     bool        _explosionRemoved;
+	int         _explosionCount = 0;
 public:
     Bomb(glm::vec3  position, int id);
     virtual         ~Bomb();
@@ -31,7 +32,8 @@ public:
     void            setExploded(bool exploded);
     void            setExplosionRemoved(bool explosionRemoved);
     bool            getExplosionRemoved();
-
+	int             getExplosionCount(){ return _explosionCount; }
+	void            increaseExplosionCount(int val){ _explosionCount += val; }
 };
 
 #endif //GAME_BOMB_HPP

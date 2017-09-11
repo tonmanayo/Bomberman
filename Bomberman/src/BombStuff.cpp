@@ -31,7 +31,7 @@ void Scene::bombExplode(Scene *scene, const Bomb &bomb) {
     }
 }
 
-void Scene::renderExplosion(Scene *scene, const Bomb &bomb, MainGame *game) {
+void Scene::renderExplosion(Scene *scene, Bomb &bomb, MainGame *game) {
     int x = scene->getGridx(bomb.getPosition().x);
     int y = scene->getGridy(bomb.getPosition().z);
 
@@ -43,25 +43,52 @@ void Scene::renderExplosion(Scene *scene, const Bomb &bomb, MainGame *game) {
     bool r = true, l = true, u = true, d = true;
     Zion::Renderable *model;
 
-    model = game->getModel("explosion");
+	float   quarter = (float)HALF_GRID_BLOCK_SIZE / 2.0f;
+
+	glm::vec3 middle = glm::vec3(x, 0, y);
+	// renderFlameExplosion(middle);
+	MainGame::explosionUp->generateParticles(middle, true);
+	MainGame::explosionDown->generateParticles(middle, true);
+	MainGame::explosionLeft->generateParticles(middle, true);
+	MainGame::explosionRight->generateParticles(middle, true);
 
     for (int i = 0; i < 1 + scene->_player->getPowerExplosion(); ++i ) {
-        glm::vec3 middle = glm::vec3(x, 0, y);
+	    if (i > bomb.getExplosionCount())
+		    return bomb.increaseExplosionCount(i);
         glm::vec3 matup = glm::vec3(x, 0,  y - ((i + 1) * GRID_BLOCK_SIZE));
         glm::vec3 matdown = glm::vec3(x, 0,  y + (i + 1) * GRID_BLOCK_SIZE);
         glm::vec3 matleft = glm::vec3(x - ((i + 1)  * GRID_BLOCK_SIZE), 0,  y);
         glm::vec3 matright = glm::vec3(x + (i + 1) * GRID_BLOCK_SIZE, 0,  y);
         if (model != nullptr)
         {
-            renderFlameExplosion(middle);
             if (u)
-                renderFlameExplosion(matup);
+            {
+	            MainGame::explosionUp->generateParticles(matup, true);
+	            MainGame::explosionUp->generateParticles(matup + quarter, true);
+	            MainGame::explosionUp->generateParticles(matup - quarter, true);
+	            //renderFlameExplosion(matup);
+            }
             if (d)
-                renderFlameExplosion(matdown);
+            {
+	            MainGame::explosionDown->generateParticles(matdown, true);
+	            MainGame::explosionDown->generateParticles(matdown + quarter, true);
+	            MainGame::explosionDown->generateParticles(matdown - quarter, true);
+	            //renderFlameExplosion(matdown);
+            }
             if (l)
-                renderFlameExplosion(matleft);
+            {
+	            MainGame::explosionLeft->generateParticles(matleft, true);
+	            MainGame::explosionLeft->generateParticles(matleft + quarter, true);
+	            MainGame::explosionLeft->generateParticles(matleft - quarter, true);
+	            //renderFlameExplosion(matleft);
+            }
             if (r)
-                renderFlameExplosion(matright);
+            {
+	            MainGame::explosionRight->generateParticles(matright, true);
+	            MainGame::explosionRight->generateParticles(matright + quarter, true);
+	            MainGame::explosionRight->generateParticles(matright - quarter, true);
+	            //renderFlameExplosion(matright);
+            }
 
             if (scene->_blocks[yy - 1 - i][xx] != nullptr && d) {
                 d = false;
@@ -85,18 +112,18 @@ void    Scene::renderFlameExplosion(glm::vec3 flamePosition)
     float   half = (float)HALF_GRID_BLOCK_SIZE;
     float   quarter = half / 2.0f;
 
-    MainGame::explosionParticles->generateParticles(flamePosition, true);
+    //MainGame::explosionLeft->generateParticles(flamePosition, true);
     //top left
-    MainGame::explosionParticles->generateParticles({flamePosition.x - quarter, flamePosition.y, flamePosition.z - quarter}, true);
+    //MainGame::explosionParticles->generateParticles({flamePosition.x - quarter, flamePosition.y, flamePosition.z - quarter}, true);
     //MainGame::explosionParticles->generateParticles({flamePosition.x - half, flamePosition.y, flamePosition.z - half}, true);
     //down left
-    MainGame::explosionParticles->generateParticles({flamePosition.x - quarter, flamePosition.y, flamePosition.z + quarter}, true);
+    //MainGame::explosionParticles->generateParticles({flamePosition.x - quarter, flamePosition.y, flamePosition.z + quarter}, true);
     //MainGame::explosionParticles->generateParticles({flamePosition.x - half, flamePosition.y, flamePosition.z + half}, true);
     //down right
-    MainGame::explosionParticles->generateParticles({flamePosition.x + quarter, flamePosition.y, flamePosition.z + quarter}, true);
+    //MainGame::explosionParticles->generateParticles({flamePosition.x + quarter, flamePosition.y, flamePosition.z + quarter}, true);
     //MainGame::explosionParticles->generateParticles({flamePosition.x + half, flamePosition.y, flamePosition.z + half}, true);
     //top right
-    MainGame::explosionParticles->generateParticles({flamePosition.x + quarter, flamePosition.y, flamePosition.z - quarter}, true);
+   // MainGame::explosionParticles->generateParticles({flamePosition.x + quarter, flamePosition.y, flamePosition.z - quarter}, true);
     //MainGame::explosionParticles->generateParticles({flamePosition.x + half, flamePosition.y, flamePosition.z - half}, true);
     //top
     //MainGame::explosionParticles->generateParticles({flamePosition.x, flamePosition.y, flamePosition.z - half}, true);

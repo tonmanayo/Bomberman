@@ -34,12 +34,17 @@ namespace       Zion
 
 	void ParticleSystem::setLifeError(float error)
 	{
-		_lifeError = error * _averageSpeed;
+		_lifeError = error * _lifeLength;
 	}
 
 	void ParticleSystem::setScaleError(float error)
 	{
-		_scale = error * _averageSpeed;
+		_scaleError = error * _scale;
+	}
+
+	void ParticleSystem::setPositionError(float error)
+	{
+		_positionError = error;
 	}
 
 	void ParticleSystem::generateParticles(glm::vec3 centerPosition, bool additive)
@@ -58,7 +63,7 @@ namespace       Zion
 	void ParticleSystem::emitParticle(glm::vec3 center, bool additive)
 	{
 		glm::vec3   velocity;
-		if (_direction != glm::vec3())
+		if (_direction != glm::vec3(0))
 			velocity = generateRandomUnitVectorWithinCone(_direction, _directionDeviation);
 		else
 			velocity = generateRandomUnitVector();
@@ -66,6 +71,9 @@ namespace       Zion
 		velocity *=  generateValue(_averageSpeed, _speedError);
 		float   scale = generateValue(_scale, _scaleError);
 		float   lifeLength = generateValue(_lifeLength, _lifeError);
+		center.x = generateValue(center.x, _positionError * _positionError);
+		center.y = generateValue(center.y, _positionError * _positionError);
+		center.z = generateValue(center.z, _positionError * _positionError);
 		new Particle(_material, center, velocity, _gravity, lifeLength, generateRotation(), scale, additive);
 
 		/// this is for simple particle system

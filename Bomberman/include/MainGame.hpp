@@ -37,7 +37,10 @@ private:
 	std::map<std::string, std::vector<std::string> *> _levelMaps;
 public:
 	static MainGame                 *game;
-	static Zion::ParticleSystem     *explosionParticles;
+	static Zion::ParticleSystem     *explosionLeft;
+	static Zion::ParticleSystem     *explosionRight;
+	static Zion::ParticleSystem     *explosionUp;
+	static Zion::ParticleSystem     *explosionDown;
 	static Zion::ParticleSystem     *bombSparks;
 	static Zion::ParticleSystem     *smokeParticles;
 public:

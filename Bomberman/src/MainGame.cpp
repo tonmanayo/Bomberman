@@ -4,7 +4,10 @@
 Zion::Renderer  MainGame::renderer;
 std::map<const char *, Func>    MainGame::functions;
 MainGame*    MainGame::game;
-Zion::ParticleSystem*     MainGame::explosionParticles;
+Zion::ParticleSystem*     MainGame::explosionLeft;
+Zion::ParticleSystem*     MainGame::explosionRight;
+Zion::ParticleSystem*     MainGame::explosionUp;
+Zion::ParticleSystem*     MainGame::explosionDown;
 Zion::ParticleSystem*     MainGame::bombSparks;
 Zion::ParticleSystem*     MainGame::smokeParticles;
 
@@ -169,13 +172,39 @@ void MainGame::loadResources()
 void MainGame::loadParticles()
 {
 	Zion::ParticleMaster::init(*getShader("particle"));
+	/// explosion to the left
+	explosionLeft = new Zion::ParticleSystem(getMaterial("explosion2"), 20, 2, 0.1f, 1.6, 0.5f);
+	explosionLeft->randomizeRotation();
+	explosionLeft->setDirection({-1, 0, 0}, 0.1f);
+	explosionLeft->setLifeError(0.3f);
+	explosionLeft->setSpeedError(0.25f);
+	explosionLeft->setScaleError(0.5f);
+	explosionLeft->setPositionError(0.7f);
+	/// explosion to the right
+	explosionRight = new Zion::ParticleSystem(getMaterial("explosion2"), 20, 2, 0.1f, 1.6, 0.5f);
+	explosionRight->randomizeRotation();
+	explosionRight->setDirection({1, 0, 0}, 0.1f);
+	explosionRight->setLifeError(0.3f);
+	explosionRight->setSpeedError(0.25f);
+	explosionRight->setScaleError(0.5f);
+	explosionRight->setPositionError(0.7f);
+	/// explosion up
+	explosionUp = new Zion::ParticleSystem(getMaterial("explosion2"), 20, 2, 0.1f, 1.6, 0.5f);
+	explosionUp->randomizeRotation();
+	explosionUp->setDirection({0, 0, -1}, 0.1f);
+	explosionUp->setLifeError(0.3f);
+	explosionUp->setSpeedError(0.25f);
+	explosionUp->setScaleError(0.5f);
+	explosionUp->setPositionError(0.7f);
+	/// explosion down
+	explosionDown = new Zion::ParticleSystem(getMaterial("explosion2"), 20, 2, 0.1f, 1.6, 0.5f);
+	explosionDown->randomizeRotation();
+	explosionDown->setDirection({0, 0, 1}, 0.1f);
+	explosionDown->setLifeError(0.3f);
+	explosionDown->setSpeedError(0.25f);
+	explosionDown->setScaleError(0.5f);
+	explosionDown->setPositionError(0.7f);
 
-	explosionParticles = new Zion::ParticleSystem(getMaterial("explosion2"), 70, 4, 0.1f, 1, 1.2f);
-	explosionParticles->randomizeRotation();
-	explosionParticles->setDirection({0, 1, 0}, 0.1f);
-	explosionParticles->setLifeError(0.1f);
-	explosionParticles->setSpeedError(0.25f);
-	explosionParticles->setScaleError(0.5f);
 }
 
 void MainGame::gameLoop()
