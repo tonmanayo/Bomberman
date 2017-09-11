@@ -1,0 +1,13 @@
+sound:
+  volume: 100.0
+  mute: No
+graphics:
+  resolution: "1920x1080"
+  resolutionList:
+    - "1280x720"
+    - "1920x1080"
+controls:
+  up: "UpArrow"
+  down: "DownArrow"
+  right: "RightArrow"
+  left: "LeftArrow"

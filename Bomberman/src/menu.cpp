@@ -1,5 +1,6 @@
 #include <menu.hpp>
 
+
 Menu*   Menu::activeMenu = nullptr;
 
 Menu::Menu(float width, float height, MainGame *mainGame, bool fullScreen, bool resizable)
@@ -29,6 +30,9 @@ bool Menu::initMenu(float width, float height, MainGame *mainGame, bool fullScre
 {
 	_mainGame = mainGame;
 	Menu::activeMenu = this;
+
+	this->config = YAML::LoadFile("../config.yaml");
+
 	_screen = new nanogui::Screen({width, height}, "Bomberman", resizable, fullScreen,
 		8, 8, 24, 8, 4, 4, 1);
 	_screen->setVisible(true);
@@ -44,12 +48,13 @@ bool Menu::initMenu(float width, float height, MainGame *mainGame, bool fullScre
 bool Menu::buildMenuWindows(float width, float height)
 {
 	_createStartMenu(width, height);
-	_createNewGameMenu(width, height);
+	_createOptionsMenu(width, height);
 	_createPauseGameMenu(width, height);
 	_createBackground(width, height);
 	_createExitWindow(width, height);
+	_createNewGameMenu(width, height);
 	_createLoadGameMenu(width, height);
-	//_screen->performLayout();
+	_screen->performLayout();
 	return true;
 }
 
@@ -81,6 +86,10 @@ void Menu::_createStartMenu(float width, float height)
 	nanogui::Button *optionsButton = new nanogui::Button(_startMenu, "Options");
 	optionsButton->setPosition({50, 180});
 	optionsButton->setSize({150, 50});
+	optionsButton->setCallback([] {
+		activeMenu->_startMenu->setVisible(false);
+		activeMenu->_optionsMenu->setVisible(true);
+	});
 	/// exit button
 	nanogui::Button *exitButton = new nanogui::Button(_startMenu, "Exit");
 	exitButton->setPosition({50, 250});
@@ -180,6 +189,86 @@ void Menu::_createLoadGameMenu(float width, float height)
 		activeMenu->_loadGameMenu->setVisible(false);
 		activeMenu->_startMenu->setVisible(true);
 	});
+}
+
+void Menu::_createOptionsMenu(float width, float height)
+{
+	_optionsMenu = new nanogui::Window(_screen, "Options");
+
+	_optionsMenu->setLayout(new nanogui::GroupLayout());
+	_optionsMenu->setWidth(300);
+	_optionsMenu->setHeight(500);
+	_optionsMenu->setVisible(false);
+	_optionsMenu->center();
+
+	nanogui::GridLayout *layout =
+			new nanogui::GridLayout(nanogui::Orientation::Horizontal, 2,
+						   nanogui::Alignment::Middle, 15, 5);
+	layout->setColAlignment(
+			{ nanogui::Alignment::Maximum, nanogui::Alignment::Fill });
+	layout->setSpacing(0, 10);
+	_optionsMenu->setLayout(layout);
+
+	//Volume Slider
+	nanogui::Slider *volumeSlider = new nanogui::Slider(this->_optionsMenu);
+	volumeSlider->setValue(this->config["sound"]["volume"].as<float>());
+//	volumeSlider->setPosition({10, 50});
+//	volumeSlider->setSize({200, 20});
+	volumeSlider->setVisible(true);
+
+	//Text box to show value of Volume Slider
+	nanogui::TextBox *volumeTxtBox = new nanogui::TextBox(this->_optionsMenu);
+//	volumeTxtBox->setPosition({200, 50});
+//	volumeTxtBox->setSize({20, 20});
+	volumeTxtBox->setAlignment(nanogui::TextBox::Alignment::Right);
+	volumeTxtBox->setVisible(true);
+	volumeTxtBox->setValue(std::to_string(volumeSlider->value()));
+	volumeTxtBox->setUnits("%");
+	volumeSlider->setCallback([volumeTxtBox](float value) {
+		volumeTxtBox->setValue(std::to_string(static_cast<int>(value * 100)));
+	});
+	volumeSlider->setFinalCallback([&](float value) {
+		std::cout << "Final volumeSlider value: " << static_cast<int>(value) << std::endl;
+	});
+
+	//temporary spacer
+	nanogui::Widget *muteSpacer = new nanogui::Widget(this->_optionsMenu);
+
+	nanogui::CheckBox *muteCb = new nanogui::CheckBox(this->_optionsMenu, "Mute",
+													  [](bool state) { std::cout << "Mute: " << state << std::endl; }
+	);
+//	volumeTxtBox->setPosition({50, 100});
+//	volumeTxtBox->setSize({150, 50});
+	volumeTxtBox->setVisible(true);
+
+	//temporary spacer
+	nanogui::Widget *resSpacer = new nanogui::Widget(this->_optionsMenu);
+
+	std::vector<std::string> resList = this->config["graphics"]["resolutionList"].as<std::vector<std::string>>();
+	nanogui::ComboBox *resCoBo = new nanogui::ComboBox(this->_optionsMenu, this->config["graphics"]["resolutionList"].as<std::vector<std::string>>());
+
+
+
+
+	nanogui::Button *applyButton = new nanogui::Button(this->_optionsMenu, "Apply");
+//	applyButton->setPosition({50, 180});
+//	applyButton->setSize({150, 50});
+	applyButton->setCallback([=]{
+		this->config["sound"]["volume"] = std::to_string(volumeSlider->value());
+		this->config["sound"]["mute"] = muteCb->checked();
+		this->config["graphics"]["resolution"] = this->config["graphics"]["resolutionList"][resCoBo->selectedIndex()];
+	});
+
+
+
+	nanogui::Button *backButton = new nanogui::Button(this->_optionsMenu, "Back");
+//	backButton->setPosition({50, 180});
+	backButton->setSize({150, 50});
+	backButton->setCallback([]{
+		activeMenu->_optionsMenu->setVisible(false);
+		activeMenu->_startMenu->setVisible(true);
+	});
+
 }
 
 void Menu::_createPauseGameMenu(float width, float height)
@@ -331,3 +420,15 @@ void Menu::exitButtonCallBack()
 	activeMenu->_startMenu->setVisible(false);
 	activeMenu->_exitWindow->setVisible(true);
 }
+
+//void Menu::backButtonCallBack()
+//{
+//	activeMenu->_optionsMenu->setVisible(false);
+//	activeMenu->_exitWindow->setVisible(true);
+//}
+
+//void Menu::applyButtonCallBack()
+//{
+//	this->config["sound"]["volume"] = std::to_string(volumeSlider->value());
+//	this->config["sound"]["mute"] = muteCb->checked();
+//}

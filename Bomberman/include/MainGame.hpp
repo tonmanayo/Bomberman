@@ -20,6 +20,8 @@ struct  Func
 	std::vector<void *> params;
 };
 
+
+
 class   MainGame
 {
 private:
@@ -62,6 +64,7 @@ public:
 	void    loadResources();
 	void    loadParticles();
 	void    gameLoop();
+	void	gameLoopMenu();
 
 	Zion::Window&               getGameWindow();
 	Zion::Camera&               getGameCamera();

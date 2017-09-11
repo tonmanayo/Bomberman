@@ -6,10 +6,14 @@
 #include <nanogui/button.h>
 #include <nanogui/label.h>
 #include <nanogui/textbox.h>
-#include <nanogui/vscrollpanel.h>
+#include <nanogui/slider.h>
 #include <nanogui/checkbox.h>
+#include <nanogui/combobox.h>
 #include <MainGame.hpp>
 #include <scene.hpp>
+#include <yaml-cpp/yaml.h>
+#include <nanogui/vscrollpanel.h>
+#include <MainGame.hpp>
 #include <sys/types.h>
 #include <dirent.h>
 #include <stdio.h>
@@ -19,6 +23,7 @@ class   Menu
 private:
 	nanogui::Screen     *_screen;
 	nanogui::Window     *_startMenu;
+	nanogui::Window		*_optionsMenu;
 	nanogui::Window     *_newGameMenu;
 	nanogui::Window     *_loadGameMenu;
 	nanogui::Window     *_pauseGameMenu;
@@ -39,6 +44,8 @@ private:
 	void    _createExitWindow(float width, float height);
 public:
 	Scene               *_scene = nullptr;
+	void	_createOptionsMenu(float width, float height);
+
 
 public:
 	Menu() = default;
@@ -53,6 +60,7 @@ public:
 	bool    buildMenuWindows(float width, float height);
 
 	GLFWwindow  *getGlfwWindow();
+	YAML::Node	config;
 public:
 	static Menu    *activeMenu;
 	static void    updateMenu(MainGame *game, std::vector<void *> params);
