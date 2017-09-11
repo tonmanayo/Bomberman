@@ -10,6 +10,7 @@ private:
 	int 			_powerBombExplosion;
 	int 			_powerBombNumber;
 	float 			_powerSpeed;
+	int 			_hp;
 public:
     glm::vec3   playerStart;
     glm::vec3  	playerScale;
@@ -17,6 +18,10 @@ public:
     char   setDirection(char c);
 
     char   getDirection();
+
+	int getHP();
+	void incHP();
+	void decHP(int );
 
 public:
 	Player(int id, std::string type);

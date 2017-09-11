@@ -66,7 +66,7 @@ bool Scene::enemyWorldCollisionRight(glm::vec3 pos, glm::vec3 offset, Scene *sce
     return false;
 }
 
-char oppDir(char dir) {
+char Scene::oppDir(char dir) {
     if (dir == 'L')
         dir = 'R';
     if (dir == 'R')
@@ -89,15 +89,8 @@ void Scene::updateEnemy(MainGame *game, Scene *scene) {
         int x = scene->getWorldx(scene->_enemies[i]->getPosition().x);
 
 
-        if (scene->enemyPlayerCollision(scene->_enemies[i]->getPosition(), scene)) {
-            std::cout << "dead\n";
-            scene->_player->reset();
-            glm::vec3 pos = scene->_player->getPosition();
-            scene->_game->getGameCamera().setCameraPosition(glm::vec3(pos.x + 0, pos.y + 10, pos.z + 6));
-            scene->_game->getGameCamera().setCameraTarget(scene->_player->getPosition());
-            scene->_game->getGameCamera().setCameraUp(glm::vec3(0, 1, 0));
-            MainGame::renderer.applyTransformationToRenderable("player", scene->_player->getId(),
-                                                               scene->_player->getTransformation());
+        if (scene->enemyPlayerCollision(scene->_enemies[i], scene)) {
+            scene->_player->decHP(scene->getDifficulty());
             break;
         }
         if (enemyWorldCollisionDown(scene->_enemies[i]->getPosition(), {0.0f, 0.0f, 0.0f}, scene)) {

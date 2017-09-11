@@ -17,15 +17,16 @@
 class   Scene
 {
 private:
-	MainGame    			*_game;
+	MainGame    							*_game;
 
-	int         			_enemyCount = 0;
-	Player      			*_player;
-	std::vector<Bomb>		_bomb;
-	std::vector<Player *>   _enemies;
-	std::vector<std::string> *_map;
-	std::map<int, std::map<int, Block *>>    _blocks;
-	bool				   _endLevel = false;
+	int         							_enemyCount = 0;
+	Player      							*_player;
+	std::vector<Bomb>						_bomb;
+	std::vector<Player *>   				_enemies;
+	std::vector<std::string> 				*_map;
+	std::map<int, std::map<int, Block *>>   _blocks;
+	bool				   					_endLevel = false;
+	std::string								_difficulty = "Easy";
 private:
 	std::string     _floorType;
 	std::string     _wallType;
@@ -33,8 +34,8 @@ private:
 	std::string     _breakableBlockType;
 	std::string     _backgroundType;
 	std::string     _mapName;
-	float  z = GRID_START_Z;
-	int gridY = 0;
+	float  			z = GRID_START_Z;
+	int 			gridY = 0;
 public:
 	size_t   _mapWidth = 0;
 	size_t   _mapLength = 0;
@@ -57,37 +58,40 @@ public:
 	Scene&  operator=(const Scene & rhs);
 	~Scene();
 
-    std::map<int, std::map<int, Block *>> getBlocks() {return _blocks;};
-    int          	getWorldx(float x);
-    int             getWorldy(float y);
-    float           getGridx(float x);
-    float           getGridy(float y);
+    std::map<int, std::map<int, Block *>> 	getBlocks() {return _blocks;};
+    int          							getWorldx(float x);
+    int  						            getWorldy(float y);
+    float           						getGridx(float x);
+    float           						getGridy(float y);
 
-    void 			CalcEndPos();
-	bool            saveGame(std::string fileName);
-	bool	        loadGame(MainGame *game, std::string fileName);
-	bool            newGame(MainGame *game, std::string mapName);
-	static bool     worldCollisionUp(glm::vec3 pos, glm::vec3 offset, Scene *scene);
-	static bool     worldCollisionDown(glm::vec3 pos, glm::vec3 offset, Scene *scene);
-	static bool     worldCollisionLeft(glm::vec3 pos, glm::vec3 offset, Scene *scene);
-	static bool     worldCollisionRight(glm::vec3 pos, glm::vec3 offset, Scene *scene);
-	static bool     checkBlockCollision(glm::vec3 blockPos, glm::vec3 entityPos);
-	static bool     checkBlockCollision1(glm::vec3 blockPos, glm::vec3 entityPos);
+	int 									getDifficulty();
+	void									setDifficulty(std::string difficulty);
 
-    static bool     worldEndLevel(glm::vec3 pos, Scene *scene);
+    void 									CalcEndPos();
+	bool            						saveGame(std::string fileName);
+	bool	        						loadGame(MainGame *game, std::string fileName);
+	bool            						newGame(MainGame *game, std::string mapName);
+	static bool     						worldCollisionUp(glm::vec3 pos, glm::vec3 offset, Scene *scene);
+	static bool     						worldCollisionDown(glm::vec3 pos, glm::vec3 offset, Scene *scene);
+	static bool     						worldCollisionLeft(glm::vec3 pos, glm::vec3 offset, Scene *scene);
+	static bool     						worldCollisionRight(glm::vec3 pos, glm::vec3 offset, Scene *scene);
+	static bool     						checkBlockCollision(glm::vec3 blockPos, glm::vec3 entityPos);
+	static bool     						checkBlockCollision1(glm::vec3 blockPos, glm::vec3 entityPos);
 
-    static void     worldGetPower(glm::vec3 pos, Scene *scene);
+    static bool     						worldEndLevel(glm::vec3 pos, Scene *scene);
+    static void     						worldGetPower(glm::vec3 pos, Scene *scene);
 
-    static bool     breakableBrickCollisionDown(glm::vec3 pos, Scene *scene);
-    static bool     breakableBrickCollisionUp(glm::vec3 pos, Scene *scene);
-    static bool     breakableBrickCollisionRight(glm::vec3 pos, Scene *scene);
-    static bool     breakableBrickCollisionLeft(glm::vec3 pos, Scene *scene);
+    static bool     						breakableBrickCollisionDown(glm::vec3 pos, Scene *scene);
+    static bool     						breakableBrickCollisionUp(glm::vec3 pos, Scene *scene);
+    static bool     						breakableBrickCollisionRight(glm::vec3 pos, Scene *scene);
+    static bool     						breakableBrickCollisionLeft(glm::vec3 pos, Scene *scene);
 
-	static bool     PlayerExplosionCollision(glm::vec3 pos, Scene *scene);
-	static void 	enemiesExplosionCollision(glm::vec3 pos, Scene *scene);
-    static void     renderExplosion(Scene *scene, const Bomb &bomb, MainGame *game);
+	static bool     						PlayerExplosionCollision(glm::vec3 pos, Scene *scene);
+	static void 							enemiesExplosionCollision(glm::vec3 pos, Scene *scene);
+    static void     						renderExplosion(Scene *scene, const Bomb &bomb, MainGame *game);
 
 public:
+	static	char	oppDir(char dir);
 	static  void	updateBomb(MainGame *game, Scene *scene);
 	static  void    updatePlayer(MainGame *game, Scene *scene);
     static  void    updateEnemy(MainGame *game,  Scene *scene);
@@ -102,7 +106,7 @@ public:
 
 	static void     renderFlameExplosion(glm::vec3 flamePosition);
 
-    bool            enemyPlayerCollision(glm::vec3 pos, Scene *scene);
+    bool            enemyPlayerCollision(Player *enemy, Scene *scene);
 	Player          *getPlayer(){ return _player; }
 
 

@@ -5,6 +5,25 @@ Player::Player(int id, std::string type) : NonStatic(id, type){
 	_powerBombExplosion = 0;
 	_powerBombNumber = 0;
 	_powerSpeed = 0;
+	_hp = 100;
+}
+
+int Player::getHP() {
+	return _hp;
+}
+
+void Player::incHP() {
+	if (_hp + 25 < 100)
+		_hp += 25;
+	else if (_hp + 25 > 100)
+		_hp = 100;
+}
+
+void Player::decHP(int x) {
+	if (_hp - x > 0)
+		_hp -= x;
+	else if (_hp - x <= 0)
+		_hp = 0;
 }
 
 void Player::incBombExplosion() {

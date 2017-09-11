@@ -16,6 +16,18 @@ Scene::~Scene()
 	}
 }
 
+int		Scene::getDifficulty() {
+	if (_difficulty == "Easy")
+		return 10;
+	if (_difficulty == "Medium")
+		return 25;
+	if (_difficulty == "Hard")
+		return 100;
+}
+void	Scene::setDifficulty(std::string difficulty) {
+	_difficulty = difficulty;
+}
+
 void Scene::_addBackground()
 {
 	glm::mat4 tmp = glm::translate(glm::mat4(), {0, -1.3, -5});
@@ -242,15 +254,28 @@ void Scene::sceneUpdate(MainGame *game, std::vector<void *> params)
 	}
 }
 
-bool Scene::enemyPlayerCollision(glm::vec3 pos, Scene *scene){
-	int enemyX = scene->getWorldx(pos.x);
-	int enemyY = scene->getWorldy(pos.z);
+bool Scene::enemyPlayerCollision(Player *enemy, Scene *scene){
+	int enemyX = scene->getWorldx(enemy->getPosition().x);
+	int enemyY = scene->getWorldy(enemy->getPosition().z);
 
 	int playerx = scene->getWorldx(scene->_player->getPosition().x);
 	int playery = scene->getWorldy(scene->_player->getPosition().z);
 
 	if (playery == enemyY && playerx == enemyX)
 	{
+			const float MIN_DISTANCE = HALF_PLAYER_SIZE * 2.0f;
+			glm::vec3 centrePos1 = enemy->getPosition() + glm::vec3(HALF_PLAYER_SIZE);
+			glm::vec3 centrePos2 = scene->_player->getPosition() + glm::vec3(HALF_PLAYER_SIZE);
+			glm::vec3 vecDist = centrePos1 - centrePos2;
+			float dist = glm::length(vecDist);
+			float collisionDepth = MIN_DISTANCE - dist;
+
+			if (collisionDepth > 0) {
+				glm::vec3 collisionDepthVec = glm::normalize(vecDist) * collisionDepth;
+				enemy->setPosition(enemy->getPosition() += collisionDepthVec / 2.0f);                                      // Push them in opposite directions
+				scene->_player->setPosition(scene->_player->getPosition() -= collisionDepthVec / 2.0f);
+				enemy->setDirection(scene->oppDir(enemy->getDirection()));
+			}
 		return true;
 	}
 	return false;

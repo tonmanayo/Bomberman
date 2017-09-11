@@ -53,6 +53,11 @@ void Scene::updatePlayer(MainGame *game, Scene *scene) {
     if (scene->worldEndLevel(scene->_player->getPosition(), scene)) {
         std::cout << "FINISHED LEVEL!!!\n";
     }
+
+    if (scene->_player->getHP() == 0) {
+        std::cout << "dead\n";
+        game->setGameState(GAMESTATE::MENU);
+    }
     worldGetPower(scene->_player->getPosition(), scene);
 }
 
@@ -66,13 +71,8 @@ void Scene::updateBomb(MainGame *game, Scene *scene) {
             renderExplosion(scene, scene->_bomb[i], game);
             enemiesExplosionCollision(scene->_bomb[i].getPosition(), scene);
             if (scene->PlayerExplosionCollision(scene->_bomb[i].getPosition(), scene)) {
-                std::cout << "dead\n";
-                scene->_player->reset();
-                glm::vec3 pos = scene->_player->getPosition();
-                scene->_game->getGameCamera().setCameraPosition(glm::vec3(pos.x + 0, pos.y + 10, pos.z + 6));
-                scene->_game->getGameCamera().setCameraTarget(scene->_player->getPosition());
-                scene->_game->getGameCamera().setCameraUp(glm::vec3(0, 1, 0));
-                MainGame::renderer.applyTransformationToRenderable("player", scene->_player->getId(), scene->_player->getTransformation());
+                scene->_player->decHP(scene->getDifficulty());
+                std::cout << "hurt\n";
             }
             MainGame::renderer.removeFromRender("bomb", scene->_bomb[i].getId());
         }
