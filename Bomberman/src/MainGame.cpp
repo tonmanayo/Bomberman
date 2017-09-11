@@ -31,12 +31,16 @@ MainGame& MainGame::operator=(const MainGame &rhs)
 
 bool MainGame::initGame(GLFWwindow *window, float width, float height, float fov)
 {
+	glm::mat4       projectionMatrix;
+
 	_window.initWindow(window, "Bomberman", (int)width, (int)height);
 	return initGame2(width, height, fov);
 }
 
 bool MainGame::initGame(float width, float height, float fov)
 {
+	glm::mat4       projectionMatrix;
+
 	srand(time(NULL));
 	/// Creating glfw window
 	_width = width;
@@ -130,7 +134,7 @@ void MainGame::loadResources()
 	addModel("bomb", *getShader("basic"), "resource/models/blocks/bomb.gltf");
 	addModel("floor1", *getShader("basic"), "resource/models/blocks/floor1.gltf");
 	addModel("floor2", *getShader("basic"), "resource/models/blocks/ManHole.gltf");
-	addModel("bomberman", *getShader("basic"), "resource/models/bomberman/bomberman.gltf");
+	addModel("bomberman", *getShader("anime"), "resource/models/bomberman/test1.glb");
 	addModel("onile", *getShader("anime"), "resource/models/bomberman/Onile.glb");
     addModel("lavaBackground", *getShader("basic"), "resource/models/bomberman/lavaBackground.gltf");
 	addMap("map1", "resource/maps/map1");

@@ -75,7 +75,7 @@ namespace Zion
 		_renderStatic(_objects["present"]);
 		_renderStatic(_objects["explosion4"]);
 		_renderAnime(_objects["enemy1"], "enemy1");
-		_renderStatic(_objects["player"]);
+		_renderAnime(_objects["player"], "player");
 	}
 
 	void Renderer::_renderBreakable(std::vector<RendererObj> &objects)

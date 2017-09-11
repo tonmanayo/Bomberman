@@ -54,7 +54,7 @@ bool Menu::buildMenuWindows(float width, float height)
 	_createExitWindow(width, height);
 	_createNewGameMenu(width, height);
 	_createLoadGameMenu(width, height);
-	_screen->performLayout();
+	//_screen->performLayout();
 	return true;
 }
 
