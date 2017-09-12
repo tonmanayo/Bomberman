@@ -61,14 +61,14 @@ void main() {
 
     Light light;
 
-    light.position = vec3(-0.2f, -1.0f, 3.3f);
+    light.position = vec3(-5.2f, -5.0f, 9.3f);
     light.ambient = vec3(0.3f, 0.24f, 0.14f);
     light.diffuse = vec3(0.7f, 0.42f, 0.26f);
     light.specular = vec3(0.5f, 0.5f, 0.5f);
 
-    light.ambient = vec3(0.7f, 0.7f, 0.7f);
-    light.diffuse = vec3(0.7f, 0.7f, 0.7f);
-    light.specular = vec3(0.7f, 0.7f, 0.7f);
+    //light.ambient = vec3(0.7f, 0.7f, 0.7f);
+    //light.diffuse = vec3(0.7f, 0.7f, 0.7f);
+    //light.specular = vec3(0.7f, 0.7f, 0.7f);
 
     int i = 0;
     for (; i < 10; i++)

@@ -154,7 +154,8 @@ namespace Zion
 		{
 			model->loadAnimationMatrix(obj.animeType, obj.animeTime);
 			obj.model->simpleRender(obj.matrix);
-			increaseAnimeTime(type, obj.id, 0.002f);
+			if (type != std::string("player"))
+				increaseAnimeTime(type, obj.id, 2.0f * Zion::Renderable::deltaTime);
 		}
 		model->unloadMaterialFromShader();
 		model->disableShader();
@@ -234,7 +235,7 @@ namespace Zion
 		}
 	}
 
-	void Renderer::increaseAnimeTime(std::string& type, int id, float val)
+	void Renderer::increaseAnimeTime(std::string type, int id, float val)
 	{
 		try {
 			std::vector<RendererObj>& objects = _objects[type];

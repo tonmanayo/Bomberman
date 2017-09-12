@@ -2,12 +2,16 @@
 #include <random>
 
 void Scene::updatePlayer(MainGame *game, Scene *scene) {
+
+	float   velocity =  (1.0f + scene->_player->getPowerSpeed()) * Zion::Renderable::deltaTime;
+
     if (game->getGameWindow().isKeyPressed(GLFW_KEY_S)) {
         if (!worldCollisionDown(scene->_player->getPosition(), {0, 0, (5.0f + scene->_player->getPowerSpeed()) * Zion::Renderable::deltaTime}, scene))
             scene->_player->changePosZ((5.0f + scene->_player->getPowerSpeed()) * Zion::Renderable::deltaTime);
         scene->_player->rotate(glm::radians(0.0f), {0, 1, 0});
         MainGame::renderer.applyTransformationToRenderable(scene->_player->getType(), scene->_player->getId(),
                                                            scene->_player->getTransformation());
+	    game->renderer.increaseAnimeTime("player", 0, velocity);
         glm::vec3 pos = scene->_player->getPosition();
         scene->_game->getGameCamera().setCameraPosition(glm::vec3(pos.x, pos.y + 10, pos.z + 4));
         scene->_game->getGameCamera().setCameraTarget(scene->_player->getPosition());
@@ -19,6 +23,7 @@ void Scene::updatePlayer(MainGame *game, Scene *scene) {
         scene->_player->rotate(glm::radians(180.0f), {0, 1, 0});
         MainGame::renderer.applyTransformationToRenderable(scene->_player->getType(), scene->_player->getId(),
                                                            scene->_player->getTransformation());
+	    game->renderer.increaseAnimeTime("player", 0, velocity);
         glm::vec3 pos = scene->_player->getPosition();
         scene->_game->getGameCamera().setCameraPosition(glm::vec3(pos.x, pos.y + 10, pos.z + 4));
         scene->_game->getGameCamera().setCameraTarget(scene->_player->getPosition());
@@ -30,6 +35,7 @@ void Scene::updatePlayer(MainGame *game, Scene *scene) {
         scene->_player->rotate(glm::radians(-90.0f), {0, 1, 0});
         MainGame::renderer.applyTransformationToRenderable(scene->_player->getType(), scene->_player->getId(),
                                                            scene->_player->getTransformation());
+	    game->renderer.increaseAnimeTime("player", 0, velocity);
         glm::vec3 pos = scene->_player->getPosition();
         scene->_game->getGameCamera().setCameraPosition(glm::vec3(pos.x + 0, pos.y + 10, pos.z + 4));
         scene->_game->getGameCamera().setCameraTarget(scene->_player->getPosition());
@@ -41,6 +47,7 @@ void Scene::updatePlayer(MainGame *game, Scene *scene) {
         scene->_player->rotate(glm::radians(90.0f), {0, 1, 0});
         MainGame::renderer.applyTransformationToRenderable(scene->_player->getType(), scene->_player->getId(),
                                                            scene->_player->getTransformation());
+	    game->renderer.increaseAnimeTime("player", 0, velocity);
         glm::vec3 pos = scene->_player->getPosition();
         scene->_game->getGameCamera().setCameraPosition(glm::vec3(pos.x + 0, pos.y + 10, pos.z + 4));
         scene->_game->getGameCamera().setCameraTarget(scene->_player->getPosition());

@@ -77,7 +77,7 @@ namespace Zion
 		void    removeGroup(std::string type);
 		void    removeAll();
 		void    applyTransformationToRenderable(std::string type, int id, glm::mat4 mat);
-		void    increaseAnimeTime(std::string& type, int id, float val);
+		void    increaseAnimeTime(std::string type, int id, float val);
 		void    render();
 	};
 }

@@ -131,26 +131,24 @@ bool MainGame::initGame2(float width, float height, float fov)
 
 void MainGame::loadResources()
 {
+	/// loading models
 	addModel("block1", *getShader("basic"), "resource/models/blocks/block1.gltf");
 	addModel("explosion", *getShader("basic"), "resource/models/blocks/fireBlock.gltf");
 	addModel("block2", *getShader("fire"), "resource/models/blocks/block2.gltf");
 	addModel("block3", *getShader("basic"), "resource/models/blocks/block3.gltf");
-	addModel("bomb", *getShader("basic"), "resource/models/blocks/bomb.gltf");
+	addModel("bomb", *getShader("basic"), "resource/models/others/bomb.gltf");
 	addModel("floor1", *getShader("basic"), "resource/models/blocks/floor1.gltf");
 	addModel("floor2", *getShader("basic"), "resource/models/blocks/ManHole.gltf");
-	//addModel("bomberman", *getShader("anime"), "resource/models/bomberman/test1.glb");
 	addModel("bomberman", *getShader("anime"), "resource/models/bomberman/bomberman1.glb");
 	addModel("onile", *getShader("anime"), "resource/models/bomberman/Onile.glb");
     addModel("lavaBackground", *getShader("basic"), "resource/models/bomberman/lavaBackground.gltf");
-	addMap("map1", "resource/maps/map1");
-	addMap("map2", "resource/maps/map2");
-
-    addModel("present", *getShader("basic"), "resource/models/blocks/present.gltf");
-    addModel("lemon", *getShader("basic"), "resource/models/blocks/lemon.gltf");
-    addModel("star", *getShader("basic"), "resource/models/blocks/star.gltf");
-
-    addMap("map1", "resource/maps/map1");
+	addModel("present", *getShader("basic"), "resource/models/blocks/present.gltf");
+	addModel("lemon", *getShader("basic"), "resource/models/blocks/lemon.gltf");
+	addModel("star", *getShader("basic"), "resource/models/blocks/star.gltf");
 	addModel("enemy1", *getShader("basic"), "resource/models/enemies/enemy2.gltf");
+	/// loading maps
+	addMap("map2", "resource/maps/map2");
+	/// loading materials
 	auto *mat = new Zion::Material();
 	mat->texure.loadTextureFromPath("resource/models/bomberman/OnileDiffuseColor.png");
 	auto *onileModel = (Zion::Model *)getModel("onile");

@@ -181,9 +181,7 @@ void Scene::_addEnemy(float x, float z)
 		Player *enemy = new Player(i, s);
 		enemy->modelType = "onile";
 		_enemies.push_back(enemy);
-		// _enemies.back()->setPosition(getGridx(x), 0, getGridy(z));
 		_enemies.back()->setPosition(glm::vec3{getGridx(x), 0, getGridy(z)});
-		// _enemies.back()->scale(glm::vec3(0.3, 0.3, 0.3));
 		_enemies.back()->playerStart = glm::vec3(getGridx(x), 0, getGridy(z));
 		MainGame::renderer.addToRender(_enemies.back()->getType(), _enemies.back()->getId(), model, _enemies.back()->getTransformation());
 		i++;
@@ -211,6 +209,7 @@ void Scene::_addBomb(float x, float z)
 		Block *block = new Block(i, "bomb", false);
 		_blocks[newy][newx] = block;
 		_blocks[newy][newx]->setPosition(x, 0, z);
+		_blocks[newy][newx]->scale({0.5, 0.5, 0.5});
 		_bomb.emplace_back(_player->getPosition(), i);
 		MainGame::renderer.addToRender("bomb", i, model, mat);
 		i++;

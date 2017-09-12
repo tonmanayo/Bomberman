@@ -1,6 +1,7 @@
 #pragma once
 
 #include <nonStatic.hpp>
+#include <MainGame.hpp>
 
 class   Player : public NonStatic
 {
