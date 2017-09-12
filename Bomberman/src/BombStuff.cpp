@@ -105,35 +105,3 @@ void Scene::renderExplosion(Scene *scene, Bomb &bomb, MainGame *game) {
         }
     }
 }
-
-
-void    Scene::renderFlameExplosion(glm::vec3 flamePosition)
-{
-    float   half = (float)HALF_GRID_BLOCK_SIZE;
-    float   quarter = half / 2.0f;
-
-    //MainGame::explosionLeft->generateParticles(flamePosition, true);
-    //top left
-    //MainGame::explosionParticles->generateParticles({flamePosition.x - quarter, flamePosition.y, flamePosition.z - quarter}, true);
-    //MainGame::explosionParticles->generateParticles({flamePosition.x - half, flamePosition.y, flamePosition.z - half}, true);
-    //down left
-    //MainGame::explosionParticles->generateParticles({flamePosition.x - quarter, flamePosition.y, flamePosition.z + quarter}, true);
-    //MainGame::explosionParticles->generateParticles({flamePosition.x - half, flamePosition.y, flamePosition.z + half}, true);
-    //down right
-    //MainGame::explosionParticles->generateParticles({flamePosition.x + quarter, flamePosition.y, flamePosition.z + quarter}, true);
-    //MainGame::explosionParticles->generateParticles({flamePosition.x + half, flamePosition.y, flamePosition.z + half}, true);
-    //top right
-   // MainGame::explosionParticles->generateParticles({flamePosition.x + quarter, flamePosition.y, flamePosition.z - quarter}, true);
-    //MainGame::explosionParticles->generateParticles({flamePosition.x + half, flamePosition.y, flamePosition.z - half}, true);
-    //top
-    //MainGame::explosionParticles->generateParticles({flamePosition.x, flamePosition.y, flamePosition.z - half}, true);
-    //down
-    //MainGame::explosionParticles->generateParticles({flamePosition.x, flamePosition.y, flamePosition.z + half}, true);
-    //MainGame::explosionParticles->generateParticles({flamePosition.x + quarter, flamePosition.y, flamePosition.z + half}, true);
-    //MainGame::explosionParticles->generateParticles({flamePosition.x - quarter, flamePosition.y, flamePosition.z + half}, true);
-    //left
-    //MainGame::explosionParticles->generateParticles({flamePosition.x - half, flamePosition.y, flamePosition.z}, true);
-    //right
-    //MainGame::explosionParticles->generateParticles({flamePosition.x + half, flamePosition.y, flamePosition.z}, true);
-
-}

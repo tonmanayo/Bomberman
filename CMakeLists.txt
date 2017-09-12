@@ -9,7 +9,7 @@ find_package(PkgConfig REQUIRED)
 # For compatitability with yaml
 set(CMAKE_MACOSX_RPATH 1)
 
-set(CMAKE_INSTALL_RPATH_USE_LINK_PATH ${PROJECT_SOURCE_DIR}/lib/irrKlang/*)
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH ${PROJECT_SOURCE_DIR}/lib)
 
 # Adding dependencies
 pkg_search_module(GLEW REQUIRED glew)
@@ -84,3 +84,10 @@ target_link_libraries(Bomberman ${PROJECT_SOURCE_DIR}/lib/irrKlang/lib/libirrkla
 if (APPLE)
     target_link_libraries(Bomberman ${OPENGL_FLAGS})
 endif()
+
+
+add_custom_command(TARGET Bomberman
+        PRE_BUILD
+        COMMAND install_name_tool -id "${PROJECT_SOURCE_DIR}/lib/irrKlang/lib/libirrklang.dylib"
+            ${PROJECT_SOURCE_DIR}/lib/irrKlang/lib/libirrklang.dylib
+        )
