@@ -142,10 +142,14 @@ void MainGame::loadResources()
 	addModel("bomberman", *getShader("anime"), "resource/models/bomberman/bomberman1.glb");
 	addModel("onile", *getShader("anime"), "resource/models/bomberman/Onile.glb");
     addModel("lavaBackground", *getShader("basic"), "resource/models/bomberman/lavaBackground.gltf");
-	addModel("present", *getShader("basic"), "resource/models/blocks/present.gltf");
-	addModel("lemon", *getShader("basic"), "resource/models/blocks/lemon.gltf");
-	addModel("star", *getShader("basic"), "resource/models/blocks/star.gltf");
+
+	addModel("heart", *getShader("basic"), "resource/models/powerUps/heart.glb");
+	addModel("present", *getShader("basic"), "resource/models/powerUps/present.gltf");
+	addModel("lemon", *getShader("basic"), "resource/models/powerUps/lemon.gltf");
+	addModel("star", *getShader("basic"), "resource/models/powerUps/star.gltf");
+
 	addModel("enemy1", *getShader("basic"), "resource/models/enemies/enemy2.gltf");
+
 	/// loading maps
 	addMap("map2", "resource/maps/map2");
 	/// loading materials
@@ -153,6 +157,7 @@ void MainGame::loadResources()
 	mat->texure.loadTextureFromPath("resource/models/bomberman/OnileDiffuseColor.png");
 	auto *onileModel = (Zion::Model *)getModel("onile");
 	onileModel->addMaterial(0, *mat);
+
 	addMaterial("fireBlock", "resource/images/fireTex.png");
 	addMaterial("flame1", "resource/images/flame1.png");
 	addMaterial("particleAtlas", "resource/images/particleAtlas.png");

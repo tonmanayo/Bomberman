@@ -20,28 +20,35 @@ void Scene::worldGetPower(glm::vec3 pos, Scene *scene)
 	int x = scene->getWorldx(pos.x);
 	int y = scene->getWorldy(pos.z);
 
-	if (scene->_blocks[y][x] != nullptr && scene->_blocks[y][x]->getPowerUp())
-	{
-		if (scene->_blocks[y][x]->getPowerName() == "PowerBombNbrInc") {
-			scene->_player->incBombNbr();
-			std::cout << "Got: "<< scene->_player->getPowerBombNbr() <<" POWER Bomb inc!\n";
-			MainGame::renderer.removeFromRender("present", scene->_blocks[y][x]->getId());
-			delete scene->_blocks[y][x];
-			scene->_blocks[y][x] = nullptr;
-		} else if (scene->_blocks[y][x]->getPowerName() == "PowerBombExplosionInc") {
+	if (scene->_blocks[y][x] != nullptr && scene->_blocks[y][x]->getPowerUp()) {
+        if (scene->_blocks[y][x]->getPowerName() == "PowerBombNbrInc") {
+            scene->_player->incBombNbr();
+            std::cout << "Got: " << scene->_player->getPowerBombNbr() << " POWER Bomb inc!\n";
+            MainGame::renderer.removeFromRender("present", scene->_blocks[y][x]->getId());
+            delete scene->_blocks[y][x];
+            scene->_blocks[y][x] = nullptr;
+        } else if (scene->_blocks[y][x]->getPowerName() == "PowerBombExplosionInc") {
             scene->_player->incBombExplosion();
             std::cout << "GotPOWER Bomb explosion inc!\n";
-			MainGame::renderer.removeFromRender("lemon", scene->_blocks[y][x]->getId());
-			delete scene->_blocks[y][x];
+            MainGame::renderer.removeFromRender("lemon", scene->_blocks[y][x]->getId());
+            delete scene->_blocks[y][x];
             scene->_blocks[y][x] = nullptr;
         } else if (scene->_blocks[y][x]->getPowerName() == "PowerSpeed") {
-			scene->_player->incBombSpeed();
-			std::cout << "GotPOWER Speed!\n";
-			MainGame::renderer.removeFromRender("star", scene->_blocks[y][x]->getId());
-			delete scene->_blocks[y][x];
-			scene->_blocks[y][x] = nullptr;
+            scene->_player->incPowerSpeed();
+            scene->inctPowerSpeed();
+            std::cout << "GotPOWER Speed!\n";
+            MainGame::renderer.removeFromRender("star", scene->_blocks[y][x]->getId());
+            delete scene->_blocks[y][x];
+            scene->_blocks[y][x] = nullptr;
+        } else if (scene->_blocks[y][x]->getPowerName() == "PowerHeart") {
+            scene->_player->incHP();
+            std::cout << "GotPOWER Heart!\n";
+            MainGame::renderer.removeFromRender("heart", scene->_blocks[y][x]->getId());
+            delete scene->_blocks[y][x];
+            scene->_blocks[y][x] = nullptr;
         }
-	}
+    }
+
 }
 
 bool Scene::worldCollisionDown(glm::vec3 pos, glm::vec3 offset, Scene *scene)

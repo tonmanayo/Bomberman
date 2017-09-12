@@ -23,7 +23,7 @@ int		Scene::getDifficulty() {
 		return 25;
 	return 100;
 }
-void	Scene::setDifficulty(std::string difficulty) {
+void	Scene::setDifficulty(const std::string &difficulty) {
 	_difficulty = difficulty;
 }
 
@@ -52,10 +52,10 @@ void Scene::_addWall(float x, float z, int xx, int yy)
 
 
 void Scene::_addPowerUps(float x, float z, int xx, int yy) {
-    char powerUp[6] = {'F', 'G', 'B', 'O', 'O', 'O' };              // F - fire range B - Multiple bombs S - player speed increase
+    char powerUp[8] = {'F', 'G', 'B', 'H', 'O', 'O', '0', '0' };              // F - fire range B - Multiple bombs S - player speed increase
     std::random_device r;
     std::default_random_engine e1(r());
-    std::uniform_int_distribution<int> uniform_dist(0, 2);
+    std::uniform_int_distribution<int> uniform_dist(0, 7);
     int randNbr = uniform_dist(e1);
     glm::mat4 mat = glm::translate(glm::mat4(), glm::vec3(x, 0, z));
 
@@ -79,6 +79,18 @@ void Scene::_addPowerUps(float x, float z, int xx, int yy) {
         if (present != nullptr)
         {
             MainGame::renderer.addToRender("present", _blocks[yy][xx]->getId() , present, mat);
+        }
+    }
+
+    if (powerUp[randNbr] == 'H' && !_blocks[yy][xx]->getEndMap()) {
+        _blocks[yy][xx]->setPowerName("PowerHeart");
+        _blocks[yy][xx]->setPowerUp(true);
+        glm::mat4 scale = glm::scale(glm::mat4(), glm::vec3(0.3f,0.3f,0.3f));
+        mat = mat * scale;
+        Zion::Renderable *present = _game->getModel("heart");
+        if (present != nullptr)
+        {
+            MainGame::renderer.addToRender("heart", _blocks[yy][xx]->getId() , present, mat);
         }
     }
 
@@ -279,3 +291,10 @@ bool Scene::enemyPlayerCollision(Player *enemy, Scene *scene){
 	return false;
 }
 
+int 									Scene::getPowerSpeed () {
+	return _powerSpeed;
+}
+
+void 									Scene::inctPowerSpeed() {
+	_powerSpeed++;
+}
