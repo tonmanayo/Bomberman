@@ -374,6 +374,9 @@ void Menu::_createBackground(float width, float height)
 	_menuBg->addTextureFromFile("resource/images/menu_bg.jpg");
 	_menuTitle = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 3, 1.5);
 	_menuTitle->addTextureFromFile("resource/images/title1.png");
+	/// adding life heart logo
+	_heart = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 0.2, 0.2);
+	_heart->addTextureFromFile("resource/images/heart.png");
 }
 
 GLFWwindow* Menu::getGlfwWindow()
@@ -396,6 +399,9 @@ void Menu::updateMenu(MainGame *game, std::vector<void *> params)
 	else if (state == GAMESTATE::PAUSE)
 	{
 		menu->_screen->drawWidgets();
+	}else if (state == GAMESTATE::GAME)
+	{
+		menu->_heart->render(glm::translate(glm::mat4(), {-3.9, 1.9, 0}));
 	}
 }
 

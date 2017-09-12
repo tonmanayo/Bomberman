@@ -33,6 +33,7 @@ private:
 	MainGame            *_mainGame;
 	Zion::SquareSprite  *_menuBg;
 	Zion::SquareSprite  *_menuTitle;
+	Zion::SquareSprite  *_heart;
 	std::string         _saveFileName;
 private:
 	static irrklang::ISoundSource    *_menuMusic;
