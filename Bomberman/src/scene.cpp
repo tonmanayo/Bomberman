@@ -158,7 +158,7 @@ void Scene::_addPlayer(float x, float z)
 	{
 		_player = new Player(0, "player");
 		_player->setPosition(glm::vec3{x, 0, z});
-		_player->scale(glm::vec3(0.3, 0.3, 0.3));
+		_player->scale(glm::vec3(0.7, 0.7, 0.7));
 		_player->playerStart = glm::vec3(x, 0, z);
 		MainGame::renderer.addToRender(_player->getType(), _player->getId(), model, _player->getTransformation());
 	}

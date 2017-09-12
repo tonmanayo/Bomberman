@@ -93,9 +93,9 @@ void Scene::updateEnemy(MainGame *game, Scene *scene) {
             scene->_player->decHP(scene->getDifficulty());
             break;
         }
-        if (enemyWorldCollisionDown(scene->_enemies[i]->getPosition(), {0.0f, 0.0f, 0.0f}, scene)) {
+        if (enemyWorldCollisionDown(scene->_enemies[i]->getPosition(), {0.0f, 0.0f, 2.0f * Zion::Renderable::deltaTime}, scene)) {
             collision = true;
-            scene->_enemies[i]->changePosZ(-0.01f);
+            scene->_enemies[i]->changePosZ(-2.0f * Zion::Renderable::deltaTime);
             dir[0] = 'U';
             dir[1] = 'R';
             dir[2] = 'L';
@@ -111,14 +111,14 @@ void Scene::updateEnemy(MainGame *game, Scene *scene) {
 
             }
         }
-        if (enemyWorldCollisionUp(scene->_enemies[i]->getPosition(), {0.0f, 0.0f, -0.0f}, scene)) {
+        if (enemyWorldCollisionUp(scene->_enemies[i]->getPosition(), {0.0f, 0.0f, -2.0f * Zion::Renderable::deltaTime}, scene)) {
             collision = true;
-            scene->_enemies[i]->changePosZ(0.01f);
+            scene->_enemies[i]->changePosZ(2.0f * Zion::Renderable::deltaTime);
 
             dir[0] = 'D';
             dir[1] = 'R';
             dir[2] = 'L';
-            scene->_enemies[i]->changePosZ(0.01f);
+            scene->_enemies[i]->changePosZ(5.0f * Zion::Renderable::deltaTime);
             if (scene->_blocks[y - 1][x] != nullptr) {
                 dir[0] = 'R';
             }
@@ -128,9 +128,9 @@ void Scene::updateEnemy(MainGame *game, Scene *scene) {
             if (scene->_blocks[y][x - 1] != nullptr) {
                 dir[2] = 'D';
             }
-        } else if (enemyWorldCollisionRight(scene->_enemies[i]->getPosition(), {0.0f, 0.0f, 0.0f}, scene)) {
+        } else if (enemyWorldCollisionRight(scene->_enemies[i]->getPosition(), {2.0f * Zion::Renderable::deltaTime, 0.0f, 0.0f}, scene)) {
             collision = true;
-            scene->_enemies[i]->changePosX(-0.01f);
+            scene->_enemies[i]->changePosX(-2.0f * Zion::Renderable::deltaTime);
 
             dir[0] = 'L';
             dir[1] = 'U';
@@ -145,9 +145,9 @@ void Scene::updateEnemy(MainGame *game, Scene *scene) {
             if (scene->_blocks[y - 1][x] != nullptr) {
                 dir[2] = 'U';
             }
-        } else if (enemyWorldCollisionLeft(scene->_enemies[i]->getPosition(), {-0.0f, 0.0f, 0.0f}, scene)) {
+        } else if (enemyWorldCollisionLeft(scene->_enemies[i]->getPosition(), {-2.0f * Zion::Renderable::deltaTime, 0.0f, 0.0f}, scene)) {
             collision = true;
-            scene->_enemies[i]->changePosX(0.01f);
+            scene->_enemies[i]->changePosX(2.0f * Zion::Renderable::deltaTime);
 
             dir[0] = 'R';
             dir[1] = 'D';
@@ -190,17 +190,17 @@ void Scene::updateEnemy(MainGame *game, Scene *scene) {
         }
 
             if (scene->_enemies[i]->getDirection() == 'D') {
-                scene->_enemies[i]->changePosZ(0.01f);
+                scene->_enemies[i]->changePosZ(2.0f * Zion::Renderable::deltaTime);
                 scene->_enemies[i]->rotate(glm::radians(0.0f), {0, 1, 0});
             } else if (scene->_enemies[i]->getDirection() == 'U') {
                 scene->_enemies[i]->rotate(glm::radians(180.0f), {0, 1, 0});
-                scene->_enemies[i]->changePosZ(-0.01f);
+                scene->_enemies[i]->changePosZ(-2.0f * Zion::Renderable::deltaTime);
             } else if (scene->_enemies[i]->getDirection() == 'L') {
                 scene->_enemies[i]->rotate(glm::radians(-90.0f), {0, 1, 0});
-                scene->_enemies[i]->changePosX(-0.01f);
+                scene->_enemies[i]->changePosX(-2.0f * Zion::Renderable::deltaTime);
             } else if (scene->_enemies[i]->getDirection() == 'R') {
                 scene->_enemies[i]->rotate(glm::radians(90.0f), {0, 1, 0});
-                scene->_enemies[i]->changePosX(0.01f);
+                scene->_enemies[i]->changePosX(2.0f * Zion::Renderable::deltaTime);
             }
             MainGame::renderer.applyTransformationToRenderable(scene->_enemies[i]->getType(),
                                                                scene->_enemies[i]->getId(),

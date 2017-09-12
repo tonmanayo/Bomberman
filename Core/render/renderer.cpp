@@ -154,7 +154,7 @@ namespace Zion
 		{
 			model->loadAnimationMatrix(obj.animeType, obj.animeTime);
 			obj.model->simpleRender(obj.matrix);
-			increaseAnimeTime(type, obj.id, 0.008f);
+			increaseAnimeTime(type, obj.id, 0.002f);
 		}
 		model->unloadMaterialFromShader();
 		model->disableShader();

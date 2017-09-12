@@ -3,12 +3,18 @@
 #include <zion.h>
 #include <fstream>
 #include <unistd.h>
+#include <irrKlang.h>
+
+#pragma comment(lib, "irrKlang.lib")
 
 enum GAMESTATE
 {
 	MENU,
 	PAUSE,
-	GAME
+	GAME,
+	START,
+	NEXTLEVEL,
+	DIED
 };
 
 class   MainGame;
@@ -19,8 +25,6 @@ struct  Func
 	void    (*func)(MainGame*, std::vector<void *>);
 	std::vector<void *> params;
 };
-
-
 
 class   MainGame
 {
@@ -43,6 +47,7 @@ public:
 	static Zion::ParticleSystem     *explosionDown;
 	static Zion::ParticleSystem     *bombSparks;
 	static Zion::ParticleSystem     *smokeParticles;
+	static irrklang::ISoundEngine   *soundEngine;
 public:
 	static Zion::Renderer  renderer;
 	static std::map<const char *, Func>   functions;

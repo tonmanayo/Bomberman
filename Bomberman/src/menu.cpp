@@ -2,6 +2,7 @@
 
 
 Menu*   Menu::activeMenu = nullptr;
+irrklang::ISoundSource*    Menu::_menuMusic;
 
 Menu::Menu(float width, float height, MainGame *mainGame, bool fullScreen, bool resizable)
 {
@@ -42,6 +43,8 @@ bool Menu::initMenu(float width, float height, MainGame *mainGame, bool fullScre
 	std::vector<void *> params;
 	params.push_back(this);
 	MainGame::functions.insert(std::pair<const char *, Func>("menuUpdate", {Menu::updateMenu, params}));
+	if (MainGame::soundEngine)
+		_menuMusic = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/breakout.mp3");
 	return true;
 }
 
@@ -128,6 +131,7 @@ void Menu::_createNewGameMenu(float width, float height)
 		activeMenu->_scene = new Scene();
 		activeMenu->_scene->newGame(activeMenu->_mainGame, "map2");
 		activeMenu->_scene->saveGame(activeMenu->_saveFileName);
+		Menu::stopMenuMusic();
 	});
 	/// cancel button
 	nanogui::Button *cancel = new nanogui::Button(_newGameMenu, "Cancel");
@@ -175,6 +179,7 @@ void Menu::_createLoadGameMenu(float width, float height)
 				activeMenu->_saveFileName = lab->caption();
 				activeMenu->_scene = new Scene();
 				activeMenu->_scene->loadGame(activeMenu->_mainGame, activeMenu->_saveFileName);
+				Menu::stopMenuMusic();
 			});
 			i++;
 		}
@@ -421,14 +426,14 @@ void Menu::exitButtonCallBack()
 	activeMenu->_exitWindow->setVisible(true);
 }
 
-//void Menu::backButtonCallBack()
-//{
-//	activeMenu->_optionsMenu->setVisible(false);
-//	activeMenu->_exitWindow->setVisible(true);
-//}
+void Menu::playMenuMusic()
+{
+	if (MainGame::soundEngine)
+		MainGame::soundEngine->play2D(_menuMusic, true);
+}
 
-//void Menu::applyButtonCallBack()
-//{
-//	this->config["sound"]["volume"] = std::to_string(volumeSlider->value());
-//	this->config["sound"]["mute"] = muteCb->checked();
-//}
+void Menu::stopMenuMusic()
+{
+	if (MainGame::soundEngine)
+		MainGame::soundEngine->removeSoundSource(_menuMusic);
+}

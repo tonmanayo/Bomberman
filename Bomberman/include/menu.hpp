@@ -33,8 +33,9 @@ private:
 	MainGame            *_mainGame;
 	Zion::SquareSprite  *_menuBg;
 	Zion::SquareSprite  *_menuTitle;
-	//Scene               *_scene = nullptr;
 	std::string         _saveFileName;
+private:
+	static irrklang::ISoundSource    *_menuMusic;
 private:
 	void    _createStartMenu(float width, float height);
 	void    _createNewGameMenu(float width, float height);
@@ -69,4 +70,6 @@ public:
 	static bool     mouseCallback(int button, int action, int mod);
 	static bool     cursorPositionCallback(int xpos, int ypos);
 	static bool     keyCallback(int key, int scancode, int action, int mods);
+	static void     playMenuMusic();
+	static void     stopMenuMusic();
 };

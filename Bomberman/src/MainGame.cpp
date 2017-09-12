@@ -10,6 +10,7 @@ Zion::ParticleSystem*     MainGame::explosionUp;
 Zion::ParticleSystem*     MainGame::explosionDown;
 Zion::ParticleSystem*     MainGame::bombSparks;
 Zion::ParticleSystem*     MainGame::smokeParticles;
+irrklang::ISoundEngine*   MainGame::soundEngine;
 
 std::string MainGame::getNameFromPath(const char *path)
 {
@@ -137,7 +138,8 @@ void MainGame::loadResources()
 	addModel("bomb", *getShader("basic"), "resource/models/blocks/bomb.gltf");
 	addModel("floor1", *getShader("basic"), "resource/models/blocks/floor1.gltf");
 	addModel("floor2", *getShader("basic"), "resource/models/blocks/ManHole.gltf");
-	addModel("bomberman", *getShader("anime"), "resource/models/bomberman/test1.glb");
+	//addModel("bomberman", *getShader("anime"), "resource/models/bomberman/test1.glb");
+	addModel("bomberman", *getShader("anime"), "resource/models/bomberman/bomberman1.glb");
 	addModel("onile", *getShader("anime"), "resource/models/bomberman/Onile.glb");
     addModel("lavaBackground", *getShader("basic"), "resource/models/bomberman/lavaBackground.gltf");
 	addMap("map1", "resource/maps/map1");
@@ -173,7 +175,7 @@ void MainGame::loadParticles()
 {
 	Zion::ParticleMaster::init(*getShader("particle"));
 	/// explosion to the left
-	explosionLeft = new Zion::ParticleSystem(getMaterial("explosion2"), 20, 2, 0.1f, 1.6, 0.5f);
+	explosionLeft = new Zion::ParticleSystem(getMaterial("explosion2"), 10, 2, 0.1f, 1.6, 0.5f);
 	explosionLeft->randomizeRotation();
 	explosionLeft->setDirection({-1, 0, 0}, 0.1f);
 	explosionLeft->setLifeError(0.3f);
@@ -181,7 +183,7 @@ void MainGame::loadParticles()
 	explosionLeft->setScaleError(0.5f);
 	explosionLeft->setPositionError(0.7f);
 	/// explosion to the right
-	explosionRight = new Zion::ParticleSystem(getMaterial("explosion2"), 20, 2, 0.1f, 1.6, 0.5f);
+	explosionRight = new Zion::ParticleSystem(getMaterial("explosion2"), 10, 2, 0.1f, 1.6, 0.5f);
 	explosionRight->randomizeRotation();
 	explosionRight->setDirection({1, 0, 0}, 0.1f);
 	explosionRight->setLifeError(0.3f);
@@ -189,7 +191,7 @@ void MainGame::loadParticles()
 	explosionRight->setScaleError(0.5f);
 	explosionRight->setPositionError(0.7f);
 	/// explosion up
-	explosionUp = new Zion::ParticleSystem(getMaterial("explosion2"), 20, 2, 0.1f, 1.6, 0.5f);
+	explosionUp = new Zion::ParticleSystem(getMaterial("explosion2"), 10, 2, 0.1f, 1.6, 0.5f);
 	explosionUp->randomizeRotation();
 	explosionUp->setDirection({0, 0, -1}, 0.1f);
 	explosionUp->setLifeError(0.3f);
@@ -197,7 +199,7 @@ void MainGame::loadParticles()
 	explosionUp->setScaleError(0.5f);
 	explosionUp->setPositionError(0.7f);
 	/// explosion down
-	explosionDown = new Zion::ParticleSystem(getMaterial("explosion2"), 20, 2, 0.1f, 1.6, 0.5f);
+	explosionDown = new Zion::ParticleSystem(getMaterial("explosion2"), 10, 2, 0.1f, 1.6, 0.5f);
 	explosionDown->randomizeRotation();
 	explosionDown->setDirection({0, 0, 1}, 0.1f);
 	explosionDown->setLifeError(0.3f);
@@ -218,6 +220,7 @@ void MainGame::gameLoop()
 	Zion::Window::frameChangeTime = 0.0f;
 
 	srand(0);
+	Menu::playMenuMusic();
 	while (!_window.shouldClose())
 	{
 		auto currentTime = (float)glfwGetTime();
