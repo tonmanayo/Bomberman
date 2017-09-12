@@ -55,10 +55,9 @@ if (APPLE)
 endif()
 
 add_subdirectory(lib/nanogui)
-add_subdirectory(ext/yaml-cpp)
+add_subdirectory(lib/yaml-cpp)
 include_directories(lib/nanogui/include
-        ${PROJECT_SOURCE_DIR}/ext/yaml-cpp/include
-        ${PROJECT_SOURCE_DIR}/ext/yaml-cpp
+        ${PROJECT_SOURCE_DIR}/lib/yaml-cpp/include
         lib/irrKlang/include)
 include_directories(${NANOGUI_EXTRA_INCS})
 add_definitions(${NANOGUI_EXTRA_DEFS})
