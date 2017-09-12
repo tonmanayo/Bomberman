@@ -214,6 +214,7 @@ void Scene::_addBomb(float x, float z)
 		return;
 	}
 	glm::mat4 mat = glm::translate(glm::mat4(), glm::vec3(x, 0, z));
+	mat = glm::scale(mat, {0.6, 0.6, 0.6});
 	Zion::Renderable *model = _game->getModel("bomb");
 
 	if (model != nullptr)
@@ -221,7 +222,6 @@ void Scene::_addBomb(float x, float z)
 		Block *block = new Block(i, "bomb", false);
 		_blocks[newy][newx] = block;
 		_blocks[newy][newx]->setPosition(x, 0, z);
-		_blocks[newy][newx]->scale({0.5, 0.5, 0.5});
 		_bomb.emplace_back(_player->getPosition(), i);
 		MainGame::renderer.addToRender("bomb", i, model, mat);
 		i++;
