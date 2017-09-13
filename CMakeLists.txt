@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 project(game)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 
 find_package(OpenGL REQUIRED)
 find_package(PkgConfig REQUIRED)
@@ -10,6 +10,11 @@ find_package(PkgConfig REQUIRED)
 set(CMAKE_MACOSX_RPATH 1)
 
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH ${PROJECT_SOURCE_DIR}/lib)
+
+execute_process(COMMAND git clone --recursive https://github.com/wjakob/nanogui.git
+        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/lib)
+execute_process(COMMAND git clone https://github.com/jbeder/yaml-cpp.git
+        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/lib)
 
 # Adding dependencies
 pkg_search_module(GLEW REQUIRED glew)

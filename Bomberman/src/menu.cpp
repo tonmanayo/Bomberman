@@ -1,29 +1,23 @@
 #include <menu.hpp>
 
-
-Menu*   Menu::activeMenu = nullptr;
-irrklang::ISoundSource*    Menu::_menuMusic;
+Menu*                       Menu::activeMenu = nullptr;
+irrklang::ISoundSource*     Menu::_menuMusic;
+bool                        Menu::isFullScreen = false;
+int                         Menu::windowWidth = 1280;
+int                         Menu::windowHeight = 760;
+nanogui::Label              *Menu::title = nullptr;
+MainMenu                    Menu::mainMenu = MainMenu();
+StoryModeMenu               Menu::storyModeMenu = StoryModeMenu();
 
 Menu::Menu(float width, float height, MainGame *mainGame, bool fullScreen, bool resizable)
 {
 	initMenu(width, height, mainGame, fullScreen, resizable);
 }
 
-Menu::Menu(const Menu &rhs)
-{
-	*this = rhs;
-}
+Menu::Menu(const Menu &rhs) { *this = rhs; }
 
 Menu& Menu::operator=(const Menu &rhs)
 {
-	if (this != &rhs)
-	{
-		_screen = rhs._screen;
-		_newGameMenu = rhs._newGameMenu;
-		_startMenu = rhs._startMenu;
-		_pauseGameMenu = rhs._pauseGameMenu;
-		_mainGame = rhs._mainGame;
-	}
 	return *this;
 }
 
@@ -31,11 +25,8 @@ bool Menu::initMenu(float width, float height, MainGame *mainGame, bool fullScre
 {
 	_mainGame = mainGame;
 	Menu::activeMenu = this;
-
-	this->config = YAML::LoadFile("../config.yaml");
-
-	_screen = new nanogui::Screen({width, height}, "Bomberman", resizable, fullScreen,
-		8, 8, 24, 8, 4, 4, 1);
+    this->config = YAML::LoadFile("../config.yaml");
+    _screen = new nanogui::Screen({width, height}, "Bomberman", resizable, fullScreen, 8, 8, 24, 8, 4, 4, 1);
 	_screen->setVisible(true);
 	Zion::Input::mouseCallback2 = Menu::mouseCallback;
 	Zion::Input::cursorPositionCallback2 = Menu::cursorPositionCallback;
@@ -45,37 +36,97 @@ bool Menu::initMenu(float width, float height, MainGame *mainGame, bool fullScre
 	MainGame::functions.insert(std::pair<const char *, Func>("menuUpdate", {Menu::updateMenu, params}));
 	if (MainGame::soundEngine)
 		_menuMusic = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/breakout.mp3");
+    /// getting the screen width and height
+    if (Menu::isFullScreen)
+    {
+        const GLFWvidmode* mode = glfwGetVideoMode(glfwGetWindowMonitor(_screen->glfwWindow()));
+        Menu::windowWidth = mode->width;
+        Menu:windowHeight = mode->height;
+    }
+    else
+        glfwGetWindowSize(_screen->glfwWindow(), &Menu::windowWidth, &Menu::windowHeight);
 	return true;
 }
 
-bool Menu::buildMenuWindows(float width, float height)
+bool Menu::buildMenuWindows()
 {
-	_createStartMenu(width, height);
-	_createOptionsMenu(width, height);
-	_createPauseGameMenu(width, height);
-	_createBackground(width, height);
-	_createExitWindow(width, height);
-	_createNewGameMenu(width, height);
-	_createLoadGameMenu(width, height);
+    createBackground();
+	createMainMenu();
+    createStoryMenu();
+	//createOptionsMenu();
+	//createPauseGameMenu();
+	createExitWindow();
+	//createNewGameMenu();
+	//createLoadGameMenu();
+	//_screen->performLayout();
 	return true;
 }
 
-void Menu::_createStartMenu(float width, float height)
+void Menu::createMainMenu()
 {
-	/// Main menu label
-	_title = new nanogui::Label(_screen, "Main Menu", "sans-bold", 50);
-	_title->setPosition({0, 20});
-	_title->setSize({width, 40});
-	//_title->setColor(nanogui::Color({1, 0, 0}, 0));
-	/// start menu
-	_startMenu = new nanogui::Window(_screen, "");
-	_startMenu->setLayout(new nanogui::GroupLayout());
-	_startMenu->setWidth(250);
-	_startMenu->setHeight(320);
-	_startMenu->setVisible(true);
-	_startMenu->center();
+    Menu::mainMenu.buttonTheme = new nanogui::Theme(_screen->nvgContext());
+    Menu::mainMenu.buttonTheme->mButtonFontSize = 35;
+    Menu::mainMenu.buttonTheme->mFontNormal = 30;
+    Menu::mainMenu.buttonTheme->mFontBold = 0;
+    Menu::mainMenu.buttonTheme->mTextColor = {230, 230, 230, 255};
+    Menu::mainMenu.buttonTheme->mButtonGradientTopUnfocused = {69, 82, 130, 255};
+    Menu::mainMenu.buttonTheme->mButtonGradientBotUnfocused = {40, 48, 76, 255};
+    Menu::mainMenu.buttonTheme->mButtonGradientTopFocused = {248, 96, 73, 255};
+    Menu::mainMenu.buttonTheme->mButtonGradientBotFocused = {176, 33, 26, 255};
+    Menu::mainMenu.buttonTheme->mButtonGradientTopPushed = {193, 39, 24, 255};
+    Menu::mainMenu.buttonTheme->mButtonGradientBotPushed = {186, 36, 26, 255};
+    Menu::mainMenu.buttonTheme->mButtonCornerRadius = 10;
+    Menu::mainMenu.buttonTheme->mBorderDark = {0, 0, 0, 0};
+    Menu::mainMenu.buttonTheme->mBorderLight = {0, 0, 0, 0};
+    Menu::mainMenu.buttonTheme->mBorderMedium = {0, 0, 0, 0};
+    Menu::mainMenu.buttonTheme->mDropShadow = {0, 0, 0, 255};
+
+    /// dimensions and positions for buttons
+    int     posY = Menu::windowHeight / 2;
+    int     buttonHeight = 50;
+    int     buttonWidth = Menu::windowWidth / 3;
+    buttonWidth = (buttonWidth > 450) ? 450 : buttonWidth;
+    int     offset = ((Menu::windowWidth / 2) - buttonWidth) / 2;
+    int     labelOffset = (Menu::windowWidth / 2) / 3;
+    int     posX = (Menu::windowWidth / 2) - (buttonWidth + offset);
+
+    Menu::title = new nanogui::Label(_screen, "Main Menu", "sans-bold", 45);
+    Menu::title->setSize({labelOffset, 40});
+    Menu::title->setPosition({labelOffset, posY - 90});
+    Menu::title->setVisible(true);
+    Menu::title->setColor({15, 3, 8, 255});
+
+    Menu::mainMenu.start = new nanogui::Button(_screen, "Story Mode");
+    Menu::mainMenu.start->setSize({buttonWidth, buttonHeight});
+    Menu::mainMenu.start->setPosition({posX, posY});
+    Menu::mainMenu.start->setTheme(Menu::mainMenu.buttonTheme);
+    Menu::mainMenu.start->setCallback([]{
+        Menu::mainMenu.changeView(false);
+        Menu::storyModeMenu.changeView(true);
+        Menu::title->setCaption("Story Mode");
+    });
+
+    posY += 60;
+    Menu::mainMenu.options = new nanogui::Button(_screen, "Options");
+    Menu::mainMenu.options->setSize({buttonWidth, buttonHeight});
+    Menu::mainMenu.options->setPosition({posX, posY});
+    Menu::mainMenu.options->setTheme(Menu::mainMenu.buttonTheme);
+
+    posY += 60;
+    Menu::mainMenu.exit = new nanogui::Button(_screen, "Exit");
+    Menu::mainMenu.exit->setSize({buttonWidth, buttonHeight});
+    Menu::mainMenu.exit->setPosition({posX, posY});
+    Menu::mainMenu.exit->setTheme(Menu::mainMenu.buttonTheme);
+    Menu::mainMenu.exit->setCallback([]{
+        Menu::mainMenu.changeView(false);
+        activeMenu->_exitWindow->setVisible(true);
+    });
+
+
+    Menu::mainMenu.changeView(true);
+
 	/// new game button
-	nanogui::Button *startButton = new nanogui::Button(_startMenu, "New Game");
+	/*nanogui::Button *startButton = new nanogui::Button(_startMenu, "New Game");
 	startButton->setPosition({50, 40});
 	startButton->setSize({150, 50});
 	startButton->setCallback([]{
@@ -102,10 +153,83 @@ void Menu::_createStartMenu(float width, float height)
 	nanogui::Button *exitButton = new nanogui::Button(_startMenu, "Exit");
 	exitButton->setPosition({50, 250});
 	exitButton->setSize({150, 50});
-	exitButton->setCallback([]{ Menu::exitButtonCallBack();});
+	exitButton->setCallback([]{ Menu::exitButtonCallBack();});*/
 }
 
-void Menu::_createNewGameMenu(float width, float height)
+void Menu::createStoryMenu() {
+    Menu::storyModeMenu.buttonTheme = Menu::mainMenu.buttonTheme;
+
+    /// dimensions and positions for buttons
+    int     posY = Menu::windowHeight / 2;
+    int     buttonHeight = 50;
+    int     buttonWidth = Menu::windowWidth / 4;
+    buttonWidth = (buttonWidth > 250) ? 250 : buttonWidth;
+    int     posX = ((Menu::windowWidth / 2) - (buttonWidth * 2)) / 3;
+
+    Menu::storyModeMenu.newGame = new nanogui::Button(_screen, "New Game");
+    Menu::storyModeMenu.newGame->setSize({buttonWidth, buttonHeight});
+    Menu::storyModeMenu.newGame->setPosition({posX, posY});
+    Menu::storyModeMenu.newGame->setTheme(Menu::storyModeMenu.buttonTheme);
+
+    Menu::storyModeMenu.loadGame = new nanogui::Button(_screen, "Load Game");
+    Menu::storyModeMenu.loadGame->setSize({buttonWidth, buttonHeight});
+    Menu::storyModeMenu.loadGame->setPosition({posX + buttonWidth + posX, posY});
+    Menu::storyModeMenu.loadGame->setTheme(Menu::storyModeMenu.buttonTheme);
+
+    int backPosX = ((Menu::windowWidth / 2) / 2) - (buttonWidth / 2);
+    Menu::storyModeMenu.back = new nanogui::Button(_screen, "Back");
+    Menu::storyModeMenu.back->setSize({buttonWidth, buttonHeight});
+    Menu::storyModeMenu.back->setPosition({backPosX, posY + 80});
+    Menu::storyModeMenu.back->setTheme(Menu::storyModeMenu.buttonTheme);
+    Menu::storyModeMenu.back->setCallback([]{
+        Menu::mainMenu.changeView(true);
+        Menu::storyModeMenu.changeView(false);
+        Menu::title->setCaption("Main Menu");
+    });
+
+    Menu::storyModeMenu.changeView(false);
+}
+
+void Menu::createExitWindow()
+{
+    /// dimensions and positions for buttons
+    int     posY = Menu::windowHeight / 2;
+    int     windowHeight = 150;
+    int     windowWidth = Menu::windowWidth / 3;
+    windowWidth = (windowWidth > 450) ? 450 : windowWidth;
+    int     offset = ((Menu::windowWidth / 2) - windowWidth) / 2;
+    int     posX = (Menu::windowWidth / 2) - (windowWidth + offset);
+
+    _exitWindow = new nanogui::Window(_screen, "");
+    _exitWindow->setSize({windowWidth, windowHeight});
+    _exitWindow->setVisible(false);
+    _exitWindow->setPosition({posX, posY});
+    _exitWindow->theme()->mTransparent = {0, 0, 0, 100};
+    _exitWindow->theme()->mWindowCornerRadius = 5;
+    _exitWindow->theme()->mWindowFillFocused = {0, 0, 0, 100};
+    _exitWindow->theme()->mWindowFillUnfocused = {0, 0, 0, 100};
+    /// text label
+    nanogui::Label *label = new nanogui::Label(_exitWindow, "Do you want to exit game?", "sans", 25);
+    label->setPosition({70, 20});
+    label->setSize({300, 30});
+    /// yes button
+    nanogui::Button *yes = new nanogui::Button(_exitWindow, "Yes");
+    yes->setSize({70, 30});
+    yes->setPosition({80, 90});
+    yes->setCallback([]{
+        glfwSetWindowShouldClose(activeMenu->_screen->glfwWindow(), (int)true);
+    });
+    /// no button
+    nanogui::Button *no = new nanogui::Button(_exitWindow, "No");
+    no->setSize({70, 30});
+    no->setPosition({250, 90});
+    no->setCallback([]{
+        activeMenu->_exitWindow->setVisible(false);
+        Menu::mainMenu.changeView(true);
+    });
+}
+
+void Menu::createNewGameMenu()
 {
 	_newGameMenu = new nanogui::Window(_screen, "New Game");
 	_newGameMenu->setLayout(new nanogui::GroupLayout());
@@ -133,9 +257,9 @@ void Menu::_createNewGameMenu(float width, float height)
 		activeMenu->_mainGame->setGameState(GAMESTATE::GAME);
 		activeMenu->_newGameMenu->setVisible(false);
 		activeMenu->_pauseGameMenu->setVisible(true);
-		activeMenu->_scene = new Scene();
-		activeMenu->_scene->newGame(activeMenu->_mainGame, "map2");
-		activeMenu->_scene->saveGame(activeMenu->_saveFileName);
+		activeMenu->scene = new Scene();
+		activeMenu->scene->newGame(activeMenu->_mainGame, "map2");
+		activeMenu->scene->saveGame(activeMenu->_saveFileName);
 		Menu::stopMenuMusic();
 	});
 	/// cancel button
@@ -149,9 +273,9 @@ void Menu::_createNewGameMenu(float width, float height)
 	});
 }
 
-void Menu::_createLoadGameMenu(float width, float height)
+void Menu::createLoadGameMenu()
 {
-	_loadGameMenu = new nanogui::Window(_screen, "Load Game");
+	/*_loadGameMenu = new nanogui::Window(_screen, "Load Game");
 	_loadGameMenu->setLayout(new nanogui::GroupLayout());
 	_loadGameMenu->setSize({width / 3, height / 3});
 	_loadGameMenu->setVisible(false);
@@ -198,12 +322,12 @@ void Menu::_createLoadGameMenu(float width, float height)
 	back->setCallback([]{
 		activeMenu->_loadGameMenu->setVisible(false);
 		activeMenu->_startMenu->setVisible(true);
-	});
+	});*/
 }
 
-void Menu::_createOptionsMenu(float width, float height)
+void Menu::createOptionsMenu()
 {
-	_optionsMenu = new nanogui::Window(_screen, "Options");
+	/*_optionsMenu = new nanogui::Window(_screen, "Options");
 
 	_optionsMenu->setLayout(new nanogui::GroupLayout());
 	_optionsMenu->setWidth(300);
@@ -277,13 +401,13 @@ void Menu::_createOptionsMenu(float width, float height)
 	backButton->setCallback([]{
 		activeMenu->_optionsMenu->setVisible(false);
 		activeMenu->_startMenu->setVisible(true);
-	});
+	});*/
 
 }
 
-void Menu::_createPauseGameMenu(float width, float height)
+void Menu::createPauseGameMenu()
 {
-	_pauseGameMenu = new nanogui::Window(_screen, "Pause");
+	/*_pauseGameMenu = new nanogui::Window(_screen, "Pause");
 	_pauseGameMenu->setLayout(new nanogui::GroupLayout());
 	_pauseGameMenu->setSize({250, 250});
 	_pauseGameMenu->setVisible(false);
@@ -339,51 +463,23 @@ void Menu::_createPauseGameMenu(float width, float height)
 		activeMenu->_pauseGameMenu->setVisible(false);
 		activeMenu->_startMenu->setVisible(true);
 		std::cout << "game quit" << std::endl;
-	});
+	});*/
 }
 
-void Menu::_createExitWindow(float width, float height)
-{
-	_exitWindow = new nanogui::Window(_screen, "");
-	_exitWindow->setLayout(new nanogui::GroupLayout());
-	_exitWindow->setWidth(400);
-	_exitWindow->setHeight(150);
-	_exitWindow->setVisible(false);
-	_exitWindow->center();
-	/// text label
-	nanogui::Label *label = new nanogui::Label(_exitWindow, "Do you want to exit game?", "sans", 30);
-	label->setPosition({70, 20});
-	label->setSize({300, 30});
-	/// yes button
-	nanogui::Button *yes = new nanogui::Button(_exitWindow, "Yes");
-	yes->setSize({70, 30});
-	yes->setPosition({80, 90});
-	yes->setCallback([]{
-		glfwSetWindowShouldClose(activeMenu->_screen->glfwWindow(), (int)true);
-	});
-	/// no button
-	nanogui::Button *no = new nanogui::Button(_exitWindow, "No");
-	no->setSize({70, 30});
-	no->setPosition({250, 90});
-	no->setCallback([]{
-		activeMenu->_startMenu->setVisible(true);
-		activeMenu->_exitWindow->setVisible(false);
-	});
-}
-
-void Menu::_createBackground(float width, float height)
+void Menu::createBackground()
 {
 	glm::mat4 viewMatrix = _mainGame->getGameCamera().getViewMatrix();
 	_mainGame->getShader("gui")->setUniformMat4((GLchar *)"view_matrix", viewMatrix);
-	/// menu background
-	_menuBg = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 8, 5);
-	_menuBg->addTextureFromFile("resource/images/yellowBg.png");
-	/// menu title
-	_menuTitle = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 3, 1.5);
-	_menuTitle->addTextureFromFile("resource/images/title1.png");
+	//_menuBg = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 10, 6);
+	//_menuBg->addTextureFromFile("resource/images/menu_bg.jpg");
+	_menuTitle = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 2, 1);
+	_menuTitle->addTextureFromFile("resource/images/menuLogo.png");
 	/// adding life heart logo
 	_heart = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 0.2, 0.2);
 	_heart->addTextureFromFile("resource/images/heart.png");
+    /// new bg menu
+    _menuBg = new Zion::SquareSprite(*_mainGame->getShader("gui"), 1.5, 0, 4, 5);
+    _menuBg->addTextureFromFile("resource/images/menuBg.png");
 }
 
 GLFWwindow* Menu::getGlfwWindow()
@@ -400,7 +496,7 @@ void Menu::updateMenu(MainGame *game, std::vector<void *> params)
 	if (state == GAMESTATE::MENU)
 	{
 		menu->_menuBg->render(glm::translate(glm::mat4(), {0, 0, 0}));
-		//menu->_menuTitle->render(glm::translate(glm::mat4(), {0, 1.4, 0}));
+		menu->_menuTitle->render(glm::translate(glm::mat4(), {-1.7, 1.4, 0}));
 		menu->_screen->drawWidgets();
 	}
 	else if (state == GAMESTATE::PAUSE)
@@ -431,12 +527,6 @@ bool Menu::keyCallback(int key, int scancode, int action, int mods)
 	if (activeMenu != nullptr)
 		activeMenu->_screen->keyCallbackEvent(key, scancode, action, mods);
 	return true;
-}
-
-void Menu::exitButtonCallBack()
-{
-	activeMenu->_startMenu->setVisible(false);
-	activeMenu->_exitWindow->setVisible(true);
 }
 
 void Menu::playMenuMusic()

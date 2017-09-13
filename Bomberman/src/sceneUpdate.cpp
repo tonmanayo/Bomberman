@@ -7,6 +7,8 @@ void Scene::updatePlayer(MainGame *game, Scene *scene) {
 	float   positionChange = (5.0f + scene->_player->getPowerSpeed()) * Zion::Renderable::deltaTime;
 
     if (game->getGameWindow().isKeyPressed(GLFW_KEY_S)) {
+        if (!MainGame::soundEngine->isCurrentlyPlaying("resource/sounds/test.wav"))
+            MainGame::soundEngine->play2D("resource/sounds/test.wav");
         if (!worldCollisionDown(scene->_player->getPosition(), {0, 0, positionChange}, scene))
             scene->_player->changePosZ(positionChange);
         scene->_player->rotate(glm::radians(0.0f), {0, 1, 0});
@@ -19,6 +21,8 @@ void Scene::updatePlayer(MainGame *game, Scene *scene) {
         scene->_game->getGameCamera().setCameraUp(glm::vec3(0, 1, 0));
     }
     if (game->getGameWindow().isKeyPressed(GLFW_KEY_W)) {
+        if (!MainGame::soundEngine->isCurrentlyPlaying("resource/sounds/test.wav"))
+            MainGame::soundEngine->play2D("resource/sounds/test.wav");
         if (!worldCollisionUp(scene->_player->getPosition(), {0, 0, -positionChange}, scene))
             scene->_player->changePosZ(-positionChange);
         scene->_player->rotate(glm::radians(180.0f), {0, 1, 0});
@@ -31,6 +35,8 @@ void Scene::updatePlayer(MainGame *game, Scene *scene) {
         scene->_game->getGameCamera().setCameraUp(glm::vec3(0, 1, 0));
     }
     if (game->getGameWindow().isKeyPressed(GLFW_KEY_A)) {
+        if (!MainGame::soundEngine->isCurrentlyPlaying("resource/sounds/test.wav"))
+            MainGame::soundEngine->play2D("resource/sounds/test.wav");
         if (!worldCollisionLeft(scene->_player->getPosition(), {-positionChange, 0, 0}, scene))
             scene->_player->changePosX(-positionChange);
         scene->_player->rotate(glm::radians(-90.0f), {0, 1, 0});
@@ -43,6 +49,9 @@ void Scene::updatePlayer(MainGame *game, Scene *scene) {
         scene->_game->getGameCamera().setCameraUp(glm::vec3(0, 1, 0));
     }
     if (game->getGameWindow().isKeyPressed(GLFW_KEY_D)) {
+        if (!MainGame::soundEngine->isCurrentlyPlaying("resource/sounds/test.wav"))
+            MainGame::soundEngine->play2D("resource/sounds/test.wav");
+        ;
         if (!worldCollisionRight(scene->_player->getPosition(), {positionChange, 0, 0}, scene))
             scene->_player->changePosX(positionChange);
         scene->_player->rotate(glm::radians(90.0f), {0, 1, 0});
@@ -57,7 +66,10 @@ void Scene::updatePlayer(MainGame *game, Scene *scene) {
     if (game->getGameWindow().isKeyPressed(GLFW_KEY_SPACE) && scene->_bomb.size() < 1 + scene->_player->getPowerBombNbr()) {
         scene->_addBomb(scene->_player->getPosition().x, scene->_player->getPosition().z);
     }
-    if (scene->worldEndLevel(scene->_player->getPosition(), scene)) {
+
+
+
+            if (scene->worldEndLevel(scene->_player->getPosition(), scene)) {
         std::cout << "FINISHED LEVEL!!!\n";
     }
 
