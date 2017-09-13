@@ -25,9 +25,9 @@ int     main(int ac, char **av)
 
 	nanogui::init();
 	MainGame::soundEngine = irrklang::createIrrKlangDevice();
-	menu.initMenu(1280.0f, 760.0f, &game, false);
+	menu.initMenu((float)Menu::windowWidth, (float)Menu::windowHeight, &game, Menu::isFullScreen);
 	game.initGame(menu.getGlfwWindow(), 1280.0f, 760.0f, 70.0f);
-	menu.buildMenuWindows(1280.0f, 760.0f);
+	menu.buildMenuWindows();
 	srand(time(NULL));
 
 	MainGame::functions.insert(std::pair<const char *, Func>("checkKeys", {checkKeys, std::vector<void *>()}));

@@ -45,7 +45,7 @@ bool MainGame::initGame(float width, float height, float fov)
 {
 	glm::mat4       projectionMatrix;
 
-	srand(time(NULL));
+	srand(time(0));
 	/// Creating glfw window
 	_width = width;
 	_height = height;
@@ -230,7 +230,7 @@ void MainGame::gameLoop()
 		Zion::Renderable::deltaTime = currentTime - Zion::Renderable::runTime;
 		Zion::Renderable::runTime = currentTime;
 
-		_window.clearWindow(0.3f, 0.3f, 0.3f, 1.0f);
+		_window.clearWindow(0.93f, 0.93f, 0.93f, 1.0f);
 		/// calling all functions for loop
 		for (std::pair<const char *, Func> func : functions)
 		{
