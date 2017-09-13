@@ -5,9 +5,13 @@ irrklang::ISoundSource*     Menu::_menuMusic;
 bool                        Menu::isFullScreen = false;
 int                         Menu::windowWidth = 1280;
 int                         Menu::windowHeight = 760;
+int                         Menu::difficulty = 1;
 nanogui::Label              *Menu::title = nullptr;
 MainMenu                    Menu::mainMenu = MainMenu();
 StoryModeMenu               Menu::storyModeMenu = StoryModeMenu();
+NewGameMenu                 Menu::newGameMenu = NewGameMenu();
+float                       Menu::textStartTime = 0;
+Gui                         Menu::gui;
 
 Menu::Menu(float width, float height, MainGame *mainGame, bool fullScreen, bool resizable)
 {
@@ -53,10 +57,10 @@ bool Menu::buildMenuWindows()
     createBackground();
 	createMainMenu();
     createStoryMenu();
+	createExitWindow();
+	createNewGameMenu();
 	//createOptionsMenu();
 	//createPauseGameMenu();
-	createExitWindow();
-	//createNewGameMenu();
 	//createLoadGameMenu();
 	//_screen->performLayout();
 	return true;
@@ -96,64 +100,36 @@ void Menu::createMainMenu()
     Menu::title->setVisible(true);
     Menu::title->setColor({15, 3, 8, 255});
 
-    Menu::mainMenu.start = new nanogui::Button(_screen, "Story Mode");
+    Menu::mainMenu.start = new nanogui::Button(_screen, "CAMPAIGN");
     Menu::mainMenu.start->setSize({buttonWidth, buttonHeight});
     Menu::mainMenu.start->setPosition({posX, posY});
     Menu::mainMenu.start->setTheme(Menu::mainMenu.buttonTheme);
+	Menu::mainMenu.start->setCursor(nanogui::Cursor::Hand);
     Menu::mainMenu.start->setCallback([]{
         Menu::mainMenu.changeView(false);
         Menu::storyModeMenu.changeView(true);
-        Menu::title->setCaption("Story Mode");
+        Menu::title->setCaption("CAMPAIGN");
     });
 
     posY += 60;
-    Menu::mainMenu.options = new nanogui::Button(_screen, "Options");
+    Menu::mainMenu.options = new nanogui::Button(_screen, "OPTIONS");
     Menu::mainMenu.options->setSize({buttonWidth, buttonHeight});
     Menu::mainMenu.options->setPosition({posX, posY});
     Menu::mainMenu.options->setTheme(Menu::mainMenu.buttonTheme);
+	Menu::mainMenu.options->setCursor(nanogui::Cursor::Hand);
 
     posY += 60;
-    Menu::mainMenu.exit = new nanogui::Button(_screen, "Exit");
+    Menu::mainMenu.exit = new nanogui::Button(_screen, "EXIT");
     Menu::mainMenu.exit->setSize({buttonWidth, buttonHeight});
     Menu::mainMenu.exit->setPosition({posX, posY});
     Menu::mainMenu.exit->setTheme(Menu::mainMenu.buttonTheme);
+	Menu::mainMenu.exit->setCursor(nanogui::Cursor::Hand);
     Menu::mainMenu.exit->setCallback([]{
         Menu::mainMenu.changeView(false);
         activeMenu->_exitWindow->setVisible(true);
     });
 
-
     Menu::mainMenu.changeView(true);
-
-	/// new game button
-	/*nanogui::Button *startButton = new nanogui::Button(_startMenu, "New Game");
-	startButton->setPosition({50, 40});
-	startButton->setSize({150, 50});
-	startButton->setCallback([]{
-		activeMenu->_startMenu->setVisible(false);
-		activeMenu->_newGameMenu->setVisible(true);
-	});
-	/// load game button
-	nanogui::Button *loadButton = new nanogui::Button(_startMenu, "Load Game");
-	loadButton->setPosition({50, 110});
-	loadButton->setSize({150, 50});
-	loadButton->setCallback([]{
-		activeMenu->_startMenu->setVisible(false);
-		activeMenu->_loadGameMenu->setVisible(true);
-	});
-	/// options button
-	nanogui::Button *optionsButton = new nanogui::Button(_startMenu, "Options");
-	optionsButton->setPosition({50, 180});
-	optionsButton->setSize({150, 50});
-	optionsButton->setCallback([] {
-		activeMenu->_startMenu->setVisible(false);
-		activeMenu->_optionsMenu->setVisible(true);
-	});
-	/// exit button
-	nanogui::Button *exitButton = new nanogui::Button(_startMenu, "Exit");
-	exitButton->setPosition({50, 250});
-	exitButton->setSize({150, 50});
-	exitButton->setCallback([]{ Menu::exitButtonCallBack();});*/
 }
 
 void Menu::createStoryMenu() {
@@ -166,25 +142,29 @@ void Menu::createStoryMenu() {
     buttonWidth = (buttonWidth > 250) ? 250 : buttonWidth;
     int     posX = ((Menu::windowWidth / 2) - (buttonWidth * 2)) / 3;
 
-    Menu::storyModeMenu.newGame = new nanogui::Button(_screen, "New Game");
+    Menu::storyModeMenu.newGame = new nanogui::Button(_screen, "NEW GAME");
     Menu::storyModeMenu.newGame->setSize({buttonWidth, buttonHeight});
     Menu::storyModeMenu.newGame->setPosition({posX, posY});
     Menu::storyModeMenu.newGame->setTheme(Menu::storyModeMenu.buttonTheme);
+	Menu::storyModeMenu.newGame->setCallback([]{
+		Menu::storyModeMenu.changeView(false);
+		Menu::newGameMenu.changeView(true);
+	});
 
-    Menu::storyModeMenu.loadGame = new nanogui::Button(_screen, "Load Game");
+    Menu::storyModeMenu.loadGame = new nanogui::Button(_screen, "LOAD GAME");
     Menu::storyModeMenu.loadGame->setSize({buttonWidth, buttonHeight});
     Menu::storyModeMenu.loadGame->setPosition({posX + buttonWidth + posX, posY});
     Menu::storyModeMenu.loadGame->setTheme(Menu::storyModeMenu.buttonTheme);
 
     int backPosX = ((Menu::windowWidth / 2) / 2) - (buttonWidth / 2);
-    Menu::storyModeMenu.back = new nanogui::Button(_screen, "Back");
+    Menu::storyModeMenu.back = new nanogui::Button(_screen, "BACK");
     Menu::storyModeMenu.back->setSize({buttonWidth, buttonHeight});
     Menu::storyModeMenu.back->setPosition({backPosX, posY + 80});
     Menu::storyModeMenu.back->setTheme(Menu::storyModeMenu.buttonTheme);
     Menu::storyModeMenu.back->setCallback([]{
         Menu::mainMenu.changeView(true);
         Menu::storyModeMenu.changeView(false);
-        Menu::title->setCaption("Main Menu");
+        Menu::title->setCaption("MAIN MENU");
     });
 
     Menu::storyModeMenu.changeView(false);
@@ -231,46 +211,112 @@ void Menu::createExitWindow()
 
 void Menu::createNewGameMenu()
 {
-	_newGameMenu = new nanogui::Window(_screen, "New Game");
-	_newGameMenu->setLayout(new nanogui::GroupLayout());
-	_newGameMenu->setWidth(250);
-	_newGameMenu->setHeight(250);
-	_newGameMenu->setVisible(false);
-	_newGameMenu->center();
-	/// label
-	nanogui::Label *label = new nanogui::Label(_newGameMenu, "Enter Profile Name", "sans-bold", 20);
-	label->setPosition({60, 40});
-	label->setSize({200, 30});
-	label->setColor({0.0f, 0.7f, 0.0f, 1.0f});
-	/// textbox
-	_newGameTextBox = new nanogui::TextBox(_newGameMenu, "");
-	_newGameTextBox->setPosition({50, 80});
-	_newGameTextBox->setSize({150, 50});
-	_newGameTextBox->setEditable(true);
-	/// start button
-	nanogui::Button *start = new nanogui::Button(_newGameMenu, "Start");
-	start->setPosition({50, 150});
-	start->setSize({150, 30});
-	start->setCallback([]{
-		if ((activeMenu->_saveFileName = activeMenu->_newGameTextBox->value()) == std::string(""))
+	Menu::newGameMenu.buttonTheme = Menu::mainMenu.buttonTheme;
+
+	/// dimensions and position
+	int     posY = Menu::windowHeight / 2;
+	int     textBoxHeight = 50;
+	int     textBoxWidth = Menu::windowWidth / 3;
+	textBoxWidth = (textBoxWidth > 450) ? 450 : textBoxWidth;
+	int     offset = ((Menu::windowWidth / 2) - textBoxWidth) / 2;
+	int     posX = (Menu::windowWidth / 2) - (textBoxWidth + offset);
+	int     buttonHeight = 50;
+	int     buttonWidth = Menu::windowWidth / 4;
+	buttonWidth = (buttonWidth > 250) ? 250 : buttonWidth;
+	int     buttonPosX = ((Menu::windowWidth / 2) - (buttonWidth * 2)) / 3;
+
+	Menu::newGameMenu.textLabel = new nanogui::Label(_screen, "Enter Profile Name", "sans", 30);
+	Menu::newGameMenu.textLabel->setSize({textBoxWidth, textBoxHeight});
+	Menu::newGameMenu.textLabel->setPosition({posX + 80, posY});
+	Menu::newGameMenu.textLabel->setColor({50, 50, 50, 255});
+
+	posY += 60;
+	Menu::newGameMenu.profileNameBox = new nanogui::TextBox(_screen, "");
+	Menu::newGameMenu.profileNameBox->setSize({textBoxWidth, textBoxHeight});
+	Menu::newGameMenu.profileNameBox->setPosition({posX, posY});
+	Menu::newGameMenu.profileNameBox->setEditable(true);
+	Menu::newGameMenu.profileNameBox->theme()->mTextColor = {40, 40, 40, 255};
+	Menu::newGameMenu.profileNameBox->setFontSize(35);
+
+	posY += 70;
+	int     otherButtonWidth = textBoxWidth / 3;
+	int     otherPosX = posX + 10;
+
+	nanogui::Theme  *tmp = new nanogui::Theme(_screen->nvgContext());
+	tmp->mFontBold = 1;
+	tmp->mFontNormal = 0;
+	tmp->mStandardFontSize = 35;
+	tmp->mTextColor = {40, 40, 40, 255};
+
+	Menu::newGameMenu.easy = new nanogui::CheckBox(_screen, "Easy");
+	Menu::newGameMenu.easy->setSize({otherButtonWidth, buttonHeight});
+	Menu::newGameMenu.easy->setPosition({otherPosX, posY});
+	Menu::newGameMenu.easy->setTheme(tmp);
+	Menu::newGameMenu.easy->setCallback([](bool state){
+		Menu::difficulty = 0;
+		if (state){
+			Menu::newGameMenu.normal->setChecked(false);
+			Menu::newGameMenu.hard->setChecked(false);
+		}else
+			Menu::newGameMenu.easy->setChecked(true);
+	});
+
+	otherPosX += otherButtonWidth;
+	Menu::newGameMenu.normal = new nanogui::CheckBox(_screen, "Normal");
+	Menu::newGameMenu.normal->setSize({otherButtonWidth, buttonHeight});
+	Menu::newGameMenu.normal->setPosition({otherPosX, posY});
+	Menu::newGameMenu.normal->setTheme(tmp);
+	Menu::newGameMenu.normal->setChecked(true);
+	Menu::newGameMenu.normal->setCallback([](bool state){
+		Menu::difficulty = 1;
+		if (state){
+			Menu::newGameMenu.easy->setChecked(false);
+			Menu::newGameMenu.hard->setChecked(false);
+		}else
+			Menu::newGameMenu.normal->setChecked(true);
+	});
+
+	otherPosX += otherButtonWidth + 10;
+	Menu::newGameMenu.hard = new nanogui::CheckBox(_screen, "Hard");
+	Menu::newGameMenu.hard->setSize({otherButtonWidth, buttonHeight});
+	Menu::newGameMenu.hard->setPosition({otherPosX, posY});
+	Menu::newGameMenu.hard->setTheme(tmp);
+	Menu::newGameMenu.hard->setCallback([](bool state){
+		Menu::difficulty = 2;
+		if (state){
+			Menu::newGameMenu.normal->setChecked(false);
+			Menu::newGameMenu.easy->setChecked(false);
+		}else
+			Menu::newGameMenu.hard->setChecked(true);
+	});
+
+	posY += 80;
+	Menu::newGameMenu.createGame = new nanogui::Button(_screen, "Create Game");
+	Menu::newGameMenu.createGame->setSize({buttonWidth, buttonHeight});
+	Menu::newGameMenu.createGame->setPosition({buttonPosX, posY});
+	Menu::newGameMenu.createGame->setTheme(Menu::newGameMenu.buttonTheme);
+	Menu::newGameMenu.createGame->setCallback([]{
+		if (Menu::newGameMenu.profileNameBox->value().empty())
 			return;
-		activeMenu->_mainGame->setGameState(GAMESTATE::GAME);
-		activeMenu->_newGameMenu->setVisible(false);
-		activeMenu->_pauseGameMenu->setVisible(true);
+		Menu::newGameMenu.changeView(false);
+		activeMenu->_saveFileName = Menu::newGameMenu.profileNameBox->value();
 		activeMenu->scene = new Scene();
 		activeMenu->scene->newGame(activeMenu->_mainGame, "map2");
 		activeMenu->scene->saveGame(activeMenu->_saveFileName);
+		activeMenu->_mainGame->setGameState(GAMESTATE::START);
 		Menu::stopMenuMusic();
 	});
-	/// cancel button
-	nanogui::Button *cancel = new nanogui::Button(_newGameMenu, "Cancel");
-	cancel->setPosition({50, 200});
-	cancel->setSize({150, 30});
-	cancel->setBackgroundColor({0.8f, 0.0f, 0.0f, 1.0f});
-	cancel->setCallback([]{
-		activeMenu->_newGameMenu->setVisible(false);
-		activeMenu->_startMenu->setVisible(true);
+
+	Menu::newGameMenu.cancel = new nanogui::Button(_screen, "Cancel");
+	Menu::newGameMenu.cancel->setSize({buttonWidth, buttonHeight});
+	Menu::newGameMenu.cancel->setPosition({buttonPosX + buttonWidth + buttonPosX, posY});
+	Menu::newGameMenu.cancel->setTheme(Menu::newGameMenu.buttonTheme);
+	Menu::newGameMenu.cancel->setCallback([]{
+		Menu::storyModeMenu.changeView(true);
+		Menu::newGameMenu.changeView(false);
 	});
+
+	Menu::newGameMenu.changeView(false);
 }
 
 void Menu::createLoadGameMenu()
@@ -470,16 +516,21 @@ void Menu::createBackground()
 {
 	glm::mat4 viewMatrix = _mainGame->getGameCamera().getViewMatrix();
 	_mainGame->getShader("gui")->setUniformMat4((GLchar *)"view_matrix", viewMatrix);
-	//_menuBg = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 10, 6);
-	//_menuBg->addTextureFromFile("resource/images/menu_bg.jpg");
+	/// new bg menu
+	_menuBg = new Zion::SquareSprite(*_mainGame->getShader("gui"), 1.5, 0, 4, 5);
+	_menuBg->addTextureFromFile("resource/images/menuBg.png");
+	/// bomberman menu logo
 	_menuTitle = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 2, 1);
 	_menuTitle->addTextureFromFile("resource/images/menuLogo.png");
 	/// adding life heart logo
 	_heart = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 0.2, 0.2);
 	_heart->addTextureFromFile("resource/images/heart.png");
-    /// new bg menu
-    _menuBg = new Zion::SquareSprite(*_mainGame->getShader("gui"), 1.5, 0, 4, 5);
-    _menuBg->addTextureFromFile("resource/images/menuBg.png");
+	/// add bombman
+	Menu::gui.bombMan = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 2.0, 1.5);
+	Menu::gui.bombMan->addTextureFromFile("resource/images/bombMan3.png");
+	/// add enemy1
+	Menu::gui.enemy1 = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 1.5, 1.0);
+	Menu::gui.enemy1->addTextureFromFile("resource/images/enemy.png");
 }
 
 GLFWwindow* Menu::getGlfwWindow()
@@ -505,6 +556,32 @@ void Menu::updateMenu(MainGame *game, std::vector<void *> params)
 	}else if (state == GAMESTATE::GAME)
 	{
 		menu->_heart->render(glm::translate(glm::mat4(), {-3.9, 1.9, 0}));
+	} else if (state == GAMESTATE::START)
+	{
+		float halfHeight = (float)Menu::windowHeight / 3;
+		float halfWidth = (float)Menu::windowWidth / 2;
+		float xOffset = (float)Menu::windowWidth / 5;
+
+		if (Menu::textStartTime == 0.0f)
+			Menu::textStartTime = (float)glfwGetTime();
+		float changeTime = (float)glfwGetTime() - Menu::textStartTime;
+		float deltaTime = (changeTime <= 1.5f) ? changeTime : 1.5f;
+		float offset = (deltaTime / 1.5f) * (halfWidth - xOffset);
+
+		MainGame::fontRenderer1->renderText("STAGE", offset, halfHeight, 3.0f, {0.8, 0.1, 0.2});
+		MainGame::fontRenderer1->renderText("1", (float)Menu::windowWidth - offset, halfHeight, 3.0f, {0.8, 0.1, 0.2});
+
+		if (changeTime >= 1.9f)
+		{
+			Menu::gui.bombMan->render(glm::translate(glm::mat4(), {-2.5, 1.3, 0}));
+			Menu::gui.enemy1->render(glm::translate(glm::mat4(), {2.5, -1.0, 0}));
+		}
+
+		if (changeTime >= 3.0f)
+		{
+			menu->_mainGame->setGameState(GAMESTATE::GAME);
+			Menu::textStartTime = 0;
+		}
 	}
 }
 

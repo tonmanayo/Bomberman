@@ -115,6 +115,7 @@ void Scene::_addPowerUps(float x, float z, int xx, int yy) {
 
 
 }
+
 void Scene::_addBreakableBlock(float x, float z, int xx, int yy)
 {
 	static int i = 0;
@@ -232,10 +233,10 @@ int Scene::getWorldx(float x) {
 	return 	 std::abs(static_cast<int>(std::round((x - GRID_START_X) / (float)GRID_BLOCK_SIZE)));
 
 }
+
 int Scene::getWorldy(float y) {
 	return  std::abs((int)std::round((y - GRID_START_Z) / (float)GRID_BLOCK_SIZE));
 }
-
 
 float Scene::getGridx(float x) {
 	x = static_cast<float>(std::round(x / GRID_BLOCK_SIZE));
@@ -252,15 +253,30 @@ void Scene::sceneUpdate(MainGame *game, std::vector<void *> params)
 
 	if (game->getGameState() == GAMESTATE::GAME)
 	{
-		if (Zion::Input::getKeyPressOnce(GLFW_KEY_ESCAPE))
+		if (scene->_dropped)
 		{
-			std::cout << "paused" << std::endl;
-			game->setGameState(GAMESTATE::PAUSE);
-			return;
+			if (Zion::Input::getKeyPressOnce(GLFW_KEY_ESCAPE))
+			{
+				std::cout << "paused" << std::endl;
+				game->setGameState(GAMESTATE::PAUSE);
+				return;
+			}
+			updateBomb(game, scene);
+			updateEnemy(game, scene);
+			updatePlayer(game, scene);
+		}else
+		{
+			if (Menu::textStartTime == 0)
+				Menu::textStartTime = (float)glfwGetTime();
+			float changeTime = (float)glfwGetTime() - Menu::textStartTime;
+			float offset = (float)(1.5 / changeTime) * 10;
+
+			scene->_player->changePosY(offset);
+			glm::mat4 mat = scene->_player->getTransformation();
+			glm::translate(mat, {0, offset, 0});
+			MainGame::renderer.applyTransformationToRenderable(scene->_player->getType(), scene->_player->getId(),
+					mat);
 		}
-		updateBomb(game, scene);
-		updateEnemy(game, scene);
-		updatePlayer(game, scene);
 	}
 }
 
@@ -291,10 +307,10 @@ bool Scene::enemyPlayerCollision(Player *enemy, Scene *scene){
 	return false;
 }
 
-int 									Scene::getPowerSpeed () {
+int Scene::getPowerSpeed () {
 	return _powerSpeed;
 }
 
-void 									Scene::inctPowerSpeed() {
+void Scene::inctPowerSpeed() {
 	_powerSpeed++;
 }

@@ -18,7 +18,6 @@ class   Scene
 {
 private:
 	MainGame    							*_game;
-
 	int         							_enemyCount = 0;
 	Player      							*_player;
 	std::vector<Bomb>						_bomb;
@@ -28,6 +27,8 @@ private:
 	bool				   					_endLevel = false;
 	std::string								_difficulty = "Easy";
 	int 									_powerSpeed;
+	float                                   _dropStartTime;
+	bool                                    _dropped = false;
 private:
 	std::string     _floorType;
 	std::string     _wallType;

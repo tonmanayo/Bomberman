@@ -30,9 +30,13 @@ public:
     static bool             isFullScreen;
     static int              windowWidth;
     static int              windowHeight;
+	static int              difficulty;
+	static float            textStartTime;
+	static Gui              gui;
     static nanogui::Label   *title;
     static MainMenu         mainMenu;
     static StoryModeMenu    storyModeMenu;
+	static NewGameMenu      newGameMenu;
 
 public:
 	Menu() = default;
@@ -46,12 +50,12 @@ public:
     void        createMainMenu();
     void        createStoryMenu();
     void        createExitWindow();
+	void        createNewGameMenu();
     GLFWwindow  *getGlfwWindow();
 
     bool        startMenu();
 	bool        startGameMenu();
     void	    createOptionsMenu();
-    void        createNewGameMenu();
     void        createLoadGameMenu();
     void        createPauseGameMenu();
     void        createBackground();

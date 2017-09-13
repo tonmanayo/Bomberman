@@ -7,3 +7,4 @@
 #include <camera.hpp>
 #include <gltf.hpp>
 #include <particle.hpp>
+#include <textRenderer.hpp>

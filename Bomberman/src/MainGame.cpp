@@ -1,16 +1,19 @@
 #include <MainGame.hpp>
 #include <menu.hpp>
 
-Zion::Renderer  MainGame::renderer;
+Zion::Renderer                  MainGame::renderer;
 std::map<const char *, Func>    MainGame::functions;
-MainGame*    MainGame::game;
-Zion::ParticleSystem*     MainGame::explosionLeft;
-Zion::ParticleSystem*     MainGame::explosionRight;
-Zion::ParticleSystem*     MainGame::explosionUp;
-Zion::ParticleSystem*     MainGame::explosionDown;
-Zion::ParticleSystem*     MainGame::bombSparks;
-Zion::ParticleSystem*     MainGame::smokeParticles;
-irrklang::ISoundEngine*   MainGame::soundEngine;
+MainGame*                       MainGame::game;
+Zion::ParticleSystem*           MainGame::explosionLeft;
+Zion::ParticleSystem*           MainGame::explosionRight;
+Zion::ParticleSystem*           MainGame::explosionUp;
+Zion::ParticleSystem*           MainGame::explosionDown;
+Zion::ParticleSystem*           MainGame::bombSparks;
+Zion::ParticleSystem*           MainGame::smokeParticles;
+irrklang::ISoundEngine*         MainGame::soundEngine;
+Zion::TextRenderer              *MainGame::fontRenderer1;
+Zion::TextRenderer              *MainGame::fontRenderer2;
+int                             MainGame::stage = 1;
 
 std::string MainGame::getNameFromPath(const char *path)
 {
@@ -121,10 +124,17 @@ bool MainGame::initGame2(float width, float height, float fov)
 		getShader("gui")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
 	if (addShader("anime", "shaders/anime.vert", "shaders/basic.frag"))
 		getShader("anime")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
+	if (addShader("text", "shaders/text.vert", "shaders/text.frag"))
+		getShader("text")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
 	/// setup default camera
 	setupGameCamera();
 	/// load resources
 	loadResources();
+	/// load fonts
+	MainGame::fontRenderer1 = new Zion::TextRenderer(getShader("text"), Menu::windowWidth, Menu::windowHeight);
+	MainGame::fontRenderer1->loadFont("resource/fonts/angryBirds.ttf", 48);
+	MainGame::fontRenderer2 = new Zion::TextRenderer(getShader("text"), Menu::windowWidth, Menu::windowHeight);
+	MainGame::fontRenderer2->loadFont("resource/fonts/sansSerious.ttf", 48);
 	MainGame::game = this;
 	return true;
 }
@@ -244,17 +254,21 @@ void MainGame::gameLoop()
 
 		for (std::pair<std::string, Zion::Shader *> shader : _shaders)
 		{
-			if (!shader.first.compare("gui"))
+			if (!shader.first.compare("gui") || !shader.first.compare("text"))
 				continue;
 			shader.second->setUniformMat4((GLchar *)"view_matrix", viewMatrix);
 			shader.second->setUniform3f((GLchar *)"viewPos", viewPos);
 		}
 
-		glEnable(GL_DEPTH_TEST);
-		glDepthFunc(GL_LESS);
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		MainGame::renderer.render();
+		/// render game scene
+		if (_state == GAMESTATE::GAME)
+		{
+			glEnable(GL_DEPTH_TEST);
+			glDepthFunc(GL_LESS);
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			MainGame::renderer.render();
+		}
 
 		/// render particles
 		if (_state == GAMESTATE::GAME)

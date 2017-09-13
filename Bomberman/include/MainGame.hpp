@@ -34,7 +34,7 @@ private:
 	float           _fov;
 	Zion::Window    _window;
 	Zion::Camera    *_camera;
-	GAMESTATE      _state = GAMESTATE::MENU;
+	GAMESTATE       _state = GAMESTATE::MENU;
 	std::map<std::string, Zion::Shader *>      _shaders;
 	std::map<std::string, Zion::Renderable *>  _models;
 	std::map<std::string, Zion::Material *>    _materials;
@@ -48,11 +48,14 @@ public:
 	static Zion::ParticleSystem     *bombSparks;
 	static Zion::ParticleSystem     *smokeParticles;
 	static irrklang::ISoundEngine   *soundEngine;
+	static Zion::TextRenderer       *fontRenderer1;
+	static Zion::TextRenderer       *fontRenderer2;
+	static int                      stage;
 public:
-	static Zion::Renderer  renderer;
-	static std::map<const char *, Func>   functions;
-	static std::string          getNameFromPath(const char *path);
-	static std::vector<std::string>     stringSplit(const std::string& s, const char c);
+	static Zion::Renderer                   renderer;
+	static std::map<const char *, Func>     functions;
+	static std::string                      getNameFromPath(const char *path);
+	static std::vector<std::string>         stringSplit(const std::string& s, const char c);
 public:
 	MainGame() = default;
 	MainGame(float width, float height, float fov);

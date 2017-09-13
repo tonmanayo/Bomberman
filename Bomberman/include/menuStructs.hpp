@@ -57,3 +57,42 @@ struct  StoryModeMenu
             back->setVisible(value);
     }
 };
+
+struct  NewGameMenu
+{
+	nanogui::Theme      *buttonTheme;
+	nanogui::Button     *createGame = nullptr;
+	nanogui::Button     *cancel = nullptr;
+	nanogui::Label      *textLabel = nullptr;
+	nanogui::TextBox    *profileNameBox = nullptr;
+	nanogui::CheckBox   *easy = nullptr;
+	nanogui::CheckBox   *normal = nullptr;
+	nanogui::CheckBox   *hard = nullptr;
+
+	NewGameMenu() = default;
+
+	void    changeView(bool value){
+		if (createGame != nullptr)
+			createGame->setVisible(value);
+		if (cancel != nullptr)
+			cancel->setVisible(value);
+		if (profileNameBox != nullptr)
+			profileNameBox->setVisible(value);
+		if (textLabel != nullptr)
+			textLabel->setVisible(value);
+		if (easy != nullptr)
+			easy->setVisible(value);
+		if (normal != nullptr)
+			normal->setVisible(value);
+		if (hard != nullptr)
+			hard->setVisible(value);
+	}
+};
+
+struct  Gui
+{
+	Zion::SquareSprite  *bombMan;
+	Zion::SquareSprite  *enemy1;
+	Zion::SquareSprite  *enemy2;
+	Zion::SquareSprite  *heart;
+};
