@@ -147,6 +147,7 @@ void MainGame::loadResources()
 	addModel("present", *getShader("basic"), "resource/models/powerUps/present.gltf");
 	addModel("lemon", *getShader("basic"), "resource/models/powerUps/lemon.gltf");
 	addModel("star", *getShader("basic"), "resource/models/powerUps/star.gltf");
+	addModel("bg", *getShader("gui"), "resource/models/others/bg.gltf");
 
 	addModel("enemy1", *getShader("basic"), "resource/models/enemies/enemy2.gltf");
 
@@ -223,7 +224,7 @@ void MainGame::gameLoop()
 	Zion::Window::frameChangeTime = 0.0f;
 
 	srand(0);
-	Menu::playMenuMusic();
+	//Menu::playMenuMusic();
 	while (!_window.shouldClose())
 	{
 		auto currentTime = (float)glfwGetTime();

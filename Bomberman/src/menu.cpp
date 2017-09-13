@@ -57,13 +57,18 @@ bool Menu::buildMenuWindows(float width, float height)
 	_createExitWindow(width, height);
 	_createNewGameMenu(width, height);
 	_createLoadGameMenu(width, height);
-	//_screen->performLayout();
 	return true;
 }
 
 void Menu::_createStartMenu(float width, float height)
 {
-	_startMenu = new nanogui::Window(_screen, "Menu");
+	/// Main menu label
+	_title = new nanogui::Label(_screen, "Main Menu", "sans-bold", 50);
+	_title->setPosition({0, 20});
+	_title->setSize({width, 40});
+	//_title->setColor(nanogui::Color({1, 0, 0}, 0));
+	/// start menu
+	_startMenu = new nanogui::Window(_screen, "");
 	_startMenu->setLayout(new nanogui::GroupLayout());
 	_startMenu->setWidth(250);
 	_startMenu->setHeight(320);
@@ -370,8 +375,10 @@ void Menu::_createBackground(float width, float height)
 {
 	glm::mat4 viewMatrix = _mainGame->getGameCamera().getViewMatrix();
 	_mainGame->getShader("gui")->setUniformMat4((GLchar *)"view_matrix", viewMatrix);
-	_menuBg = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 10, 6);
-	_menuBg->addTextureFromFile("resource/images/menu_bg.jpg");
+	/// menu background
+	_menuBg = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 8, 5);
+	_menuBg->addTextureFromFile("resource/images/yellowBg.png");
+	/// menu title
 	_menuTitle = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 3, 1.5);
 	_menuTitle->addTextureFromFile("resource/images/title1.png");
 	/// adding life heart logo
@@ -392,8 +399,8 @@ void Menu::updateMenu(MainGame *game, std::vector<void *> params)
 
 	if (state == GAMESTATE::MENU)
 	{
-		menu->_menuBg->render(glm::translate(glm::mat4(), {0, 0, -1}));
-		menu->_menuTitle->render(glm::translate(glm::mat4(), {0, 1.4, 0}));
+		menu->_menuBg->render(glm::translate(glm::mat4(), {0, 0, 0}));
+		//menu->_menuTitle->render(glm::translate(glm::mat4(), {0, 1.4, 0}));
 		menu->_screen->drawWidgets();
 	}
 	else if (state == GAMESTATE::PAUSE)

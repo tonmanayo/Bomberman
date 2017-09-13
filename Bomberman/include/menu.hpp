@@ -7,6 +7,7 @@
 #include <nanogui/label.h>
 #include <nanogui/textbox.h>
 #include <nanogui/slider.h>
+#include <nanogui/theme.h>
 #include <nanogui/checkbox.h>
 #include <nanogui/combobox.h>
 #include <MainGame.hpp>
@@ -30,6 +31,7 @@ private:
 	nanogui::Window     *_exitWindow;
 	nanogui::TextBox    *_newGameTextBox;
 	nanogui::Window     *_gameSaved;
+	nanogui::Label      *_title;
 	MainGame            *_mainGame;
 	Zion::SquareSprite  *_menuBg;
 	Zion::SquareSprite  *_menuTitle;
