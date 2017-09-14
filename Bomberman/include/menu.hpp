@@ -59,6 +59,7 @@ public:
     void        createLoadGameMenu();
     void        createPauseGameMenu();
     void        createBackground();
+	void        renderGui();
 
 	static void    updateMenu(MainGame *game, std::vector<void *> params);
 	/// creating callbacks for menu

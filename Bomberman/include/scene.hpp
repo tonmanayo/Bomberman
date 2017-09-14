@@ -25,7 +25,7 @@ private:
 	std::vector<std::string> 				*_map;
 	std::map<int, std::map<int, Block *>>   _blocks;
 	bool				   					_endLevel = false;
-	std::string								_difficulty = "Easy";
+	int								        _difficulty = 2;
 	int 									_powerSpeed;
 	float                                   _dropStartTime;
 	bool                                    _dropped = false;
@@ -63,6 +63,7 @@ public:
 	int 									getPowerExplosion();
 	int 									getPowerNbBombs();
 	int 									getPowerSpeed();
+	size_t                                  getEnemyCount(){ return _enemies.size(); }
 
 	void 									incPowerExplosion();
 	void 									incPowerNbBombs();
@@ -75,7 +76,7 @@ public:
     float           						getGridy(float y);
 
 	int 									getDifficulty();
-	void									setDifficulty(const std::string &difficulty);
+	void									setDifficulty(int value);
 
     void 									CalcEndPos();
 	bool            						saveGame(std::string fileName);

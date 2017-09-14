@@ -155,7 +155,7 @@ namespace Zion
 		{
 			model->loadAnimationMatrix(obj.animeType, obj.animeTime);
 			obj.model->simpleRender(obj.matrix);
-			if (type != std::string("player"))
+			if (type != std::string("player") && MainGame::game->getGameState() == GAMESTATE::GAME)
 				increaseAnimeTime(type, obj.id, 2.0f * Zion::Renderable::deltaTime);
 		}
 		model->unloadMaterialFromShader();

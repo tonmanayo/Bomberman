@@ -95,4 +95,9 @@ struct  Gui
 	Zion::SquareSprite  *enemy1;
 	Zion::SquareSprite  *enemy2;
 	Zion::SquareSprite  *heart;
+	Zion::SquareSprite  *speed;
+	Zion::SquareSprite  *bomb;
+	Zion::SquareSprite  *explode;
+	Zion::SquareSprite  *heartCase;
+	Zion::SquareSprite  *whiteBanner;
 };

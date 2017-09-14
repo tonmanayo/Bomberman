@@ -13,6 +13,16 @@
 #define SCALE 1
 #define TRANS 2
 
+enum GAMESTATE
+{
+	MENU,
+	PAUSE,
+	GAME,
+	START,
+	NEXTLEVEL,
+	DIED
+};
+
 class MainGame;
 
 namespace Zion

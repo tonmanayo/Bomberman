@@ -2,10 +2,10 @@
 
 Menu*                       Menu::activeMenu = nullptr;
 irrklang::ISoundSource*     Menu::_menuMusic;
-bool                        Menu::isFullScreen = false;
+bool                        Menu::isFullScreen = true;
 int                         Menu::windowWidth = 1280;
 int                         Menu::windowHeight = 760;
-int                         Menu::difficulty = 1;
+int                         Menu::difficulty = 2;
 nanogui::Label              *Menu::title = nullptr;
 MainMenu                    Menu::mainMenu = MainMenu();
 StoryModeMenu               Menu::storyModeMenu = StoryModeMenu();
@@ -253,7 +253,7 @@ void Menu::createNewGameMenu()
 	Menu::newGameMenu.easy->setPosition({otherPosX, posY});
 	Menu::newGameMenu.easy->setTheme(tmp);
 	Menu::newGameMenu.easy->setCallback([](bool state){
-		Menu::difficulty = 0;
+		Menu::difficulty = 1;
 		if (state){
 			Menu::newGameMenu.normal->setChecked(false);
 			Menu::newGameMenu.hard->setChecked(false);
@@ -268,7 +268,7 @@ void Menu::createNewGameMenu()
 	Menu::newGameMenu.normal->setTheme(tmp);
 	Menu::newGameMenu.normal->setChecked(true);
 	Menu::newGameMenu.normal->setCallback([](bool state){
-		Menu::difficulty = 1;
+		Menu::difficulty = 2;
 		if (state){
 			Menu::newGameMenu.easy->setChecked(false);
 			Menu::newGameMenu.hard->setChecked(false);
@@ -282,7 +282,7 @@ void Menu::createNewGameMenu()
 	Menu::newGameMenu.hard->setPosition({otherPosX, posY});
 	Menu::newGameMenu.hard->setTheme(tmp);
 	Menu::newGameMenu.hard->setCallback([](bool state){
-		Menu::difficulty = 2;
+		Menu::difficulty = 3;
 		if (state){
 			Menu::newGameMenu.normal->setChecked(false);
 			Menu::newGameMenu.easy->setChecked(false);
@@ -301,6 +301,7 @@ void Menu::createNewGameMenu()
 		Menu::newGameMenu.changeView(false);
 		activeMenu->_saveFileName = Menu::newGameMenu.profileNameBox->value();
 		activeMenu->scene = new Scene();
+		activeMenu->scene->setDifficulty(Menu::difficulty);
 		activeMenu->scene->newGame(activeMenu->_mainGame, "map2");
 		activeMenu->scene->saveGame(activeMenu->_saveFileName);
 		activeMenu->_mainGame->setGameState(GAMESTATE::START);
@@ -522,15 +523,33 @@ void Menu::createBackground()
 	/// bomberman menu logo
 	_menuTitle = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 2, 1);
 	_menuTitle->addTextureFromFile("resource/images/menuLogo.png");
-	/// adding life heart logo
-	_heart = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 0.2, 0.2);
-	_heart->addTextureFromFile("resource/images/heart.png");
+	/// adding heart logo
+	Menu::gui.heart = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 0.2, 0.2);
+	Menu::gui.heart->addTextureFromFile("resource/images/heart.png");
+	/// adding speed
+	Menu::gui.speed = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 0.2, 0.2);
+	Menu::gui.speed->addTextureFromFile("resource/images/bolt.png");
+	/// adding bomb logo
+	Menu::gui.bomb = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 0.3, 0.3);
+	Menu::gui.bomb->addTextureFromFile("resource/images/bomb.png");
+	/// adding heart explode
+	Menu::gui.explode = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 0.3, 0.3);
+	Menu::gui.explode->addTextureFromFile("resource/images/explode.png");
+	/// adding heart case
+	Menu::gui.heartCase = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 0.5, 0.7);
+	Menu::gui.heartCase->addTextureFromFile("resource/images/hudBg.png");
 	/// add bombman
 	Menu::gui.bombMan = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 2.0, 1.5);
 	Menu::gui.bombMan->addTextureFromFile("resource/images/bombMan3.png");
 	/// add enemy1
 	Menu::gui.enemy1 = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 1.5, 1.0);
 	Menu::gui.enemy1->addTextureFromFile("resource/images/enemy.png");
+	/// add enemy2
+	Menu::gui.enemy2 = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 0.4, 0.3);
+	Menu::gui.enemy2->addTextureFromFile("resource/images/enemy2.png");
+	/// add banner
+	Menu::gui.whiteBanner = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 7.5, 1.2);
+	Menu::gui.whiteBanner->addBaseColor({0.2, 0.2, 0.2, 0.5});
 }
 
 GLFWwindow* Menu::getGlfwWindow()
@@ -553,10 +572,12 @@ void Menu::updateMenu(MainGame *game, std::vector<void *> params)
 	else if (state == GAMESTATE::PAUSE)
 	{
 		menu->_screen->drawWidgets();
-	}else if (state == GAMESTATE::GAME)
+	}
+	else if (state == GAMESTATE::GAME)
 	{
-		menu->_heart->render(glm::translate(glm::mat4(), {-3.9, 1.9, 0}));
-	} else if (state == GAMESTATE::START)
+		menu->renderGui();
+	}
+	else if (state == GAMESTATE::START)
 	{
 		float halfHeight = (float)Menu::windowHeight / 3;
 		float halfWidth = (float)Menu::windowWidth / 2;
@@ -565,24 +586,62 @@ void Menu::updateMenu(MainGame *game, std::vector<void *> params)
 		if (Menu::textStartTime == 0.0f)
 			Menu::textStartTime = (float)glfwGetTime();
 		float changeTime = (float)glfwGetTime() - Menu::textStartTime;
-		float deltaTime = (changeTime <= 1.5f) ? changeTime : 1.5f;
-		float offset = (deltaTime / 1.5f) * (halfWidth - xOffset);
+		float offset;
+		if (changeTime <= 1.5) {
+			offset = (changeTime / 1.5f) * (halfWidth - xOffset);
+		}else {
+			if (changeTime > 1.7)
+			{
+				float diffVal = changeTime - 1.7f;
+				offset = (diffVal / 1.5f) * (halfWidth - xOffset);
+				offset = (halfWidth - xOffset) - offset;
+			}else
+				offset = (halfWidth - xOffset);
+		}
 
+		Menu::gui.whiteBanner->render(glm::translate(glm::mat4(), {0, 0.3, 0}));
 		MainGame::fontRenderer1->renderText("STAGE", offset, halfHeight, 3.0f, {0.8, 0.1, 0.2});
 		MainGame::fontRenderer1->renderText("1", (float)Menu::windowWidth - offset, halfHeight, 3.0f, {0.8, 0.1, 0.2});
 
-		if (changeTime >= 1.9f)
-		{
-			Menu::gui.bombMan->render(glm::translate(glm::mat4(), {-2.5, 1.3, 0}));
-			Menu::gui.enemy1->render(glm::translate(glm::mat4(), {2.5, -1.0, 0}));
-		}
-
-		if (changeTime >= 3.0f)
+		if (changeTime >= 3.4f)
 		{
 			menu->_mainGame->setGameState(GAMESTATE::GAME);
 			Menu::textStartTime = 0;
 		}
 	}
+}
+
+void Menu::renderGui()
+{
+	int     halfWidth = Menu::windowWidth / 2;
+	int     halfHeight = Menu::windowHeight / 2;
+	/// render life
+	int  life = scene->getPlayer()->getHP() / scene->getDifficulty();
+	int  enenmyCount = (int)scene->getEnemyCount();
+	int  bomb = scene->getPlayer()->getPowerBombNbr() + 1;
+	int  explode = scene->getPlayer()->getPowerExplosion() + 1;
+
+	float posX = -3.3f;
+	for (int i = 0; i < life; i++)
+	{
+		Menu::gui.heart->render({glm::translate(glm::mat4(), {posX, 1.9, 0})});
+		posX += 0.2;
+	}
+	/// bomb
+	Menu::gui.bomb->render(glm::translate(glm::mat4(), {-3.3f, -1.3, 0}));
+	MainGame::fontRenderer1->renderText(std::string("x") + std::to_string(bomb), 80,
+	                                    Menu::windowHeight - 152, 0.5f,
+	                                    {0.8, 0.8, 0.8});
+	/// explode
+	Menu::gui.explode->render(glm::translate(glm::mat4(), {-3.3f, -1.6, 0}));
+	MainGame::fontRenderer1->renderText(std::string("x") + std::to_string(explode), 80,
+	                                    Menu::windowHeight - 102, 0.5f,
+	                                    {0.8, 0.8, 0.8});
+	/// enemy
+	Menu::gui.enemy2->render(glm::translate(glm::mat4(), {-3.3f, -1.9, 0}));
+	MainGame::fontRenderer1->renderText(std::string("x") + std::to_string(enenmyCount), 80,
+	                                    Menu::windowHeight - 50, 0.5f,
+	                                    {0.8, 0.8, 0.8});
 }
 
 bool Menu::mouseCallback(int button, int action, int mod)
