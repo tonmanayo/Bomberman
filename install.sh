@@ -11,9 +11,37 @@ echo ${machine}
 
 case "${machine}" in
 	Linux)
-		if !(dpkg -l | grep sdl) ;then
-        echo linux
+		if !(dpkg -l | grep libglfw3) ;then
+            sudo apt-get install libfreetype6-dev
+        else
+            echo libglfw3 already installed
 		fi
+		if !(dpkg -l | grep pkg-config) ;then
+                    sudo apt-get install pkg-config
+        else
+            echo pkg-config already installed
+        fi
+        if !(dpkg -l | grep cmake) ;then
+                    sudo apt-get install cmake
+        else
+            echo cmake already installed
+        fi
+        if !(dpkg -l | grep libglew-dev) ;then
+                    sudo apt-get install libglew-dev
+        else
+            echo glew already installed
+        fi
+        if !(dpkg -l | grep libglm-dev) ;then
+                    sudo apt-get install libglm-dev
+        else
+            echo libglm-dev already installed
+        fi
+        if !(dpkg -l | grep libfreetype6-dev) ;then
+                    sudo apt-get install libfreetype6-dev
+        else
+            echo libfreetype6-dev already installed
+        fi
+
 		;;
 esac
 
