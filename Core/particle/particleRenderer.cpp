@@ -7,7 +7,7 @@ namespace Zion{
 
 	ParticleRenderer::ParticleRenderer(Shader & shader)
 	{
-		_quad = new SquareSprite(shader, 0, 0, 0.9, 0.9);
+		_quad = new SquareSprite(shader, 0, 0, 1.0, 1.0);
 		_shader = shader;
 		glGenBuffers(1, &_vbo);
 		glBindBuffer(GL_ARRAY_BUFFER, _vbo);

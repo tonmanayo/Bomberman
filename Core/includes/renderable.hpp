@@ -19,8 +19,7 @@ enum GAMESTATE
 	PAUSE,
 	GAME,
 	START,
-	NEXTLEVEL,
-	DIED
+	END
 };
 
 class MainGame;

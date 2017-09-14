@@ -37,6 +37,7 @@ public:
     static MainMenu         mainMenu;
     static StoryModeMenu    storyModeMenu;
 	static NewGameMenu      newGameMenu;
+	static PauseMenu        pauseMenu;
 
 public:
 	Menu() = default;
@@ -62,6 +63,7 @@ public:
 	void        renderGui();
 
 	static void    updateMenu(MainGame *game, std::vector<void *> params);
+	static void    updateGameStateStart(MainGame *game, Menu *menu, GAMESTATE state);
 	/// creating callbacks for menu
 	static bool     mouseCallback(int button, int action, int mod);
 	static bool     cursorPositionCallback(int xpos, int ypos);

@@ -131,9 +131,9 @@ bool MainGame::initGame2(float width, float height, float fov)
 	/// load resources
 	loadResources();
 	/// load fonts
-	MainGame::fontRenderer1 = new Zion::TextRenderer(getShader("text"), Menu::windowWidth, Menu::windowHeight);
+	MainGame::fontRenderer1 = new Zion::TextRenderer(getShader("text"), (GLuint)Menu::windowWidth, (GLuint)Menu::windowHeight);
 	MainGame::fontRenderer1->loadFont("resource/fonts/angryBirds.ttf", 48);
-	MainGame::fontRenderer2 = new Zion::TextRenderer(getShader("text"), Menu::windowWidth, Menu::windowHeight);
+	MainGame::fontRenderer2 = new Zion::TextRenderer(getShader("text"), (GLuint)Menu::windowWidth, (GLuint)Menu::windowHeight);
 	MainGame::fontRenderer2->loadFont("resource/fonts/sansSerious.ttf", 48);
 	MainGame::game = this;
 	return true;
@@ -175,8 +175,8 @@ void MainGame::loadResources()
 	getMaterial("particleAtlas")->numRows =  4;
 	addMaterial("explosion1", "resource/images/explosion1.png");
 	getMaterial("explosion1")->numRows =  4;
-	addMaterial("explosion2", "resource/images/explosion2.jpg");
-	getMaterial("explosion2")->numRows =  4;
+	addMaterial("explosion2", "resource/images/explode1.png");
+	getMaterial("explosion2")->numRows =  3;
 	addMaterial("explosion3", "resource/images/explosion3.jpg");
 	getMaterial("explosion3")->numRows =  4;
 	addMaterial("explosion4", "resource/images/explosion4.jpg");
@@ -189,7 +189,7 @@ void MainGame::loadParticles()
 {
 	Zion::ParticleMaster::init(*getShader("particle"));
 	/// explosion to the left
-	explosionLeft = new Zion::ParticleSystem(getMaterial("explosion2"), 10, 2, 0.1f, 1.6, 0.5f);
+	explosionLeft = new Zion::ParticleSystem(getMaterial("explosion2"), 15, 3, 0.0f, 1.6, 0.5f);
 	explosionLeft->randomizeRotation();
 	explosionLeft->setDirection({-1, 0, 0}, 0.1f);
 	explosionLeft->setLifeError(0.3f);
@@ -197,7 +197,7 @@ void MainGame::loadParticles()
 	explosionLeft->setScaleError(0.5f);
 	explosionLeft->setPositionError(0.7f);
 	/// explosion to the right
-	explosionRight = new Zion::ParticleSystem(getMaterial("explosion2"), 10, 2, 0.1f, 1.6, 0.5f);
+	explosionRight = new Zion::ParticleSystem(getMaterial("explosion2"), 15, 3, 0.0f, 1.6, 0.5f);
 	explosionRight->randomizeRotation();
 	explosionRight->setDirection({1, 0, 0}, 0.1f);
 	explosionRight->setLifeError(0.3f);
@@ -205,7 +205,7 @@ void MainGame::loadParticles()
 	explosionRight->setScaleError(0.5f);
 	explosionRight->setPositionError(0.7f);
 	/// explosion up
-	explosionUp = new Zion::ParticleSystem(getMaterial("explosion2"), 10, 2, 0.1f, 1.6, 0.5f);
+	explosionUp = new Zion::ParticleSystem(getMaterial("explosion2"), 15, 3, 0.0f, 1.6, 0.5f);
 	explosionUp->randomizeRotation();
 	explosionUp->setDirection({0, 0, -1}, 0.1f);
 	explosionUp->setLifeError(0.3f);
@@ -213,7 +213,7 @@ void MainGame::loadParticles()
 	explosionUp->setScaleError(0.5f);
 	explosionUp->setPositionError(0.7f);
 	/// explosion down
-	explosionDown = new Zion::ParticleSystem(getMaterial("explosion2"), 10, 2, 0.1f, 1.6, 0.5f);
+	explosionDown = new Zion::ParticleSystem(getMaterial("explosion2"), 15, 3, 0.0f, 1.6, 0.5f);
 	explosionDown->randomizeRotation();
 	explosionDown->setDirection({0, 0, 1}, 0.1f);
 	explosionDown->setLifeError(0.3f);
@@ -261,7 +261,7 @@ void MainGame::gameLoop()
 		}
 
 		/// render game scene
-		if (_state == GAMESTATE::GAME || _state == GAMESTATE::START)
+		if (_state == GAMESTATE::GAME || _state == GAMESTATE::START || _state == GAMESTATE::PAUSE)
 		{
 			glEnable(GL_DEPTH_TEST);
 			glDepthFunc(GL_LESS);

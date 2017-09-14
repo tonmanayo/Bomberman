@@ -89,6 +89,27 @@ struct  NewGameMenu
 	}
 };
 
+struct  PauseMenu
+{
+	nanogui::Theme      *buttonTheme;
+	nanogui::Window     *window = nullptr;
+	nanogui::Button     *resume = nullptr;
+	nanogui::Button     *save = nullptr;
+	nanogui::Button     *load = nullptr;
+	nanogui::Button     *quit = nullptr;
+	nanogui::Label      *saveLabel = nullptr;
+	nanogui::Window     *quitWindow = nullptr;
+	nanogui::Button     *yes = nullptr;
+	nanogui::Button     *no = nullptr;
+
+	PauseMenu() = default;
+
+	void    changeView(bool value){
+		if (window != nullptr)
+			window->setVisible(value);
+	}
+};
+
 struct  Gui
 {
 	Zion::SquareSprite  *bombMan;

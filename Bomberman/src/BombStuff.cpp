@@ -48,6 +48,7 @@ void Scene::renderExplosion(Scene *scene, Bomb &bomb, MainGame *game) {
 	glm::vec3 middle = glm::vec3(x, 0, y);
 	// renderFlameExplosion(middle);
 	MainGame::explosionUp->generateParticles(middle, true);
+	MainGame::explosionUp->generateParticles(middle, true);
 	MainGame::explosionDown->generateParticles(middle, true);
 	MainGame::explosionLeft->generateParticles(middle, true);
 	MainGame::explosionRight->generateParticles(middle, true);

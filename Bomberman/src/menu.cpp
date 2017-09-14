@@ -2,7 +2,7 @@
 
 Menu*                       Menu::activeMenu = nullptr;
 irrklang::ISoundSource*     Menu::_menuMusic;
-bool                        Menu::isFullScreen = true;
+bool                        Menu::isFullScreen = false;
 int                         Menu::windowWidth = 1280;
 int                         Menu::windowHeight = 760;
 int                         Menu::difficulty = 2;
@@ -10,6 +10,7 @@ nanogui::Label              *Menu::title = nullptr;
 MainMenu                    Menu::mainMenu = MainMenu();
 StoryModeMenu               Menu::storyModeMenu = StoryModeMenu();
 NewGameMenu                 Menu::newGameMenu = NewGameMenu();
+PauseMenu                   Menu::pauseMenu = PauseMenu();
 float                       Menu::textStartTime = 0;
 Gui                         Menu::gui;
 
@@ -59,6 +60,7 @@ bool Menu::buildMenuWindows()
     createStoryMenu();
 	createExitWindow();
 	createNewGameMenu();
+	createPauseGameMenu();
 	//createOptionsMenu();
 	//createPauseGameMenu();
 	//createLoadGameMenu();
@@ -299,6 +301,8 @@ void Menu::createNewGameMenu()
 		if (Menu::newGameMenu.profileNameBox->value().empty())
 			return;
 		Menu::newGameMenu.changeView(false);
+		Menu::title->setVisible(false);
+		Menu::pauseMenu.changeView(true);
 		activeMenu->_saveFileName = Menu::newGameMenu.profileNameBox->value();
 		activeMenu->scene = new Scene();
 		activeMenu->scene->setDifficulty(Menu::difficulty);
@@ -318,6 +322,111 @@ void Menu::createNewGameMenu()
 	});
 
 	Menu::newGameMenu.changeView(false);
+}
+
+void Menu::createPauseGameMenu()
+{
+	/// window theme
+	nanogui::Theme  *winTheme = new nanogui::Theme(_screen->nvgContext());
+	winTheme->mWindowCornerRadius = 0;
+	winTheme->mWindowFillFocused = {30, 30, 30, 255};
+	winTheme->mWindowFillUnfocused = {30, 30, 30, 255};
+
+	/// dimensions and positions for buttons
+	int     posY = Menu::windowHeight / 3;
+	int     winSizeX = Menu::windowWidth / 5;
+	winSizeX = (winSizeX < 350) ? 350 : winSizeX;
+	int     xOffset = winSizeX / 5;
+	int     buttonWidth = xOffset * 3;
+
+	Menu::pauseMenu.window = new nanogui::Window(_screen, "");
+	Menu::pauseMenu.window->setSize({winSizeX, Menu::windowHeight});
+	Menu::pauseMenu.window->setPosition({0, 0});
+	Menu::pauseMenu.window->setTheme(winTheme);
+
+	/// resume button
+	Menu::pauseMenu.resume = new nanogui::Button(Menu::pauseMenu.window, "Resume");
+	Menu::pauseMenu.resume->setSize({buttonWidth, 50});
+	Menu::pauseMenu.resume->setPosition({xOffset, posY});
+	Menu::pauseMenu.resume->setCallback([]{
+		if (Menu::pauseMenu.quitWindow->visible())
+			return;
+		Menu::pauseMenu.saveLabel->setVisible(false);
+		activeMenu->_mainGame->setGameState(GAMESTATE::GAME);
+		Menu::pauseMenu.quitWindow->setVisible(false);
+	});
+
+	posY += 70;
+	/// save button
+	Menu::pauseMenu.save = new nanogui::Button(Menu::pauseMenu.window, "Save");
+	Menu::pauseMenu.save->setSize({buttonWidth, 50});
+	Menu::pauseMenu.save->setPosition({xOffset, posY});
+	Menu::pauseMenu.save->setCallback([]{
+		if (Menu::pauseMenu.quitWindow->visible())
+			return;
+		activeMenu->scene->saveGame(activeMenu->_saveFileName);
+		Menu::pauseMenu.saveLabel->setVisible(true);
+		Menu::pauseMenu.quitWindow->setVisible(false);
+	});
+
+	/// save label
+	Menu::pauseMenu.saveLabel = new   nanogui::Label(Menu::pauseMenu.window, "Game Saved", "sans", 25);
+	Menu::pauseMenu.saveLabel->setSize({buttonWidth, 50});
+	Menu::pauseMenu.saveLabel->setPosition({xOffset * 2, Menu::windowHeight - 70});
+	Menu::pauseMenu.saveLabel->setColor({136, 224, 74, 255});
+	Menu::pauseMenu.saveLabel->setVisible(false);
+
+	posY += 70;
+	/// load button
+	Menu::pauseMenu.load = new nanogui::Button(Menu::pauseMenu.window, "Load");
+	Menu::pauseMenu.load->setSize({buttonWidth, 50});
+	Menu::pauseMenu.load->setPosition({xOffset, posY});
+
+	posY += 70;
+	/// quit button
+	Menu::pauseMenu.quit = new nanogui::Button(Menu::pauseMenu.window, "Quit");
+	Menu::pauseMenu.quit->setSize({buttonWidth, 50});
+	Menu::pauseMenu.quit->setPosition({xOffset, posY});
+	Menu::pauseMenu.quit->setCallback([]{
+		if (Menu::pauseMenu.quitWindow->visible())
+			return;
+		Menu::pauseMenu.quitWindow->setVisible(true);
+	});
+
+	/// quit window
+	int  quitWinOffset = winSizeX / 3;
+	int  padding = quitWinOffset / 3;
+	Menu::pauseMenu.quitWindow = new nanogui::Window(_screen, "Do you want to quit game?");
+	Menu::pauseMenu.quitWindow->setSize({winSizeX, 75});
+	Menu::pauseMenu.quitWindow->setPosition({(Menu::windowWidth / 2) - (winSizeX / 2), (Menu::windowHeight / 2)});
+	Menu::pauseMenu.quitWindow->setTheme(winTheme);
+	Menu::pauseMenu.quitWindow->setVisible(false);
+
+	/// yes button
+	Menu::pauseMenu.yes = new nanogui::Button(Menu::pauseMenu.quitWindow, "Yes");
+	Menu::pauseMenu.yes->setSize({quitWinOffset, 30});
+	Menu::pauseMenu.yes->setPosition({padding, 35});
+	Menu::pauseMenu.yes->setCallback([]{
+		Menu::pauseMenu.quitWindow->setVisible(false);
+		Menu::pauseMenu.saveLabel->setVisible(false);
+		Menu::pauseMenu.changeView(false);
+		Menu::mainMenu.changeView(true);
+		activeMenu->_mainGame->setGameState(GAMESTATE::MENU);
+		delete activeMenu->scene;
+		MainGame::functions.erase("sceneUpdate");
+		MainGame::renderer.removeAll();
+	});
+
+	/// no button
+	Menu::pauseMenu.no = new nanogui::Button(Menu::pauseMenu.quitWindow, "No");
+	Menu::pauseMenu.no->setSize({quitWinOffset, 30});
+	Menu::pauseMenu.no->setPosition({2 * padding + quitWinOffset, 35});
+	Menu::pauseMenu.no->setCallback([]{
+		Menu::pauseMenu.quitWindow->setVisible(false);
+		Menu::pauseMenu.saveLabel->setVisible(false);
+	});
+
+	Menu::pauseMenu.changeView(false);
 }
 
 void Menu::createLoadGameMenu()
@@ -452,67 +561,6 @@ void Menu::createOptionsMenu()
 
 }
 
-void Menu::createPauseGameMenu()
-{
-	/*_pauseGameMenu = new nanogui::Window(_screen, "Pause");
-	_pauseGameMenu->setLayout(new nanogui::GroupLayout());
-	_pauseGameMenu->setSize({250, 250});
-	_pauseGameMenu->setVisible(false);
-	_pauseGameMenu->center();
-	/// game saved Window
-	_gameSaved = new nanogui::Window(_screen, "");
-	_gameSaved->setSize({250, 40});
-	_gameSaved->setVisible(false);
-	_gameSaved->setPosition({(width / 2) - 125, height - 100});
-	nanogui::Label *saveLabel = new nanogui::Label(_gameSaved, "Game Saved", "sans", 25);
-	saveLabel->setPosition({70, 5});
-	saveLabel->setSize({150, 30});
-	saveLabel->setColor({0.0f, 0.7f, 0.0f, 1.0f});
-	/// resume game button
-	nanogui::Button *resume = new nanogui::Button(_pauseGameMenu, "Resume");
-	resume->setPosition({50, 50});
-	resume->setSize({150, 50});
-	resume->setCallback([]{
-		activeMenu->_mainGame->setGameState(GAMESTATE::GAME);
-		activeMenu->_gameSaved->setVisible(false);
-	});
-	/// save game button
-	nanogui::Button *save = new nanogui::Button(_pauseGameMenu, "Save");
-	save->setPosition({50, 120});
-	save->setSize({150, 50});
-	save->setCallback([]{
-		activeMenu->_scene->saveGame(activeMenu->_saveFileName);
-		activeMenu->_gameSaved->setVisible(true);
-	});
-	/// quit game button
-	nanogui::Button *quit = new nanogui::Button(_pauseGameMenu, "Quit");
-	quit->setPosition({50, 190});
-	quit->setSize({150, 50});
-	quit->setCallback([]{
-		if (activeMenu->_scene != nullptr)
-		{
-			delete activeMenu->_scene;
-			activeMenu->_screen->removeChild(activeMenu->_loadGameMenu);
-			activeMenu->_screen->removeChild(activeMenu->_newGameMenu);
-			//delete activeMenu->_loadGameMenu;
-			activeMenu->_createNewGameMenu(activeMenu->_mainGame->getGameWindow().getWidth(),
-			                               activeMenu->_mainGame->getGameWindow().getHeight());
-			activeMenu->_createLoadGameMenu(activeMenu->_mainGame->getGameWindow().getWidth(),
-			                                activeMenu->_mainGame->getGameWindow().getHeight());
-			std::cout << "scene deleted" << std::endl;
-			std::map<const char *, Func>::iterator it;
-			it = MainGame::functions.find("sceneUpdate");
-			MainGame::functions.erase(it);
-			MainGame::renderer.removeAll();
-			activeMenu->_gameSaved->setVisible(false);
-		}
-		activeMenu->_mainGame->setGameState(GAMESTATE::MENU);
-		activeMenu->_pauseGameMenu->setVisible(false);
-		activeMenu->_startMenu->setVisible(true);
-		std::cout << "game quit" << std::endl;
-	});*/
-}
-
 void Menu::createBackground()
 {
 	glm::mat4 viewMatrix = _mainGame->getGameCamera().getViewMatrix();
@@ -557,6 +605,46 @@ GLFWwindow* Menu::getGlfwWindow()
 	return _screen->glfwWindow();
 }
 
+void Menu::updateGameStateStart(MainGame *game, Menu *menu, GAMESTATE state)
+{
+	float halfHeight = (float)Menu::windowHeight / 3;
+	float halfWidth = (float)Menu::windowWidth / 2;
+	float xOffset = (float)Menu::windowWidth / 5;
+
+	if (Menu::textStartTime == 0.0f)
+		Menu::textStartTime = (float)glfwGetTime();
+	float changeTime = (float)glfwGetTime() - Menu::textStartTime;
+	float offset;
+	if (changeTime <= 1.4f) {
+		if (changeTime <= 0.9f)
+			offset = (changeTime / 0.9f) * (halfWidth + xOffset);
+		else
+			offset = (halfWidth + xOffset);
+		MainGame::fontRenderer1->renderText("STAGE 1", (float)Menu::windowWidth - (offset - halfWidth / 3), halfHeight, 1.5f, {0.8, 0.8, 0.8});
+		MainGame::fontRenderer1->renderText("Defeat All Enemies", (float)Menu::windowWidth - offset, halfHeight + 55, 2.0f, {0.8, 0.8, 0.8});
+	}else if (changeTime <= 2.6f) {
+		float tmp = changeTime - 1.4f;
+		if (changeTime <= 2.3)
+			offset = (tmp / 0.9f) * (halfWidth + xOffset - halfWidth / 4);
+		else
+			offset = (halfWidth + xOffset - halfWidth / 4);
+		MainGame::fontRenderer1->renderText("READY", (float)Menu::windowWidth - offset, halfHeight, 3.0f, {0.8, 0.8, 0.8});
+	}else {
+		float tmp = changeTime - 2.8f;
+		if (changeTime <= 3.5f)
+			offset = (tmp / 0.7f) * (halfWidth + xOffset - halfWidth / 3);
+		else
+			offset = (halfWidth + xOffset - halfWidth / 3);
+		MainGame::fontRenderer1->renderText("GO", (float)Menu::windowWidth - offset, halfHeight, 3.0f, {0.8, 0.8, 0.8});
+	}
+	Menu::gui.whiteBanner->render(glm::translate(glm::mat4(), {0, 0.3, 0}));
+	if (changeTime >= 3.9f)
+	{
+		menu->_mainGame->setGameState(GAMESTATE::GAME);
+		Menu::textStartTime = 0;
+	}
+}
+
 void Menu::updateMenu(MainGame *game, std::vector<void *> params)
 {
 	auto *menu = (Menu*)params[0];
@@ -571,6 +659,9 @@ void Menu::updateMenu(MainGame *game, std::vector<void *> params)
 	}
 	else if (state == GAMESTATE::PAUSE)
 	{
+		float halfHeight = (float)Menu::windowHeight / 2;
+		float halfWidth = (float)Menu::windowWidth / 3;
+		MainGame::fontRenderer2->renderText("Paused", halfWidth, halfHeight, 2.0f, {0.8, 0.8, 0.8});
 		menu->_screen->drawWidgets();
 	}
 	else if (state == GAMESTATE::GAME)
@@ -578,37 +669,7 @@ void Menu::updateMenu(MainGame *game, std::vector<void *> params)
 		menu->renderGui();
 	}
 	else if (state == GAMESTATE::START)
-	{
-		float halfHeight = (float)Menu::windowHeight / 3;
-		float halfWidth = (float)Menu::windowWidth / 2;
-		float xOffset = (float)Menu::windowWidth / 5;
-
-		if (Menu::textStartTime == 0.0f)
-			Menu::textStartTime = (float)glfwGetTime();
-		float changeTime = (float)glfwGetTime() - Menu::textStartTime;
-		float offset;
-		if (changeTime <= 1.5) {
-			offset = (changeTime / 1.5f) * (halfWidth - xOffset);
-		}else {
-			if (changeTime > 1.7)
-			{
-				float diffVal = changeTime - 1.7f;
-				offset = (diffVal / 1.5f) * (halfWidth - xOffset);
-				offset = (halfWidth - xOffset) - offset;
-			}else
-				offset = (halfWidth - xOffset);
-		}
-
-		Menu::gui.whiteBanner->render(glm::translate(glm::mat4(), {0, 0.3, 0}));
-		MainGame::fontRenderer1->renderText("STAGE", offset, halfHeight, 3.0f, {0.8, 0.1, 0.2});
-		MainGame::fontRenderer1->renderText("1", (float)Menu::windowWidth - offset, halfHeight, 3.0f, {0.8, 0.1, 0.2});
-
-		if (changeTime >= 3.4f)
-		{
-			menu->_mainGame->setGameState(GAMESTATE::GAME);
-			Menu::textStartTime = 0;
-		}
-	}
+		Menu::updateGameStateStart(game, menu, state);
 }
 
 void Menu::renderGui()

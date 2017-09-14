@@ -68,12 +68,15 @@ void Scene::updatePlayer(MainGame *game, Scene *scene) {
     }
 
 	if (scene->worldEndLevel(scene->_player->getPosition(), scene)) {
-        std::cout << "FINISHED LEVEL!!!\n";
+        if (scene->_enemies.empty())
+        {
+	        scene->_levelCompleted = true;
+	        game->setGameState(GAMESTATE::END);
+        }
     }
 
     if (scene->_player->getHP() == 0) {
-        std::cout << "dead\n";
-        game->setGameState(GAMESTATE::MENU);
+        game->setGameState(GAMESTATE::END);
     }
     worldGetPower(scene->_player->getPosition(), scene);
 }
