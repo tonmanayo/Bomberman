@@ -7,6 +7,8 @@ bool Scene::newGame(MainGame *game, std::string mapName)
 		return false;
 	_mapName = mapName;
 	_game = game;
+	_powerSpeed = 0;
+
 	for (std:: string& line : *map)
 	{
 		std::vector<std::string> strSplits = MainGame::stringSplit(line, ' ');

@@ -34,7 +34,7 @@ void Player::incBombNbr(){
 	_powerBombNumber++;
 }
 
-void Player::incBombSpeed(){
+void Player::incPowerSpeed(){
 	_powerSpeed += 0.1f;
 }
 

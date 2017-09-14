@@ -18,7 +18,6 @@ class   Scene
 {
 private:
 	MainGame    							*_game;
-
 	int         							_enemyCount = 0;
 	Player      							*_player;
 	std::vector<Bomb>						_bomb;
@@ -27,6 +26,9 @@ private:
 	std::map<int, std::map<int, Block *>>   _blocks;
 	bool				   					_endLevel = false;
 	std::string								_difficulty = "Easy";
+	int 									_powerSpeed;
+	float                                   _dropStartTime;
+	bool                                    _dropped = false;
 private:
 	std::string     _floorType;
 	std::string     _wallType;
@@ -58,6 +60,14 @@ public:
 	Scene&  operator=(const Scene & rhs);
 	~Scene();
 
+	int 									getPowerExplosion();
+	int 									getPowerNbBombs();
+	int 									getPowerSpeed();
+
+	void 									incPowerExplosion();
+	void 									incPowerNbBombs();
+	void 									inctPowerSpeed();
+
     std::map<int, std::map<int, Block *>> 	getBlocks() {return _blocks;};
     int          							getWorldx(float x);
     int  						            getWorldy(float y);
@@ -65,7 +75,7 @@ public:
     float           						getGridy(float y);
 
 	int 									getDifficulty();
-	void									setDifficulty(std::string difficulty);
+	void									setDifficulty(const std::string &difficulty);
 
     void 									CalcEndPos();
 	bool            						saveGame(std::string fileName);

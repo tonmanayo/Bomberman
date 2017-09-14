@@ -1,16 +1,19 @@
 #include <MainGame.hpp>
 #include <menu.hpp>
 
-Zion::Renderer  MainGame::renderer;
+Zion::Renderer                  MainGame::renderer;
 std::map<const char *, Func>    MainGame::functions;
-MainGame*    MainGame::game;
-Zion::ParticleSystem*     MainGame::explosionLeft;
-Zion::ParticleSystem*     MainGame::explosionRight;
-Zion::ParticleSystem*     MainGame::explosionUp;
-Zion::ParticleSystem*     MainGame::explosionDown;
-Zion::ParticleSystem*     MainGame::bombSparks;
-Zion::ParticleSystem*     MainGame::smokeParticles;
-irrklang::ISoundEngine*   MainGame::soundEngine;
+MainGame*                       MainGame::game;
+Zion::ParticleSystem*           MainGame::explosionLeft;
+Zion::ParticleSystem*           MainGame::explosionRight;
+Zion::ParticleSystem*           MainGame::explosionUp;
+Zion::ParticleSystem*           MainGame::explosionDown;
+Zion::ParticleSystem*           MainGame::bombSparks;
+Zion::ParticleSystem*           MainGame::smokeParticles;
+irrklang::ISoundEngine*         MainGame::soundEngine;
+Zion::TextRenderer              *MainGame::fontRenderer1;
+Zion::TextRenderer              *MainGame::fontRenderer2;
+int                             MainGame::stage = 1;
 
 std::string MainGame::getNameFromPath(const char *path)
 {
@@ -45,7 +48,7 @@ bool MainGame::initGame(float width, float height, float fov)
 {
 	glm::mat4       projectionMatrix;
 
-	srand(time(NULL));
+	srand(time(0));
 	/// Creating glfw window
 	_width = width;
 	_height = height;
@@ -121,10 +124,17 @@ bool MainGame::initGame2(float width, float height, float fov)
 		getShader("gui")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
 	if (addShader("anime", "shaders/anime.vert", "shaders/basic.frag"))
 		getShader("anime")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
+	if (addShader("text", "shaders/text.vert", "shaders/text.frag"))
+		getShader("text")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
 	/// setup default camera
 	setupGameCamera();
 	/// load resources
 	loadResources();
+	/// load fonts
+	MainGame::fontRenderer1 = new Zion::TextRenderer(getShader("text"), Menu::windowWidth, Menu::windowHeight);
+	MainGame::fontRenderer1->loadFont("resource/fonts/angryBirds.ttf", 48);
+	MainGame::fontRenderer2 = new Zion::TextRenderer(getShader("text"), Menu::windowWidth, Menu::windowHeight);
+	MainGame::fontRenderer2->loadFont("resource/fonts/sansSerious.ttf", 48);
 	MainGame::game = this;
 	return true;
 }
@@ -142,10 +152,15 @@ void MainGame::loadResources()
 	addModel("bomberman", *getShader("anime"), "resource/models/bomberman/bomberman1.glb");
 	addModel("onile", *getShader("anime"), "resource/models/bomberman/Onile.glb");
     addModel("lavaBackground", *getShader("basic"), "resource/models/bomberman/lavaBackground.gltf");
-	addModel("present", *getShader("basic"), "resource/models/blocks/present.gltf");
-	addModel("lemon", *getShader("basic"), "resource/models/blocks/lemon.gltf");
-	addModel("star", *getShader("basic"), "resource/models/blocks/star.gltf");
+
+	addModel("heart", *getShader("basic"), "resource/models/powerUps/heart.glb");
+	addModel("present", *getShader("basic"), "resource/models/powerUps/present.gltf");
+	addModel("lemon", *getShader("basic"), "resource/models/powerUps/lemon.gltf");
+	addModel("star", *getShader("basic"), "resource/models/powerUps/star.gltf");
+	addModel("bg", *getShader("gui"), "resource/models/others/bg.gltf");
+
 	addModel("enemy1", *getShader("basic"), "resource/models/enemies/enemy2.gltf");
+
 	/// loading maps
 	addMap("map2", "resource/maps/map2");
 	/// loading materials
@@ -153,6 +168,7 @@ void MainGame::loadResources()
 	mat->texure.loadTextureFromPath("resource/models/bomberman/OnileDiffuseColor.png");
 	auto *onileModel = (Zion::Model *)getModel("onile");
 	onileModel->addMaterial(0, *mat);
+
 	addMaterial("fireBlock", "resource/images/fireTex.png");
 	addMaterial("flame1", "resource/images/flame1.png");
 	addMaterial("particleAtlas", "resource/images/particleAtlas.png");
@@ -218,14 +234,14 @@ void MainGame::gameLoop()
 	Zion::Window::frameChangeTime = 0.0f;
 
 	srand(0);
-	Menu::playMenuMusic();
+	//Menu::playMenuMusic();
 	while (!_window.shouldClose())
 	{
 		auto currentTime = (float)glfwGetTime();
 		Zion::Renderable::deltaTime = currentTime - Zion::Renderable::runTime;
 		Zion::Renderable::runTime = currentTime;
 
-		_window.clearWindow(0.3f, 0.3f, 0.3f, 1.0f);
+		_window.clearWindow(0.93f, 0.93f, 0.93f, 1.0f);
 		/// calling all functions for loop
 		for (std::pair<const char *, Func> func : functions)
 		{
@@ -238,17 +254,21 @@ void MainGame::gameLoop()
 
 		for (std::pair<std::string, Zion::Shader *> shader : _shaders)
 		{
-			if (!shader.first.compare("gui"))
+			if (!shader.first.compare("gui") || !shader.first.compare("text"))
 				continue;
 			shader.second->setUniformMat4((GLchar *)"view_matrix", viewMatrix);
 			shader.second->setUniform3f((GLchar *)"viewPos", viewPos);
 		}
 
-		glEnable(GL_DEPTH_TEST);
-		glDepthFunc(GL_LESS);
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		MainGame::renderer.render();
+		/// render game scene
+		if (_state == GAMESTATE::GAME)
+		{
+			glEnable(GL_DEPTH_TEST);
+			glDepthFunc(GL_LESS);
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			MainGame::renderer.render();
+		}
 
 		/// render particles
 		if (_state == GAMESTATE::GAME)

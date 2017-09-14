@@ -12,7 +12,7 @@ echo ${machine}
 case "${machine}" in
 	Linux)
 		if !(dpkg -l | grep sdl) ;then
-
+        echo linux
 		fi
 		;;
 esac

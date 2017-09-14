@@ -23,7 +23,7 @@ int		Scene::getDifficulty() {
 		return 25;
 	return 100;
 }
-void	Scene::setDifficulty(std::string difficulty) {
+void	Scene::setDifficulty(const std::string &difficulty) {
 	_difficulty = difficulty;
 }
 
@@ -52,10 +52,10 @@ void Scene::_addWall(float x, float z, int xx, int yy)
 
 
 void Scene::_addPowerUps(float x, float z, int xx, int yy) {
-    char powerUp[6] = {'F', 'G', 'B', 'O', 'O', 'O' };              // F - fire range B - Multiple bombs S - player speed increase
+    char powerUp[8] = {'F', 'G', 'B', 'H', 'O', 'O', '0', '0' };              // F - fire range B - Multiple bombs S - player speed increase
     std::random_device r;
     std::default_random_engine e1(r());
-    std::uniform_int_distribution<int> uniform_dist(0, 2);
+    std::uniform_int_distribution<int> uniform_dist(0, 7);
     int randNbr = uniform_dist(e1);
     glm::mat4 mat = glm::translate(glm::mat4(), glm::vec3(x, 0, z));
 
@@ -82,6 +82,18 @@ void Scene::_addPowerUps(float x, float z, int xx, int yy) {
         }
     }
 
+    if (powerUp[randNbr] == 'H' && !_blocks[yy][xx]->getEndMap()) {
+        _blocks[yy][xx]->setPowerName("PowerHeart");
+        _blocks[yy][xx]->setPowerUp(true);
+        glm::mat4 scale = glm::scale(glm::mat4(), glm::vec3(0.3f,0.3f,0.3f));
+        mat = mat * scale;
+        Zion::Renderable *present = _game->getModel("heart");
+        if (present != nullptr)
+        {
+            MainGame::renderer.addToRender("heart", _blocks[yy][xx]->getId() , present, mat);
+        }
+    }
+
     if (powerUp[randNbr] == 'G' && !_blocks[yy][xx]->getEndMap()) {
         _blocks[yy][xx]->setPowerName("PowerBombExplosionInc");
         _blocks[yy][xx]->setPowerUp(true);
@@ -103,6 +115,7 @@ void Scene::_addPowerUps(float x, float z, int xx, int yy) {
 
 
 }
+
 void Scene::_addBreakableBlock(float x, float z, int xx, int yy)
 {
 	static int i = 0;
@@ -220,10 +233,10 @@ int Scene::getWorldx(float x) {
 	return 	 std::abs(static_cast<int>(std::round((x - GRID_START_X) / (float)GRID_BLOCK_SIZE)));
 
 }
+
 int Scene::getWorldy(float y) {
 	return  std::abs((int)std::round((y - GRID_START_Z) / (float)GRID_BLOCK_SIZE));
 }
-
 
 float Scene::getGridx(float x) {
 	x = static_cast<float>(std::round(x / GRID_BLOCK_SIZE));
@@ -240,15 +253,30 @@ void Scene::sceneUpdate(MainGame *game, std::vector<void *> params)
 
 	if (game->getGameState() == GAMESTATE::GAME)
 	{
-		if (Zion::Input::getKeyPressOnce(GLFW_KEY_ESCAPE))
+		if (scene->_dropped)
 		{
-			std::cout << "paused" << std::endl;
-			game->setGameState(GAMESTATE::PAUSE);
-			return;
+			if (Zion::Input::getKeyPressOnce(GLFW_KEY_ESCAPE))
+			{
+				std::cout << "paused" << std::endl;
+				game->setGameState(GAMESTATE::PAUSE);
+				return;
+			}
+			updateBomb(game, scene);
+			updateEnemy(game, scene);
+			updatePlayer(game, scene);
+		}else
+		{
+			if (Menu::textStartTime == 0)
+				Menu::textStartTime = (float)glfwGetTime();
+			float changeTime = (float)glfwGetTime() - Menu::textStartTime;
+			float offset = (float)(1.5 / changeTime) * 10;
+
+			scene->_player->changePosY(offset);
+			glm::mat4 mat = scene->_player->getTransformation();
+			glm::translate(mat, {0, offset, 0});
+			MainGame::renderer.applyTransformationToRenderable(scene->_player->getType(), scene->_player->getId(),
+					mat);
 		}
-		updateBomb(game, scene);
-		updateEnemy(game, scene);
-		updatePlayer(game, scene);
 	}
 }
 
@@ -279,3 +307,10 @@ bool Scene::enemyPlayerCollision(Player *enemy, Scene *scene){
 	return false;
 }
 
+int Scene::getPowerSpeed () {
+	return _powerSpeed;
+}
+
+void Scene::inctPowerSpeed() {
+	_powerSpeed++;
+}

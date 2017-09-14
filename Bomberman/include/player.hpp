@@ -36,7 +36,7 @@ public:
     void        reset();
 	void		incBombExplosion();
 	void		incBombNbr();
-	void		incBombSpeed();
+	void		incPowerSpeed();
 	int			getPowerExplosion();
 	int			getPowerBombNbr();
 	float		getPowerSpeed();
