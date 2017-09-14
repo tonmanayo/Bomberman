@@ -38,6 +38,7 @@ public:
     static StoryModeMenu    storyModeMenu;
 	static NewGameMenu      newGameMenu;
 	static PauseMenu        pauseMenu;
+	static EndGameMenu      endGameMenu;
 
 public:
 	Menu() = default;
@@ -52,18 +53,22 @@ public:
     void        createStoryMenu();
     void        createExitWindow();
 	void        createNewGameMenu();
+	void        createPauseGameMenu();
+	void        createEndGameMenu();
     GLFWwindow  *getGlfwWindow();
 
     bool        startMenu();
 	bool        startGameMenu();
     void	    createOptionsMenu();
     void        createLoadGameMenu();
-    void        createPauseGameMenu();
     void        createBackground();
 	void        renderGui();
 
 	static void    updateMenu(MainGame *game, std::vector<void *> params);
 	static void    updateGameStateStart(MainGame *game, Menu *menu, GAMESTATE state);
+	static void    updateGameStateEnd(MainGame *game, Menu *menu, GAMESTATE state);
+	static void    createNewGame(int level, int difficulty, std::string saveName);
+	static void    destroyGame();
 	/// creating callbacks for menu
 	static bool     mouseCallback(int button, int action, int mod);
 	static bool     cursorPositionCallback(int xpos, int ypos);

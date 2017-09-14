@@ -11,6 +11,7 @@ MainMenu                    Menu::mainMenu = MainMenu();
 StoryModeMenu               Menu::storyModeMenu = StoryModeMenu();
 NewGameMenu                 Menu::newGameMenu = NewGameMenu();
 PauseMenu                   Menu::pauseMenu = PauseMenu();
+EndGameMenu                 Menu::endGameMenu = EndGameMenu();
 float                       Menu::textStartTime = 0;
 Gui                         Menu::gui;
 
@@ -61,6 +62,7 @@ bool Menu::buildMenuWindows()
 	createExitWindow();
 	createNewGameMenu();
 	createPauseGameMenu();
+	createEndGameMenu();
 	//createOptionsMenu();
 	//createPauseGameMenu();
 	//createLoadGameMenu();
@@ -303,13 +305,8 @@ void Menu::createNewGameMenu()
 		Menu::newGameMenu.changeView(false);
 		Menu::title->setVisible(false);
 		Menu::pauseMenu.changeView(true);
-		activeMenu->_saveFileName = Menu::newGameMenu.profileNameBox->value();
-		activeMenu->scene = new Scene();
-		activeMenu->scene->setDifficulty(Menu::difficulty);
-		activeMenu->scene->newGame(activeMenu->_mainGame, "map2");
-		activeMenu->scene->saveGame(activeMenu->_saveFileName);
-		activeMenu->_mainGame->setGameState(GAMESTATE::START);
-		Menu::stopMenuMusic();
+		Menu::createNewGame(1, Menu::difficulty, Menu::newGameMenu.profileNameBox->value());
+		Menu::newGameMenu.profileNameBox->setValue("");
 	});
 
 	Menu::newGameMenu.cancel = new nanogui::Button(_screen, "Cancel");
@@ -411,10 +408,9 @@ void Menu::createPauseGameMenu()
 		Menu::pauseMenu.saveLabel->setVisible(false);
 		Menu::pauseMenu.changeView(false);
 		Menu::mainMenu.changeView(true);
+		Menu::title->setVisible(true);
 		activeMenu->_mainGame->setGameState(GAMESTATE::MENU);
-		delete activeMenu->scene;
-		MainGame::functions.erase("sceneUpdate");
-		MainGame::renderer.removeAll();
+		Menu::destroyGame();
 	});
 
 	/// no button
@@ -427,6 +423,59 @@ void Menu::createPauseGameMenu()
 	});
 
 	Menu::pauseMenu.changeView(false);
+}
+
+void Menu::createEndGameMenu()
+{
+	/// window theme
+	nanogui::Theme  *winTheme = new nanogui::Theme(_screen->nvgContext());
+	winTheme->mWindowCornerRadius = 0;
+	winTheme->mWindowFillFocused = {30, 30, 30, 255};
+	winTheme->mWindowFillUnfocused = {30, 30, 30, 255};
+
+	/// dimensions and positions for buttons
+	int     winSizeX = Menu::windowWidth / 5;
+	winSizeX = (winSizeX < 350) ? 350 : winSizeX;
+	int     xOffset = winSizeX / 5;
+
+	/// end window
+	int  quitWinOffset = winSizeX / 3;
+	int  padding = quitWinOffset / 3;
+	Menu::endGameMenu.window = new nanogui::Window(_screen, "Do you want to retry?");
+	Menu::endGameMenu.window->setSize({winSizeX, 75});
+	Menu::endGameMenu.window->setPosition({(Menu::windowWidth / 2) - (winSizeX / 2), (Menu::windowHeight / 2)});
+	Menu::endGameMenu.window->setTheme(winTheme);
+
+	/// yes button
+	Menu::endGameMenu.yes = new nanogui::Button(Menu::endGameMenu.window, "Yes");
+	Menu::endGameMenu.yes->setSize({quitWinOffset, 30});
+	Menu::endGameMenu.yes->setPosition({padding, 35});
+	Menu::endGameMenu.yes->setCallback([]{
+		int level = activeMenu->scene->getLevel();
+		int difficulty = activeMenu->scene->getDifficultyValue();
+		destroyGame();
+		Menu::endGameMenu.changeView(false);
+		Menu::mainMenu.changeView(false);
+		Menu::pauseMenu.changeView(true);
+		createNewGame(level, difficulty, activeMenu->_saveFileName);
+		Menu::textStartTime = 0;
+	});
+
+	/// no button
+	Menu::endGameMenu.no = new nanogui::Button(Menu::endGameMenu.window, "No");
+	Menu::endGameMenu.no->setSize({quitWinOffset, 30});
+	Menu::endGameMenu.no->setPosition({2 * padding + quitWinOffset, 35});
+	Menu::endGameMenu.no->setCallback([]{
+		destroyGame();
+		Menu::pauseMenu.changeView(false);
+		Menu::title->setVisible(true);
+		Menu::endGameMenu.changeView(false);
+		Menu::mainMenu.changeView(true);
+		activeMenu->_mainGame->setGameState(GAMESTATE::MENU);
+		Menu::textStartTime = 0;
+	});
+
+	Menu::endGameMenu.changeView(false);
 }
 
 void Menu::createLoadGameMenu()
@@ -605,6 +654,29 @@ GLFWwindow* Menu::getGlfwWindow()
 	return _screen->glfwWindow();
 }
 
+void Menu::createNewGame(int level, int difficulty, std::string saveName)
+{
+	activeMenu->_saveFileName = saveName;
+	activeMenu->scene = new Scene();
+	activeMenu->scene->setDifficulty(difficulty);
+	activeMenu->scene->setLevel(level);
+	if (level == 1)
+		activeMenu->scene->newGame(activeMenu->_mainGame, "map2");
+	else
+		activeMenu->scene->newGame(activeMenu->_mainGame, "map2");
+	activeMenu->scene->saveGame(activeMenu->_saveFileName);
+	activeMenu->_mainGame->setGameState(GAMESTATE::START);
+	Menu::textStartTime = 0;
+	Menu::stopMenuMusic();
+}
+
+void Menu::destroyGame()
+{
+	delete activeMenu->scene;
+	MainGame::functions.erase("sceneUpdate");
+	MainGame::renderer.removeAll();
+}
+
 void Menu::updateGameStateStart(MainGame *game, Menu *menu, GAMESTATE state)
 {
 	float halfHeight = (float)Menu::windowHeight / 3;
@@ -613,14 +685,18 @@ void Menu::updateGameStateStart(MainGame *game, Menu *menu, GAMESTATE state)
 
 	if (Menu::textStartTime == 0.0f)
 		Menu::textStartTime = (float)glfwGetTime();
+
+	Menu::gui.whiteBanner->render(glm::translate(glm::mat4(), {0, 0.3, 0}));
+
 	float changeTime = (float)glfwGetTime() - Menu::textStartTime;
 	float offset;
 	if (changeTime <= 1.4f) {
+		int stage = menu->scene->getLevel();
 		if (changeTime <= 0.9f)
 			offset = (changeTime / 0.9f) * (halfWidth + xOffset);
 		else
 			offset = (halfWidth + xOffset);
-		MainGame::fontRenderer1->renderText("STAGE 1", (float)Menu::windowWidth - (offset - halfWidth / 3), halfHeight, 1.5f, {0.8, 0.8, 0.8});
+		MainGame::fontRenderer1->renderText("STAGE " + std::to_string(stage), (float)Menu::windowWidth - (offset - halfWidth / 3), halfHeight, 1.5f, {0.8, 0.8, 0.8});
 		MainGame::fontRenderer1->renderText("Defeat All Enemies", (float)Menu::windowWidth - offset, halfHeight + 55, 2.0f, {0.8, 0.8, 0.8});
 	}else if (changeTime <= 2.6f) {
 		float tmp = changeTime - 1.4f;
@@ -637,12 +713,51 @@ void Menu::updateGameStateStart(MainGame *game, Menu *menu, GAMESTATE state)
 			offset = (halfWidth + xOffset - halfWidth / 3);
 		MainGame::fontRenderer1->renderText("GO", (float)Menu::windowWidth - offset, halfHeight, 3.0f, {0.8, 0.8, 0.8});
 	}
-	Menu::gui.whiteBanner->render(glm::translate(glm::mat4(), {0, 0.3, 0}));
 	if (changeTime >= 3.9f)
 	{
 		menu->_mainGame->setGameState(GAMESTATE::GAME);
 		Menu::textStartTime = 0;
 	}
+}
+
+void Menu::updateGameStateEnd(MainGame *game, Menu *menu, GAMESTATE state)
+{
+	float halfHeight = (float)Menu::windowHeight / 3;
+	float halfWidth = (float)Menu::windowWidth / 2;
+	float xOffset = (float)Menu::windowWidth / 5;
+
+	if (Menu::textStartTime == 0.0f)
+		Menu::textStartTime = (float)glfwGetTime();
+
+	float changeTime = (float)glfwGetTime() - Menu::textStartTime;
+	if (menu->scene->isLevelCompleted())
+	{
+		float offset;
+		if (changeTime <= 0.9f)
+			offset = (changeTime / 0.9f) * (halfWidth + xOffset);
+		else
+			offset = (halfWidth + xOffset);
+		Menu::gui.whiteBanner->render(glm::translate(glm::mat4(), {0, 0.3, 0}));
+		MainGame::fontRenderer1->renderText("Stage Cleared", (float)Menu::windowWidth - offset, halfHeight + 55, 2.0f, {0.8, 0.8, 0.8});
+		if (changeTime >= 1.7f){
+			int level = menu->scene->getLevel() + 1;
+			int difficulty = menu->scene->getDifficultyValue();
+			destroyGame();
+			createNewGame(level, difficulty, menu->_saveFileName);
+		}
+	}else{
+		Menu::gui.whiteBanner->render(glm::translate(glm::mat4(), {0, 0.4, 0}));
+		MainGame::fontRenderer1->renderText("You  Died !!!", halfWidth - xOffset, halfHeight - 15, 2.0f, {0.54, 0.027, 0.027});
+		if (changeTime > 0.6f)
+		{
+			if (Menu::pauseMenu.window->visible())
+				Menu::pauseMenu.changeView(false);
+			if (!Menu::endGameMenu.window->visible())
+				Menu::endGameMenu.changeView(true);
+			menu->_screen->drawWidgets();
+		}
+	}
+
 }
 
 void Menu::updateMenu(MainGame *game, std::vector<void *> params)
@@ -670,6 +785,8 @@ void Menu::updateMenu(MainGame *game, std::vector<void *> params)
 	}
 	else if (state == GAMESTATE::START)
 		Menu::updateGameStateStart(game, menu, state);
+	else if (state == GAMESTATE::END)
+		Menu::updateGameStateEnd(game, menu, state);
 }
 
 void Menu::renderGui()

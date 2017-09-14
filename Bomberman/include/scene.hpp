@@ -75,6 +75,7 @@ public:
     float       getGridx(float x);
     float       getGridy(float y);
 	int 		getDifficulty();
+	int         getDifficultyValue(){return _difficulty;}
 	void		setDifficulty(int value);
 	int         getLevel(){return _sceneLevel; }
 	void        setLevel(int level){ _sceneLevel = level; }

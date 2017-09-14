@@ -261,7 +261,7 @@ void MainGame::gameLoop()
 		}
 
 		/// render game scene
-		if (_state == GAMESTATE::GAME || _state == GAMESTATE::START || _state == GAMESTATE::PAUSE)
+		if (_state == GAMESTATE::GAME || _state == GAMESTATE::START || _state == GAMESTATE::PAUSE || _state == GAMESTATE::END)
 		{
 			glEnable(GL_DEPTH_TEST);
 			glDepthFunc(GL_LESS);
