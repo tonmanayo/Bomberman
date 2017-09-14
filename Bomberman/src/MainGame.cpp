@@ -261,7 +261,7 @@ void MainGame::gameLoop()
 		}
 
 		/// render game scene
-		if (_state == GAMESTATE::GAME)
+		if (_state == GAMESTATE::GAME || _state == GAMESTATE::START)
 		{
 			glEnable(GL_DEPTH_TEST);
 			glDepthFunc(GL_LESS);
@@ -333,15 +333,11 @@ std::vector<std::string>* MainGame::getMap(const std::string mapName)
 
 }
 
-GAMESTATE MainGame::getGameState()
-{
+GAMESTATE MainGame::getGameState() {
 	return _state;
 }
 
-void MainGame::setGameState(GAMESTATE state)
-{
-	_state = state;
-}
+void MainGame::setGameState(GAMESTATE state) { _state = state; }
 
 std::vector<std::string> MainGame::stringSplit(const std::string &s, const char c)
 {

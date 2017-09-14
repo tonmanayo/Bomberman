@@ -67,9 +67,7 @@ void Scene::updatePlayer(MainGame *game, Scene *scene) {
         scene->_addBomb(scene->_player->getPosition().x, scene->_player->getPosition().z);
     }
 
-
-
-            if (scene->worldEndLevel(scene->_player->getPosition(), scene)) {
+	if (scene->worldEndLevel(scene->_player->getPosition(), scene)) {
         std::cout << "FINISHED LEVEL!!!\n";
     }
 

@@ -3,14 +3,20 @@ WallType block1
 BreakType block2
 UnbreakType block3
 BgType lavaBackground
-Enemy 5
-RRRRRRRRRRRR
-R.ER.......R
-R..........R
-R.GGGGGG...R
-R.GEE..G@..R
-R.GGGGGG...R
-R..........R
-R.E...GGGG.R
-R.....E....R
-RRRRRRRRRRRR
+RRRRRRRRRRRRRRRRRRRRRRRRR
+R.@.G....E....G..G......R
+R.L.L.L.L.L.L.L.LGL.L.L.R
+R..GGG.G...G..G..G......R
+R.LGLGL.L.L.L.L.LGL.L.L.R
+R...G.....E.....EG..G.G.R
+R.L.L.L.L.L.L.L.L.L.L.L.R
+R..E..G.G...L.L.........R
+R.L.L.LGL.L.L.L.L.L.L.L.R
+R...G.G..G...G...E.E....R
+R.L.L.L.L.L.L.L.L.L.L.L.R
+R..E..GG........E.......R
+R..GLGL.L.L.LGLGLEL.L.L.R
+R.G.G...G...G..G........R
+RGLGLGL.L.L.LGLGL.L.L.L.R
+R.....G.G.LL.....E......R
+RRRRRRRRRRRRRRRRRRRRRRRRR

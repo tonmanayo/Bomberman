@@ -17,14 +17,14 @@ Scene::~Scene()
 }
 
 int		Scene::getDifficulty() {
-	if (_difficulty == "Easy")
-		return 10;
-	if (_difficulty == "Medium")
+	if (_difficulty == 1)
+		return 20;
+	if (_difficulty == 2)
 		return 25;
-	return 100;
+	return 50;
 }
-void	Scene::setDifficulty(const std::string &difficulty) {
-	_difficulty = difficulty;
+void	Scene::setDifficulty(int value) {
+	_difficulty = value;
 }
 
 void Scene::_addBackground()
@@ -253,30 +253,15 @@ void Scene::sceneUpdate(MainGame *game, std::vector<void *> params)
 
 	if (game->getGameState() == GAMESTATE::GAME)
 	{
-		if (scene->_dropped)
+		if (Zion::Input::getKeyPressOnce(GLFW_KEY_ESCAPE))
 		{
-			if (Zion::Input::getKeyPressOnce(GLFW_KEY_ESCAPE))
-			{
-				std::cout << "paused" << std::endl;
-				game->setGameState(GAMESTATE::PAUSE);
-				return;
-			}
-			updateBomb(game, scene);
-			updateEnemy(game, scene);
-			updatePlayer(game, scene);
-		}else
-		{
-			if (Menu::textStartTime == 0)
-				Menu::textStartTime = (float)glfwGetTime();
-			float changeTime = (float)glfwGetTime() - Menu::textStartTime;
-			float offset = (float)(1.5 / changeTime) * 10;
-
-			scene->_player->changePosY(offset);
-			glm::mat4 mat = scene->_player->getTransformation();
-			glm::translate(mat, {0, offset, 0});
-			MainGame::renderer.applyTransformationToRenderable(scene->_player->getType(), scene->_player->getId(),
-					mat);
+			std::cout << "paused" << std::endl;
+			game->setGameState(GAMESTATE::PAUSE);
+			return;
 		}
+		updateBomb(game, scene);
+		updateEnemy(game, scene);
+		updatePlayer(game, scene);
 	}
 }
 
