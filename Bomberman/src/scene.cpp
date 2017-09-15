@@ -182,17 +182,36 @@ void Scene::_addPlayer(float x, float z)
 	_game->getGameCamera().setCameraUp(glm::vec3(0, 1, 0));
 }
 
-void Scene::_addEnemy(float x, float z)
+void Scene::_addEnemyCubex(float x, float z)
 {
 	Zion::Renderable *model;
 	static int i = 0;
 
-	model = _game->getModel("onile");
+	model = _game->getModel("cubex");
 	if (model != nullptr)
 	{
-		std::string s = "enemy1";
+		std::string s = "cubex";
 		Player *enemy = new Player(i, s);
-		enemy->modelType = "onile";
+		enemy->modelType = "cubex";
+		_enemies.push_back(enemy);
+		_enemies.back()->setPosition(glm::vec3{getGridx(x), 0, getGridy(z)});
+		_enemies.back()->playerStart = glm::vec3(getGridx(x), 0, getGridy(z));
+		MainGame::renderer.addToRender(_enemies.back()->getType(), _enemies.back()->getId(), model, _enemies.back()->getTransformation());
+		i++;
+	}
+}
+
+void Scene::_addEnemyMag(float x, float z)
+{
+	Zion::Renderable *model;
+	static int i = 0;
+
+	model = _game->getModel("mag");
+	if (model != nullptr)
+	{
+		std::string s = "mag";
+		Player *enemy = new Player(i, s);
+		enemy->modelType = "mag";
 		_enemies.push_back(enemy);
 		_enemies.back()->setPosition(glm::vec3{getGridx(x), 0, getGridy(z)});
 		_enemies.back()->playerStart = glm::vec3(getGridx(x), 0, getGridy(z));

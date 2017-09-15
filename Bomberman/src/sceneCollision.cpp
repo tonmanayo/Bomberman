@@ -267,7 +267,7 @@ void Scene::enemiesExplosionCollision(glm::vec3 pos, Scene *scene)
 				del = true;
 			}
 			if (del) {
-				MainGame::renderer.removeFromRender("enemy1", scene->_enemies[i]->getId());
+				MainGame::renderer.removeFromRender(scene->_enemies[i]->getType(), scene->_enemies[i]->getId());
 				delete scene->_enemies[i];
 				scene->_enemies[i] = scene->_enemies.back();
 				scene->_enemies.pop_back();

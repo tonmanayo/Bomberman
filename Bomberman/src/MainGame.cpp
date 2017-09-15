@@ -150,7 +150,6 @@ void MainGame::loadResources()
 	addModel("floor1", *getShader("basic"), "resource/models/blocks/floor1.gltf");
 	addModel("floor2", *getShader("basic"), "resource/models/blocks/ManHole.gltf");
 	addModel("bomberman", *getShader("anime"), "resource/models/bomberman/bomberman1.glb");
-	addModel("onile", *getShader("anime"), "resource/models/enemies/Cubex.glb");
     addModel("lavaBackground", *getShader("basic"), "resource/models/bomberman/lavaBackground.gltf");
 
 	addModel("heart", *getShader("basic"), "resource/models/powerUps/heart.glb");
@@ -161,13 +160,20 @@ void MainGame::loadResources()
 
 	addModel("enemy1", *getShader("basic"), "resource/models/enemies/enemy2.gltf");
 
-	/// loading maps
+    addModel("mag", *getShader("anime"), "resource/models/enemies/MagmaEnemy.glb");
+    addModel("cubex", *getShader("anime"), "resource/models/enemies/Cubex.glb");
+
+    /// loading maps
 	addMap("map2", "resource/maps/map2");
 	/// loading materials
 	auto *mat = new Zion::Material();
 	mat->texure.loadTextureFromPath("resource/models/enemies/cubex_Diffuse.psd");
-	auto *onileModel = (Zion::Model *)getModel("onile");
-	onileModel->addMaterial(0, *mat);
+	auto *cubex = (Zion::Model *)getModel("cubex");
+	cubex->addMaterial(0, *mat);
+
+    mat->texure.loadTextureFromPath("resource/models/enemies/mag_Diffuse.tga");
+    auto *mag = (Zion::Model *)getModel("mag");
+    mag->addMaterial(0, *mat);
 
 	addMaterial("fireBlock", "resource/images/fireTex.png");
 	addMaterial("flame1", "resource/images/flame1.png");
