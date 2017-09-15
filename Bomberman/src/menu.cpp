@@ -12,6 +12,7 @@ StoryModeMenu               Menu::storyModeMenu = StoryModeMenu();
 NewGameMenu                 Menu::newGameMenu = NewGameMenu();
 PauseMenu                   Menu::pauseMenu = PauseMenu();
 EndGameMenu                 Menu::endGameMenu = EndGameMenu();
+LoadGameMenu                Menu::loadGameMenu = LoadGameMenu();
 float                       Menu::textStartTime = 0;
 Gui                         Menu::gui;
 
@@ -61,11 +62,11 @@ bool Menu::buildMenuWindows()
     createStoryMenu();
 	createExitWindow();
 	createNewGameMenu();
+	createLoadGameMenu();
 	createPauseGameMenu();
 	createEndGameMenu();
 	//createOptionsMenu();
 	//createPauseGameMenu();
-	//createLoadGameMenu();
 	//_screen->performLayout();
 	return true;
 }
@@ -160,6 +161,11 @@ void Menu::createStoryMenu() {
     Menu::storyModeMenu.loadGame->setSize({buttonWidth, buttonHeight});
     Menu::storyModeMenu.loadGame->setPosition({posX + buttonWidth + posX, posY});
     Menu::storyModeMenu.loadGame->setTheme(Menu::storyModeMenu.buttonTheme);
+	Menu::storyModeMenu.loadGame->setCallback([]{
+		Menu::storyModeMenu.changeView(false);
+		Menu::loadGameMenu.changeView(true);
+		Menu::title->setCaption("LOAD GAME");
+	});
 
     int backPosX = ((Menu::windowWidth / 2) / 2) - (buttonWidth / 2);
     Menu::storyModeMenu.back = new nanogui::Button(_screen, "BACK");
@@ -308,6 +314,7 @@ void Menu::createNewGameMenu()
 		Menu::pauseMenu.changeView(true);
 		Menu::createNewGame(1, Menu::difficulty, Menu::newGameMenu.profileNameBox->value());
 		Menu::newGameMenu.profileNameBox->setValue("");
+		Menu::loadSaveDirectory();
 	});
 
 	Menu::newGameMenu.cancel = new nanogui::Button(_screen, "Cancel");
@@ -483,6 +490,50 @@ void Menu::createEndGameMenu()
 
 void Menu::createLoadGameMenu()
 {
+	Menu::loadGameMenu.buttonTheme = Menu::mainMenu.buttonTheme;
+
+	/// dimensions and position
+	int     posY = Menu::windowHeight / 2;
+	int     textBoxHeight = 50;
+	int     textBoxWidth = Menu::windowWidth / 3;
+	textBoxWidth = (textBoxWidth > 450) ? 450 : textBoxWidth;
+	int     offset = ((Menu::windowWidth / 2) - textBoxWidth) / 2;
+	int     posX = (Menu::windowWidth / 2) - (textBoxWidth + offset);
+	int     buttonHeight = 50;
+	int     buttonWidth = Menu::windowWidth / 4;
+	buttonWidth = (buttonWidth > 250) ? 250 : buttonWidth;
+	int     buttonPosX = ((Menu::windowWidth / 2) - (buttonWidth * 2)) / 3;
+
+	Menu::loadSaveDirectory();
+
+	Menu::loadGameMenu.panel = new nanogui::VScrollPanel(_screen);
+	Menu::loadGameMenu.panel->setSize({textBoxWidth, textBoxHeight * 4});
+	Menu::loadGameMenu.panel->setPosition({posX, posY});
+
+	//Menu::loadGameMenu.window = new nanogui::Window(Menu::loadGameMenu.panel, "");
+	//Menu::loadGameMenu.window->setSize({textBoxWidth, 40 * 10});
+	//Menu::loadGameMenu.window->setPosition({posX, posY});
+
+
+
+	auto *panelView = new nanogui::StackedWidget(Menu::loadGameMenu.panel);
+	//panelView->setLayout(new nanogui::BoxLayout(nanogui::Orientation::Vertical, nanogui::Alignment::Fill, 20, 5));
+	panelView->setSize({textBoxWidth, textBoxHeight * 4});
+	//panelView->setPosition({10, 35});
+
+	int     namePosY = 10;
+	int     index = 0;
+	for (std::string& fileName : Menu::loadGameMenu.fileNames){
+		auto *nameButton = new nanogui::TextBox(nullptr, fileName);
+		nameButton->setSize({textBoxWidth - 10, 30});
+		nameButton->setPosition({5, namePosY});
+		namePosY += 40;
+		panelView->addChild(index, nameButton);
+		index++;
+	}
+
+	Menu::loadGameMenu.changeView(false);
+
 	/*_loadGameMenu = new nanogui::Window(_screen, "Load Game");
 	_loadGameMenu->setLayout(new nanogui::GroupLayout());
 	_loadGameMenu->setSize({width / 3, height / 3});
@@ -678,6 +729,25 @@ void Menu::destroyGame()
 	delete activeMenu->scene;
 	MainGame::functions.erase("sceneUpdate");
 	MainGame::renderer.removeAll();
+}
+
+void Menu::loadSaveDirectory()
+{
+	DIR     *dir = opendir("save");
+	struct dirent *file;
+	if (dir)
+	{
+		Menu::loadGameMenu.fileNames.clear();
+		while ((file = readdir(dir)))
+		{
+			if (file->d_name[0] == '.')
+				continue;
+			Menu::loadGameMenu.fileNames.push_back(std::string(file->d_name));
+		}
+	}else{
+		perror("directory error");
+	}
+	closedir(dir);
 }
 
 void Menu::updateGameStateStart(MainGame *game, Menu *menu, GAMESTATE state)
