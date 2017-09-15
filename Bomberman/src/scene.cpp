@@ -8,12 +8,12 @@ Scene& Scene::operator=(const Scene &rhs) { return *this; }
 
 Scene::~Scene()
 {
-	for (int i = 0; i < _blocks.size(); i++)
-	{
-		for (int j = 0; j < _blocks[i].size(); j++)
-			if (_blocks[i][j] != nullptr)
-				delete _blocks[i][j];
-	}
+//	for (int i = 0; i < _blocks.size(); i++)
+//	{
+//		for (int j = 0; j < _blocks[i].size(); j++)
+//			if (_blocks[i][j] != nullptr)
+//				delete _blocks[i][j];
+//	}
 }
 
 int		Scene::getDifficulty() {
