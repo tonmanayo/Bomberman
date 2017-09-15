@@ -5,15 +5,11 @@ set(CMAKE_CXX_STANDARD 14)
 
 find_package(OpenGL REQUIRED)
 find_package(PkgConfig REQUIRED)
-find_package(Freetype REQUIRED)
+#find_package(Freetype REQUIRED)
 
 #pkg_search_module(FREETYPE2 REQUIRED Freetype)
 # For compatitability with yaml
 set(CMAKE_MACOSX_RPATH 1)
-
-SET(CMAKE_CXX_FLAGS "-O2 -std=c++11")
-SET(CMAKE_EXE_LINKER_FLAGS "-v")
-
 
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH ${PROJECT_SOURCE_DIR}/lib)
 
@@ -99,11 +95,9 @@ target_link_libraries(Bomberman
 target_link_libraries(Bomberman ${PROJECT_SOURCE_DIR}/lib/irrKlang/lib/libirrklang.dylib)
 if (APPLE)
     target_link_libraries(Bomberman ${OPENGL_FLAGS})
-endif()
-
-
-add_custom_command(TARGET Bomberman
-        PRE_BUILD
-        COMMAND install_name_tool -id "${PROJECT_SOURCE_DIR}/lib/irrKlang/lib/libirrklang.dylib"
+    add_custom_command(TARGET Bomberman
+            PRE_BUILD
+            COMMAND install_name_tool -id "${PROJECT_SOURCE_DIR}/lib/irrKlang/lib/libirrklang.dylib"
             ${PROJECT_SOURCE_DIR}/lib/irrKlang/lib/libirrklang.dylib
-        )
+            )
+endif()

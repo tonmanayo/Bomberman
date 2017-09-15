@@ -153,6 +153,7 @@ void Menu::createStoryMenu() {
 	Menu::storyModeMenu.newGame->setCallback([]{
 		Menu::storyModeMenu.changeView(false);
 		Menu::newGameMenu.changeView(true);
+		Menu::title->setCaption("NEW GAME");
 	});
 
     Menu::storyModeMenu.loadGame = new nanogui::Button(_screen, "LOAD GAME");
@@ -316,6 +317,7 @@ void Menu::createNewGameMenu()
 	Menu::newGameMenu.cancel->setCallback([]{
 		Menu::storyModeMenu.changeView(true);
 		Menu::newGameMenu.changeView(false);
+		Menu::title->setCaption("CAMPAIGN");
 	});
 
 	Menu::newGameMenu.changeView(false);
@@ -409,6 +411,7 @@ void Menu::createPauseGameMenu()
 		Menu::pauseMenu.changeView(false);
 		Menu::mainMenu.changeView(true);
 		Menu::title->setVisible(true);
+		Menu::title->setCaption("MAIN MENU");
 		activeMenu->_mainGame->setGameState(GAMESTATE::MENU);
 		Menu::destroyGame();
 	});
