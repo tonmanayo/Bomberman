@@ -76,6 +76,12 @@ case "${machine}" in
                 echo Installing glm
                 brew install glm
             fi
+            if brew ls --versions freetype > /dev/null; then
+                echo freetype already installed
+            else
+                echo Installing freetype
+                brew install freetype
+            fi
         else
             echo Installing Homebrew
             sh -c "$(curl -fsSL https://raw.githubusercontent.com/Tolsadus/42homebrewfix/master/install.sh)"

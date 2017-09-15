@@ -7,7 +7,7 @@ find_package(OpenGL REQUIRED)
 find_package(PkgConfig REQUIRED)
 #find_package(Freetype REQUIRED)
 
-#pkg_search_module(FREETYPE2 REQUIRED Freetype)
+pkg_search_module(FREETYPE REQUIRED Freetype)
 # For compatitability with yaml
 set(CMAKE_MACOSX_RPATH 1)
 

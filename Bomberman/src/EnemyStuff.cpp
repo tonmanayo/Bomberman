@@ -27,7 +27,7 @@ bool Scene::enemyWorldCollisionUp(glm::vec3 pos, glm::vec3 offset, Scene *scene)
     int y = scene->getWorldy(pos.z);
     //"collide up"
     if (scene->_blocks[y + 1][x] != nullptr &&
-        checkBlockCollision1(scene->_blocks[y + 1][x]->getPosition(), newPos))
+        checkBlockCollision(scene->_blocks[y + 1][x]->getPosition(), newPos))
     {
         return true;
     }
@@ -167,11 +167,11 @@ void Scene::updateEnemy(MainGame *game, Scene *scene) {
         if (collision) {
             int randNbr = rand() % 3;
             scene->_enemies[i]->setDirection(dir[randNbr]);
-            collision = false;
         }
 
-        for (int j = i + 1; j < scene->_enemies.size(); j++) {
-            int randNbr = rand() % 3;
+        for (int j = 0; j < scene->_enemies.size(); j++) {
+            if (j == i)
+                continue;
             const float MIN_DISTANCE = HALF_PLAYER_SIZE * 2.0f;
             glm::vec3 centrePos1 = scene->_enemies[i]->getPosition() + glm::vec3(HALF_PLAYER_SIZE);
             glm::vec3 centrePos2 = scene->_enemies[j]->getPosition() + glm::vec3(HALF_PLAYER_SIZE);
@@ -184,29 +184,40 @@ void Scene::updateEnemy(MainGame *game, Scene *scene) {
                         glm::normalize(vecDist) * collisionDepth;     // push them away from each other
                 scene->_enemies[i]->setPosition(scene->_enemies[i]->getPosition() += collisionDepthVec / 2.0f);                                      // Push them in opposite directions
                 scene->_enemies[j]->setPosition(scene->_enemies[j]->getPosition() -= collisionDepthVec / 2.0f);
-                scene->_enemies[j]->setDirection((dir[randNbr]));
-                scene->_enemies[i]->setDirection(oppDir(scene->_enemies[i]->getDirection()));
+                scene->_enemies[j]->setDirection(oppDir(scene->_enemies[j]->getDirection()));
+                if (scene->_enemies[j]->getDirection() != scene->_enemies[i]->getDirection()) {
+                    scene->_enemies[j]->setDirection(scene->_enemies[i]->getDirection());
+                }
             }
         }
 
             if (scene->_enemies[i]->getDirection() == 'D') {
-                scene->_enemies[i]->changePosZ(2.0f * Zion::Renderable::deltaTime);
+                if (!collision)
+                    scene->_enemies[i]->changePosZ(2.0f * Zion::Renderable::deltaTime);
+                scene->_enemies[i]->setPosition(glm::vec3(std::round(scene->_enemies[i]->getPosition().x), 0, scene->_enemies[i]->getPosition().z));
                 scene->_enemies[i]->rotate(glm::radians(0.0f), {0, 1, 0});
             } else if (scene->_enemies[i]->getDirection() == 'U') {
+                if (!collision)
+                    scene->_enemies[i]->changePosZ(-2.0f * Zion::Renderable::deltaTime);
+                scene->_enemies[i]->setPosition(glm::vec3(std::round(scene->_enemies[i]->getPosition().x), 0, scene->_enemies[i]->getPosition().z));
                 scene->_enemies[i]->rotate(glm::radians(180.0f), {0, 1, 0});
-                scene->_enemies[i]->changePosZ(-2.0f * Zion::Renderable::deltaTime);
             } else if (scene->_enemies[i]->getDirection() == 'L') {
+                if (!collision)
+                    scene->_enemies[i]->changePosX(-2.0f * Zion::Renderable::deltaTime);
+                scene->_enemies[i]->setPosition(glm::vec3(scene->_enemies[i]->getPosition().x, 0, std::round(scene->_enemies[i]->getPosition().z)));
                 scene->_enemies[i]->rotate(glm::radians(-90.0f), {0, 1, 0});
-                scene->_enemies[i]->changePosX(-2.0f * Zion::Renderable::deltaTime);
             } else if (scene->_enemies[i]->getDirection() == 'R') {
+                if (!collision)
+                    scene->_enemies[i]->changePosX(2.0f * Zion::Renderable::deltaTime);
+                scene->_enemies[i]->setPosition(glm::vec3(scene->_enemies[i]->getPosition().x, 0, std::round(scene->_enemies[i]->getPosition().z)));
                 scene->_enemies[i]->rotate(glm::radians(90.0f), {0, 1, 0});
-                scene->_enemies[i]->changePosX(2.0f * Zion::Renderable::deltaTime);
             }
             MainGame::renderer.applyTransformationToRenderable(scene->_enemies[i]->getType(),
                                                                scene->_enemies[i]->getId(),
                                                                scene->_enemies[i]->getTransformation());
+        collision = false;
 
-        }
+    }
 }
 
 

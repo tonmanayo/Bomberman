@@ -11,7 +11,7 @@
 #define GRID_START_Z (0)
 #define GRID_BLOCK_SIZE (2.0)
 #define HALF_GRID_BLOCK_SIZE (GRID_BLOCK_SIZE / (2.0))
-#define PLAYER_SIZE (2.2)
+#define PLAYER_SIZE (2.0)
 #define HALF_PLAYER_SIZE (PLAYER_SIZE / (2.0))
 
 class   Scene
@@ -89,7 +89,6 @@ public:
 	static bool worldCollisionLeft(glm::vec3 pos, glm::vec3 offset, Scene *scene);
 	static bool worldCollisionRight(glm::vec3 pos, glm::vec3 offset, Scene *scene);
 	static bool checkBlockCollision(glm::vec3 blockPos, glm::vec3 entityPos);
-	static bool checkBlockCollision1(glm::vec3 blockPos, glm::vec3 entityPos);
     static bool worldEndLevel(glm::vec3 pos, Scene *scene);
     static void worldGetPower(glm::vec3 pos, Scene *scene);
     static bool breakableBrickCollisionDown(glm::vec3 pos, Scene *scene);
