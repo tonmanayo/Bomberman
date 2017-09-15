@@ -7,6 +7,7 @@
 #include <nanogui/label.h>
 #include <nanogui/textbox.h>
 #include <nanogui/slider.h>
+#include <nanogui/stackedwidget.h>
 #include <nanogui/checkbox.h>
 #include <nanogui/combobox.h>
 #include <nanogui/common.h>
@@ -86,6 +87,29 @@ struct  NewGameMenu
 			normal->setVisible(value);
 		if (hard != nullptr)
 			hard->setVisible(value);
+	}
+};
+
+struct  LoadGameMenu
+{
+	nanogui::Theme      *buttonTheme;
+	nanogui::Button     *loadGame = nullptr;
+	nanogui::Button     *cancel = nullptr;
+	nanogui::Window     *window = nullptr;
+	nanogui::VScrollPanel   *panel = nullptr;
+	std::vector<std::string>    fileNames;
+
+	LoadGameMenu() = default;
+
+	void    changeView(bool value) {
+		if (loadGame != nullptr)
+			loadGame->setVisible(value);
+		if (cancel != nullptr)
+			cancel->setVisible(value);
+		if (panel != nullptr)
+			panel->setVisible(value);
+		if (window != nullptr)
+			window->setVisible(value);
 	}
 };
 

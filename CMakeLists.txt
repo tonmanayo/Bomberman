@@ -95,11 +95,9 @@ target_link_libraries(Bomberman
 target_link_libraries(Bomberman ${PROJECT_SOURCE_DIR}/lib/irrKlang/lib/libirrklang.dylib)
 if (APPLE)
     target_link_libraries(Bomberman ${OPENGL_FLAGS})
-endif()
-
-
-add_custom_command(TARGET Bomberman
-        PRE_BUILD
-        COMMAND install_name_tool -id "${PROJECT_SOURCE_DIR}/lib/irrKlang/lib/libirrklang.dylib"
+    add_custom_command(TARGET Bomberman
+            PRE_BUILD
+            COMMAND install_name_tool -id "${PROJECT_SOURCE_DIR}/lib/irrKlang/lib/libirrklang.dylib"
             ${PROJECT_SOURCE_DIR}/lib/irrKlang/lib/libirrklang.dylib
-        )
+            )
+endif()
