@@ -50,7 +50,6 @@ void Scene::_addWall(float x, float z, int xx, int yy)
 	}
 }
 
-
 void Scene::_addPowerUps(float x, float z, int xx, int yy) {
     char powerUp[8] = {'F', 'G', 'B', 'H', 'O', 'O', '0', '0' };              // F - fire range B - Multiple bombs S - player speed increase
     std::random_device r;
@@ -272,12 +271,16 @@ void Scene::sceneUpdate(MainGame *game, std::vector<void *> params)
 
 	if (game->getGameState() == GAMESTATE::GAME)
 	{
+		if (!MainGame::soundEngine->isCurrentlyPlaying("resource/sounds/game_song.wav"))
+			MainGame::soundEngine->play2D("resource/sounds/game_song.wav");
 		if (Zion::Input::getKeyPressOnce(GLFW_KEY_ESCAPE))
 		{
-			std::cout << "paused" << std::endl;
+			std::cout << "paused"<< std::endl;
 			game->setGameState(GAMESTATE::PAUSE);
 			return;
 		}
+		scene->incLevelTime();
+		std::cout << std::trunc(scene->getLevelTime()) << std::endl;
 		updateBomb(game, scene);
 		updateEnemy(game, scene);
 		updatePlayer(game, scene);
@@ -317,4 +320,12 @@ int Scene::getPowerSpeed () {
 
 void Scene::inctPowerSpeed() {
 	_powerSpeed++;
+}
+
+void	 Scene::incLevelTime() {
+	_levelTime += 0.01;
+}
+
+float 	Scene::getLevelTime() {
+	return _levelTime;
 }
