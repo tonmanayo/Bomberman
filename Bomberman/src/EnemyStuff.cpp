@@ -90,6 +90,7 @@ void Scene::updateEnemy(MainGame *game, Scene *scene) {
 
 
         if (scene->enemyPlayerCollision(scene->_enemies[i], scene)) {
+            MainGame::soundEngine->play2D("resource/sounds/playerInjured.wav");
             scene->_player->decHP(scene->getDifficulty());
             break;
         }

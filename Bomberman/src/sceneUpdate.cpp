@@ -95,6 +95,7 @@ void Scene::updateBomb(MainGame *game, Scene *scene) {
             enemiesExplosionCollision(scene->_bomb[i].getPosition(), scene);
             if (scene->PlayerExplosionCollision(scene->_bomb[i].getPosition(), scene)) {
                 scene->_player->decHP(scene->getDifficulty());
+                MainGame::soundEngine->play2D("resource/sounds/playerInjured.wav");
                 std::cout << "hurt\n";
             }
             MainGame::soundEngine->play2D("resource/sounds/explosion.wav");
