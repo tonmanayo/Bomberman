@@ -150,7 +150,7 @@ void MainGame::loadResources()
 	addModel("floor1", *getShader("basic"), "resource/models/blocks/floor1.gltf");
 	addModel("floor2", *getShader("basic"), "resource/models/blocks/ManHole.gltf");
 	addModel("bomberman", *getShader("anime"), "resource/models/bomberman/bomberman1.glb");
-	addModel("onile", *getShader("anime"), "resource/models/bomberman/Onile.glb");
+	addModel("onile", *getShader("anime"), "resource/models/enemies/Cubex.glb");
     addModel("lavaBackground", *getShader("basic"), "resource/models/bomberman/lavaBackground.gltf");
 
 	addModel("heart", *getShader("basic"), "resource/models/powerUps/heart.glb");
@@ -165,7 +165,7 @@ void MainGame::loadResources()
 	addMap("map2", "resource/maps/map2");
 	/// loading materials
 	auto *mat = new Zion::Material();
-	mat->texure.loadTextureFromPath("resource/models/bomberman/OnileDiffuseColor.png");
+	mat->texure.loadTextureFromPath("resource/models/enemies/cubex_Diffuse.psd");
 	auto *onileModel = (Zion::Model *)getModel("onile");
 	onileModel->addMaterial(0, *mat);
 
