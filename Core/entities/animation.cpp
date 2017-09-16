@@ -107,11 +107,12 @@ namespace   Zion
 		bufferView = model.bufferViews[acc.bufferView];
 		buffer = model.buffers[bufferView.buffer];
 		/// adding the transformation weights
-		auto *data1 = (glm::vec2 *)(buffer.data.data() + bufferView.byteOffset);
+		auto *data1 = (float *)(buffer.data.data() + bufferView.byteOffset);
 		joint->weight.weight.insert(joint->weight.weight.end(), data1, (data1 + acc.count));
 		joint->matrix = glm::mat4();
 		joint->trans = glm::mat4();
 		joint->rot = glm::mat4();
+		joint->weight.weightCount = joint->weight.weight.size() / joint->weight.count;
 	}
 
 	void Animation::_loadTranslationChannel(tinygltf::AnimationChannel &channel, tinygltf::AnimationSampler &sampler, tinygltf::Model &model)
@@ -217,12 +218,15 @@ namespace   Zion
 			                                            - joint->weight.timeStamps[0],
 					joint->weight.timeStamps[frames[0]]
 					- joint->weight.timeStamps[0], joint->weight.maxTime);
-			joint->weightMorph.x = joint->weight.weight[frames[0]].x +
-			                  (progressionVal * (joint->weight.weight[frames[1]].x -
-			                                     joint->weight.weight[frames[0]].x));
-			joint->weightMorph.y = joint->weight.weight[frames[0]].y +
-			                       (progressionVal * (joint->weight.weight[frames[1]].y -
-			                                          joint->weight.weight[frames[0]].y));
+			joint->weightMorph.clear();
+			for (int i = 0; i < joint->weight.weightCount; i++){
+				int frame0 = (int)(joint->weight.weightCount * frames[0]) + i;
+				int frame1 = (int)(joint->weight.weightCount * frames[1]) + i;
+				float val = joint->weight.weight[frame0] +
+						(progressionVal * (joint->weight.weight[frame1] -
+						                  joint->weight.weight[frame0]));
+				joint->weightMorph.push_back(val);
+			}
 		}
 	}
 
@@ -246,12 +250,12 @@ namespace   Zion
 		return _jointAnimations.at(id)->matrix;
 	}
 
-	glm::vec2 Animation::getWeightAnimation(int id)
+	std::vector<float>  Animation::getWeightAnimation(int id)
 	{
 		try {
 			_jointAnimations.at(id);
 		}catch (const std::out_of_range& oor){
-			return glm::vec2(1.0f);
+			return {};
 		}
 		return _jointAnimations.at(id)->weightMorph;
 	}

@@ -158,9 +158,9 @@ namespace Zion
 			if (type != std::string("player") && MainGame::game->getGameState() == GAMESTATE::GAME)
 			{
 				if (type == std::string("bomb"))
-					increaseAnimeTime(type, obj.id, 0.6f * Zion::Renderable::deltaTime);
+					increaseAnimeTime(type, obj.id, 4.0f * Zion::Renderable::deltaTime);
 				else
-					increaseAnimeTime(type, obj.id, 2.0f * Zion::Renderable::deltaTime);
+					increaseAnimeTime(type, obj.id, 4.0f * Zion::Renderable::deltaTime);
 			}
 		}
 		model->unloadMaterialFromShader();

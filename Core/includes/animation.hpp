@@ -18,8 +18,9 @@ namespace   Zion
 		float       minTime = 0.0f;
 		float       maxTime;
 		size_t      count;
+		size_t      weightCount = 0;
 		std::vector<glm::vec3>   translation;
-		std::vector<glm::vec2>   weight;
+		std::vector<float>       weight;
 		std::vector<glm::quat>   rotation;
 	};
 	struct  JointAnimation
@@ -28,7 +29,7 @@ namespace   Zion
 		glm::mat4   trans;
 		glm::mat4   rot;
 		glm::mat4   matrix;
-		glm::vec2   weightMorph;
+		std::vector<float>   weightMorph;
 		KeyFrames   translation;
 		KeyFrames   rotation;
 		KeyFrames   weight;
@@ -59,7 +60,7 @@ namespace   Zion
 		glm::mat4       getJointAnimationMatrix(int id);
 		glm::mat4       getJointTranslationMatrix(int id);
 		glm::mat4       getJointRotationMatrix(int id);
-		glm::vec2       getWeightAnimation(int id);
+		std::vector<float>       getWeightAnimation(int id);
 		void            increaseCurrentTimeStamp(float val);
 		void            update();
 		void            setCurrentAnimationTime(float val);

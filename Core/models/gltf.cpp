@@ -198,6 +198,38 @@ namespace Zion
 				auto *data = (float *)&bufs[bufView.buffer].data[bufView.byteOffset];
 				_normals.insert(_normals.end(), data, (data + (Acc.count * 3)));
 			}
+			/// adding morph target
+			if (!prim.targets.empty())
+			{
+				int  i = 0;
+				for (std::map<std::string, int>& target : prim.targets)
+				{
+					/// adding target morph position
+					if ((it = target.find("POSITION")) != target.end())
+					{
+						Acc = acc[target["POSITION"]];
+						bufView = bufViews[Acc.bufferView];
+						auto *data = (float *)&bufs[bufView.buffer].data[bufView.byteOffset];
+						if (i == 0)
+							_targetPosition.insert(_targetPosition.end(), data, (data + (Acc.count * 3)));
+						else if (i == 1)
+							_targetPosition1.insert(_targetPosition1.end(), data, (data + (Acc.count * 3)));
+					}
+					/// adding target morph normal
+					if ((it = target.find("NORMAL")) != target.end())
+					{
+						Acc = acc[target["NORMAL"]];
+						bufView = bufViews[Acc.bufferView];
+						auto *data = (float *)&bufs[bufView.buffer].data[bufView.byteOffset];
+						if (i == 0)
+							_targetNormal.insert(_targetNormal.end(), data, (data + (Acc.count * 3)));
+						else if (i == 1)
+							_targetNormal1.insert(_targetNormal1.end(), data, (data + (Acc.count * 3)));
+					}
+					i++;
+				}
+			}
+
 			/// adding uv coords to _uvs
 			if ((it = prim.attributes.find("TEXCOORD_0")) != prim.attributes.end())
 			{
@@ -275,8 +307,12 @@ namespace Zion
 
 	void Gltf::_loadDataToGpu()
 	{
-		GLuint  vbo[7];
+		GLuint  vbo[11];
 		GLint position = _shader.getAttribLocation((char *)"position");
+		GLint targetPosition = _shader.getAttribLocation((char *)"targetPosition");
+		GLint targetNormal = _shader.getAttribLocation((char *)"targetNormal");
+		GLint targetPosition1 = _shader.getAttribLocation((char *)"targetPosition1");
+		GLint targetNormal1 = _shader.getAttribLocation((char *)"targetNormal1");
 		GLint matIndex = _shader.getAttribLocation((char *)"matIndex");
 		GLint normal = _shader.getAttribLocation((char *)"normal");
 		GLint joint = _shader.getAttribLocation((char *)"joint");
@@ -286,7 +322,7 @@ namespace Zion
 
 		glGenVertexArrays(1, &_vao);
 		glBindVertexArray(_vao);
-		glGenBuffers(7, vbo);
+		glGenBuffers(9, vbo);
 		_vbos.insert(_vbos.end(), vbo, vbo + 6);
 		if (!_vertex.empty() && position != -1)
 		{
@@ -303,6 +339,22 @@ namespace Zion
 			glEnableVertexAttribArray((GLuint)normal);
 			glVertexAttribPointer((GLuint)normal, 3, GL_FLOAT, GL_FALSE, 0, (void *)nullptr);
 			Window::getError((char *)"after adding normal in Gltf model");
+		}
+		if(!_targetPosition.empty() && targetPosition != -1)
+		{
+			glBindBuffer(GL_ARRAY_BUFFER, vbo[7]);
+			glBufferData(GL_ARRAY_BUFFER, _targetPosition.size() * sizeof(GLfloat), _targetPosition.data(), GL_STATIC_DRAW);
+			glEnableVertexAttribArray((GLuint)targetPosition);
+			glVertexAttribPointer((GLuint)targetPosition, 3, GL_FLOAT, GL_FALSE, 0, (void *)nullptr);
+			Window::getError((char *)"after adding target position0 in Gltf model");
+		}
+		if(!_targetPosition1.empty() && targetPosition1 != -1)
+		{
+			glBindBuffer(GL_ARRAY_BUFFER, vbo[8]);
+			glBufferData(GL_ARRAY_BUFFER, _targetPosition1.size() * sizeof(GLfloat), _targetPosition1.data(), GL_STATIC_DRAW);
+			glEnableVertexAttribArray((GLuint)targetPosition1);
+			glVertexAttribPointer((GLuint)targetPosition1, 3, GL_FLOAT, GL_FALSE, 0, (void *)nullptr);
+			Window::getError((char *)"after adding target position1 in Gltf model");
 		}
 		if (!_matIndexs.empty() && matIndex != -1)
 		{
@@ -437,7 +489,12 @@ namespace Zion
 			_animeMatrice.clear();
 		}else
 		{
-			_shader.setUniform2f((GLchar *)"weights", _animations[0]->getWeightAnimation(0));
+			std::vector<float> weights = _animations[0]->getWeightAnimation(0);
+			_shader.setUniform1i((GLchar *)"count", (int)weights.size());
+			for (size_t i = 0; i < weights.size(); i++){
+				std::string str = std::string("weights[") + std::to_string(i) + std::string("]");
+				_shader.setUniform1f((GLchar *)str.c_str(), weights[i]);
+			}
 			_shader.setUniformMat4((GLchar *)"animeMat", _animations[0]->getJointAnimationMatrix(0));
 			_animeMatrice.clear();
 		}
