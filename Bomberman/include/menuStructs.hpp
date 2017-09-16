@@ -12,10 +12,9 @@
 #include <nanogui/combobox.h>
 #include <nanogui/common.h>
 #include <nanogui/theme.h>
+#include <nanogui/vscrollpanel.h>
 #include <MainGame.hpp>
 #include <scene.hpp>
-#include <yaml-cpp/yaml.h>
-#include <nanogui/vscrollpanel.h>
 #include <MainGame.hpp>
 #include <sys/types.h>
 #include <dirent.h>
@@ -95,7 +94,6 @@ struct  LoadGameMenu
 	nanogui::Theme      *buttonTheme;
 	nanogui::Button     *loadGame = nullptr;
 	nanogui::Button     *cancel = nullptr;
-	nanogui::Window     *window = nullptr;
 	nanogui::VScrollPanel   *panel = nullptr;
 	std::vector<std::string>    fileNames;
 
@@ -108,8 +106,16 @@ struct  LoadGameMenu
 			cancel->setVisible(value);
 		if (panel != nullptr)
 			panel->setVisible(value);
-		if (window != nullptr)
-			window->setVisible(value);
+	}
+	/// todo: delete previous loadGameMenu state to free memory
+	void    destroy(){
+		if (loadGame != nullptr)
+			delete loadGame;
+		if (cancel != nullptr)
+			delete cancel;
+		if (panel != nullptr)
+			delete panel;
+		fileNames.clear();
 	}
 };
 
@@ -159,4 +165,13 @@ struct  Gui
 	Zion::SquareSprite  *explode;
 	Zion::SquareSprite  *heartCase;
 	Zion::SquareSprite  *whiteBanner;
+};
+
+struct  Options
+{
+	int     volume;
+	int     resolutionIndex;
+	bool    mute;
+	bool    fullScreen;
+	std::vector<std::string>    resolutionList;
 };

@@ -24,7 +24,6 @@ private:
 	static irrklang::ISoundSource    *_menuMusic;
 public:
 	Scene       *scene = nullptr;
-    YAML::Node	config;
 
     static Menu             *activeMenu;
     static bool             isFullScreen;
@@ -57,12 +56,9 @@ public:
 	void        createPauseGameMenu();
 	void        createEndGameMenu();
 	void        createLoadGameMenu();
+	void	    createOptionsMenu();
+	void        createBackground();
     GLFWwindow  *getGlfwWindow();
-
-    bool        startMenu();
-	bool        startGameMenu();
-    void	    createOptionsMenu();
-    void        createBackground();
 	void        renderGui();
 
 	static void    updateMenu(MainGame *game, std::vector<void *> params);

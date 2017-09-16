@@ -187,12 +187,12 @@ void Scene::_addEnemy(float x, float z)
 	Zion::Renderable *model;
 	static int i = 0;
 
-	model = _game->getModel("onile");
+	model = _game->getModel("enemyBallon");
 	if (model != nullptr)
 	{
 		std::string s = "enemy1";
 		Player *enemy = new Player(i, s);
-		enemy->modelType = "onile";
+		enemy->modelType = "enemyBallon";
 		_enemies.push_back(enemy);
 		_enemies.back()->setPosition(glm::vec3{getGridx(x), 0, getGridy(z)});
 		_enemies.back()->playerStart = glm::vec3(getGridx(x), 0, getGridy(z));
@@ -216,7 +216,7 @@ void Scene::_addBomb(float x, float z)
 	}
 	glm::mat4 mat = glm::translate(glm::mat4(), glm::vec3(x, 0, z));
 	mat = glm::scale(mat, {0.6, 0.6, 0.6});
-	Zion::Renderable *model = _game->getModel("bomb");
+	Zion::Renderable *model = _game->getModel("bomb1");
 
 	if (model != nullptr)
 	{

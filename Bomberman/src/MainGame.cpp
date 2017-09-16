@@ -124,6 +124,8 @@ bool MainGame::initGame2(float width, float height, float fov)
 		getShader("gui")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
 	if (addShader("anime", "shaders/anime.vert", "shaders/basic.frag"))
 		getShader("anime")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
+	if (addShader("animeNoJoint", "shaders/animeNoJoint.vert", "shaders/basic.frag"))
+		getShader("animeNoJoint")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
 	if (addShader("text", "shaders/text.vert", "shaders/text.frag"))
 		getShader("text")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
 	/// setup default camera
@@ -141,28 +143,39 @@ bool MainGame::initGame2(float width, float height, float fov)
 
 void MainGame::loadResources()
 {
-	/// loading models
+	/// loading block models
 	addModel("block1", *getShader("basic"), "resource/models/blocks/block1.gltf");
-	addModel("explosion", *getShader("basic"), "resource/models/blocks/fireBlock.gltf");
 	addModel("block2", *getShader("fire"), "resource/models/blocks/block2.gltf");
+	addModel("explosion", *getShader("basic"), "resource/models/blocks/fireBlock.gltf");
 	addModel("block3", *getShader("basic"), "resource/models/blocks/block3.gltf");
-	addModel("bomb", *getShader("basic"), "resource/models/others/bomb.gltf");
+
+	/// loading floor models
 	addModel("floor1", *getShader("basic"), "resource/models/blocks/floor1.gltf");
 	addModel("floor2", *getShader("basic"), "resource/models/blocks/ManHole.gltf");
-	addModel("bomberman", *getShader("anime"), "resource/models/bomberman/bomberman1.glb");
-	addModel("onile", *getShader("anime"), "resource/models/enemies/Cubex.glb");
-    addModel("lavaBackground", *getShader("basic"), "resource/models/bomberman/lavaBackground.gltf");
 
+	/// loading bomberman model
+	addModel("bomberman", *getShader("anime"), "resource/models/bomberman/bomberman1.glb");
+
+	/// loading other models
+	addModel("bomb", *getShader("basic"), "resource/models/others/bomb.gltf");
+	addModel("bomb1", *getShader("animeNoJoint"), "resource/models/others/bomb1.gltf");
+	addModel("lavaBackground", *getShader("basic"), "resource/models/bomberman/lavaBackground.gltf");
+	addModel("bg", *getShader("gui"), "resource/models/others/bg.gltf");
+
+	/// loading enemies
+	addModel("onile", *getShader("anime"), "resource/models/enemies/Cubex.glb");
+	addModel("enemy1", *getShader("basic"), "resource/models/enemies/enemy2.gltf");
+	addModel("enemyBallon", *getShader("animeNoJoint"), "resource/models/enemies/enemyBallon.gltf");
+
+	/// loading powerUps
 	addModel("heart", *getShader("basic"), "resource/models/powerUps/heart.glb");
 	addModel("present", *getShader("basic"), "resource/models/powerUps/present.gltf");
 	addModel("lemon", *getShader("basic"), "resource/models/powerUps/lemon.gltf");
 	addModel("star", *getShader("basic"), "resource/models/powerUps/star.gltf");
-	addModel("bg", *getShader("gui"), "resource/models/others/bg.gltf");
-
-	addModel("enemy1", *getShader("basic"), "resource/models/enemies/enemy2.gltf");
 
 	/// loading maps
 	addMap("map2", "resource/maps/map2");
+
 	/// loading materials
 	auto *mat = new Zion::Material();
 	mat->texure.loadTextureFromPath("resource/models/enemies/cubex_Diffuse.psd");

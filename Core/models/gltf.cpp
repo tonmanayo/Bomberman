@@ -431,9 +431,16 @@ namespace Zion
 			return false;
 		_animations[animeType]->setCurrentAnimationTime(time);
 		_animations[animeType]->update();
-		for (Joint *bone : _bones)
-			_loadMatrices(bone, glm::mat4());
-		_animeMatrice.clear();
+		if (_hasJoint){
+			for (Joint *bone : _bones)
+				_loadMatrices(bone, glm::mat4());
+			_animeMatrice.clear();
+		}else
+		{
+			_shader.setUniform2f((GLchar *)"weights", _animations[0]->getWeightAnimation(0));
+			_shader.setUniformMat4((GLchar *)"animeMat", _animations[0]->getJointAnimationMatrix(0));
+			_animeMatrice.clear();
+		}
 		return true;
 	}
 
