@@ -75,7 +75,8 @@ namespace Zion
 		_renderStatic(_objects["lemon"]);
 		_renderStatic(_objects["present"]);
 		_renderStatic(_objects["explosion4"]);
-		_renderAnime(_objects["enemy1"], "enemy1");
+		_renderAnime(_objects["mag"], "mag");
+		_renderAnime(_objects["cubex"], "cubex");
 		_renderAnime(_objects["player"], "player");
 	}
 

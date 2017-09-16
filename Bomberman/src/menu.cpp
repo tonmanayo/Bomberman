@@ -263,6 +263,7 @@ void Menu::updateMenu(MainGame *game, std::vector<void *> params)
 	}
 	else if (state == GAMESTATE::PAUSE)
 	{
+
 		float halfHeight = (float)Menu::windowHeight / 2;
 		float halfWidth = (float)Menu::windowWidth / 3;
 		MainGame::fontRenderer2->renderText("Paused", halfWidth, halfHeight, 2.0f, {0.8, 0.8, 0.8});

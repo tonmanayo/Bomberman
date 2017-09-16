@@ -50,7 +50,6 @@ void Scene::_addWall(float x, float z, int xx, int yy)
 	}
 }
 
-
 void Scene::_addPowerUps(float x, float z, int xx, int yy) {
     char powerUp[8] = {'F', 'G', 'B', 'H', 'O', 'O', '0', '0' };              // F - fire range B - Multiple bombs S - player speed increase
     std::random_device r;
