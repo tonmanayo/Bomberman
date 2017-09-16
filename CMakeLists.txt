@@ -5,9 +5,16 @@ set(CMAKE_CXX_STANDARD 14)
 
 find_package(OpenGL REQUIRED)
 find_package(PkgConfig REQUIRED)
-#find_package(Freetype REQUIRED)
+find_package(Freetype REQUIRED)
+find_package(GLEW REQUIRED)
+#linux
+if (GLEW_FOUND)
+    include_directories(${GLEW_INCLUDE_DIRS})
+    link_libraries(${GLEW_LIBRARIES})
+endif()
 
-pkg_search_module(FREETYPE REQUIRED Freetype)
+# linux
+pkg_search_module(FREETYPE REQUIRED freetype2)
 # For compatitability with yaml
 set(CMAKE_MACOSX_RPATH 1)
 
@@ -22,22 +29,29 @@ execute_process(COMMAND git clone https://github.com/jbeder/yaml-cpp.git
 pkg_search_module(GLEW REQUIRED glew)
 pkg_search_module(GLFW3 REQUIRED glfw3)
 pkg_search_module(GLM REQUIRED glm)
-pkg_search_module(FREETYPE REQUIRED freetype2)
+#pkg_search_module(FREETYPE REQUIRED freetype2)
 
-include_directories(
+
+include_directories( ${OPENGL_INCLUDE_DIR}
         ${PROJECT_SOURCE_DIR}/Core/includes
         ${GLEW_INCLUDE_DIRS}
         ${GLFW3_INCLUDE_DIRS}
         ${GLM_INCLUDE_DIRS}
         ${FREETYPE_INCLUDE_DIRS}
         ${PROJECT_SOURCE_DIR}/Bomberman/include
+        ${PROJECT_SOURCE_DIR}/lib/irrKlang/include
 )
-link_directories(
+link_directories( ${OPENGL_LIBRARY_DIR}
         ${GLEW_LIBRARY_DIRS}
         ${GLFW3_LIBRARY_DIRS}
         ${GLM_LIBRARY_DIRS}
-        ${FREETYPE_LIBRARY_DIRS}
+#        ${FREETYPE_LIBRARY_DIRS}
+        ${FREETYPE_LIBRARY}
+        ${PROJECT_SOURCE_DIR}/lib/irrKlang/lib
 )
+
+# linux
+link_libraries(${FREETYPE_LIBRARY})
 
 set(LIB_SOURCE_FILES Core/entities/window.cpp Core/entities/input.cpp
         Core/entities/shader.cpp Core/utils/file.cpp Core/sprite/squareSprite.cpp
@@ -85,19 +99,22 @@ target_link_libraries(Bomberman
         ${OPENGL_LIBRARIES}
         ${GLEW_LIBRARIES}
         ${GLM_LIBRARIES}
-        ${FREETYPE_LIBRARIES}
+        #${FREETYPE_LIBRARIES}
+        ${FREETYPE_LIBRARY}
         zion
         nanogui
         yaml-cpp
-        irrKlang
+        IrrKlang
         ${NANOGUI_EXTRA_LIBS}
         )
-target_link_libraries(Bomberman ${PROJECT_SOURCE_DIR}/lib/irrKlang/lib/libirrklang.dylib)
 if (APPLE)
     target_link_libraries(Bomberman ${OPENGL_FLAGS})
+
     add_custom_command(TARGET Bomberman
             PRE_BUILD
             COMMAND install_name_tool -id "${PROJECT_SOURCE_DIR}/lib/irrKlang/lib/libirrklang.dylib"
             ${PROJECT_SOURCE_DIR}/lib/irrKlang/lib/libirrklang.dylib
             )
+    find_library(IrrKlang NAMES libIrrKlang.so PATHS ./lib/irrKlang/bin/linux-gcc-64)
 endif()
+

@@ -96,7 +96,6 @@ void Scene::updateEnemy(MainGame *game, Scene *scene) {
         }
         if (enemyWorldCollisionDown(scene->_enemies[i]->getPosition(), {0.0f, 0.0f, 2.0f * Zion::Renderable::deltaTime}, scene)) {
             collision = true;
-            scene->_enemies[i]->changePosZ(-2.0f * Zion::Renderable::deltaTime);
             dir[0] = 'U';
             dir[1] = 'R';
             dir[2] = 'L';
@@ -114,7 +113,6 @@ void Scene::updateEnemy(MainGame *game, Scene *scene) {
         }
         if (enemyWorldCollisionUp(scene->_enemies[i]->getPosition(), {0.0f, 0.0f, -2.0f * Zion::Renderable::deltaTime}, scene)) {
             collision = true;
-            scene->_enemies[i]->changePosZ(2.0f * Zion::Renderable::deltaTime);
 
             dir[0] = 'D';
             dir[1] = 'R';
@@ -131,7 +129,6 @@ void Scene::updateEnemy(MainGame *game, Scene *scene) {
             }
         } else if (enemyWorldCollisionRight(scene->_enemies[i]->getPosition(), {2.0f * Zion::Renderable::deltaTime, 0.0f, 0.0f}, scene)) {
             collision = true;
-            scene->_enemies[i]->changePosX(-2.0f * Zion::Renderable::deltaTime);
 
             dir[0] = 'L';
             dir[1] = 'U';
@@ -148,7 +145,6 @@ void Scene::updateEnemy(MainGame *game, Scene *scene) {
             }
         } else if (enemyWorldCollisionLeft(scene->_enemies[i]->getPosition(), {-2.0f * Zion::Renderable::deltaTime, 0.0f, 0.0f}, scene)) {
             collision = true;
-            scene->_enemies[i]->changePosX(2.0f * Zion::Renderable::deltaTime);
 
             dir[0] = 'R';
             dir[1] = 'D';
@@ -219,5 +215,3 @@ void Scene::updateEnemy(MainGame *game, Scene *scene) {
         collision = false;
     }
 }
-
-
