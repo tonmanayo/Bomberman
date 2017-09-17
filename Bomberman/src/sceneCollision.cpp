@@ -272,19 +272,19 @@ void Scene::enemiesExplosionCollision(glm::vec3 pos, Scene *scene)
 				del = false;
 			}
 			if (scene->_blocks[bomby - 1 - i][bombx] != nullptr &&
-					!scene->_blocks[bomby - 1 - i][bombx]->getCollision() && d) {
+					scene->_blocks[bomby - 1 - i][bombx]->getCollision() && d) {
 				d = false;
 			}
 			if (scene->_blocks[bomby + 1 + i][bombx] != nullptr &&
-					!scene->_blocks[bomby + 1 + i][bombx]->getCollision() && u) {
+					scene->_blocks[bomby + 1 + i][bombx]->getCollision() && u) {
 				u = false;
 			}
 			if (scene->_blocks[bomby][bombx - 1 - i] != nullptr &&
-					!scene->_blocks[bomby][bombx - 1 - i]->getCollision() && l) {
+					scene->_blocks[bomby][bombx - 1 - i]->getCollision() && l) {
 				l = false;
 			}
 			if (scene->_blocks[bomby][bombx + 1 + i] != nullptr &&
-					!scene->_blocks[bomby][bombx  + 1 + i]->getCollision() && r) {
+					scene->_blocks[bomby][bombx  + 1 + i]->getCollision() && r) {
 				r = false;
 			}
 		}
