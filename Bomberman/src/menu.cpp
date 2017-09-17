@@ -13,12 +13,16 @@ NewGameMenu                 Menu::newGameMenu = NewGameMenu();
 PauseMenu                   Menu::pauseMenu = PauseMenu();
 EndGameMenu                 Menu::endGameMenu = EndGameMenu();
 LoadGameMenu                Menu::loadGameMenu = LoadGameMenu();
+OptionMenu                  Menu::optionMenu;
 float                       Menu::textStartTime = 0;
 Gui                         Menu::gui;
+Options                     Menu::options;
+Options                     Menu::tmpOptions;
 
-Menu::Menu(float width, float height, MainGame *mainGame, bool fullScreen, bool resizable)
+Menu::Menu(MainGame *mainGame)
 {
-	initMenu(width, height, mainGame, fullScreen, resizable);
+	Menu::loadOptions();
+	initMenu(mainGame);
 }
 
 Menu::Menu(const Menu &rhs) { *this = rhs; }
@@ -28,16 +32,53 @@ Menu& Menu::operator=(const Menu &rhs)
 	return *this;
 }
 
-bool Menu::initMenu(float width, float height, MainGame *mainGame, bool fullScreen, bool resizable)
+void Menu::loadOptions()
+{
+	/// creating sound engine
+	MainGame::soundEngine = irrklang::createIrrKlangDevice();
+	/// getting primary monitor video mode for RGB bits and refreshRate
+	const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+	//Menu::windowWidth = mode->width;
+	//Menu::windowHeight = mode->height;
+	/// getting all video modes with primary monitor video mode RGB bits & refreshRate
+	int count = 0;
+	const GLFWvidmode* modes = glfwGetVideoModes(glfwGetPrimaryMonitor(), &count);
+	int index = 0;
+	/// loading them into my resolution list
+	for (int i = 0; i < count - 1; i++){
+		if (mode->refreshRate == modes[i].refreshRate && mode->redBits == modes[i].redBits &&
+				mode->greenBits == modes[i].greenBits && mode->blueBits == modes[i].blueBits)
+		{
+			Menu::options.resolutionList.insert(std::pair<int, std::vector<int>>(index, {modes[i].width, modes[i].height, modes[i].refreshRate}));
+			index++;
+		}
+	}
+	/// todo: load options from config file
+	/// loading options
+	Menu::options.musicVolume = 1.0f;
+	Menu::options.soundVolume = 1.0f;
+	Menu::options.mute = false;
+	Menu::options.resolutionIndex = (int)Menu::options.resolutionList.size() - 1;
+	Menu::options.fullScreen = false;
+	Menu::copyOptions(Menu::tmpOptions, Menu::options);
+}
+
+void Menu::copyOptions(Options &dest, Options &src)
+{
+	dest.musicVolume = src.musicVolume;
+	dest.soundVolume = src.soundVolume;
+	dest.mute = src.mute;
+	dest.resolutionIndex = src.resolutionIndex;
+	dest.fullScreen = src.fullScreen;
+	dest.resolutionList = src.resolutionList;
+}
+
+bool Menu::initMenu(MainGame *mainGame)
 {
 	_mainGame = mainGame;
 	Menu::activeMenu = this;
-	/// getting screen size
-	const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-	Menu::windowWidth = mode->width;
-	Menu::windowHeight = mode->height;
 	/// creating glfw window using nanogui screen
-    _screen = new nanogui::Screen({Menu::windowWidth, Menu::windowHeight}, "Bomberman", resizable, fullScreen, 8, 8, 24, 8, 4, 4, 1);
+    _screen = new nanogui::Screen({Menu::windowWidth, Menu::windowHeight}, "Bomberman", false, Menu::isFullScreen, 8, 8, 24, 8, 4, 4, 1);
 	_screen->setVisible(true);
 	/// setting callbacks
 	Zion::Input::mouseCallback2 = Menu::mouseCallback;
@@ -47,16 +88,9 @@ bool Menu::initMenu(float width, float height, MainGame *mainGame, bool fullScre
 	params.push_back(this);
 	/// add menuUpdate function to gameLoop
 	MainGame::functions.insert(std::pair<const char *, Func>("menuUpdate", {Menu::updateMenu, params}));
-	/// creating sound engine
-	if (MainGame::soundEngine)
+	/// creating background music
+	if (MainGame::soundEngine == nullptr)
 		_menuMusic = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/breakout.mp3");
-	/// getting all video modes
-	int count = 0;
-	const GLFWvidmode* modes = glfwGetVideoModes(glfwGetPrimaryMonitor(), &count);
-	for (int i = 0; i < count; i++){
-		std::cout << "monitor " << i << " ";
-		std::cout << modes[i].width << " x " << modes[i].height << " " << modes[i].refreshRate << std::endl;
-	}
 	return true;
 }
 
@@ -72,50 +106,6 @@ bool Menu::buildMenuWindows()
 	createEndGameMenu();
 	createOptionsMenu();
 	return true;
-}
-
-void Menu::createOptionsMenu()
-{
-
-}
-
-void Menu::createBackground()
-{
-	glm::mat4 viewMatrix = _mainGame->getGameCamera().getViewMatrix();
-	_mainGame->getShader("gui")->setUniformMat4((GLchar *)"view_matrix", viewMatrix);
-	/// new bg menu
-	_menuBg = new Zion::SquareSprite(*_mainGame->getShader("gui"), 1.5, 0, 4, 5);
-	_menuBg->addTextureFromFile("resource/images/menuBg.png");
-	/// bomberman menu logo
-	_menuTitle = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 2, 1);
-	_menuTitle->addTextureFromFile("resource/images/menuLogo.png");
-	/// adding heart logo
-	Menu::gui.heart = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 0.2, 0.2);
-	Menu::gui.heart->addTextureFromFile("resource/images/heart.png");
-	/// adding speed
-	Menu::gui.speed = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 0.2, 0.2);
-	Menu::gui.speed->addTextureFromFile("resource/images/bolt.png");
-	/// adding bomb logo
-	Menu::gui.bomb = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 0.3, 0.3);
-	Menu::gui.bomb->addTextureFromFile("resource/images/bomb.png");
-	/// adding heart explode
-	Menu::gui.explode = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 0.3, 0.3);
-	Menu::gui.explode->addTextureFromFile("resource/images/explode.png");
-	/// adding heart case
-	Menu::gui.heartCase = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 0.5, 0.7);
-	Menu::gui.heartCase->addTextureFromFile("resource/images/hudBg.png");
-	/// add bombman
-	Menu::gui.bombMan = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 2.0, 1.5);
-	Menu::gui.bombMan->addTextureFromFile("resource/images/bombMan3.png");
-	/// add enemy1
-	Menu::gui.enemy1 = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 1.5, 1.0);
-	Menu::gui.enemy1->addTextureFromFile("resource/images/enemy.png");
-	/// add enemy2
-	Menu::gui.enemy2 = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 0.4, 0.3);
-	Menu::gui.enemy2->addTextureFromFile("resource/images/enemy2.png");
-	/// add banner
-	Menu::gui.whiteBanner = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 7.5, 1.2);
-	Menu::gui.whiteBanner->addBaseColor({0.2, 0.2, 0.2, 0.5});
 }
 
 GLFWwindow* Menu::getGlfwWindow()
