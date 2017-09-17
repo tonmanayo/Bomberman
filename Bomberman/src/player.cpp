@@ -2,7 +2,7 @@
 
 Player::Player(int id, std::string type) : NonStatic(id, type){
   	_direction = 'U';
-	_powerBombExplosion = 0;
+	_powerBombExplosion = 1;
 	_powerBombNumber = 0;
 	_powerSpeed = 0;
 	_hp = 100;
