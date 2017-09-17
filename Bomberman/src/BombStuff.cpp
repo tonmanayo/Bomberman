@@ -32,8 +32,8 @@ void Scene::bombExplode(Scene *scene, const Bomb &bomb) {
 }
 
 void Scene::renderExplosion(Scene *scene, Bomb &bomb, MainGame *game) {
-    int x = scene->getGridx(bomb.getPosition().x);
-    int y = scene->getGridy(bomb.getPosition().z);
+    int x = static_cast<int>(scene->getGridx(bomb.getPosition().x));
+    int y = static_cast<int>(scene->getGridy(bomb.getPosition().z));
 
     int xx = scene->getWorldx(bomb.getPosition().x);
     int yy = scene->getWorldy(bomb.getPosition().z);
@@ -67,28 +67,24 @@ void Scene::renderExplosion(Scene *scene, Bomb &bomb, MainGame *game) {
 	            MainGame::explosionUp->generateParticles(matup, true);
 	            MainGame::explosionUp->generateParticles(matup + quarter, true);
 	            MainGame::explosionUp->generateParticles(matup - quarter, true);
-	            //renderFlameExplosion(matup);
             }
             if (d)
             {
 	            MainGame::explosionDown->generateParticles(matdown, true);
 	            MainGame::explosionDown->generateParticles(matdown + quarter, true);
 	            MainGame::explosionDown->generateParticles(matdown - quarter, true);
-	            //renderFlameExplosion(matdown);
             }
             if (l)
             {
 	            MainGame::explosionLeft->generateParticles(matleft, true);
 	            MainGame::explosionLeft->generateParticles(matleft + quarter, true);
 	            MainGame::explosionLeft->generateParticles(matleft - quarter, true);
-	            //renderFlameExplosion(matleft);
             }
             if (r)
             {
 	            MainGame::explosionRight->generateParticles(matright, true);
 	            MainGame::explosionRight->generateParticles(matright + quarter, true);
 	            MainGame::explosionRight->generateParticles(matright - quarter, true);
-	            //renderFlameExplosion(matright);
             }
 
             if (scene->_blocks[yy - 1 - i][xx] != nullptr && d) {

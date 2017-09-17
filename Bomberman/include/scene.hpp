@@ -66,6 +66,7 @@ public:
 	Scene&  operator=(const Scene & rhs);
 	~Scene();
 
+	static void		collisionPush(Scene *scene, int x, int y, int i, int dirx, int diry);
 	std::map<int, std::map<int, Block *>> 	getBlocks() {return _blocks;};
 	int         getPowerExplosion();
 	int 		getPowerNbBombs();
