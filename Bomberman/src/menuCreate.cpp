@@ -860,6 +860,9 @@ void Menu::createBackground()
 	/// add banner
 	Menu::gui.whiteBanner = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 7.5, 1.2);
 	Menu::gui.whiteBanner->addBaseColor({0.2, 0.2, 0.2, 0.5});
+	/// add timeBanner
+	Menu::gui.timeBack = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 0.9, 0.5);
+	Menu::gui.timeBack->addTextureFromFile("resource/images/backTime.png");
 }
 
 void Menu::updateGraphicOptions()
