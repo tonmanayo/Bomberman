@@ -56,7 +56,7 @@ private:
 	void    _addFloor(float x, float z);
 	void    _addPlayer(float x, float z);
 	void 	_addBomb(float x, float z);
-	void 	_addEnemy(float x, float z);
+	void 	_addEnemy(float x, float z, std::string &type);
     void    _addPowerUps(float x, float z, int xx, int yy);
 	void    _loadNewGameLine(std::string& line);
 	void    _loadLoadGameLine(std::string& line);

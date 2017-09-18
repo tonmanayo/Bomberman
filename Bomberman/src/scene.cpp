@@ -179,18 +179,16 @@ void Scene::_addPlayer(float x, float z)
 	_game->getGameCamera().setCameraUp(glm::vec3(0, 1, 0));
 }
 
-void Scene::_addEnemy(float x, float z)
+void Scene::_addEnemy(float x, float z, std::string &type)
 {
 	Zion::Renderable *model;
 	static int i = 0;
 
-    int ranEnemy = rand() % 2;
-
-	model = _game->getModel(_enemyType[ranEnemy]);
+	model = _game->getModel(type);
 	if (model != nullptr)
 	{
-		Player *enemy = new Player(i, _enemyType[ranEnemy]);
-		enemy->modelType = _enemyType[ranEnemy];
+		Player *enemy = new Player(i, type);
+		enemy->modelType = type;
 		_enemies.push_back(enemy);
 		_enemies.back()->setPosition(glm::vec3{getGridx(x), 0, getGridy(z)});
 		_enemies.back()->playerStart = glm::vec3(getGridx(x), 0, getGridy(z));
@@ -214,7 +212,7 @@ void Scene::_addBomb(float x, float z)
 	}
 	glm::mat4 mat = glm::translate(glm::mat4(), glm::vec3(x, 0, z));
 	mat = glm::scale(mat, {0.6, 0.6, 0.6});
-	Zion::Renderable *model = _game->getModel("bomb");
+	Zion::Renderable *model = _game->getModel("bomb1");
 
 	if (model != nullptr)
 	{
