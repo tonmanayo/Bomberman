@@ -40,6 +40,8 @@ namespace   Zion
 				_loadTranslationChannel(channel, animation.samplers[channel.sampler], model);
 			else if (channel.target_path == std::string("rotation"))
 				_loadRotationChannel(channel, animation.samplers[channel.sampler], model);
+			else if (channel.target_path == std::string("weights"))
+				_loadWeightChannel(channel, animation.samplers[channel.sampler], model);
 		}
 		return true;
 	}
@@ -76,6 +78,41 @@ namespace   Zion
 		joint->matrix = glm::mat4();
 		joint->trans = glm::mat4();
 		joint->rot = glm::mat4();
+	}
+
+	void Animation::_loadWeightChannel(tinygltf::AnimationChannel &channel, tinygltf::AnimationSampler &sampler, tinygltf::Model &model)
+	{
+		JointAnimation          *joint;
+		tinygltf::Buffer        buffer;
+		tinygltf::Accessor      acc;
+		tinygltf::BufferView    bufferView;
+
+		if (_jointAnimations[channel.target_node] == nullptr)
+			_jointAnimations[channel.target_node] = new JointAnimation();
+		joint = _jointAnimations[channel.target_node];
+		/// accessing sampler input for timestamp
+		acc = model.accessors[sampler.input];
+		bufferView = model.bufferViews[acc.bufferView];
+		buffer = model.buffers[bufferView.buffer];
+		/// adding timestamps
+		//joint->rotation.timeStamps = (float *)buffer.data.data() + bufferView.byteOffset;
+		auto *data = (float *)(buffer.data.data() + bufferView.byteOffset);
+		joint->weight.timeStamps.insert(joint->weight.timeStamps.end(), data , (data + acc.count));
+		//joint->rotation.timeStamps = joint->translation.timeStamps;
+		/// setting maxTime, subtracting timestamps[0] to make it always have minTime of 0.0f
+		joint->weight.maxTime = (float)acc.maxValues[0] - joint->weight.timeStamps[0];
+		joint->weight.count = acc.count;
+		/// accessing sampler output for transformation data
+		acc = model.accessors[sampler.output];
+		bufferView = model.bufferViews[acc.bufferView];
+		buffer = model.buffers[bufferView.buffer];
+		/// adding the transformation weights
+		auto *data1 = (float *)(buffer.data.data() + bufferView.byteOffset);
+		joint->weight.weight.insert(joint->weight.weight.end(), data1, (data1 + acc.count));
+		joint->matrix = glm::mat4();
+		joint->trans = glm::mat4();
+		joint->rot = glm::mat4();
+		joint->weight.weightCount = joint->weight.weight.size() / joint->weight.count;
 	}
 
 	void Animation::_loadTranslationChannel(tinygltf::AnimationChannel &channel, tinygltf::AnimationSampler &sampler, tinygltf::Model &model)
@@ -171,6 +208,26 @@ namespace   Zion
 					joint->rotation.rotation[frames1[1]], progressionVal)));
 			joint->matrix = joint->trans * joint->rot;
 		}
+		/// weight transformation
+		if (joint->weight.count > 0)
+		{
+			//std::cout << "  translation" << std::endl;
+			auto frames = _getPreviousAndNextFrame(joint->weight.timeStamps, joint->weight.maxTime,
+					joint->weight.count);
+			progressionVal = _calculateProgressionValue(joint->weight.timeStamps[frames[1]]
+			                                            - joint->weight.timeStamps[0],
+					joint->weight.timeStamps[frames[0]]
+					- joint->weight.timeStamps[0], joint->weight.maxTime);
+			joint->weightMorph.clear();
+			for (int i = 0; i < joint->weight.weightCount; i++){
+				int frame0 = (int)(joint->weight.weightCount * frames[0]) + i;
+				int frame1 = (int)(joint->weight.weightCount * frames[1]) + i;
+				float val = joint->weight.weight[frame0] +
+						(progressionVal * (joint->weight.weight[frame1] -
+						                  joint->weight.weight[frame0]));
+				joint->weightMorph.push_back(val);
+			}
+		}
 	}
 
 	std::string Animation::getAnimationName() const
@@ -191,6 +248,16 @@ namespace   Zion
 			return glm::mat4();
 		}
 		return _jointAnimations.at(id)->matrix;
+	}
+
+	std::vector<float>  Animation::getWeightAnimation(int id)
+	{
+		try {
+			_jointAnimations.at(id);
+		}catch (const std::out_of_range& oor){
+			return {};
+		}
+		return _jointAnimations.at(id)->weightMorph;
 	}
 
 	glm::mat4 Animation::getJointTranslationMatrix(int id)

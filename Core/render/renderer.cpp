@@ -68,7 +68,7 @@ namespace Zion
 		_renderStatic(_objects["wall"]);
 		_renderStatic(_objects["unbreakBlock"]);
 		_renderBreakable(_objects["breakBlock"]);
-		_renderStatic(_objects["bomb"]);
+		_renderAnime(_objects["bomb"], "bomb");
 		_renderStatic(_objects["heart"]);
 		_renderStatic(_objects["star"]);
 		_renderStatic(_objects["endLevel"]);
@@ -157,7 +157,12 @@ namespace Zion
 			model->loadAnimationMatrix(obj.animeType, obj.animeTime);
 			obj.model->simpleRender(obj.matrix);
 			if (type != std::string("player") && MainGame::game->getGameState() == GAMESTATE::GAME)
-				increaseAnimeTime(type, obj.id, 2.0f * Zion::Renderable::deltaTime);
+			{
+				if (type == std::string("bomb"))
+					increaseAnimeTime(type, obj.id, 4.0f * Zion::Renderable::deltaTime);
+				else
+					increaseAnimeTime(type, obj.id, 4.0f * Zion::Renderable::deltaTime);
+			}
 		}
 		model->unloadMaterialFromShader();
 		model->disableShader();

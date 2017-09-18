@@ -22,8 +22,12 @@ namespace Zion
 		tinygltf::Model     _model;
 		std::vector<int>    _nodes;
 		std::string         _path;
-		std::vector<GLfloat>  _joints;
-		std::vector<GLfloat>      _weights;
+		std::vector<GLfloat>     _targetPosition;
+		std::vector<GLfloat>     _targetNormal;
+		std::vector<GLfloat>     _targetPosition1;
+		std::vector<GLfloat>     _targetNormal1;
+		std::vector<GLfloat>     _joints;
+		std::vector<GLfloat>     _weights;
 		std::vector<Joint *>    _bones;
 		std::vector<Animation *>    _animations;
 		int                     _boneCount = 0;

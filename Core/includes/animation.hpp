@@ -18,7 +18,9 @@ namespace   Zion
 		float       minTime = 0.0f;
 		float       maxTime;
 		size_t      count;
+		size_t      weightCount = 0;
 		std::vector<glm::vec3>   translation;
+		std::vector<float>       weight;
 		std::vector<glm::quat>   rotation;
 	};
 	struct  JointAnimation
@@ -27,8 +29,10 @@ namespace   Zion
 		glm::mat4   trans;
 		glm::mat4   rot;
 		glm::mat4   matrix;
+		std::vector<float>   weightMorph;
 		KeyFrames   translation;
 		KeyFrames   rotation;
+		KeyFrames   weight;
 	};
 
 	class   Animation
@@ -41,6 +45,7 @@ namespace   Zion
 		bool    _loadAnimation(tinygltf::Animation& animation, tinygltf::Model& model);
 		void    _loadRotationChannel(tinygltf::AnimationChannel& channel, tinygltf::AnimationSampler& sampler, tinygltf::Model &model);
 		void    _loadTranslationChannel(tinygltf::AnimationChannel& channel, tinygltf::AnimationSampler& sampler, tinygltf::Model &model);
+		void    _loadWeightChannel(tinygltf::AnimationChannel& channel, tinygltf::AnimationSampler& sampler, tinygltf::Model &model);
 		std::vector<size_t>  _getPreviousAndNextFrame(std::vector<float> timeStamps, float maxTime, size_t count);
 		void    _updateJointAnimation(JointAnimation *joint);
 		float   _calculateProgressionValue(float nextFrameTime, float prevFrameTime, float maxTime);
@@ -55,6 +60,7 @@ namespace   Zion
 		glm::mat4       getJointAnimationMatrix(int id);
 		glm::mat4       getJointTranslationMatrix(int id);
 		glm::mat4       getJointRotationMatrix(int id);
+		std::vector<float>       getWeightAnimation(int id);
 		void            increaseCurrentTimeStamp(float val);
 		void            update();
 		void            setCurrentAnimationTime(float val);

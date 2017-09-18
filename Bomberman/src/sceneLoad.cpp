@@ -85,6 +85,10 @@ bool Scene::loadGame(MainGame *game, std::string fileName)
 			_mapName = strSplits[1];
 		else if (strSplits[0] == std::string("BreakableBlockType"))
 			_breakableBlockType = strSplits[1];
+		else if (strSplits[0] == std::string("Level"))
+			_sceneLevel = std::atoi(strSplits[1].c_str());
+		else if (strSplits[0] == std::string("Difficulty"))
+			_difficulty = std::atoi(strSplits[1].c_str());
 		else if (strSplits[0] == std::string("@"))
 			_addPlayer((float)atof(strSplits[1].c_str()), (float)atof(strSplits[3].c_str()));
 		else if (strSplits[0] == std::string("E"))
@@ -149,6 +153,12 @@ bool Scene::saveGame(std::string fileName)
 	save << "MapHeight " << _mapLength << std::endl;
 	save << "MapName " << _mapName << std::endl;
 	save << "BreakableBlockType " << _breakableBlockType << std::endl;
+	save << "Level " << _sceneLevel << std::endl;
+	save << "Difficulty " << _difficulty << std::endl;
+	save << "Explosion " << _player->getPowerExplosion() << std::endl;
+	save << "Bomb " << _player->getPowerBombNbr() << std::endl;
+	save << "Hp " << _player->getHP() << std::endl;
+	save << "Speed " << _player->getPowerSpeed() << std::endl;
 	pos = _player->getPosition();
 	save << "@ " << pos.x << " " << pos.y << " " << pos.z << std::endl;
 	for (std::pair<int, std::map<int, Block *>> pair : _blocks)

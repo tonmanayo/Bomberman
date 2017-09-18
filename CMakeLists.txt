@@ -5,17 +5,12 @@ set(CMAKE_CXX_STANDARD 14)
 
 find_package(OpenGL REQUIRED)
 find_package(PkgConfig REQUIRED)
-#find_package(Freetype REQUIRED)
 
 pkg_search_module(FREETYPE REQUIRED Freetype)
-# For compatitability with yaml
-set(CMAKE_MACOSX_RPATH 1)
 
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH ${PROJECT_SOURCE_DIR}/lib)
 
 execute_process(COMMAND git clone --recursive https://github.com/wjakob/nanogui.git
-        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/lib)
-execute_process(COMMAND git clone https://github.com/jbeder/yaml-cpp.git
         WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/lib)
 
 # Adding dependencies
@@ -66,7 +61,6 @@ if (APPLE)
 endif()
 
 add_subdirectory(lib/nanogui)
-add_subdirectory(lib/yaml-cpp)
 include_directories(lib/nanogui/include
         ${PROJECT_SOURCE_DIR}/lib/yaml-cpp/include
         lib/irrKlang/include)
@@ -78,7 +72,8 @@ link_directories("${PROJECT_SOURCE_DIR}/lib/irrKlang/lib")
 set(B_SOURCE_FILES Bomberman/main.cpp Bomberman/src/MainGame.cpp Bomberman/src/scene.cpp
         Bomberman/src/player.cpp Bomberman/src/block.cpp Bomberman/src/sceneUpdate.cpp
         Bomberman/src/Bomb.cpp Bomberman/src/sceneCollision.cpp Bomberman/src/menu.cpp
-        Bomberman/src/EnemyStuff.cpp Bomberman/src/sceneLoad.cpp Bomberman/src/BombStuff.cpp)
+        Bomberman/src/EnemyStuff.cpp Bomberman/src/sceneLoad.cpp Bomberman/src/BombStuff.cpp
+        Bomberman/src/menuCreate.cpp)
 
 add_executable(Bomberman ${B_SOURCE_FILES})
 target_link_libraries(Bomberman
@@ -88,7 +83,6 @@ target_link_libraries(Bomberman
         ${FREETYPE_LIBRARIES}
         zion
         nanogui
-        yaml-cpp
         irrKlang
         ${NANOGUI_EXTRA_LIBS}
         )
