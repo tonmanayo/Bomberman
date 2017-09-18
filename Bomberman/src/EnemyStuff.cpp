@@ -166,7 +166,16 @@ void Scene::updateEnemy(MainGame *game, Scene *scene) {
             int randNbr = rand() % 3;
             scene->_enemies[i]->setDirection(dir[randNbr]);
         }
-
+//        if (!collision && (fmod(scene->_enemies[i]->getPosition().x, 2.0f) == 0) && (
+//                scene->_enemies[i]->getDirection() == 'L' ||
+//                scene->_enemies[i]->getDirection() == 'R')) {
+//                scene->_enemies[i]->setDirection('D');
+//            }
+//
+//        if(!collision && (int)std::round(scene->_enemies[i]->getPosition().x) % 2 == 0 &&
+//                scene->_blocks[y - 1][x] == nullptr) {
+//            scene->_enemies[i]->setDirection('D');
+//        }
         for (int j = 0; j < scene->_enemies.size(); j++) {
             if (j == i)
                 continue;

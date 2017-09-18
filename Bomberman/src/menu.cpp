@@ -118,7 +118,7 @@ bool Menu::initMenu(MainGame *mainGame)
 	/// add menuUpdate function to gameLoop
 	MainGame::functions.insert(std::pair<const char *, Func>("menuUpdate", {Menu::updateMenu, params}));
 	/// creating background music
-	if (MainGame::soundEngine == nullptr) {
+	if (MainGame::soundEngine != nullptr) {
 		_menuMusic = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/breakout.mp3");
 		_enemyHurtSound = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/enemieDies.wav");
 		_playerHurtSound = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/playerInjured.wav");
@@ -340,7 +340,7 @@ void Menu::renderGui()
 	                                    {0.8, 0.8, 0.8});
 
 	///time
-	int i = static_cast<int>(std::trunc(scene->getLevelTime()));                //todo fix with resolution
+	auto i = static_cast<int>(std::trunc(scene->getLevelTime()));                //todo fix with resolution
 	Menu::gui.timeBack->render(glm::translate(glm::mat4(), {0.0f, 1.94f, 0.0f}));
 	MainGame::fontRenderer1->renderText(std::to_string(i), (Menu::windowWidth / 2) - 32,
 										25 , 1.0f,
