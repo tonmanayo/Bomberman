@@ -176,6 +176,7 @@ void MainGame::loadResources()
 
 	/// loading maps
 	addMap("map2", "resource/maps/map2");
+	addMap("stage1", "resource/maps/stage1");
 
 	/// loading materials
 	auto *mat = new Zion::Material();
