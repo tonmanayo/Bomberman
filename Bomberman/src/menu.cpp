@@ -45,8 +45,6 @@ void Menu::loadOptions()
 	MainGame::soundEngine = irrklang::createIrrKlangDevice();
 	/// getting primary monitor video mode for RGB bits and refreshRate
 	const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-	//Menu::windowWidth = mode->width;
-	//Menu::windowHeight = mode->height;
 	/// getting all video modes with primary monitor video mode RGB bits & refreshRate
 	int count = 0;
 	const GLFWvidmode* modes = glfwGetVideoModes(glfwGetPrimaryMonitor(), &count);
@@ -68,6 +66,9 @@ void Menu::loadOptions()
 	Menu::options.resolutionIndex = (int)Menu::options.resolutionList.size() - 1;
 	Menu::options.fullScreen = false;
 	Menu::copyOptions(Menu::tmpOptions, Menu::options);
+	Menu::windowWidth = Menu::options.resolutionList[Menu::options.resolutionIndex][0];
+	Menu::windowHeight = Menu::options.resolutionList[Menu::options.resolutionIndex][1];
+	Menu::isFullScreen = Menu::options.fullScreen;
 }
 
 void Menu::copyOptions(Options &dest, Options &src)

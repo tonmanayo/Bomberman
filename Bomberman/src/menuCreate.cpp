@@ -554,17 +554,14 @@ void Menu::createOptionsMenu()
 
 	/// dimensions and position
 	int     posY = Menu::windowHeight / 2;
-	int     textBoxHeight = (Menu::windowWidth > 800) ? 50 : 30;
-	int     windowWidth = (Menu::windowWidth > 800) ? Menu::windowWidth / 3 : Menu::windowWidth / 4;
+	int     windowWidth = Menu::windowWidth / 3;
 	windowWidth = (windowWidth > 450) ? 450 : windowWidth;
 	int     offset = ((Menu::windowWidth / 2) - windowWidth) / 2;
 	int     posX = (Menu::windowWidth / 2) - (windowWidth + offset);
 	int     buttonHeight = (Menu::windowWidth > 800) ? 50 : 30;
 	int     buttonWidth = (Menu::windowWidth > 800) ? Menu::windowWidth / 6 : Menu::windowWidth / 8;
 	buttonWidth = (buttonWidth > 130) ? 130 : buttonWidth;
-	int     buttonPosX = ((Menu::windowWidth / 2) - (buttonWidth * 2)) / 3;
-	int     tabOffsetX = (posX / 3) + 20;
-	int     windowOffsetX = 2 * tabOffsetX + buttonWidth;
+	int     tabOffsetX = (posX / 3);
 	int     windowHeight = Menu::windowHeight / 3;
 	int     sideButtonFontSize = (Menu::windowWidth < 1280) ? (Menu::windowWidth * 20) / 900 : 20;
 
@@ -582,7 +579,7 @@ void Menu::createOptionsMenu()
 		Menu::optionMenu.keyButton->setTheme(Menu::optionMenu.unfocusTabTheme);
 	});
 
-	tmp = tabOffsetX + buttonWidth + 30;
+	tmp = tabOffsetX + buttonWidth + ((Menu::windowWidth < 1280) ? (Menu::windowWidth * 30) / 1280 : 30);
 	Menu::optionMenu.audioButton = new nanogui::Button(_screen, "AUDIO");
 	Menu::optionMenu.audioButton->setSize({buttonWidth, buttonHeight});
 	Menu::optionMenu.audioButton->setPosition({tmp, posY});
@@ -596,7 +593,7 @@ void Menu::createOptionsMenu()
 		Menu::optionMenu.keyButton->setTheme(Menu::optionMenu.unfocusTabTheme);
 	});
 
-	tmp = tmp + buttonWidth + 30;
+	tmp = tmp + buttonWidth + ((Menu::windowWidth < 1280) ? (Menu::windowWidth * 30) / 1280 : 30);
 	Menu::optionMenu.keyButton = new nanogui::Button(_screen, "CONTROLS");
 	Menu::optionMenu.keyButton->setSize({buttonWidth, buttonHeight});
 	Menu::optionMenu.keyButton->setPosition({tmp, posY});
@@ -623,33 +620,36 @@ void Menu::createOptionsMenu()
 	windowTheme->mButtonCornerRadius = 0;
 
 	posY = posY + buttonHeight + 20;
-	int winHeight = 30;
-	int halfWinX =  windowWidth / 3;
-	int panelArrowSizeX = halfWinX / 4;
-	int panelFontSize = 25;
+	int winHeight = (Menu::windowWidth < 1280) ? (Menu::windowWidth * 30) / 1280 : 30;
+	int panelFontSize = (Menu::windowWidth < 1280) ? (Menu::windowWidth * 30) / 1100 : 30;
+
+	int newWinSizeX = (tmp - tabOffsetX) + buttonWidth;
+	int midOffset = newWinSizeX / 2;
+	int halfWinX =  newWinSizeX / 4;
+	int panelArrowSizeX = halfWinX / 3;
 
 	/// create screen window
 	Menu::optionMenu.screenWindow = new nanogui::Window(_screen, "");
-	Menu::optionMenu.screenWindow->setSize({windowWidth, (winHeight + 10) * 5});
+	Menu::optionMenu.screenWindow->setSize({newWinSizeX + panelArrowSizeX, (winHeight + 10) * 5});
 	Menu::optionMenu.screenWindow->setPosition({tabOffsetX, posY});
 	Menu::optionMenu.screenWindow->setTheme(windowTheme);
 
 	/// resolution
 	nanogui::Label  *resLabel = new nanogui::Label(Menu::optionMenu.screenWindow, "Resolution", "sans", panelFontSize);
-	resLabel->setSize({halfWinX, winHeight});
-	resLabel->setPosition({2, 0});
+	resLabel->setSize({midOffset, winHeight});
+	resLabel->setPosition({0, 0});
 
 	std::vector<int>    resolutionData = Menu::tmpOptions.resolutionList[Menu::tmpOptions.resolutionIndex];
 	std::string resStr = std::to_string(resolutionData[0]) + " x " + std::to_string(resolutionData[1]) + " " + std::to_string(resolutionData[2]) + "Hz";
 	nanogui::TextBox *resolutionBox = new nanogui::TextBox(Menu::optionMenu.screenWindow, resStr);
 	resolutionBox->setSize({panelArrowSizeX * 5, winHeight});
-	resolutionBox->setPosition({halfWinX + panelArrowSizeX, 0});
-	resolutionBox->setFontSize(panelFontSize - 5);
+	resolutionBox->setPosition({midOffset + panelArrowSizeX, 0});
+	resolutionBox->setFontSize(panelFontSize - ((Menu::windowWidth < 1280) ? (Menu::windowWidth * 5) / 1100 : 5));
 	resolutionBox->setEditable(false);
 
 	nanogui::Button *leftChange = new nanogui::Button(Menu::optionMenu.screenWindow, "<");
 	leftChange->setSize({panelArrowSizeX, winHeight});
-	leftChange->setPosition({halfWinX, 0});
+	leftChange->setPosition({midOffset, 0});
 	leftChange->setFontSize(panelFontSize);
 	leftChange->setTextColor({230, 230, 230, 255});
 	leftChange->setCursor(nanogui::Cursor::Hand);
@@ -664,7 +664,7 @@ void Menu::createOptionsMenu()
 
 	nanogui::Button *rightChange = new nanogui::Button(Menu::optionMenu.screenWindow, ">");
 	rightChange->setSize({panelArrowSizeX, winHeight});
-	rightChange->setPosition({halfWinX + panelArrowSizeX * 6, 0});
+	rightChange->setPosition({midOffset + panelArrowSizeX * 6, 0});
 	rightChange->setFontSize(panelFontSize);
 	rightChange->setTextColor({230, 230, 230, 255});
 	rightChange->setCursor(nanogui::Cursor::Hand);
@@ -680,18 +680,18 @@ void Menu::createOptionsMenu()
 	/// fullscreen
 	int winPosY = winHeight + 10;
 	nanogui::Label  *fullScreenLabel = new nanogui::Label(Menu::optionMenu.screenWindow, "Full Screen", "sans", panelFontSize);
-	fullScreenLabel->setSize({halfWinX, winPosY});
-	fullScreenLabel->setPosition({2, winPosY});
+	fullScreenLabel->setSize({midOffset, winPosY});
+	fullScreenLabel->setPosition({0, winPosY});
 
 	nanogui::TextBox *fullScreenBox = new nanogui::TextBox(Menu::optionMenu.screenWindow, (Menu::tmpOptions.fullScreen) ? "ENABLED" : "DISABLED");
 	fullScreenBox->setSize({panelArrowSizeX * 5, winHeight});
-	fullScreenBox->setPosition({halfWinX + panelArrowSizeX, winPosY});
+	fullScreenBox->setPosition({midOffset + panelArrowSizeX, winPosY});
 	fullScreenBox->setFontSize(panelFontSize - 5);
 	fullScreenBox->setEditable(false);
 
 	nanogui::Button *leftChange1 = new nanogui::Button(Menu::optionMenu.screenWindow, "<");
 	leftChange1->setSize({panelArrowSizeX, winHeight});
-	leftChange1->setPosition({halfWinX, winPosY});
+	leftChange1->setPosition({midOffset, winPosY});
 	leftChange1->setFontSize(panelFontSize);
 	leftChange1->setTextColor({230, 230, 230, 255});
 	leftChange1->setCursor(nanogui::Cursor::Hand);
@@ -704,7 +704,7 @@ void Menu::createOptionsMenu()
 
 	nanogui::Button *rightChange1 = new nanogui::Button(Menu::optionMenu.screenWindow, ">");
 	rightChange1->setSize({panelArrowSizeX, winHeight});
-	rightChange1->setPosition({halfWinX + panelArrowSizeX * 6, winPosY});
+	rightChange1->setPosition({midOffset + panelArrowSizeX * 6, winPosY});
 	rightChange1->setFontSize(panelFontSize);
 	rightChange1->setTextColor({230, 230, 230, 255});
 	rightChange1->setCursor(nanogui::Cursor::Hand);
@@ -717,18 +717,18 @@ void Menu::createOptionsMenu()
 
 	/// create audio window
 	Menu::optionMenu.audioWindow = new nanogui::Window(_screen, "");
-	Menu::optionMenu.audioWindow->setSize({windowWidth, (winHeight + 10) * 5});
+	Menu::optionMenu.audioWindow->setSize({newWinSizeX + panelArrowSizeX, (winHeight + 10) * 5});
 	Menu::optionMenu.audioWindow->setPosition({tabOffsetX, posY});
 	Menu::optionMenu.audioWindow->setTheme(windowTheme);
 
 	/// music volume
 	nanogui::Label  *musicLabel = new nanogui::Label(Menu::optionMenu.audioWindow, "Music Volume", "sans", panelFontSize);
-	musicLabel->setSize({halfWinX, winHeight});
+	musicLabel->setSize({midOffset, winHeight});
 	musicLabel->setPosition({2, 0});
 
 	nanogui::Slider *musicSlider = new nanogui::Slider(Menu::optionMenu.audioWindow);
 	musicSlider->setSize({halfWinX * 2, winHeight});
-	musicSlider->setPosition({halfWinX, 0});
+	musicSlider->setPosition({midOffset, 0});
 	musicSlider->setHighlightColor({174, 17, 2, 255});
 	musicSlider->setHighlightedRange({0.0f, Menu::tmpOptions.musicVolume});
 	musicSlider->setRange({0.0f, 1.0f});
@@ -741,12 +741,12 @@ void Menu::createOptionsMenu()
 
 	/// sound volume
 	nanogui::Label  *soundLabel = new nanogui::Label(Menu::optionMenu.audioWindow, "Sound Volume", "sans", panelFontSize);
-	soundLabel->setSize({halfWinX, winHeight});
+	soundLabel->setSize({midOffset, winHeight});
 	soundLabel->setPosition({2, winPosY});
 
 	nanogui::Slider *soundSlider = new nanogui::Slider(Menu::optionMenu.audioWindow);
 	soundSlider->setSize({halfWinX * 2, winHeight});
-	soundSlider->setPosition({halfWinX, winPosY});
+	soundSlider->setPosition({midOffset, winPosY});
 	soundSlider->setHighlightColor({174, 17, 2, 255});
 	soundSlider->setHighlightedRange({0.0f, Menu::tmpOptions.soundVolume});
 	soundSlider->setRange({0.0f, 1.0f});
@@ -760,12 +760,12 @@ void Menu::createOptionsMenu()
 
 	/// mute
 	nanogui::Label  *muteLabel = new nanogui::Label(Menu::optionMenu.audioWindow, "Mute", "sans", panelFontSize);
-	muteLabel->setSize({halfWinX, winPosY});
+	muteLabel->setSize({midOffset, winPosY});
 	muteLabel->setPosition({2, winPosY + winHeight + 10});
 
 	nanogui::CheckBox *muteBox = new nanogui::CheckBox(Menu::optionMenu.audioWindow, "");
 	muteBox->setSize({panelArrowSizeX, winHeight});
-	muteBox->setPosition({halfWinX + panelArrowSizeX, winPosY + winHeight + 10});
+	muteBox->setPosition({midOffset + panelArrowSizeX, winPosY + winHeight + 10});
 	muteBox->setChecked(Menu::tmpOptions.mute);
 	muteBox->setCursor(nanogui::Cursor::Hand);
 	muteBox->setCallback([](bool checked){
@@ -784,7 +784,6 @@ void Menu::createOptionsMenu()
 	applyButton->setPosition({0, 0});
 	applyButton->setTheme(Menu::mainMenu.buttonTheme);
 	applyButton->setCursor(nanogui::Cursor::Hand);
-	applyButton->setCursor(nanogui::Cursor::Hand);
 	applyButton->setCallback([]{
 		copyOptions(Menu::options, Menu::tmpOptions);
 		Menu::optionMenu.changeView(false);
@@ -798,10 +797,14 @@ void Menu::createOptionsMenu()
 		Menu::activeMenu->createLoadGameMenu();
 		Menu::activeMenu->createPauseGameMenu();
 		Menu::activeMenu->createEndGameMenu();
+		Menu::mainMenu.changeView(false);
+		Menu::optionMenu.changeView(true);
+		Menu::optionMenu.showScreen();
+		Menu::title->setCaption("OPTIONS");
 	});
 
 	/// cancel button
-	nanogui::Button *cancelButton = new nanogui::Button(Menu::optionMenu.panelDown, "Cancel");
+	nanogui::Button *cancelButton = new nanogui::Button(Menu::optionMenu.panelDown, "Back");
 	cancelButton->setSize({halfWinX, winHeight + 10});
 	cancelButton->setPosition({windowWidth / 2, 0});
 	cancelButton->setTheme(Menu::mainMenu.buttonTheme);
