@@ -163,7 +163,8 @@ void MainGame::loadResources()
 	addModel("bg", *getShader("gui"), "resource/models/others/bg.gltf");
 
 	/// loading enemies
-	addModel("onile", *getShader("anime"), "resource/models/enemies/Cubex.glb");
+	addModel("cubex", *getShader("anime"), "resource/models/enemies/Cubex.glb");
+	addModel("mag", *getShader("anime"), "resource/models/enemies/MagmaEnemy.glb");
 	addModel("enemy1", *getShader("basic"), "resource/models/enemies/enemy2.gltf");
 	addModel("enemyBallon", *getShader("animeNoJoint"), "resource/models/enemies/enemyBallon.gltf");
 
@@ -179,8 +180,12 @@ void MainGame::loadResources()
 	/// loading materials
 	auto *mat = new Zion::Material();
 	mat->texure.loadTextureFromPath("resource/models/enemies/cubex_Diffuse.psd");
-	auto *onileModel = (Zion::Model *)getModel("onile");
-	onileModel->addMaterial(0, *mat);
+	auto *cubex = (Zion::Model *)getModel("cubex");
+	cubex->addMaterial(0, *mat);
+
+	mat->texure.loadTextureFromPath("resource/models/enemies/mag_Diffuse.tga");
+	auto *mag = (Zion::Model *)getModel("mag");
+	mag->addMaterial(0, *mat);
 
 	addMaterial("fireBlock", "resource/images/fireTex.png");
 	addMaterial("flame1", "resource/images/flame1.png");

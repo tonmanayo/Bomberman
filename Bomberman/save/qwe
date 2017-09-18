@@ -2,6 +2,12 @@ MapWidth 25
 MapHeight 17
 MapName map2
 BreakableBlockType block2
+Level 1
+Difficulty 2
+Explosion 0
+Bomb 0
+Hp 100
+Speed 0
 @ 4 0 -2
 G 8 0 -2 1 4
 G 28 0 -2 1 14
