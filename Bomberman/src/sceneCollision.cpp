@@ -1,5 +1,5 @@
-#include <scene.hpp>
 
+#include <menu.hpp>
 
 
 bool Scene::worldEndLevel(glm::vec3 pos, Scene *scene)
@@ -17,7 +17,7 @@ void Scene::worldGetPower(glm::vec3 pos, Scene *scene)
 	int y = scene->getWorldy(pos.z);
 
 	if (scene->_blocks[y][x] != nullptr && scene->_blocks[y][x]->getPowerUp()) {
-		MainGame::soundEngine->play2D("resource/sounds/powerUp.wav");
+		Menu::playPowerUp();
 		if (scene->_blocks[y][x]->getPowerName() == "PowerBombNbrInc") {
             scene->_player->incBombNbr();
             std::cout << "Got: " << scene->_player->getPowerBombNbr() << " POWER Bomb inc!\n";
@@ -264,7 +264,7 @@ void Scene::enemiesExplosionCollision(glm::vec3 pos, Scene *scene)
 				del = true;
 			}
 			if (del) {
-				MainGame::soundEngine->play2D("resource/sounds/enemieDies.wav");
+				Menu::playEnemyHurt();
 				MainGame::renderer.removeFromRender(scene->_enemies[i]->getType(), scene->_enemies[i]->getId());
 				delete scene->_enemies[i];
 				scene->_enemies[i] = scene->_enemies.back();

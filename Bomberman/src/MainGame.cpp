@@ -252,7 +252,7 @@ void MainGame::gameLoop()
 	Zion::Window::frameChangeTime = 0.0f;
 
 	srand(0);
-	//Menu::playMenuMusic();
+	Menu::playMenuMusic();
 	while (!_window.shouldClose())
 	{
 		auto currentTime = (float)glfwGetTime();

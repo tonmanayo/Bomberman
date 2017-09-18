@@ -4,10 +4,11 @@ Menu*                       Menu::activeMenu = nullptr;
 irrklang::ISoundSource*     Menu::_menuMusic;
 irrklang::ISoundSource*		Menu::_bombExplosionSound;
 irrklang::ISoundSource*		Menu::_bombPlacementSound;
+irrklang::ISoundSource*		Menu::_mapLevelUp;
 irrklang::ISoundSource*		Menu::_playerHurtSound;
 irrklang::ISoundSource*		Menu::_enemyHurtSound;
 irrklang::ISoundSource*		Menu::_playerWalkingSound;
-irrklang::ISoundSource*		Menu::_powerUpsSound;
+irrklang::ISoundSource*		Menu::_playPowerUp;
 irrklang::ISoundSource*		Menu::_gameMusic;
 bool                        Menu::isFullScreen = false;
 int                         Menu::windowWidth = 1280;
@@ -122,10 +123,11 @@ bool Menu::initMenu(MainGame *mainGame)
 		_enemyHurtSound = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/enemieDies.wav");
 		_playerHurtSound = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/playerInjured.wav");
 		_playerWalkingSound = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/run.wav");
-		_bombExplosionSound = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/explosion");
+		_bombExplosionSound = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/explosion.wav");
 		_bombPlacementSound = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/bombDrop.wav");
-		_powerUpsSound = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/powerUp.wav");
 		_gameMusic = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/game_song.wav");
+		_mapLevelUp = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/levelUp.wav");
+		_playPowerUp = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/powerUp.wav");
 	}
 	return true;
 }
@@ -197,7 +199,6 @@ void Menu::updateGameStateStart(MainGame *game, Menu *menu, GAMESTATE state)
 	float halfHeight = (float)Menu::windowHeight / 3;
 	float halfWidth = (float)Menu::windowWidth / 2;
 	float xOffset = (float)Menu::windowWidth / 5;
-
 	if (Menu::textStartTime == 0.0f)
 		Menu::textStartTime = (float)glfwGetTime();
 
@@ -206,6 +207,7 @@ void Menu::updateGameStateStart(MainGame *game, Menu *menu, GAMESTATE state)
 	float changeTime = (float)glfwGetTime() - Menu::textStartTime;
 	float offset;
 	if (changeTime <= 1.4f) {
+
 		int stage = menu->scene->getLevel();
 		if (changeTime <= 0.9f)
 			offset = (changeTime / 0.9f) * (halfWidth + xOffset);
@@ -387,22 +389,37 @@ void Menu::stopMenuMusic()
 }
 
 void 	Menu::playBombPlacement() {
-	if (MainGame::soundEngine && MainGame::soundEngine->isCurrentlyPlaying(_bombPlacementSound))
+	if (MainGame::soundEngine && !MainGame::soundEngine->isCurrentlyPlaying(_bombPlacementSound))
 		MainGame::soundEngine->play2D(_bombPlacementSound);
 }
 void 	Menu::playPlayerHurt() {
-	if (MainGame::soundEngine && MainGame::soundEngine->isCurrentlyPlaying(_playerHurtSound))
+	if (MainGame::soundEngine && !MainGame::soundEngine->isCurrentlyPlaying(_playerHurtSound))
 		MainGame::soundEngine->play2D(_playerHurtSound);
 }
 void 	Menu::playEnemyHurt() {
-	if (MainGame::soundEngine && MainGame::soundEngine->isCurrentlyPlaying(_enemyHurtSound))
+	if (MainGame::soundEngine && !MainGame::soundEngine->isCurrentlyPlaying(_enemyHurtSound))
 		MainGame::soundEngine->play2D(_enemyHurtSound);
 }
 void 	Menu::playPlayerWalking() {
-	if (MainGame::soundEngine && MainGame::soundEngine->isCurrentlyPlaying(_playerWalkingSound))
+	if (MainGame::soundEngine && !MainGame::soundEngine->isCurrentlyPlaying(_playerWalkingSound))
 		MainGame::soundEngine->play2D(_playerWalkingSound);
 }
 void	Menu::playGameSong() {
-	if (MainGame::soundEngine && MainGame::soundEngine->isCurrentlyPlaying(_gameMusic))
+	if (MainGame::soundEngine && !MainGame::soundEngine->isCurrentlyPlaying(_gameMusic))
 		MainGame::soundEngine->play2D(_gameMusic);
+}
+
+void	Menu::playLevelUp() {
+	if (MainGame::soundEngine && !MainGame::soundEngine->isCurrentlyPlaying(_mapLevelUp))
+		MainGame::soundEngine->play2D(_mapLevelUp);
+}
+
+void	Menu::playPowerUp() {
+	if (MainGame::soundEngine && !MainGame::soundEngine->isCurrentlyPlaying(_playPowerUp))
+		MainGame::soundEngine->play2D(_playPowerUp);
+}
+
+void 	Menu::playBombExplosion() {
+	if (MainGame::soundEngine && !MainGame::soundEngine->isCurrentlyPlaying(_bombExplosionSound))
+		MainGame::soundEngine->play2D(_bombExplosionSound);
 }
