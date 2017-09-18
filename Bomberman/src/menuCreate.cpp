@@ -775,7 +775,7 @@ void Menu::createOptionsMenu()
 	/// create panel window
 	Menu::optionMenu.panelDown = new nanogui::Window(_screen, "");
 	Menu::optionMenu.panelDown->setSize({windowWidth, windowHeight});
-	Menu::optionMenu.panelDown->setPosition({tabOffsetX, posY + (winHeight + 10) * 5});
+	Menu::optionMenu.panelDown->setPosition({tabOffsetX, posY + (winHeight + 10) * 6});
 	Menu::optionMenu.panelDown->setTheme(windowTheme);
 
 	/// apply button
@@ -822,6 +822,150 @@ void Menu::createOptionsMenu()
 		Menu::activeMenu->createPauseGameMenu();
 		Menu::activeMenu->createEndGameMenu();
 	});
+
+	/// create press key window
+	nanogui::Theme *pressKey = new nanogui::Theme(_screen->nvgContext());
+	pressKey->mWindowFillFocused = {20, 20, 20, 200};
+	pressKey->mWindowFillUnfocused = {20, 20, 20, 200};
+	pressKey->mBorderLight = {20, 20, 20, 200};
+	pressKey->mBorderMedium = {20, 20, 20, 200};
+	pressKey->mBorderDark = {20, 20, 20, 200};
+	pressKey->mTransparent = {20, 20, 20, 200};
+	pressKey->mDropShadow = {20, 20, 20, 200};
+
+	int labelFontSize = (Menu::windowWidth < 1280) ? (Menu::windowWidth * 30) / 1000 : 30;
+	int labelPositionX = Menu::windowWidth / 3;
+	int labelPositionY = (Menu::windowHeight / 2) - 20;
+
+	Menu::optionMenu.keyBindWindow = new nanogui::Window(_screen, "");
+	Menu::optionMenu.keyBindWindow->setSize({Menu::windowWidth, Menu::windowHeight});
+	Menu::optionMenu.keyBindWindow->setPosition({0, 0});
+	Menu::optionMenu.keyBindWindow->setVisible(false);
+	Menu::optionMenu.keyBindWindow->setTheme(pressKey);
+
+	nanogui::Label  *keyBindLabel = new nanogui::Label(Menu::optionMenu.keyBindWindow, "Press an unused key to map to this action", "sans-bold", labelFontSize);
+	keyBindLabel->setSize({450, 40});
+	keyBindLabel->setPosition({labelPositionX, labelPositionY});
+
+	/// create key binding windows
+	Menu::optionMenu.keyWindow = new nanogui::Window(_screen, "");
+	Menu::optionMenu.keyWindow->setSize({newWinSizeX + panelArrowSizeX, (winHeight + 10) * 6});
+	Menu::optionMenu.keyWindow->setPosition({tabOffsetX, posY});
+	Menu::optionMenu.keyWindow->setTheme(windowTheme);
+
+	/// move up key
+	nanogui::Label  *upLabel = new nanogui::Label(Menu::optionMenu.keyWindow, "Move Up", "sans", panelFontSize);
+	upLabel->setSize({midOffset, winHeight});
+	upLabel->setPosition({2, 0});
+
+	nanogui::Button *upKey = new nanogui::Button(Menu::optionMenu.keyWindow, Menu::tmpOptions.moveUp.name);
+	upKey->setSize({panelArrowSizeX * 5, winHeight});
+	upKey->setPosition({midOffset, 0});
+	upKey->setFontSize(panelFontSize);
+	upKey->setTextColor({230, 230, 230, 255});
+	upKey->setCursor(nanogui::Cursor::Hand);
+	upKey->setCallback([]{
+		Menu::optionMenu.keyBindWindow->setVisible(true);
+		Menu::isKeyBind = true;
+		Menu::keyBind = "moveUp";
+	});
+
+	/// move down key
+	nanogui::Label  *downLabel = new nanogui::Label(Menu::optionMenu.keyWindow, "Move Down", "sans", panelFontSize);
+	downLabel->setSize({midOffset, winHeight});
+	downLabel->setPosition({2, winPosY});
+
+	nanogui::Button *downKey = new nanogui::Button(Menu::optionMenu.keyWindow, Menu::tmpOptions.moveDown.name);
+	downKey->setSize({panelArrowSizeX * 5, winHeight});
+	downKey->setPosition({midOffset, winPosY});
+	downKey->setFontSize(panelFontSize);
+	downKey->setTextColor({230, 230, 230, 255});
+	downKey->setCursor(nanogui::Cursor::Hand);
+	downKey->setCallback([]{
+		Menu::optionMenu.keyBindWindow->setVisible(true);
+		Menu::isKeyBind = true;
+		Menu::keyBind = "moveDown";
+	});
+
+	winPosY = winPosY + winHeight + 10;
+	/// move left key
+	nanogui::Label  *leftLabel = new nanogui::Label(Menu::optionMenu.keyWindow, "Move Left", "sans", panelFontSize);
+	leftLabel->setSize({midOffset, winHeight});
+	leftLabel->setPosition({2, winPosY});
+
+	nanogui::Button *leftKey = new nanogui::Button(Menu::optionMenu.keyWindow, Menu::tmpOptions.moveLeft.name);
+	leftKey->setSize({panelArrowSizeX * 5, winHeight});
+	leftKey->setPosition({midOffset, winPosY});
+	leftKey->setFontSize(panelFontSize);
+	leftKey->setTextColor({230, 230, 230, 255});
+	leftKey->setCursor(nanogui::Cursor::Hand);
+	leftKey->setCallback([]{
+		Menu::optionMenu.keyBindWindow->setVisible(true);
+		Menu::isKeyBind = true;
+		Menu::keyBind = "moveLeft";
+	});
+
+	winPosY = winPosY + winHeight + 10;
+	/// move right key
+	nanogui::Label  *rightLabel = new nanogui::Label(Menu::optionMenu.keyWindow, "Move Right", "sans", panelFontSize);
+	rightLabel->setSize({midOffset, winHeight});
+	rightLabel->setPosition({2, winPosY});
+
+	nanogui::Button *rightKey = new nanogui::Button(Menu::optionMenu.keyWindow, Menu::tmpOptions.moveRight.name);
+	rightKey->setSize({panelArrowSizeX * 5, winHeight});
+	rightKey->setPosition({midOffset, winPosY});
+	rightKey->setFontSize(panelFontSize);
+	rightKey->setTextColor({230, 230, 230, 255});
+	rightKey->setCursor(nanogui::Cursor::Hand);
+	rightKey->setCallback([]{
+		Menu::optionMenu.keyBindWindow->setVisible(true);
+		Menu::isKeyBind = true;
+		Menu::keyBind = "moveRight";
+	});
+
+	winPosY = winPosY + winHeight + 10;
+	/// move place bomb key
+	nanogui::Label  *placeBombLabel = new nanogui::Label(Menu::optionMenu.keyWindow, "Place Bomb", "sans", panelFontSize);
+	placeBombLabel->setSize({midOffset, winHeight});
+	placeBombLabel->setPosition({2, winPosY});
+
+	nanogui::Button *placeBombKey = new nanogui::Button(Menu::optionMenu.keyWindow, Menu::tmpOptions.placeBomb.name);
+	placeBombKey->setSize({panelArrowSizeX * 5, winHeight});
+	placeBombKey->setPosition({midOffset, winPosY});
+	placeBombKey->setFontSize(panelFontSize);
+	placeBombKey->setTextColor({230, 230, 230, 255});
+	placeBombKey->setCursor(nanogui::Cursor::Hand);
+	placeBombKey->setCallback([]{
+		Menu::optionMenu.keyBindWindow->setVisible(true);
+		Menu::isKeyBind = true;
+		Menu::keyBind = "placeBomb";
+	});
+
+	winPosY = winPosY + winHeight + 10;
+	/// move pause key
+	nanogui::Label  *pauseLabel = new nanogui::Label(Menu::optionMenu.keyWindow, "Pause", "sans", panelFontSize);
+	pauseLabel->setSize({midOffset, winHeight});
+	pauseLabel->setPosition({2, winPosY});
+
+	nanogui::Button *pauseKey = new nanogui::Button(Menu::optionMenu.keyWindow, Menu::tmpOptions.pause.name);
+	pauseKey->setSize({panelArrowSizeX * 5, winHeight});
+	pauseKey->setPosition({midOffset, winPosY});
+	pauseKey->setFontSize(panelFontSize);
+	pauseKey->setTextColor({230, 230, 230, 255});
+	pauseKey->setCursor(nanogui::Cursor::Hand);
+	pauseKey->setCallback([]{
+		Menu::optionMenu.keyBindWindow->setVisible(true);
+		Menu::isKeyBind = true;
+		Menu::keyBind = "pause";
+	});
+
+
+	Menu::optionMenu.upKey = upKey;
+	Menu::optionMenu.downKey = downKey;
+	Menu::optionMenu.leftKey = leftKey;
+	Menu::optionMenu.rightKey = rightKey;
+	Menu::optionMenu.placeBombKey = placeBombKey;
+	Menu::optionMenu.pauseKey = pauseKey;
 
 	Menu::optionMenu.changeView(false);
 }
@@ -882,4 +1026,100 @@ void Menu::updateGraphicOptions()
 		glfwSetWindowMonitor(Menu::activeMenu->_screen->glfwWindow(), nullptr, 0, 0,
 		Menu::windowWidth, Menu::windowHeight, Menu::options.resolutionList[Menu::options.resolutionIndex][2]);
 	}
+}
+
+bool Menu::isKeyAvailable(std::string &name, int keyValue)
+{
+	if (name != "moveUp" && keyValue == Menu::tmpOptions.moveUp.glfwValue)
+		return false;
+	if (name != "moveLeft" && keyValue == Menu::tmpOptions.moveLeft.glfwValue)
+		return false;
+	if (name != "moveRight" && keyValue == Menu::tmpOptions.moveRight.glfwValue)
+		return false;
+	if (name != "moveDown" && keyValue == Menu::tmpOptions.moveDown.glfwValue)
+		return false;
+	if (name != "placeBomb" && keyValue == Menu::tmpOptions.placeBomb.glfwValue)
+		return false;
+	if (name != "pause" && keyValue == Menu::tmpOptions.pause.glfwValue)
+		return false;
+	return true;
+}
+
+void Menu::keyPressKeyBindings(int key)
+{
+	if (!Menu::isKeyAvailable(Menu::keyBind, key))
+		return;
+	Menu::isKeyBind = false;
+	if (Menu::optionMenu.keyBindWindow != nullptr)
+		Menu::optionMenu.keyBindWindow->setVisible(false);
+	if (Menu::keyBind == "moveUp"){
+		Menu::tmpOptions.moveUp.glfwValue = key;
+		const char* key_name = glfwGetKeyName(key, 0);
+		if (key_name == nullptr)
+			Menu::myGlfwGetKeyName(key, Menu::tmpOptions.moveUp.name);
+		else
+			Menu::tmpOptions.moveUp.name = key_name;
+		Menu::optionMenu.upKey->setCaption(Menu::tmpOptions.moveUp.name);
+	}
+	else if (Menu::keyBind == "moveDown"){
+		Menu::tmpOptions.moveDown.glfwValue = key;
+		const char* key_name = glfwGetKeyName(key, 0);
+		if (key_name == nullptr)
+			Menu::myGlfwGetKeyName(key, Menu::tmpOptions.moveDown.name);
+		else
+			Menu::tmpOptions.moveDown.name = key_name;
+		Menu::optionMenu.downKey->setCaption(Menu::tmpOptions.moveDown.name);
+	}
+	else if (Menu::keyBind == "moveLeft"){
+		Menu::tmpOptions.moveLeft.glfwValue = key;
+		const char* key_name = glfwGetKeyName(key, 0);
+		if (key_name == nullptr)
+			Menu::myGlfwGetKeyName(key, Menu::tmpOptions.moveLeft.name);
+		else
+			Menu::tmpOptions.moveLeft.name = key_name;
+		Menu::optionMenu.leftKey->setCaption(Menu::tmpOptions.moveLeft.name);
+	}
+	else if (Menu::keyBind == "moveRight"){
+		Menu::tmpOptions.moveRight.glfwValue = key;
+		const char* key_name = glfwGetKeyName(key, 0);
+		if (key_name == nullptr)
+			Menu::myGlfwGetKeyName(key, Menu::tmpOptions.moveRight.name);
+		else
+			Menu::tmpOptions.moveRight.name = key_name;
+		Menu::optionMenu.rightKey->setCaption(Menu::tmpOptions.moveRight.name);
+	}
+	else if (Menu::keyBind == "placeBomb"){
+		Menu::tmpOptions.placeBomb.glfwValue = key;
+		const char* key_name = glfwGetKeyName(key, 0);
+		if (key_name == nullptr)
+			Menu::myGlfwGetKeyName(key, Menu::tmpOptions.placeBomb.name);
+		else
+			Menu::tmpOptions.placeBomb.name = key_name;
+		Menu::optionMenu.placeBombKey->setCaption(Menu::tmpOptions.placeBomb.name);
+	}
+	else if (Menu::keyBind == "pause"){
+		Menu::tmpOptions.pause.glfwValue = key;
+		const char* key_name = glfwGetKeyName(key, 0);
+		if (key_name == nullptr)
+			Menu::myGlfwGetKeyName(key, Menu::tmpOptions.pause.name);
+		else
+			Menu::tmpOptions.pause.name = key_name;
+		Menu::optionMenu.pauseKey->setCaption(Menu::tmpOptions.pause.name);
+	}
+}
+
+void Menu::myGlfwGetKeyName(int key, std::string &dest)
+{
+	if (key == GLFW_KEY_UP)
+		dest = "Up Arrow";
+	else if (key == GLFW_KEY_DOWN)
+		dest = "Down Arrow";
+	else if (key == GLFW_KEY_LEFT)
+		dest = "Left Arrow";
+	else if (key == GLFW_KEY_RIGHT)
+		dest = "Right Arrow";
+	else if (key == GLFW_KEY_ESCAPE)
+		dest = "Esc";
+	else if (key == GLFW_KEY_SPACE)
+		dest = "Space";
 }

@@ -48,6 +48,8 @@ public:
 	static OptionMenu       optionMenu;
 	static Options          options;
 	static Options          tmpOptions;
+	static bool             isKeyBind;
+	static std::string      keyBind;
 
 public:
 	Menu() = default;
@@ -85,6 +87,9 @@ public:
 	static bool     keyCallback(int key, int scancode, int action, int mods);
 	static void     playMenuMusic();
 	static void     stopMenuMusic();
+	static bool     isKeyAvailable(std::string &name, int keyValue);
+	static void     keyPressKeyBindings(int key);
+	static void     myGlfwGetKeyName(int key, std::string &dest);
 
 	static void 	playBombExplosion();
 	static void 	playBombPlacement();

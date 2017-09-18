@@ -1,12 +1,12 @@
-#include <scene.hpp>
 #include <random>
+#include <menu.hpp>
 
 void Scene::updatePlayer(MainGame *game, Scene *scene) {
 
 	float   velocity =  (1.0f + scene->_player->getPowerSpeed()) * Zion::Renderable::deltaTime;
 	float   positionChange = (5.0f + scene->_player->getPowerSpeed()) * Zion::Renderable::deltaTime;
 
-    if (game->getGameWindow().isKeyPressed(GLFW_KEY_S)) {
+    if (game->getGameWindow().isKeyPressed(Menu::options.moveDown.glfwValue)) {
         if (!MainGame::soundEngine->isCurrentlyPlaying("resource/sounds/run.wav"))
             MainGame::soundEngine->play2D("resource/sounds/run.wav");
        // Menu::playPlayerWalking(); //todo cant get this like this
@@ -21,7 +21,7 @@ void Scene::updatePlayer(MainGame *game, Scene *scene) {
         scene->_game->getGameCamera().setCameraTarget(scene->_player->getPosition());
         scene->_game->getGameCamera().setCameraUp(glm::vec3(0, 1, 0));
     }
-    if (game->getGameWindow().isKeyPressed(GLFW_KEY_W)) {
+    if (game->getGameWindow().isKeyPressed(Menu::options.moveUp.glfwValue)) {
         if (!MainGame::soundEngine->isCurrentlyPlaying("resource/sounds/run.wav"))
             MainGame::soundEngine->play2D("resource/sounds/run.wav");
         if (!worldCollisionUp(scene->_player->getPosition(), {0, 0, -positionChange}, scene))
@@ -35,7 +35,7 @@ void Scene::updatePlayer(MainGame *game, Scene *scene) {
         scene->_game->getGameCamera().setCameraTarget(scene->_player->getPosition());
         scene->_game->getGameCamera().setCameraUp(glm::vec3(0, 1, 0));
     }
-    if (game->getGameWindow().isKeyPressed(GLFW_KEY_A)) {
+    if (game->getGameWindow().isKeyPressed(Menu::options.moveLeft.glfwValue)) {
         if (!MainGame::soundEngine->isCurrentlyPlaying("resource/sounds/run.wav"))
             MainGame::soundEngine->play2D("resource/sounds/run.wav");
         if (!worldCollisionLeft(scene->_player->getPosition(), {-positionChange, 0, 0}, scene))
@@ -49,7 +49,7 @@ void Scene::updatePlayer(MainGame *game, Scene *scene) {
         scene->_game->getGameCamera().setCameraTarget(scene->_player->getPosition());
         scene->_game->getGameCamera().setCameraUp(glm::vec3(0, 1, 0));
     }
-    if (game->getGameWindow().isKeyPressed(GLFW_KEY_D)) {
+    if (game->getGameWindow().isKeyPressed(Menu::options.moveRight.glfwValue)) {
         if (!MainGame::soundEngine->isCurrentlyPlaying("resource/sounds/run.wav"))
             MainGame::soundEngine->play2D("resource/sounds/run.wav");
         ;
@@ -64,7 +64,7 @@ void Scene::updatePlayer(MainGame *game, Scene *scene) {
         scene->_game->getGameCamera().setCameraTarget(scene->_player->getPosition());
         scene->_game->getGameCamera().setCameraUp(glm::vec3(0, 1, 0));
     }
-    if (game->getGameWindow().isKeyPressed(GLFW_KEY_SPACE) && scene->_bomb.size() < 1 + scene->_player->getPowerBombNbr()) {
+    if (game->getGameWindow().isKeyPressed(Menu::options.placeBomb.glfwValue) && scene->_bomb.size() < 1 + scene->_player->getPowerBombNbr()) {
         if (!MainGame::soundEngine->isCurrentlyPlaying("resource/sounds/bombDrop.wav"))
             MainGame::soundEngine->play2D("resource/sounds/bombDrop.wav");
         scene->_addBomb(scene->_player->getPosition().x, scene->_player->getPosition().z);

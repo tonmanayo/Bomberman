@@ -180,7 +180,14 @@ struct  OptionMenu
 	nanogui::Window     *screenWindow = nullptr;
 	nanogui::Window     *audioWindow = nullptr;
 	nanogui::Window     *keyWindow = nullptr;
+	nanogui::Window     *keyBindWindow = nullptr;
 	nanogui::Window     *panelDown = nullptr;
+	nanogui::Button     *leftKey = nullptr;
+	nanogui::Button     *rightKey = nullptr;
+	nanogui::Button     *upKey = nullptr;
+	nanogui::Button     *downKey = nullptr;
+	nanogui::Button     *pauseKey = nullptr;
+	nanogui::Button     *placeBombKey = nullptr;
 
 	OptionMenu() = default;
 
@@ -257,6 +264,14 @@ struct  OptionMenu
 	}
 };
 
+struct  Key
+{
+	std::string     name;
+	int             glfwValue;
+
+	Key() = default;
+};
+
 struct  Options
 {
 	float   musicVolume;
@@ -264,5 +279,11 @@ struct  Options
 	bool    mute;
 	int     resolutionIndex;
 	bool    fullScreen;
+	Key     moveUp;
+	Key     moveDown;
+	Key     moveLeft;
+	Key     moveRight;
+	Key     placeBomb;
+	Key     pause;
 	std::map<int, std::vector<int>> resolutionList;
 };

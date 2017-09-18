@@ -25,6 +25,8 @@ float                       Menu::textStartTime = 0;
 Gui                         Menu::gui;
 Options                     Menu::options;
 Options                     Menu::tmpOptions;
+bool                        Menu::isKeyBind = false;
+std::string                 Menu::keyBind;
 
 Menu::Menu(MainGame *mainGame)
 {
@@ -65,6 +67,18 @@ void Menu::loadOptions()
 	Menu::options.mute = false;
 	Menu::options.resolutionIndex = (int)Menu::options.resolutionList.size() - 1;
 	Menu::options.fullScreen = false;
+	Menu::options.moveUp.name = glfwGetKeyName(GLFW_KEY_W, 0);
+	Menu::options.moveUp.glfwValue = GLFW_KEY_W;
+	Menu::options.moveDown.name = glfwGetKeyName(GLFW_KEY_S, 0);
+	Menu::options.moveDown.glfwValue = GLFW_KEY_S;
+	Menu::options.moveLeft.name = glfwGetKeyName(GLFW_KEY_A, 0);
+	Menu::options.moveLeft.glfwValue = GLFW_KEY_A;
+	Menu::options.moveRight.name = glfwGetKeyName(GLFW_KEY_D, 0);
+	Menu::options.moveRight.glfwValue = GLFW_KEY_D;
+	Menu::options.placeBomb.name = "Space";
+	Menu::options.placeBomb.glfwValue = GLFW_KEY_SPACE;
+	Menu::options.pause.name = "Esc";
+	Menu::options.pause.glfwValue = GLFW_KEY_ESCAPE;
 	Menu::copyOptions(Menu::tmpOptions, Menu::options);
 	Menu::windowWidth = Menu::options.resolutionList[Menu::options.resolutionIndex][0];
 	Menu::windowHeight = Menu::options.resolutionList[Menu::options.resolutionIndex][1];
@@ -79,6 +93,12 @@ void Menu::copyOptions(Options &dest, Options &src)
 	dest.resolutionIndex = src.resolutionIndex;
 	dest.fullScreen = src.fullScreen;
 	dest.resolutionList = src.resolutionList;
+	dest.moveUp = src.moveUp;
+	dest.moveDown = src.moveDown;
+	dest.moveLeft = src.moveLeft;
+	dest.moveRight = src.moveRight;
+	dest.placeBomb = src.placeBomb;
+	dest.pause = src.pause;
 }
 
 bool Menu::initMenu(MainGame *mainGame)
@@ -327,6 +347,8 @@ void Menu::renderGui()
 
 bool Menu::mouseCallback(int button, int action, int mod)
 {
+	if (Menu::isKeyBind)
+		return true;
 	if (activeMenu != nullptr)
 		activeMenu->_screen->mouseButtonCallbackEvent(button, action, mod);
 	return true;
@@ -334,6 +356,8 @@ bool Menu::mouseCallback(int button, int action, int mod)
 
 bool Menu::cursorPositionCallback(int xpos, int ypos)
 {
+	if (Menu::isKeyBind)
+		return true;
 	if (activeMenu != nullptr)
 		activeMenu->_screen->cursorPosCallbackEvent(xpos, ypos);
 	return true;
@@ -341,6 +365,10 @@ bool Menu::cursorPositionCallback(int xpos, int ypos)
 
 bool Menu::keyCallback(int key, int scancode, int action, int mods)
 {
+	if (Menu::isKeyBind){
+		Menu::keyPressKeyBindings(key);
+		return true;
+	}
 	if (activeMenu != nullptr)
 		activeMenu->_screen->keyCallbackEvent(key, scancode, action, mods);
 	return true;
