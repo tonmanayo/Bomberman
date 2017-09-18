@@ -72,6 +72,7 @@ public:
 	static void     loadSaveDirectory();
 	static void     loadOptions();
 	static void     copyOptions(Options & dest, Options & src);
+	static void     updateGraphicOptions();
 	/// creating callbacks for menu
 	static bool     mouseCallback(int button, int action, int mod);
 	static bool     cursorPositionCallback(int xpos, int ypos);

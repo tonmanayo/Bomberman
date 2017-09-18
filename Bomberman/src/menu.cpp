@@ -148,7 +148,7 @@ void Menu::loadSaveDirectory()
 		{
 			if (file->d_name[0] == '.')
 				continue;
-			Menu::loadGameMenu.fileNames.push_back(std::string(file->d_name));
+			Menu::loadGameMenu.fileNames.emplace_back(file->d_name);
 		}
 	}else{
 		perror("directory error");

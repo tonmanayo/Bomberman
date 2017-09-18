@@ -20,8 +20,6 @@
 #include <dirent.h>
 #include <stdio.h>
 
-/// todo: delete previous Menus state to free memory
-
 struct  MainMenu
 {
     nanogui::Button     *start = nullptr;
@@ -178,11 +176,10 @@ struct  OptionMenu
 	nanogui::Button     *screenButton = nullptr;
 	nanogui::Button     *audioButton = nullptr;
 	nanogui::Button     *keyButton = nullptr;
-	nanogui::Button     *applyButton = nullptr;
-	nanogui::Button     *cancelButton = nullptr;
 	nanogui::Window     *screenWindow = nullptr;
 	nanogui::Window     *audioWindow = nullptr;
 	nanogui::Window     *keyWindow = nullptr;
+	nanogui::Window     *panelDown = nullptr;
 
 	OptionMenu() = default;
 
@@ -194,10 +191,8 @@ struct  OptionMenu
 			screen->removeChild(audioButton);
 		if (keyButton != nullptr)
 			screen->removeChild(keyButton);
-		if (applyButton != nullptr)
-			screen->removeChild(applyButton);
-		if (cancelButton != nullptr)
-			screen->removeChild(cancelButton);
+		if (panelDown != nullptr)
+			screen->removeChild(panelDown);
 		if (screenWindow != nullptr)
 			screen->removeChild(screenWindow);
 		if (audioWindow != nullptr)
@@ -220,16 +215,16 @@ struct  OptionMenu
 			audioWindow->setVisible(value);
 		if (keyWindow != nullptr)
 			keyWindow->setVisible(value);
-		if (applyButton != nullptr)
-			applyButton->setVisible(value);
-		if (cancelButton != nullptr)
-			cancelButton->setVisible(value);
+		if (panelDown != nullptr)
+			panelDown->setVisible(value);
 	}
 
 	void    showScreen()
 	{
 		if (screenWindow != nullptr)
 			screenWindow->setVisible(true);
+		if (panelDown != nullptr)
+			panelDown->setVisible(true);
 		if (audioWindow != nullptr)
 			audioWindow->setVisible(false);
 		if (keyWindow != nullptr)
@@ -238,22 +233,26 @@ struct  OptionMenu
 
 	void    showAudio()
 	{
-		if (screenWindow != nullptr)
-			screenWindow->setVisible(false);
 		if (audioWindow != nullptr)
 			audioWindow->setVisible(true);
+		if (panelDown != nullptr)
+			panelDown->setVisible(true);
+		if (screenWindow != nullptr)
+			screenWindow->setVisible(false);
 		if (keyWindow != nullptr)
 			keyWindow->setVisible(false);
 	}
 
 	void    showKeyBindings()
 	{
+		if (keyWindow != nullptr)
+			keyWindow->setVisible(true);
+		if (panelDown != nullptr)
+			panelDown->setVisible(true);
 		if (screenWindow != nullptr)
 			screenWindow->setVisible(false);
 		if (audioWindow != nullptr)
 			audioWindow->setVisible(false);
-		if (keyWindow != nullptr)
-			keyWindow->setVisible(true);
 	}
 };
 

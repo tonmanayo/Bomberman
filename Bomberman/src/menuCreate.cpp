@@ -611,8 +611,8 @@ void Menu::createOptionsMenu()
 	});
 
 	nanogui::Theme *windowTheme = new nanogui::Theme(_screen->nvgContext());
-	windowTheme->mWindowFillFocused = {237, 237, 237, 0};
-	windowTheme->mWindowFillUnfocused = {237, 237, 237, 0};
+	windowTheme->mWindowFillFocused = {20, 20, 20, 0};
+	windowTheme->mWindowFillUnfocused = {20, 20, 20, 0};
 	windowTheme->mBorderLight = {237, 237, 237, 0};
 	windowTheme->mBorderMedium = {237, 237, 237, 0};
 	windowTheme->mBorderDark = {237, 237, 237, 0};
@@ -630,7 +630,7 @@ void Menu::createOptionsMenu()
 
 	/// create screen window
 	Menu::optionMenu.screenWindow = new nanogui::Window(_screen, "");
-	Menu::optionMenu.screenWindow->setSize({windowWidth, windowHeight});
+	Menu::optionMenu.screenWindow->setSize({windowWidth, (winHeight + 10) * 5});
 	Menu::optionMenu.screenWindow->setPosition({tabOffsetX, posY});
 	Menu::optionMenu.screenWindow->setTheme(windowTheme);
 
@@ -717,7 +717,7 @@ void Menu::createOptionsMenu()
 
 	/// create audio window
 	Menu::optionMenu.audioWindow = new nanogui::Window(_screen, "");
-	Menu::optionMenu.audioWindow->setSize({windowWidth, windowHeight});
+	Menu::optionMenu.audioWindow->setSize({windowWidth, (winHeight + 10) * 5});
 	Menu::optionMenu.audioWindow->setPosition({tabOffsetX, posY});
 	Menu::optionMenu.audioWindow->setTheme(windowTheme);
 
@@ -772,32 +772,52 @@ void Menu::createOptionsMenu()
 		Menu::tmpOptions.mute = checked;
 	});
 
+	/// create panel window
+	Menu::optionMenu.panelDown = new nanogui::Window(_screen, "");
+	Menu::optionMenu.panelDown->setSize({windowWidth, windowHeight});
+	Menu::optionMenu.panelDown->setPosition({tabOffsetX, posY + (winHeight + 10) * 5});
+	Menu::optionMenu.panelDown->setTheme(windowTheme);
+
 	/// apply button
-	Menu::optionMenu.applyButton = new nanogui::Button(_screen, "Apply");
-	Menu::optionMenu.applyButton->setSize({halfWinX, winHeight + 10});
-	Menu::optionMenu.applyButton->setPosition({halfWinX, posY + (winHeight + 10) * 5});
-	Menu::optionMenu.applyButton->setTheme(Menu::mainMenu.buttonTheme);
-	Menu::optionMenu.applyButton->setCursor(nanogui::Cursor::Hand);
-	Menu::optionMenu.applyButton->setCallback([]{
+	nanogui::Button *applyButton = new nanogui::Button(Menu::optionMenu.panelDown, "Apply");
+	applyButton->setSize({halfWinX, winHeight + 10});
+	applyButton->setPosition({0, 0});
+	applyButton->setTheme(Menu::mainMenu.buttonTheme);
+	applyButton->setCursor(nanogui::Cursor::Hand);
+	applyButton->setCursor(nanogui::Cursor::Hand);
+	applyButton->setCallback([]{
 		copyOptions(Menu::options, Menu::tmpOptions);
-		Menu::optionMenu.deleteMenu(Menu::activeMenu->_screen);
+		Menu::optionMenu.changeView(false);
+		Menu::title->setVisible(false);
+		Menu::updateGraphicOptions();
+		Menu::activeMenu->createMainMenu();
 		Menu::activeMenu->createOptionsMenu();
-		Menu::mainMenu.changeView(true);
-		Menu::title->setCaption("MAIN MENU");
+		Menu::activeMenu->createStoryMenu();
+		Menu::activeMenu->createExitWindow();
+		Menu::activeMenu->createNewGameMenu();
+		Menu::activeMenu->createLoadGameMenu();
+		Menu::activeMenu->createPauseGameMenu();
+		Menu::activeMenu->createEndGameMenu();
 	});
 
 	/// cancel button
-	Menu::optionMenu.cancelButton = new nanogui::Button(_screen, "Cancel");
-	Menu::optionMenu.cancelButton->setSize({halfWinX, winHeight + 10});
-	Menu::optionMenu.cancelButton->setPosition({halfWinX * 2 + (halfWinX / 2), posY + (winHeight + 10) * 5});
-	Menu::optionMenu.cancelButton->setTheme(Menu::mainMenu.buttonTheme);
-	Menu::optionMenu.cancelButton->setCursor(nanogui::Cursor::Hand);
-	Menu::optionMenu.cancelButton->setCallback([]{
+	nanogui::Button *cancelButton = new nanogui::Button(Menu::optionMenu.panelDown, "Cancel");
+	cancelButton->setSize({halfWinX, winHeight + 10});
+	cancelButton->setPosition({windowWidth / 2, 0});
+	cancelButton->setTheme(Menu::mainMenu.buttonTheme);
+	cancelButton->setCursor(nanogui::Cursor::Hand);
+	cancelButton->setCallback([]{
 		copyOptions(Menu::tmpOptions, Menu::options);
-		Menu::optionMenu.deleteMenu(Menu::activeMenu->_screen);
+		Menu::optionMenu.changeView(false);
+		Menu::title->setVisible(false);
+		Menu::activeMenu->createMainMenu();
 		Menu::activeMenu->createOptionsMenu();
-		Menu::mainMenu.changeView(true);
-		Menu::title->setCaption("MAIN MENU");
+		Menu::activeMenu->createStoryMenu();
+		Menu::activeMenu->createExitWindow();
+		Menu::activeMenu->createNewGameMenu();
+		Menu::activeMenu->createLoadGameMenu();
+		Menu::activeMenu->createPauseGameMenu();
+		Menu::activeMenu->createEndGameMenu();
 	});
 
 	Menu::optionMenu.changeView(false);
@@ -840,4 +860,20 @@ void Menu::createBackground()
 	/// add banner
 	Menu::gui.whiteBanner = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 7.5, 1.2);
 	Menu::gui.whiteBanner->addBaseColor({0.2, 0.2, 0.2, 0.5});
+}
+
+void Menu::updateGraphicOptions()
+{
+	Menu::isFullScreen = Menu::options.fullScreen;
+	Menu::windowWidth = Menu::options.resolutionList[Menu::options.resolutionIndex][0];
+	Menu::windowHeight = Menu::options.resolutionList[Menu::options.resolutionIndex][1];
+
+	if (Menu::isFullScreen){
+		GLFWmonitor *monitor = glfwGetPrimaryMonitor();
+		glfwSetWindowMonitor(Menu::activeMenu->_screen->glfwWindow(), monitor, 0, 0,
+		Menu::windowWidth, Menu::windowHeight, Menu::options.resolutionList[Menu::options.resolutionIndex][2]);
+	}else{
+		glfwSetWindowMonitor(Menu::activeMenu->_screen->glfwWindow(), nullptr, 0, 0,
+		Menu::windowWidth, Menu::windowHeight, Menu::options.resolutionList[Menu::options.resolutionIndex][2]);
+	}
 }
