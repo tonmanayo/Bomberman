@@ -3,20 +3,21 @@ WallType block1
 BreakType block2
 UnbreakType block3
 BgType lavaBackground
+Enemy cubex mag
 RRRRRRRRRRRRRRRRRRRRRRRRR
-R.@.G....M....G..G......R
+R.@.G....E....G..G......R
 R.L.L.L.L.L.L.L.LGL.L.L.R
 R..GGG.G...G..G..G......R
 R.LGLGL.L.L.L.L.LGL.L.L.R
-R...G.....C.....MG..G.G.R
+R...G.....E.....EG..G.G.R
 R.L.L.L.L.L.L.L.L.L.L.L.R
-R..C..G.G...L.L.........R
+R..E..G.G...L.L.........R
 R.L.L.LGL.L.L.L.L.L.L.L.R
-R...G.G..G...G...C.M....R
+R...G.G..G...G...E.E....R
 R.L.L.L.L.L.L.L.L.L.L.L.R
-R..M..GG........C.......R
-R..GLGL.L.L.LGLGLML.L.L.R
+R..E..GG........E.......R
+R..GLGL.L.L.LGLGLEL.L.L.R
 R.G.G...G...G..G........R
 RGLGLGL.L.L.LGLGL.L.L.L.R
-R.....G.G.LL.....C......R
+R.....G.G.LL.....E......R
 RRRRRRRRRRRRRRRRRRRRRRRRR

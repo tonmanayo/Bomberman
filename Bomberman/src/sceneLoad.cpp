@@ -22,6 +22,10 @@ bool Scene::newGame(MainGame *game, std::string mapName)
 			_unbreakableBlockType = strSplits[1];
 		else if (strSplits[0] == std::string("BgType"))
 			_backgroundType = strSplits[1];
+        else if (strSplits[0] == std::string("Enemy")) {
+            _enemyType.push_back(strSplits[1]);
+            _enemyType.push_back(strSplits[2]);
+        }
 		else if (line[0] == 'R')
 		{
 			_loadNewGameLine(line);
@@ -51,10 +55,8 @@ void Scene::_loadNewGameLine(std::string &line)
 			_addUnbreakableBlock(x, z, gridX, gridY);
 		else if (c == '@')
 			_addPlayer(x, z);
-		else if (c == 'M')
-			_addEnemyMag(x, z);
-		else if (c == 'C')
-			_addEnemyCubex(x, z);
+		else if (c == 'E')
+			_addEnemy(x, z);
 		_addFloor(x, z);
 		x += GRID_BLOCK_SIZE;
 		gridX++;
@@ -85,10 +87,8 @@ bool Scene::loadGame(MainGame *game, std::string fileName)
 			_breakableBlockType = strSplits[1];
 		else if (strSplits[0] == std::string("@"))
 			_addPlayer((float)atof(strSplits[1].c_str()), (float)atof(strSplits[3].c_str()));
-		else if (strSplits[0] == std::string("M"))
-			_addEnemyMag((float)atof(strSplits[2].c_str()), (float)atof(strSplits[4].c_str()));
-		else if (strSplits[0] == std::string("C"))
-			_addEnemyCubex((float)atof(strSplits[2].c_str()), (float)atof(strSplits[4].c_str()));
+		else if (strSplits[0] == std::string("E"))
+			_addEnemy((float)atof(strSplits[2].c_str()), (float)atof(strSplits[4].c_str()));
 		else if (strSplits[0] == std::string("G"))
 			_addBreakableBlock((float) atoi(strSplits[1].c_str()), (float) atoi(strSplits[3].c_str()),
 			                   atoi(strSplits[5].c_str()), atoi(strSplits[4].c_str()));

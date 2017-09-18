@@ -33,14 +33,15 @@ private:
 	bool                                    _dropped = false;
 	float 									_levelTime;
 private:
-	std::string     _floorType;
-	std::string     _wallType;
-	std::string     _unbreakableBlockType;
-	std::string     _breakableBlockType;
-	std::string     _backgroundType;
-	std::string     _mapName;
-	float  			z = GRID_START_Z;
-	int 			gridY = 0;
+	std::string                 _floorType;
+	std::string                 _wallType;
+	std::string                 _unbreakableBlockType;
+	std::string                 _breakableBlockType;
+	std::string                 _backgroundType;
+	std::string                 _mapName;
+	std::vector<std::string>    _enemyType;
+	float  			            z = GRID_START_Z;
+	int 			            gridY = 0;
 public:
 	void		incLevelTime();
 	float 		getLevelTime();
@@ -55,8 +56,7 @@ private:
 	void    _addFloor(float x, float z);
 	void    _addPlayer(float x, float z);
 	void 	_addBomb(float x, float z);
-	void 	_addEnemyCubex(float x, float z);
-	void 	_addEnemyMag(float x, float z);
+	void 	_addEnemy(float x, float z);
     void    _addPowerUps(float x, float z, int xx, int yy);
 	void    _loadNewGameLine(std::string& line);
 	void    _loadLoadGameLine(std::string& line);
