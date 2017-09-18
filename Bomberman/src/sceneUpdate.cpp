@@ -9,6 +9,7 @@ void Scene::updatePlayer(MainGame *game, Scene *scene) {
     if (game->getGameWindow().isKeyPressed(GLFW_KEY_S)) {
         if (!MainGame::soundEngine->isCurrentlyPlaying("resource/sounds/run.wav"))
             MainGame::soundEngine->play2D("resource/sounds/run.wav");
+       // Menu::playPlayerWalking(); //todo cant get this like this
         if (!worldCollisionDown(scene->_player->getPosition(), {0, 0, positionChange}, scene))
             scene->_player->changePosZ(positionChange);
         scene->_player->rotate(glm::radians(0.0f), {0, 1, 0});

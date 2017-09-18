@@ -21,10 +21,16 @@ private:
 	nanogui::TextBox    *_newGameTextBox;
 	nanogui::Window     *_gameSaved;
 private:
-	static irrklang::ISoundSource    *_menuMusic;
+	static irrklang::ISoundSource   			*_menuMusic;
+	static irrklang::ISoundSource    			*_bombExplosionSound;
+	static irrklang::ISoundSource    			*_bombPlacementSound;
+	static irrklang::ISoundSource    			*_playerHurtSound;
+	static irrklang::ISoundSource    			*_enemyHurtSound;
+	static irrklang::ISoundSource    			*_playerWalkingSound;
+	static irrklang::ISoundSource    			*_powerUpsSound;
+	static irrklang::ISoundSource    			*_gameMusic;
 public:
 	Scene       *scene = nullptr;
-
     static Menu             *activeMenu;
     static bool             isFullScreen;
     static int              windowWidth;
@@ -79,4 +85,12 @@ public:
 	static bool     keyCallback(int key, int scancode, int action, int mods);
 	static void     playMenuMusic();
 	static void     stopMenuMusic();
+
+	static void 	playBombExplosion();
+	static void 	playBombPlacement();
+	static void 	playPlayerHurt();
+	static void 	playEnemyHurt();
+	static void 	playPlayerWalking();
+	static void		playGameSong();
+
 };

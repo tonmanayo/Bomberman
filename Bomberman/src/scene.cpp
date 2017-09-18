@@ -259,6 +259,8 @@ void Scene::sceneUpdate(MainGame *game, std::vector<void *> params)
 			game->setGameState(GAMESTATE::PAUSE);
 			return;
 		}
+		if (scene->getLevelTime()  == 0)
+			game->setGameState(GAMESTATE::END);
 		scene->decLevelTime();
 		updateBomb(game, scene);
 		updateEnemy(game, scene);
@@ -302,7 +304,8 @@ void Scene::inctPowerSpeed() {
 }
 
 void	 Scene::decLevelTime() {
-	_levelTime -= 0.01;
+	if (_levelTime >= 0.0f)
+		_levelTime -= 0.01f;
 }
 
 float 	Scene::getLevelTime() {
