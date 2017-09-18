@@ -8,32 +8,40 @@ void Scene::bombExplode(Scene *scene, const Bomb &bomb) {
     bool r = true, l = true, u = true, d = true;
     for (int i = 0; i <= scene->_player->getPowerExplosion(); ++i) {
 
-        if (scene->_blocks[y - 1 - i][x] != nullptr && scene->_blocks[y - 1 - i][x]->isBreakable() && d) {
+        if (scene->_blocks[y - 1 - i][x] != nullptr && scene->_blocks[y - 1 - i][x]->getCollision() && d) {
+            if (scene->_blocks[y - 1 - i][x]->isBreakable()) {
+                MainGame::renderer.removeFromRender("breakBlock", scene->_blocks[y - 1 - i][x]->getId());
+                scene->_blocks[y - 1 - i][x]->setCollision(false);
+            }
             d = false;
-            MainGame::renderer.removeFromRender("breakBlock", scene->_blocks[y - 1 - i][x]->getId());
-            scene->_blocks[y - 1 - i][x]->setCollision(false);
         }
-        if (scene->_blocks[y + 1 + i][x] != nullptr && scene->_blocks[y + 1 + i][x]->isBreakable() && u) {
+        if (scene->_blocks[y + 1 + i][x] != nullptr && scene->_blocks[y + 1 + i][x]->getCollision() && u) {
+            if (scene->_blocks[y + 1 + i][x]->isBreakable()) {
+                MainGame::renderer.removeFromRender("breakBlock", scene->_blocks[y + 1 + i][x]->getId());
+                scene->_blocks[y + 1 + i][x]->setCollision(false);
+            }
             u = false;
-            MainGame::renderer.removeFromRender("breakBlock", scene->_blocks[y + 1 + i][x]->getId());
-            scene->_blocks[y + 1 + i][x]->setCollision(false);
         }
-        if (scene->_blocks[y][x - 1 - i] != nullptr && scene->_blocks[y][x - 1 - i]->isBreakable() && l) {
+        if (scene->_blocks[y][x - 1 - i] != nullptr && scene->_blocks[y][x - 1 - i]->getCollision() && l) {
+            if (scene->_blocks[y][x - 1 - i]->isBreakable() ) {
+                MainGame::renderer.removeFromRender("breakBlock", scene->_blocks[y][x - 1 - i]->getId());
+                scene->_blocks[y][x - 1 - i]->setCollision(false);
+            }
             l = false;
-            MainGame::renderer.removeFromRender("breakBlock", scene->_blocks[y][x - 1 - i]->getId());
-            scene->_blocks[y][x - 1 - i]->setCollision(false);
         }
-        if (scene->_blocks[y][x + 1 + i] != nullptr && scene->_blocks[y][x + 1 + i]->isBreakable() && r) {
+        if (scene->_blocks[y][x + 1 + i] != nullptr && scene->_blocks[y][x + 1 + i]->getCollision() && r) {
+            if (scene->_blocks[y][x + 1 + i]->isBreakable()) {
+                MainGame::renderer.removeFromRender("breakBlock", scene->_blocks[y][x + 1 + i]->getId());
+                scene->_blocks[y][x + 1 + i]->setCollision(false);
+            }
             r = false;
-            MainGame::renderer.removeFromRender("breakBlock", scene->_blocks[y][x + 1 + i]->getId());
-            scene->_blocks[y][x + 1 + i]->setCollision(false);
         }
     }
 }
 
 void Scene::renderExplosion(Scene *scene, Bomb &bomb, MainGame *game) {
-    int x = scene->getGridx(bomb.getPosition().x);
-    int y = scene->getGridy(bomb.getPosition().z);
+    int x = static_cast<int>(scene->getGridx(bomb.getPosition().x));
+    int y = static_cast<int>(scene->getGridy(bomb.getPosition().z));
 
     int xx = scene->getWorldx(bomb.getPosition().x);
     int yy = scene->getWorldy(bomb.getPosition().z);
@@ -67,28 +75,24 @@ void Scene::renderExplosion(Scene *scene, Bomb &bomb, MainGame *game) {
 	            MainGame::explosionUp->generateParticles(matup, true);
 	            MainGame::explosionUp->generateParticles(matup + quarter, true);
 	            MainGame::explosionUp->generateParticles(matup - quarter, true);
-	            //renderFlameExplosion(matup);
             }
             if (d)
             {
 	            MainGame::explosionDown->generateParticles(matdown, true);
 	            MainGame::explosionDown->generateParticles(matdown + quarter, true);
 	            MainGame::explosionDown->generateParticles(matdown - quarter, true);
-	            //renderFlameExplosion(matdown);
             }
             if (l)
             {
 	            MainGame::explosionLeft->generateParticles(matleft, true);
 	            MainGame::explosionLeft->generateParticles(matleft + quarter, true);
 	            MainGame::explosionLeft->generateParticles(matleft - quarter, true);
-	            //renderFlameExplosion(matleft);
             }
             if (r)
             {
 	            MainGame::explosionRight->generateParticles(matright, true);
 	            MainGame::explosionRight->generateParticles(matright + quarter, true);
 	            MainGame::explosionRight->generateParticles(matright - quarter, true);
-	            //renderFlameExplosion(matright);
             }
 
             if (scene->_blocks[yy - 1 - i][xx] != nullptr && d) {

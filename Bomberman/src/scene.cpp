@@ -111,8 +111,6 @@ void Scene::_addPowerUps(float x, float z, int xx, int yy) {
 			MainGame::renderer.addToRender("star", _blocks[yy][xx]->getId() , present, mat);
 		}
 	}
-
-
 }
 
 void Scene::_addBreakableBlock(float x, float z, int xx, int yy)

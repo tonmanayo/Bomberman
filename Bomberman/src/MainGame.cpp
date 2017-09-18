@@ -2,7 +2,7 @@
 #include <menu.hpp>
 
 Zion::Renderer                  MainGame::renderer;
-std::map<const char *, Func>    MainGame::functions;
+std::map<std::string, Func>    MainGame::functions;
 MainGame*                       MainGame::game;
 Zion::ParticleSystem*           MainGame::explosionLeft;
 Zion::ParticleSystem*           MainGame::explosionRight;
@@ -261,9 +261,9 @@ void MainGame::gameLoop()
 
 		_window.clearWindow(0.93f, 0.93f, 0.93f, 1.0f);
 		/// calling all functions for loop
-		for (std::pair<const char *, Func> func : functions)
+		for (std::pair<std::string, Func> func : functions)
 		{
-			if (!(bool)std::strcmp(func.first, "sceneUpdate"))
+			if (!(bool)std::strcmp(func.first.c_str(), "sceneUpdate"))
 				func.second.func(this, func.second.params);
 		}
 
