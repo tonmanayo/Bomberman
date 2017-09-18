@@ -3,8 +3,8 @@
 void Menu::createMainMenu()
 {
 	Menu::mainMenu.buttonTheme = new nanogui::Theme(_screen->nvgContext());
-	Menu::mainMenu.buttonTheme->mButtonFontSize = 35;
-	Menu::mainMenu.buttonTheme->mFontNormal = 30;
+	Menu::mainMenu.buttonTheme->mButtonFontSize = (Menu::windowWidth < 1280) ? (Menu::windowWidth * 30) / 1100 : 30;
+	Menu::mainMenu.buttonTheme->mFontNormal = 0;
 	Menu::mainMenu.buttonTheme->mFontBold = 0;
 	Menu::mainMenu.buttonTheme->mTextColor = {230, 230, 230, 255};
 	Menu::mainMenu.buttonTheme->mButtonGradientTopUnfocused = {69, 82, 130, 255};
@@ -28,7 +28,8 @@ void Menu::createMainMenu()
 	int     labelOffset = (Menu::windowWidth / 2) / 3;
 	int     posX = (Menu::windowWidth / 2) - (buttonWidth + offset);
 
-	Menu::title = new nanogui::Label(_screen, "Main Menu", "sans-bold", 45);
+	int mainTitleFontSize = (Menu::windowWidth < 1280) ? (Menu::windowWidth * 45) / 1100 : 45;
+	Menu::title = new nanogui::Label(_screen, "MAIN MENU", "sans-bold", mainTitleFontSize);
 	Menu::title->setSize({labelOffset, 40});
 	Menu::title->setPosition({labelOffset, posY - 90});
 	Menu::title->setVisible(true);
@@ -51,6 +52,13 @@ void Menu::createMainMenu()
 	Menu::mainMenu.options->setPosition({posX, posY});
 	Menu::mainMenu.options->setTheme(Menu::mainMenu.buttonTheme);
 	Menu::mainMenu.options->setCursor(nanogui::Cursor::Hand);
+	Menu::mainMenu.options->setCallback([]{
+		Menu::mainMenu.changeView(false);
+		Menu::optionMenu.changeView(true);
+		Menu::optionMenu.showScreen();
+		Menu::title->setCaption("OPTIONS");
+		Menu::copyOptions(Menu::tmpOptions, Menu::options);
+	});
 
 	posY += 60;
 	Menu::mainMenu.exit = new nanogui::Button(_screen, "EXIT");
@@ -73,7 +81,7 @@ void Menu::createStoryMenu()
 	/// dimensions and positions for buttons
 	int     posY = Menu::windowHeight / 2;
 	int     buttonHeight = 50;
-	int     buttonWidth = Menu::windowWidth / 4;
+	int     buttonWidth = (Menu::windowWidth < 1280) ? Menu::windowWidth / 5 : Menu::windowWidth / 4;
 	buttonWidth = (buttonWidth > 250) ? 250 : buttonWidth;
 	int     posX = ((Menu::windowWidth / 2) - (buttonWidth * 2)) / 3;
 
@@ -130,20 +138,27 @@ void Menu::createExitWindow()
 	_exitWindow->theme()->mWindowFillFocused = {0, 0, 0, 100};
 	_exitWindow->theme()->mWindowFillUnfocused = {0, 0, 0, 100};
 	/// text label
-	nanogui::Label *label = new nanogui::Label(_exitWindow, "Do you want to exit game?", "sans", 25);
-	label->setPosition({70, 20});
+	int labelFontSize = (Menu::windowWidth < 1280) ? (Menu::windowWidth * 25) / 1000 : 25;
+	nanogui::Label *label = new nanogui::Label(_exitWindow, "Do you want to exit game?", "sans", labelFontSize);
+	int labelPositionX = (Menu::windowWidth < 1280) ? (Menu::windowWidth * 70) / 1280 : 70;
+	int labelPositionY = (Menu::windowWidth < 1280) ? (Menu::windowWidth * 20) / 1280 : 20;
+	label->setPosition({labelPositionX, labelPositionY});
 	label->setSize({300, 30});
 	/// yes button
+	int buttonSizeX = (Menu::windowWidth < 1280) ? (Menu::windowWidth * 70) / 1000 : 70;
+	int buttonSizeY = 30;
+	int buttonPosX = (Menu::windowWidth < 1280) ? (Menu::windowWidth * 80) / 1280 : 80;
 	nanogui::Button *yes = new nanogui::Button(_exitWindow, "Yes");
-	yes->setSize({70, 30});
-	yes->setPosition({80, 90});
+	yes->setSize({buttonSizeX, buttonSizeY});
+	yes->setPosition({buttonPosX, 90});
 	yes->setCallback([]{
 		glfwSetWindowShouldClose(activeMenu->_screen->glfwWindow(), (int)true);
 	});
 	/// no button
+	buttonPosX = (Menu::windowWidth < 1280) ? (Menu::windowWidth * 250) / 1280 : 250;
 	nanogui::Button *no = new nanogui::Button(_exitWindow, "No");
-	no->setSize({70, 30});
-	no->setPosition({250, 90});
+	no->setSize({buttonSizeX, buttonSizeY});
+	no->setPosition({buttonPosX, 90});
 	no->setCallback([]{
 		activeMenu->_exitWindow->setVisible(false);
 		Menu::mainMenu.changeView(true);
@@ -156,41 +171,45 @@ void Menu::createNewGameMenu()
 
 	/// dimensions and position
 	int     posY = Menu::windowHeight / 2;
-	int     textBoxHeight = 50;
-	int     textBoxWidth = Menu::windowWidth / 3;
+	int     textBoxHeight = (Menu::windowWidth > 800) ? 50 : 30;
+	int     textBoxWidth = (Menu::windowWidth > 800) ? Menu::windowWidth / 3 : Menu::windowWidth / 4;
 	textBoxWidth = (textBoxWidth > 450) ? 450 : textBoxWidth;
 	int     offset = ((Menu::windowWidth / 2) - textBoxWidth) / 2;
 	int     posX = (Menu::windowWidth / 2) - (textBoxWidth + offset);
 	int     buttonHeight = 50;
-	int     buttonWidth = Menu::windowWidth / 4;
+	int     buttonWidth = (Menu::windowWidth > 800) ? Menu::windowWidth / 4 : Menu::windowWidth / 5;
 	buttonWidth = (buttonWidth > 250) ? 250 : buttonWidth;
 	int     buttonPosX = ((Menu::windowWidth / 2) - (buttonWidth * 2)) / 3;
 
-	Menu::newGameMenu.textLabel = new nanogui::Label(_screen, "Enter Profile Name", "sans", 30);
+	int profileFontSize = (Menu::windowWidth < 1280) ? (Menu::windowWidth * 30) / 1000 : 30;
+	Menu::newGameMenu.textLabel = new nanogui::Label(_screen, "Enter Profile Name", "sans", profileFontSize);
 	Menu::newGameMenu.textLabel->setSize({textBoxWidth, textBoxHeight});
-	Menu::newGameMenu.textLabel->setPosition({posX + 80, posY});
+	int tempOffset = (Menu::windowWidth < 1280) ? (Menu::windowWidth * 80) / 1280 : 80;
+	Menu::newGameMenu.textLabel->setPosition({posX + tempOffset, posY});
 	Menu::newGameMenu.textLabel->setColor({50, 50, 50, 255});
 
-	posY += 60;
+	posY += textBoxHeight + ((Menu::windowWidth > 800) ? 10 : 5);
 	Menu::newGameMenu.profileNameBox = new nanogui::TextBox(_screen, "");
 	Menu::newGameMenu.profileNameBox->setSize({textBoxWidth, textBoxHeight});
 	Menu::newGameMenu.profileNameBox->setPosition({posX, posY});
 	Menu::newGameMenu.profileNameBox->setEditable(true);
 	Menu::newGameMenu.profileNameBox->theme()->mTextColor = {40, 40, 40, 255};
-	Menu::newGameMenu.profileNameBox->setFontSize(35);
+	int textBoxFontSize = (Menu::windowWidth < 1280) ? (Menu::windowWidth * 35) / 1000 : 35;
+	Menu::newGameMenu.profileNameBox->setFontSize(textBoxFontSize);
 
-	posY += 70;
-	int     otherButtonWidth = textBoxWidth / 3;
-	int     otherPosX = posX + 10;
+	posY += textBoxHeight + ((Menu::windowWidth > 800) ? 20 : 10);
+	int     otherButtonWidth = (Menu::windowWidth > 800) ? textBoxWidth / 3 : textBoxWidth / 2;
+	int     otherButtonHeight = (Menu::windowWidth > 800) ? buttonHeight : buttonHeight / 2;
+	int     otherPosX = posX + ((Menu::windowWidth > 800) ? 10 : -15);
 
 	nanogui::Theme  *tmp = new nanogui::Theme(_screen->nvgContext());
 	tmp->mFontBold = 1;
 	tmp->mFontNormal = 0;
-	tmp->mStandardFontSize = 35;
+	tmp->mStandardFontSize = (Menu::windowWidth < 1280) ? (Menu::windowWidth * 35) / 1200 : 35;
 	tmp->mTextColor = {40, 40, 40, 255};
 
 	Menu::newGameMenu.easy = new nanogui::CheckBox(_screen, "Easy");
-	Menu::newGameMenu.easy->setSize({otherButtonWidth, buttonHeight});
+	Menu::newGameMenu.easy->setSize({otherButtonWidth, otherButtonHeight});
 	Menu::newGameMenu.easy->setPosition({otherPosX, posY});
 	Menu::newGameMenu.easy->setTheme(tmp);
 	Menu::newGameMenu.easy->setCallback([](bool state){
@@ -204,7 +223,7 @@ void Menu::createNewGameMenu()
 
 	otherPosX += otherButtonWidth;
 	Menu::newGameMenu.normal = new nanogui::CheckBox(_screen, "Normal");
-	Menu::newGameMenu.normal->setSize({otherButtonWidth, buttonHeight});
+	Menu::newGameMenu.normal->setSize({otherButtonWidth, otherButtonHeight});
 	Menu::newGameMenu.normal->setPosition({otherPosX, posY});
 	Menu::newGameMenu.normal->setTheme(tmp);
 	Menu::newGameMenu.normal->setChecked(true);
@@ -219,7 +238,7 @@ void Menu::createNewGameMenu()
 
 	otherPosX += otherButtonWidth + 10;
 	Menu::newGameMenu.hard = new nanogui::CheckBox(_screen, "Hard");
-	Menu::newGameMenu.hard->setSize({otherButtonWidth, buttonHeight});
+	Menu::newGameMenu.hard->setSize({otherButtonWidth, otherButtonHeight});
 	Menu::newGameMenu.hard->setPosition({otherPosX, posY});
 	Menu::newGameMenu.hard->setTheme(tmp);
 	Menu::newGameMenu.hard->setCallback([](bool state){
@@ -431,7 +450,7 @@ void Menu::createLoadGameMenu()
 	int     offset = ((Menu::windowWidth / 2) - textBoxWidth) / 2;
 	int     posX = (Menu::windowWidth / 2) - (textBoxWidth + offset);
 	int     buttonHeight = 50;
-	int     buttonWidth = Menu::windowWidth / 4;
+	int     buttonWidth = (Menu::windowWidth < 1280) ? Menu::windowWidth / 5 : Menu::windowWidth / 4;
 	buttonWidth = (buttonWidth > 250) ? 250 : buttonWidth;
 
 	Menu::loadSaveDirectory();
@@ -490,4 +509,371 @@ void Menu::createLoadGameMenu()
 	});
 
 	Menu::loadGameMenu.changeView(false);
+}
+
+void Menu::createOptionsMenu()
+{
+	/// creating focus tab theme
+	Menu::optionMenu.focusTabTheme = new nanogui::Theme(_screen->nvgContext());
+	Menu::optionMenu.focusTabTheme->mButtonCornerRadius = 0;
+	Menu::optionMenu.focusTabTheme->mButtonFontSize = (Menu::windowWidth < 1280) ? (Menu::windowWidth * 30) / 1100 : 30;
+	Menu::optionMenu.focusTabTheme->mFontNormal = 0;
+	Menu::optionMenu.focusTabTheme->mFontBold = 0;
+	Menu::optionMenu.focusTabTheme->mTextColor = {230, 230, 230, 255};
+	Menu::optionMenu.focusTabTheme->mButtonGradientTopUnfocused = {174, 17, 2, 255};
+	Menu::optionMenu.focusTabTheme->mButtonGradientBotUnfocused = {177, 21, 8, 255};
+	Menu::optionMenu.focusTabTheme->mButtonGradientTopFocused = {174, 17, 2, 255};
+	Menu::optionMenu.focusTabTheme->mButtonGradientBotFocused = {177, 21, 8, 255};
+	Menu::optionMenu.focusTabTheme->mButtonGradientTopPushed = {174, 17, 2, 255};
+	Menu::optionMenu.focusTabTheme->mButtonGradientBotPushed = {177, 21, 8, 255};
+	Menu::optionMenu.focusTabTheme->mBorderDark = {177, 21, 8, 255};
+	Menu::optionMenu.focusTabTheme->mBorderLight = {177, 21, 8, 255};
+	Menu::optionMenu.focusTabTheme->mBorderMedium = {177, 21, 8, 255};
+	Menu::optionMenu.focusTabTheme->mDropShadow = {0, 0, 0, 255};
+
+	/// creating unfocus tab theme
+	Menu::optionMenu.unfocusTabTheme = new nanogui::Theme(_screen->nvgContext());
+	Menu::optionMenu.unfocusTabTheme->mButtonCornerRadius = 0;
+	Menu::optionMenu.unfocusTabTheme->mButtonFontSize = (Menu::windowWidth < 1280) ? (Menu::windowWidth * 30) / 1100 : 30;
+	Menu::optionMenu.unfocusTabTheme->mFontNormal = 0;
+	Menu::optionMenu.unfocusTabTheme->mFontBold = 0;
+	Menu::optionMenu.unfocusTabTheme->mTextColor = {10, 10, 10, 255};
+	Menu::optionMenu.unfocusTabTheme->mButtonGradientTopUnfocused = {174, 17, 2, 0};
+	Menu::optionMenu.unfocusTabTheme->mButtonGradientBotUnfocused = {177, 21, 8, 0};
+	Menu::optionMenu.unfocusTabTheme->mButtonGradientTopFocused = {174, 17, 2, 0};
+	Menu::optionMenu.unfocusTabTheme->mButtonGradientBotFocused = {177, 21, 8, 0};
+	Menu::optionMenu.unfocusTabTheme->mButtonGradientTopPushed = {174, 17, 2, 0};
+	Menu::optionMenu.unfocusTabTheme->mButtonGradientBotPushed = {177, 21, 8, 0};
+	Menu::optionMenu.unfocusTabTheme->mBorderDark = {177, 21, 8, 255};
+	Menu::optionMenu.unfocusTabTheme->mBorderLight = {177, 21, 8, 255};
+	Menu::optionMenu.unfocusTabTheme->mBorderMedium = {177, 21, 8, 255};
+	Menu::optionMenu.unfocusTabTheme->mDropShadow = {0, 0, 0, 0};
+	
+	
+	Menu::optionMenu.buttonTheme = Menu::mainMenu.buttonTheme;
+
+	/// dimensions and position
+	int     posY = Menu::windowHeight / 2;
+	int     textBoxHeight = (Menu::windowWidth > 800) ? 50 : 30;
+	int     windowWidth = (Menu::windowWidth > 800) ? Menu::windowWidth / 3 : Menu::windowWidth / 4;
+	windowWidth = (windowWidth > 450) ? 450 : windowWidth;
+	int     offset = ((Menu::windowWidth / 2) - windowWidth) / 2;
+	int     posX = (Menu::windowWidth / 2) - (windowWidth + offset);
+	int     buttonHeight = (Menu::windowWidth > 800) ? 50 : 30;
+	int     buttonWidth = (Menu::windowWidth > 800) ? Menu::windowWidth / 6 : Menu::windowWidth / 8;
+	buttonWidth = (buttonWidth > 130) ? 130 : buttonWidth;
+	int     buttonPosX = ((Menu::windowWidth / 2) - (buttonWidth * 2)) / 3;
+	int     tabOffsetX = (posX / 3) + 20;
+	int     windowOffsetX = 2 * tabOffsetX + buttonWidth;
+	int     windowHeight = Menu::windowHeight / 3;
+	int     sideButtonFontSize = (Menu::windowWidth < 1280) ? (Menu::windowWidth * 20) / 900 : 20;
+
+	int     tmp;
+	Menu::optionMenu.screenButton = new nanogui::Button(_screen, "GRAPHICS");
+	Menu::optionMenu.screenButton->setSize({buttonWidth, buttonHeight});
+	Menu::optionMenu.screenButton->setPosition({tabOffsetX, posY});
+	Menu::optionMenu.screenButton->setTheme(Menu::optionMenu.focusTabTheme);
+	Menu::optionMenu.screenButton->setFontSize(sideButtonFontSize);
+	Menu::optionMenu.screenButton->setCursor(nanogui::Cursor::Hand);
+	Menu::optionMenu.screenButton->setCallback([]{
+		Menu::optionMenu.showScreen();
+		Menu::optionMenu.screenButton->setTheme(Menu::optionMenu.focusTabTheme);
+		Menu::optionMenu.audioButton->setTheme(Menu::optionMenu.unfocusTabTheme);
+		Menu::optionMenu.keyButton->setTheme(Menu::optionMenu.unfocusTabTheme);
+	});
+
+	tmp = tabOffsetX + buttonWidth + 30;
+	Menu::optionMenu.audioButton = new nanogui::Button(_screen, "AUDIO");
+	Menu::optionMenu.audioButton->setSize({buttonWidth, buttonHeight});
+	Menu::optionMenu.audioButton->setPosition({tmp, posY});
+	Menu::optionMenu.audioButton->setTheme(Menu::optionMenu.unfocusTabTheme);
+	Menu::optionMenu.audioButton->setFontSize(sideButtonFontSize);
+	Menu::optionMenu.audioButton->setCursor(nanogui::Cursor::Hand);
+	Menu::optionMenu.audioButton->setCallback([]{
+		Menu::optionMenu.showAudio();
+		Menu::optionMenu.audioButton->setTheme(Menu::optionMenu.focusTabTheme);
+		Menu::optionMenu.screenButton->setTheme(Menu::optionMenu.unfocusTabTheme);
+		Menu::optionMenu.keyButton->setTheme(Menu::optionMenu.unfocusTabTheme);
+	});
+
+	tmp = tmp + buttonWidth + 30;
+	Menu::optionMenu.keyButton = new nanogui::Button(_screen, "CONTROLS");
+	Menu::optionMenu.keyButton->setSize({buttonWidth, buttonHeight});
+	Menu::optionMenu.keyButton->setPosition({tmp, posY});
+	Menu::optionMenu.keyButton->setTheme(Menu::optionMenu.unfocusTabTheme);
+	Menu::optionMenu.keyButton->setFontSize(sideButtonFontSize);
+	Menu::optionMenu.keyButton->setCursor(nanogui::Cursor::Hand);
+	Menu::optionMenu.keyButton->setCallback([]{
+		Menu::optionMenu.showKeyBindings();
+		Menu::optionMenu.keyButton->setTheme(Menu::optionMenu.focusTabTheme);
+		Menu::optionMenu.screenButton->setTheme(Menu::optionMenu.unfocusTabTheme);
+		Menu::optionMenu.audioButton->setTheme(Menu::optionMenu.unfocusTabTheme);
+	});
+
+	nanogui::Theme *windowTheme = new nanogui::Theme(_screen->nvgContext());
+	windowTheme->mWindowFillFocused = {20, 20, 20, 0};
+	windowTheme->mWindowFillUnfocused = {20, 20, 20, 0};
+	windowTheme->mBorderLight = {237, 237, 237, 0};
+	windowTheme->mBorderMedium = {237, 237, 237, 0};
+	windowTheme->mBorderDark = {237, 237, 237, 0};
+	windowTheme->mTransparent = {237, 237, 237, 0};
+	windowTheme->mDropShadow = {237, 237, 237, 0};
+	windowTheme->mWindowDropShadowSize = 0;
+	windowTheme->mTextColor = {20, 20, 20, 255};
+	windowTheme->mButtonCornerRadius = 0;
+
+	posY = posY + buttonHeight + 20;
+	int winHeight = 30;
+	int halfWinX =  windowWidth / 3;
+	int panelArrowSizeX = halfWinX / 4;
+	int panelFontSize = 25;
+
+	/// create screen window
+	Menu::optionMenu.screenWindow = new nanogui::Window(_screen, "");
+	Menu::optionMenu.screenWindow->setSize({windowWidth, (winHeight + 10) * 5});
+	Menu::optionMenu.screenWindow->setPosition({tabOffsetX, posY});
+	Menu::optionMenu.screenWindow->setTheme(windowTheme);
+
+	/// resolution
+	nanogui::Label  *resLabel = new nanogui::Label(Menu::optionMenu.screenWindow, "Resolution", "sans", panelFontSize);
+	resLabel->setSize({halfWinX, winHeight});
+	resLabel->setPosition({2, 0});
+
+	std::vector<int>    resolutionData = Menu::tmpOptions.resolutionList[Menu::tmpOptions.resolutionIndex];
+	std::string resStr = std::to_string(resolutionData[0]) + " x " + std::to_string(resolutionData[1]) + " " + std::to_string(resolutionData[2]) + "Hz";
+	nanogui::TextBox *resolutionBox = new nanogui::TextBox(Menu::optionMenu.screenWindow, resStr);
+	resolutionBox->setSize({panelArrowSizeX * 5, winHeight});
+	resolutionBox->setPosition({halfWinX + panelArrowSizeX, 0});
+	resolutionBox->setFontSize(panelFontSize - 5);
+	resolutionBox->setEditable(false);
+
+	nanogui::Button *leftChange = new nanogui::Button(Menu::optionMenu.screenWindow, "<");
+	leftChange->setSize({panelArrowSizeX, winHeight});
+	leftChange->setPosition({halfWinX, 0});
+	leftChange->setFontSize(panelFontSize);
+	leftChange->setTextColor({230, 230, 230, 255});
+	leftChange->setCursor(nanogui::Cursor::Hand);
+	leftChange->setCallback([resolutionBox]{
+		if (Menu::tmpOptions.resolutionIndex == 0)
+			return;
+		Menu::tmpOptions.resolutionIndex -= 1;
+		std::vector<int>    resolutionData1 = Menu::tmpOptions.resolutionList[Menu::tmpOptions.resolutionIndex];
+		std::string resStr1 = std::to_string(resolutionData1[0]) + " x " + std::to_string(resolutionData1[1]) + " " + std::to_string(resolutionData1[2]) + "Hz";
+		resolutionBox->setValue(resStr1);
+	});
+
+	nanogui::Button *rightChange = new nanogui::Button(Menu::optionMenu.screenWindow, ">");
+	rightChange->setSize({panelArrowSizeX, winHeight});
+	rightChange->setPosition({halfWinX + panelArrowSizeX * 6, 0});
+	rightChange->setFontSize(panelFontSize);
+	rightChange->setTextColor({230, 230, 230, 255});
+	rightChange->setCursor(nanogui::Cursor::Hand);
+	rightChange->setCallback([resolutionBox]{
+		if (Menu::tmpOptions.resolutionIndex + 1 == Menu::tmpOptions.resolutionList.size())
+			return;
+		Menu::tmpOptions.resolutionIndex += 1;
+		std::vector<int>    resolutionData1 = Menu::tmpOptions.resolutionList[Menu::tmpOptions.resolutionIndex];
+		std::string resStr1 = std::to_string(resolutionData1[0]) + " x " + std::to_string(resolutionData1[1]) + " " + std::to_string(resolutionData1[2]) + "Hz";
+		resolutionBox->setValue(resStr1);
+	});
+
+	/// fullscreen
+	int winPosY = winHeight + 10;
+	nanogui::Label  *fullScreenLabel = new nanogui::Label(Menu::optionMenu.screenWindow, "Full Screen", "sans", panelFontSize);
+	fullScreenLabel->setSize({halfWinX, winPosY});
+	fullScreenLabel->setPosition({2, winPosY});
+
+	nanogui::TextBox *fullScreenBox = new nanogui::TextBox(Menu::optionMenu.screenWindow, (Menu::tmpOptions.fullScreen) ? "ENABLED" : "DISABLED");
+	fullScreenBox->setSize({panelArrowSizeX * 5, winHeight});
+	fullScreenBox->setPosition({halfWinX + panelArrowSizeX, winPosY});
+	fullScreenBox->setFontSize(panelFontSize - 5);
+	fullScreenBox->setEditable(false);
+
+	nanogui::Button *leftChange1 = new nanogui::Button(Menu::optionMenu.screenWindow, "<");
+	leftChange1->setSize({panelArrowSizeX, winHeight});
+	leftChange1->setPosition({halfWinX, winPosY});
+	leftChange1->setFontSize(panelFontSize);
+	leftChange1->setTextColor({230, 230, 230, 255});
+	leftChange1->setCursor(nanogui::Cursor::Hand);
+	leftChange1->setCallback([fullScreenBox]{
+		if (!Menu::tmpOptions.fullScreen)
+			return;
+		Menu::tmpOptions.fullScreen = false;
+		fullScreenBox->setValue("DISABLED");
+	});
+
+	nanogui::Button *rightChange1 = new nanogui::Button(Menu::optionMenu.screenWindow, ">");
+	rightChange1->setSize({panelArrowSizeX, winHeight});
+	rightChange1->setPosition({halfWinX + panelArrowSizeX * 6, winPosY});
+	rightChange1->setFontSize(panelFontSize);
+	rightChange1->setTextColor({230, 230, 230, 255});
+	rightChange1->setCursor(nanogui::Cursor::Hand);
+	rightChange1->setCallback([fullScreenBox]{
+		if (Menu::tmpOptions.fullScreen)
+			return;
+		Menu::tmpOptions.fullScreen = true;
+		fullScreenBox->setValue("ENABLED");
+	});
+
+	/// create audio window
+	Menu::optionMenu.audioWindow = new nanogui::Window(_screen, "");
+	Menu::optionMenu.audioWindow->setSize({windowWidth, (winHeight + 10) * 5});
+	Menu::optionMenu.audioWindow->setPosition({tabOffsetX, posY});
+	Menu::optionMenu.audioWindow->setTheme(windowTheme);
+
+	/// music volume
+	nanogui::Label  *musicLabel = new nanogui::Label(Menu::optionMenu.audioWindow, "Music Volume", "sans", panelFontSize);
+	musicLabel->setSize({halfWinX, winHeight});
+	musicLabel->setPosition({2, 0});
+
+	nanogui::Slider *musicSlider = new nanogui::Slider(Menu::optionMenu.audioWindow);
+	musicSlider->setSize({halfWinX * 2, winHeight});
+	musicSlider->setPosition({halfWinX, 0});
+	musicSlider->setHighlightColor({174, 17, 2, 255});
+	musicSlider->setHighlightedRange({0.0f, Menu::tmpOptions.musicVolume});
+	musicSlider->setRange({0.0f, 1.0f});
+	musicSlider->setValue(Menu::tmpOptions.musicVolume);
+	musicSlider->setCursor(nanogui::Cursor::Hand);
+	musicSlider->setCallback([musicSlider](float value){
+		musicSlider->setHighlightedRange({0.0f, value});
+		Menu::tmpOptions.musicVolume = value;
+	});
+
+	/// sound volume
+	nanogui::Label  *soundLabel = new nanogui::Label(Menu::optionMenu.audioWindow, "Sound Volume", "sans", panelFontSize);
+	soundLabel->setSize({halfWinX, winHeight});
+	soundLabel->setPosition({2, winPosY});
+
+	nanogui::Slider *soundSlider = new nanogui::Slider(Menu::optionMenu.audioWindow);
+	soundSlider->setSize({halfWinX * 2, winHeight});
+	soundSlider->setPosition({halfWinX, winPosY});
+	soundSlider->setHighlightColor({174, 17, 2, 255});
+	soundSlider->setHighlightedRange({0.0f, Menu::tmpOptions.soundVolume});
+	soundSlider->setRange({0.0f, 1.0f});
+	soundSlider->setValue(Menu::tmpOptions.soundVolume);
+	soundSlider->setCursor(nanogui::Cursor::Hand);
+	soundSlider->setCallback([soundSlider](float value){
+		soundSlider->setHighlightedRange({0.0f, value});
+		Menu::tmpOptions.soundVolume = value;
+	});
+
+
+	/// mute
+	nanogui::Label  *muteLabel = new nanogui::Label(Menu::optionMenu.audioWindow, "Mute", "sans", panelFontSize);
+	muteLabel->setSize({halfWinX, winPosY});
+	muteLabel->setPosition({2, winPosY + winHeight + 10});
+
+	nanogui::CheckBox *muteBox = new nanogui::CheckBox(Menu::optionMenu.audioWindow, "");
+	muteBox->setSize({panelArrowSizeX, winHeight});
+	muteBox->setPosition({halfWinX + panelArrowSizeX, winPosY + winHeight + 10});
+	muteBox->setChecked(Menu::tmpOptions.mute);
+	muteBox->setCursor(nanogui::Cursor::Hand);
+	muteBox->setCallback([](bool checked){
+		Menu::tmpOptions.mute = checked;
+	});
+
+	/// create panel window
+	Menu::optionMenu.panelDown = new nanogui::Window(_screen, "");
+	Menu::optionMenu.panelDown->setSize({windowWidth, windowHeight});
+	Menu::optionMenu.panelDown->setPosition({tabOffsetX, posY + (winHeight + 10) * 5});
+	Menu::optionMenu.panelDown->setTheme(windowTheme);
+
+	/// apply button
+	nanogui::Button *applyButton = new nanogui::Button(Menu::optionMenu.panelDown, "Apply");
+	applyButton->setSize({halfWinX, winHeight + 10});
+	applyButton->setPosition({0, 0});
+	applyButton->setTheme(Menu::mainMenu.buttonTheme);
+	applyButton->setCursor(nanogui::Cursor::Hand);
+	applyButton->setCursor(nanogui::Cursor::Hand);
+	applyButton->setCallback([]{
+		copyOptions(Menu::options, Menu::tmpOptions);
+		Menu::optionMenu.changeView(false);
+		Menu::title->setVisible(false);
+		Menu::updateGraphicOptions();
+		Menu::activeMenu->createMainMenu();
+		Menu::activeMenu->createOptionsMenu();
+		Menu::activeMenu->createStoryMenu();
+		Menu::activeMenu->createExitWindow();
+		Menu::activeMenu->createNewGameMenu();
+		Menu::activeMenu->createLoadGameMenu();
+		Menu::activeMenu->createPauseGameMenu();
+		Menu::activeMenu->createEndGameMenu();
+	});
+
+	/// cancel button
+	nanogui::Button *cancelButton = new nanogui::Button(Menu::optionMenu.panelDown, "Cancel");
+	cancelButton->setSize({halfWinX, winHeight + 10});
+	cancelButton->setPosition({windowWidth / 2, 0});
+	cancelButton->setTheme(Menu::mainMenu.buttonTheme);
+	cancelButton->setCursor(nanogui::Cursor::Hand);
+	cancelButton->setCallback([]{
+		copyOptions(Menu::tmpOptions, Menu::options);
+		Menu::optionMenu.changeView(false);
+		Menu::title->setVisible(false);
+		Menu::activeMenu->createMainMenu();
+		Menu::activeMenu->createOptionsMenu();
+		Menu::activeMenu->createStoryMenu();
+		Menu::activeMenu->createExitWindow();
+		Menu::activeMenu->createNewGameMenu();
+		Menu::activeMenu->createLoadGameMenu();
+		Menu::activeMenu->createPauseGameMenu();
+		Menu::activeMenu->createEndGameMenu();
+	});
+
+	Menu::optionMenu.changeView(false);
+}
+
+void Menu::createBackground()
+{
+	glm::mat4 viewMatrix = _mainGame->getGameCamera().getViewMatrix();
+	_mainGame->getShader("gui")->setUniformMat4((GLchar *)"view_matrix", viewMatrix);
+	/// new bg menu
+	_menuBg = new Zion::SquareSprite(*_mainGame->getShader("gui"), 1.5, 0, 4, 5);
+	_menuBg->addTextureFromFile("resource/images/menuBg.png");
+	/// bomberman menu logo
+	_menuTitle = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 2, 1);
+	_menuTitle->addTextureFromFile("resource/images/menuLogo.png");
+	/// adding heart logo
+	Menu::gui.heart = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 0.2, 0.2);
+	Menu::gui.heart->addTextureFromFile("resource/images/heart.png");
+	/// adding speed
+	Menu::gui.speed = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 0.2, 0.2);
+	Menu::gui.speed->addTextureFromFile("resource/images/bolt.png");
+	/// adding bomb logo
+	Menu::gui.bomb = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 0.3, 0.3);
+	Menu::gui.bomb->addTextureFromFile("resource/images/bomb.png");
+	/// adding heart explode
+	Menu::gui.explode = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 0.3, 0.3);
+	Menu::gui.explode->addTextureFromFile("resource/images/explode.png");
+	/// adding heart case
+	Menu::gui.heartCase = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 0.5, 0.7);
+	Menu::gui.heartCase->addTextureFromFile("resource/images/hudBg.png");
+	/// add bombman
+	Menu::gui.bombMan = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 2.0, 1.5);
+	Menu::gui.bombMan->addTextureFromFile("resource/images/bombMan3.png");
+	/// add enemy1
+	Menu::gui.enemy1 = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 1.5, 1.0);
+	Menu::gui.enemy1->addTextureFromFile("resource/images/enemy.png");
+	/// add enemy2
+	Menu::gui.enemy2 = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 0.4, 0.3);
+	Menu::gui.enemy2->addTextureFromFile("resource/images/enemy2.png");
+	/// add banner
+	Menu::gui.whiteBanner = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 7.5, 1.2);
+	Menu::gui.whiteBanner->addBaseColor({0.2, 0.2, 0.2, 0.5});
+}
+
+void Menu::updateGraphicOptions()
+{
+	Menu::isFullScreen = Menu::options.fullScreen;
+	Menu::windowWidth = Menu::options.resolutionList[Menu::options.resolutionIndex][0];
+	Menu::windowHeight = Menu::options.resolutionList[Menu::options.resolutionIndex][1];
+
+	if (Menu::isFullScreen){
+		GLFWmonitor *monitor = glfwGetPrimaryMonitor();
+		glfwSetWindowMonitor(Menu::activeMenu->_screen->glfwWindow(), monitor, 0, 0,
+		Menu::windowWidth, Menu::windowHeight, Menu::options.resolutionList[Menu::options.resolutionIndex][2]);
+	}else{
+		glfwSetWindowMonitor(Menu::activeMenu->_screen->glfwWindow(), nullptr, 0, 0,
+		Menu::windowWidth, Menu::windowHeight, Menu::options.resolutionList[Menu::options.resolutionIndex][2]);
+	}
 }

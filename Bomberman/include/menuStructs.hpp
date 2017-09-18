@@ -107,7 +107,7 @@ struct  LoadGameMenu
 		if (panel != nullptr)
 			panel->setVisible(value);
 	}
-	/// todo: delete previous loadGameMenu state to free memory
+
 	void    destroy(){
 		if (loadGame != nullptr)
 			delete loadGame;
@@ -168,11 +168,101 @@ struct  Gui
 	Zion::SquareSprite  *whiteBanner;
 };
 
+struct  OptionMenu
+{
+	nanogui::Theme      *buttonTheme;
+	nanogui::Theme      *focusTabTheme;
+	nanogui::Theme      *unfocusTabTheme;
+	nanogui::Theme      *buttonPressedTheme;
+	nanogui::Button     *screenButton = nullptr;
+	nanogui::Button     *audioButton = nullptr;
+	nanogui::Button     *keyButton = nullptr;
+	nanogui::Window     *screenWindow = nullptr;
+	nanogui::Window     *audioWindow = nullptr;
+	nanogui::Window     *keyWindow = nullptr;
+	nanogui::Window     *panelDown = nullptr;
+
+	OptionMenu() = default;
+
+
+	void    deleteMenu(nanogui::Screen *screen){
+		if (screenButton != nullptr)
+			screen->removeChild(screenButton);
+		if (audioButton != nullptr)
+			screen->removeChild(audioButton);
+		if (keyButton != nullptr)
+			screen->removeChild(keyButton);
+		if (panelDown != nullptr)
+			screen->removeChild(panelDown);
+		if (screenWindow != nullptr)
+			screen->removeChild(screenWindow);
+		if (audioWindow != nullptr)
+			screen->removeChild(audioWindow);
+		if (keyWindow != nullptr)
+			screen->removeChild(keyWindow);
+	}
+
+	void    changeView(bool value)
+	{
+		if (screenButton != nullptr)
+			screenButton->setVisible(value);
+		if (audioButton != nullptr)
+			audioButton->setVisible(value);
+		if (keyButton != nullptr)
+			keyButton->setVisible(value);
+		if (screenWindow != nullptr)
+			screenWindow->setVisible(value);
+		if (audioWindow != nullptr)
+			audioWindow->setVisible(value);
+		if (keyWindow != nullptr)
+			keyWindow->setVisible(value);
+		if (panelDown != nullptr)
+			panelDown->setVisible(value);
+	}
+
+	void    showScreen()
+	{
+		if (screenWindow != nullptr)
+			screenWindow->setVisible(true);
+		if (panelDown != nullptr)
+			panelDown->setVisible(true);
+		if (audioWindow != nullptr)
+			audioWindow->setVisible(false);
+		if (keyWindow != nullptr)
+			keyWindow->setVisible(false);
+	}
+
+	void    showAudio()
+	{
+		if (audioWindow != nullptr)
+			audioWindow->setVisible(true);
+		if (panelDown != nullptr)
+			panelDown->setVisible(true);
+		if (screenWindow != nullptr)
+			screenWindow->setVisible(false);
+		if (keyWindow != nullptr)
+			keyWindow->setVisible(false);
+	}
+
+	void    showKeyBindings()
+	{
+		if (keyWindow != nullptr)
+			keyWindow->setVisible(true);
+		if (panelDown != nullptr)
+			panelDown->setVisible(true);
+		if (screenWindow != nullptr)
+			screenWindow->setVisible(false);
+		if (audioWindow != nullptr)
+			audioWindow->setVisible(false);
+	}
+};
+
 struct  Options
 {
-	int     volume;
-	int     resolutionIndex;
+	float   musicVolume;
+	float   soundVolume;
 	bool    mute;
+	int     resolutionIndex;
 	bool    fullScreen;
-	std::vector<std::string>    resolutionList;
+	std::map<int, std::vector<int>> resolutionList;
 };

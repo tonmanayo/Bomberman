@@ -39,15 +39,18 @@ public:
 	static PauseMenu        pauseMenu;
 	static EndGameMenu      endGameMenu;
 	static LoadGameMenu     loadGameMenu;
+	static OptionMenu       optionMenu;
+	static Options          options;
+	static Options          tmpOptions;
 
 public:
 	Menu() = default;
-	Menu(float width, float height, MainGame *mainGame, bool fullScreen = false, bool resizable = false);
+	Menu(MainGame *mainGame);
 	Menu(const Menu & rhs);
 	Menu&   operator=(const Menu & rhs);
 	~Menu() = default;
 
-	bool        initMenu(float width, float height, MainGame *mainGame, bool fullScreen = false, bool resizable = false);
+	bool        initMenu(MainGame *mainGame);
     bool        buildMenuWindows();
     void        createMainMenu();
     void        createStoryMenu();
@@ -61,12 +64,15 @@ public:
     GLFWwindow  *getGlfwWindow();
 	void        renderGui();
 
-	static void    updateMenu(MainGame *game, std::vector<void *> params);
-	static void    updateGameStateStart(MainGame *game, Menu *menu, GAMESTATE state);
-	static void    updateGameStateEnd(MainGame *game, Menu *menu, GAMESTATE state);
-	static void    createNewGame(int level, int difficulty, std::string saveName);
-	static void    destroyGame();
-	static void    loadSaveDirectory();
+	static void     updateMenu(MainGame *game, std::vector<void *> params);
+	static void     updateGameStateStart(MainGame *game, Menu *menu, GAMESTATE state);
+	static void     updateGameStateEnd(MainGame *game, Menu *menu, GAMESTATE state);
+	static void     createNewGame(int level, int difficulty, std::string saveName);
+	static void     destroyGame();
+	static void     loadSaveDirectory();
+	static void     loadOptions();
+	static void     copyOptions(Options & dest, Options & src);
+	static void     updateGraphicOptions();
 	/// creating callbacks for menu
 	static bool     mouseCallback(int button, int action, int mod);
 	static bool     cursorPositionCallback(int xpos, int ypos);

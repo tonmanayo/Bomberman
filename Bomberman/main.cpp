@@ -4,6 +4,7 @@
 
 void    checkKeys(MainGame *game, std::vector<void *> params)
 {
+	(void)params;
 	if (game->getGameWindow().isKeyPressed(GLFW_KEY_UP))
 		game->getGameCamera().changeCameraYPos(2.5);
 	if (game->getGameWindow().isKeyPressed(GLFW_KEY_DOWN))
@@ -24,13 +25,11 @@ int     main(int ac, char **av)
 	Menu        menu;
 
 	nanogui::init();
-	MainGame::soundEngine = irrklang::createIrrKlangDevice();
-	menu.initMenu((float)Menu::windowWidth, (float)Menu::windowHeight, &game, Menu::isFullScreen);
-	game.initGame(menu.getGlfwWindow(), 1280.0f, 760.0f, 70.0f);
+	Menu::loadOptions();
+	menu.initMenu(&game);
+	game.initGame(menu.getGlfwWindow(), Menu::windowWidth, Menu::windowHeight, 70.0f);
 	menu.buildMenuWindows();
-	srand(time(NULL));
-
-	MainGame::functions.insert(std::pair<const char *, Func>("checkKeys", {checkKeys, std::vector<void *>()}));
+	srand((unsigned int)time(nullptr));
 	game.gameLoop();
 	nanogui::shutdown();
 	return 0;
