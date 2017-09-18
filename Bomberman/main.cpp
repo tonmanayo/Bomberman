@@ -2,23 +2,6 @@
 #include <MainGame.hpp>
 #include <menu.hpp>
 
-void    checkKeys(MainGame *game, std::vector<void *> params)
-{
-	(void)params;
-	if (game->getGameWindow().isKeyPressed(GLFW_KEY_UP))
-		game->getGameCamera().changeCameraYPos(2.5);
-	if (game->getGameWindow().isKeyPressed(GLFW_KEY_DOWN))
-		game->getGameCamera().changeCameraYPos(-2.5f);
-	if (game->getGameWindow().isKeyPressed(GLFW_KEY_LEFT))
-		game->getGameCamera().changeCameraXPos(-2.5f);
-	if (game->getGameWindow().isKeyPressed(GLFW_KEY_RIGHT))
-		game->getGameCamera().changeCameraXPos(2.5f);
-	if (game->getGameWindow().isKeyPressed(GLFW_KEY_PAGE_UP))
-		game->getGameCamera().changeCameraZPos(-2.5f);
-	if (game->getGameWindow().isKeyPressed(GLFW_KEY_PAGE_DOWN))
-		game->getGameCamera().changeCameraZPos(2.5f);
-}
-
 int     main(int ac, char **av)
 {
 	MainGame    game;

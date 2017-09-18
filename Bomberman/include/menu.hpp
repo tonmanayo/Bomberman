@@ -81,6 +81,9 @@ public:
 	static void     loadOptions();
 	static void     copyOptions(Options & dest, Options & src);
 	static void     updateGraphicOptions();
+	static void     loadOptionsConfig();
+	static void     loadDefaultOptionsConfig();
+	static void     saveOptionsConfig();
 	/// creating callbacks for menu
 	static bool     mouseCallback(int button, int action, int mod);
 	static bool     cursorPositionCallback(int xpos, int ypos);

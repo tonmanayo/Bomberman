@@ -62,23 +62,9 @@ void Menu::loadOptions()
 	}
 	/// todo: load options from config file
 	/// loading options
-	Menu::options.musicVolume = 1.0f;
-	Menu::options.soundVolume = 1.0f;
-	Menu::options.mute = false;
-	Menu::options.resolutionIndex = (int)Menu::options.resolutionList.size() - 1;
-	Menu::options.fullScreen = false;
-	Menu::options.moveUp.name = glfwGetKeyName(GLFW_KEY_W, 0);
-	Menu::options.moveUp.glfwValue = GLFW_KEY_W;
-	Menu::options.moveDown.name = glfwGetKeyName(GLFW_KEY_S, 0);
-	Menu::options.moveDown.glfwValue = GLFW_KEY_S;
-	Menu::options.moveLeft.name = glfwGetKeyName(GLFW_KEY_A, 0);
-	Menu::options.moveLeft.glfwValue = GLFW_KEY_A;
-	Menu::options.moveRight.name = glfwGetKeyName(GLFW_KEY_D, 0);
-	Menu::options.moveRight.glfwValue = GLFW_KEY_D;
-	Menu::options.placeBomb.name = "Space";
-	Menu::options.placeBomb.glfwValue = GLFW_KEY_SPACE;
-	Menu::options.pause.name = "Esc";
-	Menu::options.pause.glfwValue = GLFW_KEY_ESCAPE;
+	Menu::loadOptionsConfig();
+	if (Menu::options.resolutionIndex + 1 >= Menu::options.resolutionList.size())
+		Menu::options.resolutionIndex = (int)Menu::options.resolutionList.size() - 1;
 	Menu::copyOptions(Menu::tmpOptions, Menu::options);
 	Menu::windowWidth = Menu::options.resolutionList[Menu::options.resolutionIndex][0];
 	Menu::windowHeight = Menu::options.resolutionList[Menu::options.resolutionIndex][1];
@@ -117,16 +103,20 @@ bool Menu::initMenu(MainGame *mainGame)
 	/// add menuUpdate function to gameLoop
 	MainGame::functions.insert(std::pair<const char *, Func>("menuUpdate", {Menu::updateMenu, params}));
 	/// creating background music
-	if (MainGame::soundEngine == nullptr) {
+	if (MainGame::soundEngine != nullptr) {
 		_menuMusic = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/breakout.mp3");
 		_enemyHurtSound = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/enemieDies.wav");
 		_playerHurtSound = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/playerInjured.wav");
 		_playerWalkingSound = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/run.wav");
-		_bombExplosionSound = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/explosion");
+		_bombExplosionSound = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/explosion.wav");
 		_bombPlacementSound = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/bombDrop.wav");
 		_powerUpsSound = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/powerUp.wav");
 		_gameMusic = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/game_song.wav");
 	}
+	Menu::playMenuMusic();
+	//playGameSong();
+	//MainGame::soundEngine->setSoundVolume(1.0f);
+	//MainGame::soundEngine->play2D(_gameMusic);
 	return true;
 }
 
@@ -387,22 +377,22 @@ void Menu::stopMenuMusic()
 }
 
 void 	Menu::playBombPlacement() {
-	if (MainGame::soundEngine && MainGame::soundEngine->isCurrentlyPlaying(_bombPlacementSound))
+	if (MainGame::soundEngine && !MainGame::soundEngine->isCurrentlyPlaying(_bombPlacementSound))
 		MainGame::soundEngine->play2D(_bombPlacementSound);
 }
 void 	Menu::playPlayerHurt() {
-	if (MainGame::soundEngine && MainGame::soundEngine->isCurrentlyPlaying(_playerHurtSound))
+	if (MainGame::soundEngine && !MainGame::soundEngine->isCurrentlyPlaying(_playerHurtSound))
 		MainGame::soundEngine->play2D(_playerHurtSound);
 }
 void 	Menu::playEnemyHurt() {
-	if (MainGame::soundEngine && MainGame::soundEngine->isCurrentlyPlaying(_enemyHurtSound))
+	if (MainGame::soundEngine && !MainGame::soundEngine->isCurrentlyPlaying(_enemyHurtSound))
 		MainGame::soundEngine->play2D(_enemyHurtSound);
 }
 void 	Menu::playPlayerWalking() {
-	if (MainGame::soundEngine && MainGame::soundEngine->isCurrentlyPlaying(_playerWalkingSound))
+	if (MainGame::soundEngine && !MainGame::soundEngine->isCurrentlyPlaying(_playerWalkingSound))
 		MainGame::soundEngine->play2D(_playerWalkingSound);
 }
 void	Menu::playGameSong() {
-	if (MainGame::soundEngine && MainGame::soundEngine->isCurrentlyPlaying(_gameMusic))
+	if (MainGame::soundEngine && !MainGame::soundEngine->isCurrentlyPlaying(_gameMusic))
 		MainGame::soundEngine->play2D(_gameMusic);
 }

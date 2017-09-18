@@ -801,6 +801,7 @@ void Menu::createOptionsMenu()
 		Menu::optionMenu.changeView(true);
 		Menu::optionMenu.showScreen();
 		Menu::title->setCaption("OPTIONS");
+		Menu::saveOptionsConfig();
 	});
 
 	/// cancel button
