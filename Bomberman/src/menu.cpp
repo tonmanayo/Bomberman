@@ -116,6 +116,9 @@ void Menu::createBackground()
 	/// add banner
 	Menu::gui.whiteBanner = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 7.5, 1.2);
 	Menu::gui.whiteBanner->addBaseColor({0.2, 0.2, 0.2, 0.5});
+	/// add timeBanner
+	Menu::gui.timeBack = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 0.9, 0.5);
+	Menu::gui.timeBack->addTextureFromFile("resource/images/backTime.png");
 }
 
 GLFWwindow* Menu::getGlfwWindow()
@@ -297,7 +300,7 @@ void Menu::renderGui()
 	}
 	/// bomb
 	Menu::gui.bomb->render(glm::translate(glm::mat4(), {-3.3f, -1.3, 0}));
-	MainGame::fontRenderer1->renderText(std::string("x") + std::to_string(bomb), 80,
+	MainGame::fontRenderer1->renderText("x" + std::to_string(bomb), 80,
 	                                    Menu::windowHeight - 152, 0.5f,
 	                                    {0.8, 0.8, 0.8});
 	/// explode
@@ -310,6 +313,13 @@ void Menu::renderGui()
 	MainGame::fontRenderer1->renderText(std::string("x") + std::to_string(enenmyCount), 80,
 	                                    Menu::windowHeight - 50, 0.5f,
 	                                    {0.8, 0.8, 0.8});
+
+	///time
+	int i = static_cast<int>(std::trunc(scene->getLevelTime()));
+	Menu::gui.timeBack->render(glm::translate(glm::mat4(), {0.0f, 1.94f, 0.0f}));
+	MainGame::fontRenderer1->renderText(std::to_string(i), (Menu::windowWidth / 2) - 32,
+										25 , 1.0f,
+										{0.8, 0.8, 0.8});
 }
 
 bool Menu::mouseCallback(int button, int action, int mod)

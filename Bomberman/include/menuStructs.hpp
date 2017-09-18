@@ -159,6 +159,7 @@ struct  Gui
 	Zion::SquareSprite  *bombMan;
 	Zion::SquareSprite  *enemy1;
 	Zion::SquareSprite  *enemy2;
+	Zion::SquareSprite  *timeBack;
 	Zion::SquareSprite  *heart;
 	Zion::SquareSprite  *speed;
 	Zion::SquareSprite  *bomb;

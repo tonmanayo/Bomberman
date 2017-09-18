@@ -43,7 +43,7 @@ private:
 	float  			            z = GRID_START_Z;
 	int 			            gridY = 0;
 public:
-	void		incLevelTime();
+	void		decLevelTime();
 	float 		getLevelTime();
 	size_t		_mapWidth = 0;
 	size_t   	_mapLength = 0;

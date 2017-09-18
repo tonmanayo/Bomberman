@@ -8,6 +8,7 @@ bool Scene::newGame(MainGame *game, std::string mapName)
 	_mapName = mapName;
 	_game = game;
 	_powerSpeed = 0;
+	_levelTime = 200;
 
 	for (std:: string& line : *map)
 	{

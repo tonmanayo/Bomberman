@@ -52,13 +52,13 @@ G 26 0 -28 14 13
 G 30 0 -28 14 15
 G 12 0 -30 15 6
 G 16 0 -30 15 8
-E cubex 18 0 -2
+E mag 18 0 -2
 E mag 20 0 -10
-E mag 32 0 -10
-E cubex 6 0 -14
+E cubex 32 0 -10
+E mag 6 0 -14
 E mag 34 0 -18
-E mag 38 0 -18
-E cubex 6 0 -22
-E mag 32 0 -22
-E cubex 34 0 -24
-E mag 34 0 -30
+E cubex 38 0 -18
+E mag 6 0 -22
+E cubex 32 0 -22
+E mag 34 0 -24
+E cubex 34 0 -30
