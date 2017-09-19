@@ -112,10 +112,10 @@ public:
 	static  void    sceneUpdate(MainGame *game, std::vector<void *> params);
     static  void    bombExplode(std::vector<void *> params, const Bomb &bomb);
 
-    static bool     enemyWorldCollisionDown(glm::vec3 pos, glm::vec3 offset, Scene *scene);
-    static bool     enemyWorldCollisionUp(glm::vec3 pos, glm::vec3 offset, Scene *scene);
-    static bool     enemyWorldCollisionRight(glm::vec3 pos, glm::vec3 offset, Scene *scene);
-    static bool     enemyWorldCollisionLeft(glm::vec3 pos, glm::vec3 offset, Scene *scene);
+    static bool     enemyWorldCollisionDown(Player *enemy, glm::vec3 offset, Scene *scene);
+    static bool     enemyWorldCollisionUp(Player *enemy, glm::vec3 offset, Scene *scene);
+    static bool     enemyWorldCollisionRight(Player *enemy, glm::vec3 offset, Scene *scene);
+    static bool     enemyWorldCollisionLeft(Player *enemy, glm::vec3 offset, Scene *scene);
 
 	static void     renderFlameExplosion(glm::vec3 flamePosition);
 
