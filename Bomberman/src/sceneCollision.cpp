@@ -47,9 +47,109 @@ void Scene::worldGetPower(glm::vec3 pos, Scene *scene)
     }
 }
 
+bool Scene::worldCollisionDown(Player *enemy, glm::vec3 offset, Scene *scene)
+{
+    glm::vec3 newPos = enemy->getPosition() + offset;
 
+    int x = scene->getWorldx(enemy->getPosition().x);
+    int y = scene->getWorldy(enemy->getPosition().z);
 
+    if (scene->_blocks[y -  1][x - 1] != nullptr && scene->_blocks[y -  1][x - 1]->getCollision() &&
+        checkBlockCollision(scene->_blocks[y - 1][x - 1]->getPosition(), newPos))
+    {
+        enemy->changePosZ(2.0f * Zion::Renderable::deltaTime);
+        enemy->changePosX(2.0f * Zion::Renderable::deltaTime);
+        return true;
+    }
+    if (scene->_blocks[y -  1][x + 1] != nullptr && scene->_blocks[y -  1][x + 1]->getCollision() &&
+        checkBlockCollision(scene->_blocks[y - 1][x + 1]->getPosition(), newPos))
+    {
+        enemy->changePosZ(2.0f * Zion::Renderable::deltaTime);
+        enemy->changePosX(-2.0f * Zion::Renderable::deltaTime);
+        return true;
+    }
 
+    return (scene->_blocks[y - 1][x] != nullptr  && scene->_blocks[y - 1][x]->getCollision()
+            && checkBlockCollision(scene->_blocks[y - 1][x]->getPosition(), newPos));
+}
+
+bool Scene::worldCollisionUp(Player *enemy, glm::vec3 offset, Scene *scene)
+{
+    glm::vec3 newPos = enemy->getPosition() + offset;
+
+    int x = scene->getWorldx(enemy->getPosition().x);
+    int y = scene->getWorldy(enemy->getPosition().z);
+
+    if (scene->_blocks[y + 1][x - 1] != nullptr && scene->_blocks[y + 1][x - 1]->getCollision() &&
+        checkBlockCollision(scene->_blocks[y + 1][x - 1]->getPosition(), newPos))
+    {
+        enemy->changePosZ(-2.0f * Zion::Renderable::deltaTime);
+        enemy->changePosX(2.0f * Zion::Renderable::deltaTime);
+        return true;
+    }                                            //"collide up right"
+    if (scene->_blocks[y + 1][x + 1] != nullptr && scene->_blocks[y + 1][x + 1]->getCollision() &&
+        checkBlockCollision(scene->_blocks[y + 1][x + 1]->getPosition(), newPos))
+    {
+        enemy->changePosZ(-2.0f * Zion::Renderable::deltaTime);
+        enemy->changePosX(-2.0f * Zion::Renderable::deltaTime);
+        return true;
+    }
+    return (scene->_blocks[y + 1][x] != nullptr  && scene->_blocks[y + 1][x]->getCollision()
+            && checkBlockCollision(scene->_blocks[y + 1][x]->getPosition(), newPos));
+}
+
+bool Scene::worldCollisionLeft(Player *enemy, glm::vec3 offset, Scene *scene)
+{
+    glm::vec3 newPos = enemy->getPosition() + offset;
+
+    int x = scene->getWorldx(enemy->getPosition().x);
+    int y = scene->getWorldy(enemy->getPosition().z);
+
+    if (scene->_blocks[y - 1][x - 1] != nullptr && scene->_blocks[y - 1][x - 1]->getCollision() &&
+        checkBlockCollision(scene->_blocks[y - 1][x - 1]->getPosition(), newPos))
+    {
+        enemy->changePosZ(-2.0f * Zion::Renderable::deltaTime);
+        enemy->changePosX(2.0f * Zion::Renderable::deltaTime);
+        return true;
+    }
+    if (scene->_blocks[y + 1][x - 1] != nullptr && scene->_blocks[y + 1][x - 1]->getCollision() &&
+        checkBlockCollision(scene->_blocks[y + 1][x - 1]->getPosition(), newPos))
+    {
+        enemy->changePosZ(2.0f * Zion::Renderable::deltaTime);
+        enemy->changePosX(2.0f * Zion::Renderable::deltaTime);
+        return true;
+    }
+
+    return (scene->_blocks[y][x - 1] != nullptr  && scene->_blocks[y][x - 1]->getCollision()
+            && checkBlockCollision(scene->_blocks[y][x - 1]->getPosition(), newPos));
+}
+
+bool Scene::worldCollisionRight(Player *enemy, glm::vec3 offset, Scene *scene)
+{
+    glm::vec3 newPos = enemy->getPosition() + offset;
+
+    int x = scene->getWorldx(enemy->getPosition().x);
+    int y = scene->getWorldy(enemy->getPosition().z);
+
+    if (scene->_blocks[y - 1][x + 1] != nullptr && scene->_blocks[y - 1][x + 1]->getCollision() &&
+        checkBlockCollision(scene->_blocks[y - 1][x + 1]->getPosition(), newPos))
+    {
+        enemy->changePosZ(-2.0f * Zion::Renderable::deltaTime);
+        enemy->changePosX(2.0f * Zion::Renderable::deltaTime);
+        return true;
+    }
+
+    if (scene->_blocks[y + 1][x + 1] != nullptr && scene->_blocks[y + 1][x + 1]->getCollision() &&
+        checkBlockCollision(scene->_blocks[y + 1][x + 1]->getPosition(), newPos))
+    {
+        enemy->changePosZ(2.0f * Zion::Renderable::deltaTime);
+        enemy->changePosX(2.0f * Zion::Renderable::deltaTime );
+        return true;
+    }
+
+    return (scene->_blocks[y][x + 1] != nullptr  && scene->_blocks[y][x + 1]->getCollision()
+            && checkBlockCollision(scene->_blocks[y][x + 1]->getPosition(), newPos));
+}
 
 bool Scene::checkBlockCollision(glm::vec3 blockPos, glm::vec3 entityPos)
 {
