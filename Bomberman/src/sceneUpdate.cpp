@@ -8,7 +8,7 @@ void Scene::updatePlayer(MainGame *game, Scene *scene) {
 
     if (game->getGameWindow().isKeyPressed(Menu::options.moveDown.glfwValue)) {
         Menu::playPlayerWalking();
-        if (!worldCollisionDown(scene->_player->getPosition(), {0, 0, positionChange}, scene))
+        if (!worldCollisionDown(scene->_player, {0.0f, 0.0f, positionChange}, scene))
             scene->_player->changePosZ(positionChange);
         scene->_player->rotate(glm::radians(0.0f), {0, 1, 0});
         MainGame::renderer.applyTransformationToRenderable(scene->_player->getType(), scene->_player->getId(),
@@ -21,7 +21,7 @@ void Scene::updatePlayer(MainGame *game, Scene *scene) {
     }
     if (game->getGameWindow().isKeyPressed(Menu::options.moveUp.glfwValue)) {
         Menu::playPlayerWalking();
-        if (!worldCollisionUp(scene->_player->getPosition(), {0, 0, -positionChange}, scene))
+        if (!worldCollisionUp(scene->_player, {0, 0, -positionChange}, scene))
             scene->_player->changePosZ(-positionChange);
         scene->_player->rotate(glm::radians(180.0f), {0, 1, 0});
         MainGame::renderer.applyTransformationToRenderable(scene->_player->getType(), scene->_player->getId(),
@@ -34,7 +34,7 @@ void Scene::updatePlayer(MainGame *game, Scene *scene) {
     }
     if (game->getGameWindow().isKeyPressed(Menu::options.moveLeft.glfwValue)) {
         Menu::playPlayerWalking();
-        if (!worldCollisionLeft(scene->_player->getPosition(), {-positionChange, 0, 0}, scene))
+        if (!worldCollisionLeft(scene->_player, {-positionChange, 0, 0}, scene))
             scene->_player->changePosX(-positionChange);
         scene->_player->rotate(glm::radians(-90.0f), {0, 1, 0});
         MainGame::renderer.applyTransformationToRenderable(scene->_player->getType(), scene->_player->getId(),
@@ -47,7 +47,7 @@ void Scene::updatePlayer(MainGame *game, Scene *scene) {
     }
     if (game->getGameWindow().isKeyPressed(Menu::options.moveRight.glfwValue)) {
         Menu::playPlayerWalking();
-        if (!worldCollisionRight(scene->_player->getPosition(), {positionChange, 0, 0}, scene))
+        if (!worldCollisionRight(scene->_player, {positionChange, 0, 0}, scene))
             scene->_player->changePosX(positionChange);
         scene->_player->rotate(glm::radians(90.0f), {0, 1, 0});
         MainGame::renderer.applyTransformationToRenderable(scene->_player->getType(), scene->_player->getId(),

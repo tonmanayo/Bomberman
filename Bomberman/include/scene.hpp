@@ -89,10 +89,7 @@ public:
 	bool	    loadGame(MainGame *game, std::string fileName);
 	bool        newGame(MainGame *game, std::string mapName);
 	bool        isLevelCompleted(){ return _levelCompleted; }
-	static bool worldCollisionUp(glm::vec3 pos, glm::vec3 offset, Scene *scene);
-	static bool worldCollisionDown(glm::vec3 pos, glm::vec3 offset, Scene *scene);
-	static bool worldCollisionLeft(glm::vec3 pos, glm::vec3 offset, Scene *scene);
-	static bool worldCollisionRight(glm::vec3 pos, glm::vec3 offset, Scene *scene);
+
 	static bool checkBlockCollision(glm::vec3 blockPos, glm::vec3 entityPos);
     static bool worldEndLevel(glm::vec3 pos, Scene *scene);
     static void worldGetPower(glm::vec3 pos, Scene *scene);
@@ -112,10 +109,10 @@ public:
 	static  void    sceneUpdate(MainGame *game, std::vector<void *> params);
     static  void    bombExplode(std::vector<void *> params, const Bomb &bomb);
 
-    static bool     enemyWorldCollisionDown(Player *enemy, glm::vec3 offset, Scene *scene);
-    static bool     enemyWorldCollisionUp(Player *enemy, glm::vec3 offset, Scene *scene);
-    static bool     enemyWorldCollisionRight(Player *enemy, glm::vec3 offset, Scene *scene);
-    static bool     enemyWorldCollisionLeft(Player *enemy, glm::vec3 offset, Scene *scene);
+    static bool     worldCollisionDown(Player *enemy, glm::vec3 offset, Scene *scene);
+    static bool     worldCollisionUp(Player *enemy, glm::vec3 offset, Scene *scene);
+    static bool     worldCollisionRight(Player *enemy, glm::vec3 offset, Scene *scene);
+    static bool     worldCollisionLeft(Player *enemy, glm::vec3 offset, Scene *scene);
 
 	static void     renderFlameExplosion(glm::vec3 flamePosition);
 
