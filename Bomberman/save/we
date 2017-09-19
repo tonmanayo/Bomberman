@@ -2,7 +2,7 @@ MapWidth 25
 MapHeight 17
 MapName map2
 BreakableBlockType block2
-Level 1
+Level 2
 Difficulty 2
 Explosion 1
 Bomb 0
@@ -55,10 +55,10 @@ G 16 0 -30 15 8
 E mag 18 0 -2
 E cubex 20 0 -10
 E mag 32 0 -10
-E mag 6 0 -14
-E mag 34 0 -18
-E mag 38 0 -18
-E cubex 6 0 -22
-E cubex 32 0 -22
+E cubex 6 0 -14
+E cubex 34 0 -18
+E cubex 38 0 -18
+E mag 6 0 -22
+E mag 32 0 -22
 E mag 34 0 -24
-E mag 34 0 -30
+E cubex 34 0 -30

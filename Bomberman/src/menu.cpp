@@ -2,6 +2,7 @@
 
 Menu*                       Menu::activeMenu = nullptr;
 irrklang::ISoundSource*     Menu::_menuMusic;
+irrklang::ISoundSource*     Menu::_playGameReady;
 irrklang::ISoundSource*		Menu::_bombExplosionSound;
 irrklang::ISoundSource*		Menu::_bombPlacementSound;
 irrklang::ISoundSource*		Menu::_mapLevelUp;
@@ -128,6 +129,7 @@ bool Menu::initMenu(MainGame *mainGame)
 		_gameMusic = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/game_song.wav");
 		_mapLevelUp = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/levelUp.wav");
 		_playPowerUp = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/powerUp.wav");
+		_playGameReady = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/gameStart.wav");
 	}
 	return true;
 }
@@ -222,6 +224,7 @@ void Menu::updateGameStateStart(MainGame *game, Menu *menu, GAMESTATE state)
 		else
 			offset = (halfWidth + xOffset - halfWidth / 4);
 		MainGame::fontRenderer1->renderText("READY", (float)Menu::windowWidth - offset, halfHeight, 3.0f, {0.8, 0.8, 0.8});
+        Menu::playGameReady();
 	}else {
 		float tmp = changeTime - 2.8f;
 		if (changeTime <= 3.5f)
@@ -422,4 +425,9 @@ void	Menu::playPowerUp() {
 void 	Menu::playBombExplosion() {
 	if (MainGame::soundEngine && !MainGame::soundEngine->isCurrentlyPlaying(_bombExplosionSound))
 		MainGame::soundEngine->play2D(_bombExplosionSound);
+}
+
+void 	Menu::playGameReady() {
+    if (MainGame::soundEngine && !MainGame::soundEngine->isCurrentlyPlaying(_playGameReady))
+        MainGame::soundEngine->play2D(_playGameReady);
 }

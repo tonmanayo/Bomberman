@@ -118,5 +118,4 @@ public:
 
     bool            enemyPlayerCollision(Player *enemy, Scene *scene);
 	Player          *getPlayer(){ return _player; }
-
 };
