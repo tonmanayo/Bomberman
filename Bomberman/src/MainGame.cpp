@@ -194,7 +194,7 @@ void MainGame::loadResources()
 	addMaterial("flame1", "resource/images/flame1.png");
 	addMaterial("particleAtlas", "resource/images/particleAtlas.png");
 	getMaterial("particleAtlas")->numRows =  4;
-	addMaterial("explosion1", "resource/images/explosion1.png");
+	addMaterial("explosion1", "resource/images/explosion2.jpg");
 	getMaterial("explosion1")->numRows =  4;
 	addMaterial("explosion2", "resource/images/explode1.png");
 	getMaterial("explosion2")->numRows =  3;
@@ -255,7 +255,6 @@ void MainGame::gameLoop()
 	Zion::Window::frameChangeTime = 0.0f;
 
 	srand(0);
-	Menu::playMenuMusic();
 	while (!_window.shouldClose())
 	{
 		auto currentTime = (float)glfwGetTime();
@@ -287,12 +286,9 @@ void MainGame::gameLoop()
 		{
 			glEnable(GL_DEPTH_TEST);
 			glDepthFunc(GL_LESS);
-			glDisable(GL_BLEND);
-			//glEnable(GL_BLEND);
-			//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-			MainGame::renderer.render();
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			MainGame::renderer.render();
 		}
 
 		/// render particles

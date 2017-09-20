@@ -84,6 +84,7 @@ public:
 	static void     loadOptions();
 	static void     copyOptions(Options & dest, Options & src);
 	static void     updateGraphicOptions();
+	static void     updateSoundOptions();
 	static void     loadOptionsConfig();
 	static void     loadDefaultOptionsConfig();
 	static void     saveOptionsConfig();

@@ -3,7 +3,7 @@
 void Menu::createMainMenu()
 {
 	Menu::mainMenu.buttonTheme = new nanogui::Theme(_screen->nvgContext());
-	Menu::mainMenu.buttonTheme->mButtonFontSize = (Menu::windowWidth < 1280) ? (Menu::windowWidth * 30) / 1100 : 30;
+	Menu::mainMenu.buttonTheme->mButtonFontSize = (Menu::windowWidth < 1280) ? (Menu::windowWidth * 25) / 1100 : 25;
 	Menu::mainMenu.buttonTheme->mFontNormal = 0;
 	Menu::mainMenu.buttonTheme->mFontBold = 0;
 	Menu::mainMenu.buttonTheme->mTextColor = {230, 230, 230, 255};
@@ -205,10 +205,10 @@ void Menu::createNewGameMenu()
 	nanogui::Theme  *tmp = new nanogui::Theme(_screen->nvgContext());
 	tmp->mFontBold = 1;
 	tmp->mFontNormal = 0;
-	tmp->mStandardFontSize = (Menu::windowWidth < 1280) ? (Menu::windowWidth * 35) / 1200 : 35;
+	tmp->mStandardFontSize = (Menu::windowWidth < 1280) ? (Menu::windowWidth * 25) / 1200 : 25;
 	tmp->mTextColor = {40, 40, 40, 255};
 
-	Menu::newGameMenu.easy = new nanogui::CheckBox(_screen, "Easy");
+	Menu::newGameMenu.easy = new nanogui::CheckBox(_screen, "    Easy");
 	Menu::newGameMenu.easy->setSize({otherButtonWidth, otherButtonHeight});
 	Menu::newGameMenu.easy->setPosition({otherPosX, posY});
 	Menu::newGameMenu.easy->setTheme(tmp);
@@ -222,7 +222,7 @@ void Menu::createNewGameMenu()
 	});
 
 	otherPosX += otherButtonWidth;
-	Menu::newGameMenu.normal = new nanogui::CheckBox(_screen, "Normal");
+	Menu::newGameMenu.normal = new nanogui::CheckBox(_screen, "    Normal");
 	Menu::newGameMenu.normal->setSize({otherButtonWidth, otherButtonHeight});
 	Menu::newGameMenu.normal->setPosition({otherPosX, posY});
 	Menu::newGameMenu.normal->setTheme(tmp);
@@ -237,7 +237,7 @@ void Menu::createNewGameMenu()
 	});
 
 	otherPosX += otherButtonWidth + 10;
-	Menu::newGameMenu.hard = new nanogui::CheckBox(_screen, "Hard");
+	Menu::newGameMenu.hard = new nanogui::CheckBox(_screen, "    Hard");
 	Menu::newGameMenu.hard->setSize({otherButtonWidth, otherButtonHeight});
 	Menu::newGameMenu.hard->setPosition({otherPosX, posY});
 	Menu::newGameMenu.hard->setTheme(tmp);
@@ -791,6 +791,7 @@ void Menu::createOptionsMenu()
 		Menu::optionMenu.changeView(false);
 		Menu::title->setVisible(false);
 		Menu::updateGraphicOptions();
+		Menu::updateSoundOptions();
 		Menu::activeMenu->createMainMenu();
 		Menu::activeMenu->createOptionsMenu();
 		Menu::activeMenu->createStoryMenu();
@@ -1028,6 +1029,29 @@ void Menu::updateGraphicOptions()
 	}else{
 		glfwSetWindowMonitor(Menu::activeMenu->_screen->glfwWindow(), nullptr, 0, 0,
 		Menu::windowWidth, Menu::windowHeight, Menu::options.resolutionList[Menu::options.resolutionIndex][2]);
+	}
+}
+
+void Menu::updateSoundOptions()
+{
+	if (Menu::options.mute){
+		MainGame::soundEngine->setSoundVolume(0);
+	}else{
+		MainGame::soundEngine->stopAllSounds();
+		MainGame::soundEngine->setSoundVolume(1.0f);
+		/// music
+		Menu::activeMenu->_menuMusic->setDefaultVolume(Menu::options.musicVolume);
+		Menu::activeMenu->_gameMusic->setDefaultVolume(Menu::options.musicVolume);
+		/// sound
+		Menu::activeMenu->_bombExplosionSound->setDefaultVolume(Menu::options.soundVolume);
+		Menu::activeMenu->_bombPlacementSound->setDefaultVolume(Menu::options.soundVolume);
+		Menu::activeMenu->_playerHurtSound->setDefaultVolume(Menu::options.soundVolume);
+		Menu::activeMenu->_enemyHurtSound->setDefaultVolume(Menu::options.soundVolume);
+		Menu::activeMenu->_playerWalkingSound->setDefaultVolume(Menu::options.soundVolume);
+		Menu::activeMenu->_mapLevelUp->setDefaultVolume(Menu::options.soundVolume);
+		Menu::activeMenu->_playPowerUp->setDefaultVolume(Menu::options.soundVolume);
+		Menu::activeMenu->_playGameReady->setDefaultVolume(Menu::options.soundVolume);
+		MainGame::soundEngine->play2D(Menu::activeMenu->_menuMusic);
 	}
 }
 

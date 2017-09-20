@@ -116,6 +116,7 @@ bool Menu::initMenu(MainGame *mainGame)
 		_playPowerUp = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/powerUp.wav");
 		_playGameReady = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/gameStart.wav");
 	}
+	Menu::updateSoundOptions();
 	return true;
 }
 

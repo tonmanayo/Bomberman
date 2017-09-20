@@ -40,8 +40,7 @@ namespace Zion{
 				float   vboData[ListParticles.size() * INSTANCE_DATA_LENGTH];
 				for (Particle& particle : ListParticles)
 				{
-					updateModelViewMatrix(particle.getPosition(), particle.getRotation(),
-							particle.getScale(), viewMat, vboData);
+					updateModelViewMatrix(particle.getPosition(), particle.getRotation(), particle.getScale(), viewMat, vboData);
 					updateTexCoordInfo(particle, vboData);
 				}
 				glBindBuffer(GL_ARRAY_BUFFER, _vbo);
