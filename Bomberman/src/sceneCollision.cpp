@@ -1,5 +1,5 @@
-#include <scene.hpp>
 
+#include <menu.hpp>
 
 
 bool Scene::worldEndLevel(glm::vec3 pos, Scene *scene)
@@ -17,7 +17,7 @@ void Scene::worldGetPower(glm::vec3 pos, Scene *scene)
 	int y = scene->getWorldy(pos.z);
 
 	if (scene->_blocks[y][x] != nullptr && scene->_blocks[y][x]->getPowerUp()) {
-		MainGame::soundEngine->play2D("resource/sounds/powerUp.wav");
+		Menu::playPowerUp();
 		if (scene->_blocks[y][x]->getPowerName() == "PowerBombNbrInc") {
             scene->_player->incBombNbr();
             std::cout << "Got: " << scene->_player->getPowerBombNbr() << " POWER Bomb inc!\n";
@@ -47,120 +47,108 @@ void Scene::worldGetPower(glm::vec3 pos, Scene *scene)
     }
 }
 
-bool Scene::worldCollisionDown(glm::vec3 pos, glm::vec3 offset, Scene *scene)
+bool Scene::worldCollisionDown(Player *enemy, glm::vec3 offset, Scene *scene)
 {
-	glm::vec3 newPos = pos + offset;
+    glm::vec3 newPos = enemy->getPosition() + offset;
 
-	int x = scene->getWorldx(pos.x);
-	int y = scene->getWorldy(pos.z);
+    int x = scene->getWorldx(enemy->getPosition().x);
+    int y = scene->getWorldy(enemy->getPosition().z);
 
-	if (scene->_blocks[y -  1][x] != nullptr && scene->_blocks[y -  1][x]->getCollision() &&
-	    checkBlockCollision(scene->_blocks[y - 1][x]->getPosition(), newPos))
-	{
-		return true;
-	}
-	if (scene->_blocks[y -  1][x - 1] != nullptr && scene->_blocks[y -  1][x - 1]->getCollision() &&
-	    checkBlockCollision(scene->_blocks[y - 1][x - 1]->getPosition(), newPos))
-	{
-		scene->_player->changePosZ(0.02f);
-		scene->_player->changePosX(0.02f);
-		return true;
-	}
-	if (scene->_blocks[y -  1][x + 1] != nullptr && scene->_blocks[y -  1][x + 1]->getCollision() &&
-	    checkBlockCollision(scene->_blocks[y - 1][x + 1]->getPosition(), newPos))
-	{
-		scene->_player->changePosZ(0.02f);
-		scene->_player->changePosX(-0.02f);
-		return true;
-	}
-	return false;
+    if (scene->_blocks[y -  1][x - 1] != nullptr && scene->_blocks[y -  1][x - 1]->getCollision() &&
+        checkBlockCollision(scene->_blocks[y - 1][x - 1]->getPosition(), newPos))
+    {
+        enemy->changePosZ(2.0f * Zion::Renderable::deltaTime);
+        enemy->changePosX(2.0f * Zion::Renderable::deltaTime);
+        return true;
+    }
+    if (scene->_blocks[y -  1][x + 1] != nullptr && scene->_blocks[y -  1][x + 1]->getCollision() &&
+        checkBlockCollision(scene->_blocks[y - 1][x + 1]->getPosition(), newPos))
+    {
+        enemy->changePosZ(2.0f * Zion::Renderable::deltaTime);
+        enemy->changePosX(-2.0f * Zion::Renderable::deltaTime);
+        return true;
+    }
+
+    return (scene->_blocks[y - 1][x] != nullptr  && scene->_blocks[y - 1][x]->getCollision()
+            && checkBlockCollision(scene->_blocks[y - 1][x]->getPosition(), newPos));
 }
 
-bool Scene::worldCollisionUp(glm::vec3 pos, glm::vec3 offset, Scene *scene)
+bool Scene::worldCollisionUp(Player *enemy, glm::vec3 offset, Scene *scene)
 {
-	glm::vec3 newPos = pos + offset;
+    glm::vec3 newPos = enemy->getPosition() + offset;
 
-	int x = scene->getWorldx(pos.x);
-	int y = scene->getWorldy(pos.z);
+    int x = scene->getWorldx(enemy->getPosition().x);
+    int y = scene->getWorldy(enemy->getPosition().z);
 
-	if (scene->_blocks[y + 1][x] != nullptr && scene->_blocks[y + 1][x]->getCollision() &&
-	    checkBlockCollision(scene->_blocks[y + 1][x]->getPosition(), newPos))
-	{
-		return true;
-	}                                           //"collide up left"
-	if (scene->_blocks[y + 1][x - 1] != nullptr && scene->_blocks[y + 1][x - 1]->getCollision() &&
-	    checkBlockCollision(scene->_blocks[y + 1][x - 1]->getPosition(), newPos))
-	{
-		scene->_player->changePosZ(-0.02f);
-		scene->_player->changePosX(0.02f);
-		return true;
-	}                                            //"collide up right"
-	if (scene->_blocks[y + 1][x + 1] != nullptr && scene->_blocks[y + 1][x + 1]->getCollision() &&
-	    checkBlockCollision(scene->_blocks[y + 1][x + 1]->getPosition(), newPos))
-	{
-		scene->_player->changePosZ(-0.02f);
-		scene->_player->changePosX(-0.02f);
-		return true;
-	}
-	return false;
+    if (scene->_blocks[y + 1][x - 1] != nullptr && scene->_blocks[y + 1][x - 1]->getCollision() &&
+        checkBlockCollision(scene->_blocks[y + 1][x - 1]->getPosition(), newPos))
+    {
+        enemy->changePosZ(-2.0f * Zion::Renderable::deltaTime);
+        enemy->changePosX(2.0f * Zion::Renderable::deltaTime);
+        return true;
+    }                                            //"collide up right"
+    if (scene->_blocks[y + 1][x + 1] != nullptr && scene->_blocks[y + 1][x + 1]->getCollision() &&
+        checkBlockCollision(scene->_blocks[y + 1][x + 1]->getPosition(), newPos))
+    {
+        enemy->changePosZ(-2.0f * Zion::Renderable::deltaTime);
+        enemy->changePosX(-2.0f * Zion::Renderable::deltaTime);
+        return true;
+    }
+    return (scene->_blocks[y + 1][x] != nullptr  && scene->_blocks[y + 1][x]->getCollision()
+            && checkBlockCollision(scene->_blocks[y + 1][x]->getPosition(), newPos));
 }
 
-bool Scene::worldCollisionLeft(glm::vec3 pos, glm::vec3 offset, Scene *scene)
+bool Scene::worldCollisionLeft(Player *enemy, glm::vec3 offset, Scene *scene)
 {
-	glm::vec3 newPos = pos + offset;
+    glm::vec3 newPos = enemy->getPosition() + offset;
 
-	int x = scene->getWorldx(pos.x);
-	int y = scene->getWorldy(pos.z);
+    int x = scene->getWorldx(enemy->getPosition().x);
+    int y = scene->getWorldy(enemy->getPosition().z);
 
-	if (scene->_blocks[y - 1][x - 1] != nullptr && scene->_blocks[y - 1][x - 1]->getCollision() &&
-	    checkBlockCollision(scene->_blocks[y - 1][x - 1]->getPosition(), newPos))
-	{
-		scene->_player->changePosZ(-0.02f);
-		scene->_player->changePosX(0.02f);
-		return true;
-	}
-	if (scene->_blocks[y][x - 1] != nullptr && scene->_blocks[y][x - 1]->getCollision() &&
-	    checkBlockCollision(scene->_blocks[y][x - 1]->getPosition(), newPos))
-	{
-		return true;
-	}
-	if (scene->_blocks[y + 1][x - 1] != nullptr && scene->_blocks[y + 1][x - 1]->getCollision() &&
-	    checkBlockCollision(scene->_blocks[y + 1][x - 1]->getPosition(), newPos))
-	{
-		scene->_player->changePosZ(0.02f);
-		scene->_player->changePosX(0.02f);
-		return true;
-	}
-	return false;
+    if (scene->_blocks[y - 1][x - 1] != nullptr && scene->_blocks[y - 1][x - 1]->getCollision() &&
+        checkBlockCollision(scene->_blocks[y - 1][x - 1]->getPosition(), newPos))
+    {
+        enemy->changePosZ(-2.0f * Zion::Renderable::deltaTime);
+        enemy->changePosX(2.0f * Zion::Renderable::deltaTime);
+        return true;
+    }
+    if (scene->_blocks[y + 1][x - 1] != nullptr && scene->_blocks[y + 1][x - 1]->getCollision() &&
+        checkBlockCollision(scene->_blocks[y + 1][x - 1]->getPosition(), newPos))
+    {
+        enemy->changePosZ(2.0f * Zion::Renderable::deltaTime);
+        enemy->changePosX(2.0f * Zion::Renderable::deltaTime);
+        return true;
+    }
+
+    return (scene->_blocks[y][x - 1] != nullptr  && scene->_blocks[y][x - 1]->getCollision()
+            && checkBlockCollision(scene->_blocks[y][x - 1]->getPosition(), newPos));
 }
 
-bool Scene::worldCollisionRight(glm::vec3 pos, glm::vec3 offset, Scene *scene)
+bool Scene::worldCollisionRight(Player *enemy, glm::vec3 offset, Scene *scene)
 {
-	glm::vec3 newPos = pos + offset;
+    glm::vec3 newPos = enemy->getPosition() + offset;
 
-	int x = scene->getWorldx(pos.x);
-	int y = scene->getWorldy(pos.z);
+    int x = scene->getWorldx(enemy->getPosition().x);
+    int y = scene->getWorldy(enemy->getPosition().z);
 
-	if (scene->_blocks[y - 1][x + 1] != nullptr && scene->_blocks[y - 1][x + 1]->getCollision() &&
-	    checkBlockCollision(scene->_blocks[y - 1][x + 1]->getPosition(), newPos))
-	{
-		scene->_player->changePosZ(-0.02f);
-		scene->_player->changePosX(0.02f);
-		return true;
-	}
-	if (scene->_blocks[y][x + 1] != nullptr && scene->_blocks[y][x + 1]->getCollision() &&
-	    checkBlockCollision(scene->_blocks[y][x + 1]->getPosition(), newPos))
-	{
-		return true;
-	}
-	if (scene->_blocks[y + 1][x + 1] != nullptr && scene->_blocks[y + 1][x + 1]->getCollision() &&
-	    checkBlockCollision(scene->_blocks[y + 1][x + 1]->getPosition(), newPos))
-	{
-		scene->_player->changePosZ(0.02f);
-		scene->_player->changePosX(0.02f);
-		return true;
-	}
-	return false;
+    if (scene->_blocks[y - 1][x + 1] != nullptr && scene->_blocks[y - 1][x + 1]->getCollision() &&
+        checkBlockCollision(scene->_blocks[y - 1][x + 1]->getPosition(), newPos))
+    {
+        enemy->changePosZ(-2.0f * Zion::Renderable::deltaTime);
+        enemy->changePosX(2.0f * Zion::Renderable::deltaTime);
+        return true;
+    }
+
+    if (scene->_blocks[y + 1][x + 1] != nullptr && scene->_blocks[y + 1][x + 1]->getCollision() &&
+        checkBlockCollision(scene->_blocks[y + 1][x + 1]->getPosition(), newPos))
+    {
+        enemy->changePosZ(2.0f * Zion::Renderable::deltaTime);
+        enemy->changePosX(2.0f * Zion::Renderable::deltaTime );
+        return true;
+    }
+
+    return (scene->_blocks[y][x + 1] != nullptr  && scene->_blocks[y][x + 1]->getCollision()
+            && checkBlockCollision(scene->_blocks[y][x + 1]->getPosition(), newPos));
 }
 
 bool Scene::checkBlockCollision(glm::vec3 blockPos, glm::vec3 entityPos)
@@ -264,7 +252,7 @@ void Scene::enemiesExplosionCollision(glm::vec3 pos, Scene *scene)
 				del = true;
 			}
 			if (del) {
-				MainGame::soundEngine->play2D("resource/sounds/enemieDies.wav");
+				Menu::playEnemyHurt();
 				MainGame::renderer.removeFromRender(scene->_enemies[i]->getType(), scene->_enemies[i]->getId());
 				delete scene->_enemies[i];
 				scene->_enemies[i] = scene->_enemies.back();

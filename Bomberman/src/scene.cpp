@@ -249,8 +249,7 @@ void Scene::sceneUpdate(MainGame *game, std::vector<void *> params)
 
 	if (game->getGameState() == GAMESTATE::GAME)
 	{
-		if (!MainGame::soundEngine->isCurrentlyPlaying("resource/sounds/game_song.wav"))
-			MainGame::soundEngine->play2D("resource/sounds/game_song.wav");
+		Menu::playGameSong();
 		if (Zion::Input::getKeyPressOnce(Menu::options.pause.glfwValue))
 		{
 			std::cout << "paused"<< std::endl;
