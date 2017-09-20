@@ -64,6 +64,12 @@ case "${machine}" in
                 echo Installing cmake
                 brew install cmake
             fi
+            if brew ls --versions glfw3 > /dev/null; then
+                echo glfw3 already installed
+            else
+                echo Installing glfw3
+                brew install glfw3
+            fi
             if brew ls --versions glew > /dev/null; then
                 echo glew already installed
             else

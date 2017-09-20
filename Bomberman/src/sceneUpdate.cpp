@@ -7,10 +7,8 @@ void Scene::updatePlayer(MainGame *game, Scene *scene) {
 	float   positionChange = (5.0f + scene->_player->getPowerSpeed()) * Zion::Renderable::deltaTime;
 
     if (game->getGameWindow().isKeyPressed(Menu::options.moveDown.glfwValue)) {
-        if (!MainGame::soundEngine->isCurrentlyPlaying("resource/sounds/run.wav"))
-            MainGame::soundEngine->play2D("resource/sounds/run.wav");
-       // Menu::playPlayerWalking(); //todo cant get this like this
-        if (!worldCollisionDown(scene->_player->getPosition(), {0, 0, positionChange}, scene))
+        Menu::playPlayerWalking();
+        if (!worldCollisionDown(scene->_player, {0.0f, 0.0f, positionChange}, scene))
             scene->_player->changePosZ(positionChange);
         scene->_player->rotate(glm::radians(0.0f), {0, 1, 0});
         MainGame::renderer.applyTransformationToRenderable(scene->_player->getType(), scene->_player->getId(),
@@ -22,9 +20,8 @@ void Scene::updatePlayer(MainGame *game, Scene *scene) {
         scene->_game->getGameCamera().setCameraUp(glm::vec3(0, 1, 0));
     }
     if (game->getGameWindow().isKeyPressed(Menu::options.moveUp.glfwValue)) {
-        if (!MainGame::soundEngine->isCurrentlyPlaying("resource/sounds/run.wav"))
-            MainGame::soundEngine->play2D("resource/sounds/run.wav");
-        if (!worldCollisionUp(scene->_player->getPosition(), {0, 0, -positionChange}, scene))
+        Menu::playPlayerWalking();
+        if (!worldCollisionUp(scene->_player, {0, 0, -positionChange}, scene))
             scene->_player->changePosZ(-positionChange);
         scene->_player->rotate(glm::radians(180.0f), {0, 1, 0});
         MainGame::renderer.applyTransformationToRenderable(scene->_player->getType(), scene->_player->getId(),
@@ -36,9 +33,8 @@ void Scene::updatePlayer(MainGame *game, Scene *scene) {
         scene->_game->getGameCamera().setCameraUp(glm::vec3(0, 1, 0));
     }
     if (game->getGameWindow().isKeyPressed(Menu::options.moveLeft.glfwValue)) {
-        if (!MainGame::soundEngine->isCurrentlyPlaying("resource/sounds/run.wav"))
-            MainGame::soundEngine->play2D("resource/sounds/run.wav");
-        if (!worldCollisionLeft(scene->_player->getPosition(), {-positionChange, 0, 0}, scene))
+        Menu::playPlayerWalking();
+        if (!worldCollisionLeft(scene->_player, {-positionChange, 0, 0}, scene))
             scene->_player->changePosX(-positionChange);
         scene->_player->rotate(glm::radians(-90.0f), {0, 1, 0});
         MainGame::renderer.applyTransformationToRenderable(scene->_player->getType(), scene->_player->getId(),
@@ -50,10 +46,8 @@ void Scene::updatePlayer(MainGame *game, Scene *scene) {
         scene->_game->getGameCamera().setCameraUp(glm::vec3(0, 1, 0));
     }
     if (game->getGameWindow().isKeyPressed(Menu::options.moveRight.glfwValue)) {
-        if (!MainGame::soundEngine->isCurrentlyPlaying("resource/sounds/run.wav"))
-            MainGame::soundEngine->play2D("resource/sounds/run.wav");
-        ;
-        if (!worldCollisionRight(scene->_player->getPosition(), {positionChange, 0, 0}, scene))
+        Menu::playPlayerWalking();
+        if (!worldCollisionRight(scene->_player, {positionChange, 0, 0}, scene))
             scene->_player->changePosX(positionChange);
         scene->_player->rotate(glm::radians(90.0f), {0, 1, 0});
         MainGame::renderer.applyTransformationToRenderable(scene->_player->getType(), scene->_player->getId(),
@@ -65,15 +59,14 @@ void Scene::updatePlayer(MainGame *game, Scene *scene) {
         scene->_game->getGameCamera().setCameraUp(glm::vec3(0, 1, 0));
     }
     if (game->getGameWindow().isKeyPressed(Menu::options.placeBomb.glfwValue) && scene->_bomb.size() < 1 + scene->_player->getPowerBombNbr()) {
-        if (!MainGame::soundEngine->isCurrentlyPlaying("resource/sounds/bombDrop.wav"))
-            MainGame::soundEngine->play2D("resource/sounds/bombDrop.wav");
+        Menu::playBombPlacement();
         scene->_addBomb(scene->_player->getPosition().x, scene->_player->getPosition().z);
     }
 
 	if (scene->worldEndLevel(scene->_player->getPosition(), scene)) {
         if (scene->_enemies.empty())
         {
-            MainGame::soundEngine->play2D("resource/sounds/levelUp.wav");
+            Menu::playLevelUp();
             scene->_levelCompleted = true;
 	        game->setGameState(GAMESTATE::END);
         }
@@ -96,10 +89,10 @@ void Scene::updateBomb(MainGame *game, Scene *scene) {
             enemiesExplosionCollision(scene->_bomb[i].getPosition(), scene);
             if (scene->PlayerExplosionCollision(scene->_bomb[i].getPosition(), scene)) {
                 scene->_player->decHP(scene->getDifficulty());
-                MainGame::soundEngine->play2D("resource/sounds/playerInjured.wav");
+                Menu::playPlayerHurt();
                 std::cout << "hurt\n";
             }
-            MainGame::soundEngine->play2D("resource/sounds/explosion.wav");
+            Menu::playBombExplosion();
             MainGame::renderer.removeFromRender("bomb", scene->_bomb[i].getId());
         }
 		if (!scene->_bomb[i].removeExplosionTime() && scene->_bomb[i].getExploded())

@@ -176,6 +176,7 @@ void MainGame::loadResources()
 
 	/// loading maps
 	addMap("map2", "resource/maps/map2");
+	addMap("stage1", "resource/maps/stage1");
 
 	/// loading materials
 	auto *mat = new Zion::Material();
@@ -252,7 +253,7 @@ void MainGame::gameLoop()
 	Zion::Window::frameChangeTime = 0.0f;
 
 	srand(0);
-	//Menu::playMenuMusic();
+	Menu::playMenuMusic();
 	while (!_window.shouldClose())
 	{
 		auto currentTime = (float)glfwGetTime();

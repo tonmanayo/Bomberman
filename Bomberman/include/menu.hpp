@@ -27,8 +27,11 @@ private:
 	static irrklang::ISoundSource    			*_playerHurtSound;
 	static irrklang::ISoundSource    			*_enemyHurtSound;
 	static irrklang::ISoundSource    			*_playerWalkingSound;
-	static irrklang::ISoundSource    			*_powerUpsSound;
 	static irrklang::ISoundSource    			*_gameMusic;
+	static irrklang::ISoundSource    			*_mapLevelUp;
+	static irrklang::ISoundSource    			*_playPowerUp;
+    static irrklang::ISoundSource               *_playGameReady;
+
 public:
 	Scene       *scene = nullptr;
     static Menu             *activeMenu;
@@ -100,5 +103,8 @@ public:
 	static void 	playEnemyHurt();
 	static void 	playPlayerWalking();
 	static void		playGameSong();
+	static void		playLevelUp();
+	static void		playPowerUp();
+	static void		playGameReady();
 
 };
