@@ -1,7 +1,7 @@
 FloorType floor1
 WallType block1
 BreakType block2
-UnbreakType block3
+UnbreakType block1
 BgType lavaBackground
 Enemy cubex mag
 RRRRRRRRRRRRRRRRRRRRRRRRR
