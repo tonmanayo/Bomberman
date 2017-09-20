@@ -1,0 +1,19 @@
+FloorType floor1
+WallType block1
+BreakType block2
+UnbreakType block3
+BgType lavaBackground
+Enemy cubex mag
+RRRRRRRRRRRRRRR
+R.E......GLL.LR
+R.L.L.L.LGLG..R
+R...GELGGEL..GR
+R.L.LGLGL.L.L.R
+R....GGG..GGG.R
+RGL.L.L.L.LGL.R
+R.G....GG.G.LGR
+R.LGL.L.LGL.L.R
+R.G.G.E.G.G.E.R
+R@L.LGL.L.LLL.R
+R.....G.G..E.GR
+RRRRRRRRRRRRRRR

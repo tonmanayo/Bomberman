@@ -150,9 +150,9 @@ void Menu::createNewGame(int level, int difficulty, std::string saveName)
 	activeMenu->scene->setDifficulty(difficulty);
 	activeMenu->scene->setLevel(level);
 	if (level == 1)
-		activeMenu->scene->newGame(activeMenu->_mainGame, "map2");
+		activeMenu->scene->newGame(activeMenu->_mainGame, "stage1");
 	else
-		activeMenu->scene->newGame(activeMenu->_mainGame, "map2");
+		activeMenu->scene->newGame(activeMenu->_mainGame, "stage1");
 	activeMenu->scene->saveGame(activeMenu->_saveFileName);
 	activeMenu->createLoadGameMenu();
 	activeMenu->_mainGame->setGameState(GAMESTATE::START);
