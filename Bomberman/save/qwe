@@ -2,7 +2,7 @@ MapWidth 13
 MapHeight 12
 MapName stage1
 BreakableBlockType block2
-Level 1
+Level 2
 Difficulty 2
 Explosion 1
 Bomb 0
@@ -29,8 +29,8 @@ G 16 0 -16 8 8
 G 20 0 -16 8 10
 G 4 0 -20 10 2
 G 20 0 -20 10 10
-E cubex 20 0 -4
+E mag 20 0 -4
 E mag 4 0 -6
-E mag 12 0 -6
-E cubex 10 0 -12
-E mag 14 0 -12
+E cubex 12 0 -6
+E mag 10 0 -12
+E cubex 14 0 -12

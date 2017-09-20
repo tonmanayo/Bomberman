@@ -292,14 +292,6 @@ bool Scene::enemyPlayerCollision(Player *enemy, Scene *scene){
 	return false;
 }
 
-int Scene::getPowerSpeed () {
-	return _powerSpeed;
-}
-
-void Scene::inctPowerSpeed() {
-	_powerSpeed++;
-}
-
 void	 Scene::decLevelTime() {
 	if (_levelTime >= 0.0f)
 		_levelTime -= 0.01f;

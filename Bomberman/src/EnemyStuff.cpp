@@ -103,36 +103,7 @@ void Scene::updateEnemy(MainGame *game, Scene *scene) {
             int randNbr = rand() % 3;
             scene->_enemies[i]->setDirection(dir[randNbr]);
         }
-
-        if (!collision && scene->_blocks[y][x + 1] == nullptr && (      // making them follow the player
-                (int)round(scene->_enemies[i]->getPosition().z) == (int)round(scene->_player->getPosition().z) &&
-                        abs(scene->_enemies[i]->getPosition().x) - abs(scene->_player->getPosition().x) <= 0.00f))
-        {
-
-            scene->_enemies[i]->setDirection('R');
-        }
-
-        if (!collision && scene->_blocks[y][x - 1] == nullptr && (
-                (int)round(scene->_enemies[i]->getPosition().z) == (int)round(scene->_player->getPosition().z) &&
-                abs(scene->_player->getPosition().x) - abs(scene->_enemies[i]->getPosition().x)  <= 0.00f))
-        {
-
-            scene->_enemies[i]->setDirection('L');
-        }
-        if (!collision && scene->_blocks[y + 1][x] == nullptr && (
-                (int)round(scene->_enemies[i]->getPosition().x) == (int)round(scene->_player->getPosition().x) &&
-                abs(scene->_enemies[i]->getPosition().z) - abs(scene->_player->getPosition().z) <= 0.00f))
-        {
-
-            scene->_enemies[i]->setDirection('U');
-        }
-
-        if (!collision && scene->_blocks[y - 1][x] == nullptr && (
-                (int)round(scene->_enemies[i]->getPosition().x) == (int)round(scene->_player->getPosition().x) &&
-                abs(scene->_player->getPosition().z) - abs(scene->_enemies[i]->getPosition().z)  <= 0.00f))
-        {
-            scene->_enemies[i]->setDirection('D');
-        }
+        enemyFollowPlayer(collision, scene->_blocks, scene->_enemies[i], scene->_player, x, y);
         // collision enemy with enemy
         for (int j = 0; j < scene->_enemies.size(); j++) {
             if (j == i)

@@ -3,7 +3,7 @@
 
 void Scene::updatePlayer(MainGame *game, Scene *scene) {
 
-	float   velocity =  (1.0f + scene->_player->getPowerSpeed()) * Zion::Renderable::deltaTime;
+	float   velocity =  (1.5f + scene->_player->getPowerSpeed()) * Zion::Renderable::deltaTime;
 	float   positionChange = (5.0f + scene->_player->getPowerSpeed()) * Zion::Renderable::deltaTime;
 
     if (game->getGameWindow().isKeyPressed(Menu::options.moveDown.glfwValue)) {
@@ -84,9 +84,9 @@ void Scene::updateBomb(MainGame *game, Scene *scene) {
 		if (scene->_bomb[i].explodeTime() && !scene->_bomb[i].getExploded())
 		{
             scene->_bomb[i].setExploded(true);
+            enemiesExplosionCollision(scene->_bomb[i].getPosition(), scene);
             bombExplode(scene, scene->_bomb[i]);
             renderExplosion(scene, scene->_bomb[i], game);
-            enemiesExplosionCollision(scene->_bomb[i].getPosition(), scene);
             if (scene->PlayerExplosionCollision(scene->_bomb[i].getPosition(), scene)) {
                 scene->_player->decHP(scene->getDifficulty());
                 Menu::playPlayerHurt();
@@ -117,6 +117,5 @@ void Scene::updateBomb(MainGame *game, Scene *scene) {
             delete scene->_blocks[y][x];
             scene->_blocks[y][x] = nullptr;
         }
-
 	}
 }
