@@ -29,8 +29,8 @@ G 16 0 -16 8 8
 G 20 0 -16 8 10
 G 4 0 -20 10 2
 G 20 0 -20 10 10
-E mag 20 0 -4
-E cubex 4 0 -6
+E cubex 20 0 -4
+E mag 4 0 -6
 E mag 12 0 -6
-E mag 10 0 -12
-E mag 14 0 -12
+E cubex 10 0 -12
+E cubex 14 0 -12

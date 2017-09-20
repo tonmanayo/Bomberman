@@ -163,7 +163,7 @@ void MainGame::loadResources()
 	addModel("bg", *getShader("gui"), "resource/models/others/bg.gltf");
 
 	/// loading enemies
-	addModel("cubex", *getShader("anime"), "resource/models/enemies/Cubex.glb");
+	addModel("cubex", *getShader("anime"), "resource/models/enemies/dino1.glb");
 	addModel("mag", *getShader("anime"), "resource/models/enemies/MagmaEnemy.glb");
 	addModel("enemy1", *getShader("basic"), "resource/models/enemies/enemy2.gltf");
 	addModel("enemyBallon", *getShader("animeNoJoint"), "resource/models/enemies/enemyBallon.gltf");
@@ -180,7 +180,7 @@ void MainGame::loadResources()
 
 	/// loading materials
 	auto *mat = new Zion::Material();
-	mat->texure.loadTextureFromPath("resource/models/enemies/cubex_Diffuse.psd");
+	mat->texure.loadTextureFromPath("resource/models/enemies/OrdileDh.png");
 	auto *cubex = (Zion::Model *)getModel("cubex");
 	cubex->addMaterial(0, *mat);
 
