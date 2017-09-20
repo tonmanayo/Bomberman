@@ -62,7 +62,6 @@ void Menu::loadOptions()
 			index++;
 		}
 	}
-	/// todo: load options from config file
 	/// loading options
 	Menu::loadOptionsConfig();
 	if (Menu::options.resolutionIndex + 1 >= Menu::options.resolutionList.size())
@@ -117,10 +116,6 @@ bool Menu::initMenu(MainGame *mainGame)
 		_playPowerUp = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/powerUp.wav");
 		_playGameReady = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/gameStart.wav");
 	}
-	Menu::playMenuMusic();
-	//playGameSong();
-	//MainGame::soundEngine->setSoundVolume(1.0f);
-	//MainGame::soundEngine->play2D(_gameMusic);
 	return true;
 }
 
@@ -149,15 +144,15 @@ void Menu::createNewGame(int level, int difficulty, std::string saveName)
 	activeMenu->scene = new Scene();
 	activeMenu->scene->setDifficulty(difficulty);
 	activeMenu->scene->setLevel(level);
-	if (level == 1)
-		activeMenu->scene->newGame(activeMenu->_mainGame, "stage1");
-	else
-		activeMenu->scene->newGame(activeMenu->_mainGame, "stage1");
+	if (level < 4)
+	{
+		activeMenu->scene->newGame(activeMenu->_mainGame, "stage" + std::to_string(level));
+	}
 	activeMenu->scene->saveGame(activeMenu->_saveFileName);
 	activeMenu->createLoadGameMenu();
 	activeMenu->_mainGame->setGameState(GAMESTATE::START);
 	Menu::textStartTime = 0;
-	Menu::stopMenuMusic();
+	MainGame::soundEngine->stopAllSounds();
 }
 
 void Menu::destroyGame()
@@ -227,6 +222,7 @@ void Menu::updateGameStateStart(MainGame *game, Menu *menu, GAMESTATE state)
 	{
 		menu->_mainGame->setGameState(GAMESTATE::GAME);
 		Menu::textStartTime = 0;
+		Menu::playGameSong();
 	}
 }
 
@@ -302,8 +298,6 @@ void Menu::updateMenu(MainGame *game, std::vector<void *> params)
 
 void Menu::renderGui()
 {
-	int     halfWidth = Menu::windowWidth / 2;
-	int     halfHeight = Menu::windowHeight / 2;
 	/// render life
 	int  life = scene->getPlayer()->getHP() / scene->getDifficulty();
 	int  enenmyCount = (int)scene->getEnemyCount();
@@ -373,12 +367,6 @@ void Menu::playMenuMusic()
 {
 	if (MainGame::soundEngine)
 		MainGame::soundEngine->play2D(_menuMusic, true);
-}
-
-void Menu::stopMenuMusic()
-{
-	if (MainGame::soundEngine)
-		MainGame::soundEngine->removeSoundSource(_menuMusic);
 }
 
 void 	Menu::playBombPlacement() {

@@ -5,14 +5,14 @@ UnbreakType block3
 BgType lavaBackground
 Enemy cubex mag
 RRRRRRRRRRRRR
-R.GG..G..GG.R
-RL.L.L.LGLELR
-RLELGLEL.L.LR
-R...G...G...R
-RL.LLL.LLL.LR
-RGG..EGE..L.R
-RLLL.L.L.LLLR
-R...GGGGG.G.R
-RL.L.L.L.L.LR
 R.G.@.....G.R
+RL.L.L.L.L.LR
+R...GGGGG.G.R
+RLLL.L.L.LLLR
+RGG..EGE..L.R
+RL.LLL.LLL.LR
+R...G...G...R
+RLELGLEL.L.LR
+RL.L.L.LGLELR
+R.GG..G..GG.R
 RRRRRRRRRRRRR

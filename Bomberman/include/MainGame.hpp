@@ -22,6 +22,9 @@ private:
 	float           _width;
 	float           _height;
 	float           _fov;
+	float           _fps;
+	float           _maxFps = 60.0f;
+	float           _frameTime;
 	Zion::Window    _window;
 	Zion::Camera    *_camera;
 	GAMESTATE       _state = GAMESTATE::MENU;
@@ -66,6 +69,7 @@ public:
 	void    loadParticles();
 	void    gameLoop();
 	void	gameLoopMenu();
+	void    calculateFPS();
 
 	Zion::Window&               getGameWindow();
 	Zion::Camera&               getGameCamera();

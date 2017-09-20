@@ -30,7 +30,7 @@ void	Scene::setDifficulty(int value) {
 void Scene::_addBackground()
 {
 	glm::mat4 tmp = glm::translate(glm::mat4(), {0, -1.3, -5});
-	tmp = glm::scale(tmp, {50, 50, 50});
+	tmp = glm::scale(tmp, {70, 70, 70});
 	MainGame::renderer.addToRender("background", 0, _game->getModel(_backgroundType), tmp);
 }
 
@@ -249,11 +249,12 @@ void Scene::sceneUpdate(MainGame *game, std::vector<void *> params)
 
 	if (game->getGameState() == GAMESTATE::GAME)
 	{
-		Menu::playGameSong();
 		if (Zion::Input::getKeyPressOnce(Menu::options.pause.glfwValue))
 		{
 			std::cout << "paused"<< std::endl;
 			game->setGameState(GAMESTATE::PAUSE);
+			//MainGame::soundEngine->stopAllSounds();
+			MainGame::soundEngine->setAllSoundsPaused(true);
 			return;
 		}
 		if (scene->getLevelTime()  == 0)

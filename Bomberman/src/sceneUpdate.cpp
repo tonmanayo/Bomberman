@@ -3,7 +3,7 @@
 
 void Scene::updatePlayer(MainGame *game, Scene *scene) {
 
-	float   velocity =  (1.0f + scene->_player->getPowerSpeed()) * Zion::Renderable::deltaTime;
+	float   velocity =  (1.5f + scene->_player->getPowerSpeed()) * Zion::Renderable::deltaTime;
 	float   positionChange = (5.0f + scene->_player->getPowerSpeed()) * Zion::Renderable::deltaTime;
 
     if (game->getGameWindow().isKeyPressed(Menu::options.moveDown.glfwValue)) {
@@ -69,11 +69,13 @@ void Scene::updatePlayer(MainGame *game, Scene *scene) {
             Menu::playLevelUp();
             scene->_levelCompleted = true;
 	        game->setGameState(GAMESTATE::END);
+	        MainGame::soundEngine->stopAllSounds();
         }
     }
 
     if (scene->_player->getHP() == 0) {
         game->setGameState(GAMESTATE::END);
+	    MainGame::soundEngine->stopAllSounds();
     }
     worldGetPower(scene->_player->getPosition(), scene);
 }

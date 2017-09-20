@@ -309,6 +309,7 @@ void Menu::createPauseGameMenu()
 		Menu::pauseMenu.saveLabel->setVisible(false);
 		activeMenu->_mainGame->setGameState(GAMESTATE::GAME);
 		Menu::pauseMenu.quitWindow->setVisible(false);
+		MainGame::soundEngine->setAllSoundsPaused(false);
 	});
 
 	posY += 70;
@@ -371,6 +372,7 @@ void Menu::createPauseGameMenu()
 		Menu::title->setCaption("MAIN MENU");
 		activeMenu->_mainGame->setGameState(GAMESTATE::MENU);
 		Menu::destroyGame();
+		Menu::playMenuMusic();
 	});
 
 	/// no button
@@ -493,7 +495,7 @@ void Menu::createLoadGameMenu()
 			activeMenu->scene->loadGame(activeMenu->_mainGame, fileName);
 			activeMenu->_mainGame->setGameState(GAMESTATE::START);
 			Menu::textStartTime = 0;
-			Menu::stopMenuMusic();
+			MainGame::soundEngine->stopAllSounds();
 		});
 		namePosY += 40;
 	}
@@ -1112,13 +1114,13 @@ void Menu::keyPressKeyBindings(int key)
 void Menu::myGlfwGetKeyName(int key, std::string &dest)
 {
 	if (key == GLFW_KEY_UP)
-		dest = "Up Arrow";
+		dest = "Up-Arrow";
 	else if (key == GLFW_KEY_DOWN)
-		dest = "Down Arrow";
+		dest = "Down-Arrow";
 	else if (key == GLFW_KEY_LEFT)
-		dest = "Left Arrow";
+		dest = "Left-Arrow";
 	else if (key == GLFW_KEY_RIGHT)
-		dest = "Right Arrow";
+		dest = "Right-Arrow";
 	else if (key == GLFW_KEY_ESCAPE)
 		dest = "Esc";
 	else if (key == GLFW_KEY_SPACE)
