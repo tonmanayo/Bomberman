@@ -158,24 +158,24 @@ void Scene::updateEnemy(MainGame *game, Scene *scene) {
         if (scene->_enemies[i]->getDirection() == 'D') {
             if (!collision)
                 scene->_enemies[i]->changePosZ(2.0f * Zion::Renderable::deltaTime);
-                scene->_enemies[i]->setPosition(glm::vec3(std::round(scene->_enemies[i]->getPosition().x), 0,
+            scene->_enemies[i]->setPosition(glm::vec3(std::round(scene->_enemies[i]->getPosition().x), 0,
                                                           scene->_enemies[i]->getPosition().z));
             scene->_enemies[i]->rotate(glm::radians(0.0f), {0, 1, 0});
         } else if (scene->_enemies[i]->getDirection() == 'U') {
             if (!collision)
                 scene->_enemies[i]->changePosZ(-2.0f * Zion::Renderable::deltaTime);
-                scene->_enemies[i]->setPosition(glm::vec3(std::round(scene->_enemies[i]->getPosition().x), 0,
+            scene->_enemies[i]->setPosition(glm::vec3(std::round(scene->_enemies[i]->getPosition().x), 0,
                                                           scene->_enemies[i]->getPosition().z));
             scene->_enemies[i]->rotate(glm::radians(180.0f), {0, 1, 0});
         } else if (scene->_enemies[i]->getDirection() == 'L') {
             if (!collision)
                 scene->_enemies[i]->changePosX(-2.0f * Zion::Renderable::deltaTime);
-                scene->_enemies[i]->setPosition(glm::vec3(scene->_enemies[i]->getPosition().x, 0, std::round(scene->_enemies[i]->getPosition().z)));
+            scene->_enemies[i]->setPosition(glm::vec3(scene->_enemies[i]->getPosition().x, 0, std::round(scene->_enemies[i]->getPosition().z)));
             scene->_enemies[i]->rotate(glm::radians(-90.0f), {0, 1, 0});
         } else if (scene->_enemies[i]->getDirection() == 'R') {
             if (!collision)
                 scene->_enemies[i]->changePosX(2.0f * Zion::Renderable::deltaTime);
-                scene->_enemies[i]->setPosition(glm::vec3(scene->_enemies[i]->getPosition().x, 0,
+            scene->_enemies[i]->setPosition(glm::vec3(scene->_enemies[i]->getPosition().x, 0,
                                                           std::round(scene->_enemies[i]->getPosition().z)));
             scene->_enemies[i]->rotate(glm::radians(90.0f), {0, 1, 0});
         }
