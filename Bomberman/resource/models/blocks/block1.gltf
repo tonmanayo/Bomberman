@@ -179,10 +179,10 @@
     ], 
     "images" : [
         {
-            "uri" : "topWall.png"
+            "uri" : "test.jpg"
         }, 
         {
-            "uri" : "topWall.png"
+            "uri" : "new.jpg"
         }
     ], 
     "materials" : [
