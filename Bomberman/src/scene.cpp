@@ -120,7 +120,7 @@ void Scene::_addBreakableBlock(float x, float z, int xx, int yy)
     _blocks[yy][xx] = block;
     _blocks[yy][xx]->setPosition(x, 0, z);
     _addPowerUps(x, z, xx, yy);
-    glm::mat4 mat = glm::translate(glm::mat4(), glm::vec3(x, 0, z));
+    glm::mat4 mat = glm::translate(glm::mat4(), glm::vec3(x, -1.15f, z));
     Zion::Renderable *breakableBlock = _game->getModel(_breakableBlockType);
 	if (breakableBlock != nullptr)
 	{

@@ -1016,8 +1016,8 @@ void Menu::createBackground()
 	Menu::gui.timeBack = new Zion::SquareSprite(*_mainGame->getShader("guiGame"), 0, 0, 0.4, 0.3);
 	Menu::gui.timeBack->addTextureFromFile("resource/images/backTime.png");
 	/// add hudcase
-	Menu::gui.hudCase = new Zion::SquareSprite(*_mainGame->getShader("guiGame"), 0, 0, 0.2, 0.3);
-	Menu::gui.hudCase->addTextureFromFile("resource/images/hudCase.jpeg");
+	//Menu::gui.hudCase = new Zion::SquareSprite(*_mainGame->getShader("guiGame"), 0, 0, 0.2, 0.3);
+	//Menu::gui.hudCase->addTextureFromFile("resource/images/hudCase.jpeg");
 }
 
 void Menu::updateGraphicOptions()

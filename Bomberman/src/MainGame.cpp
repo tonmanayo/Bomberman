@@ -179,10 +179,13 @@ void MainGame::loadResources()
 	addModel("bg", *getShader("gui"), "resource/models/others/bg.gltf");
 
 	/// loading enemies
-	addModel("cubex", *getShader("anime"), "resource/models/enemies/dino1.glb");
+	addModel("dino", *getShader("anime"), "resource/models/enemies/dino1.glb");
+	addModel("cubex", *getShader("anime"), "resource/models/enemies/cubex.glb");
+	addModel("enemyBallon2", *getShader("anime"), "resource/models/enemies/enemyBallon2.gltf");
 	addModel("mag", *getShader("anime"), "resource/models/enemies/MagmaEnemy.glb");
-	addModel("enemy1", *getShader("basic"), "resource/models/enemies/enemy2.gltf");
 	addModel("enemyBallon", *getShader("animeNoJoint"), "resource/models/enemies/enemyBallon.gltf");
+	addModel("illy", *getShader("anime"), "resource/models/enemies/illy.gltf");
+
 
 	/// loading powerUps
 	addModel("heart", *getShader("basic"), "resource/models/powerUps/heart.glb");
@@ -198,9 +201,13 @@ void MainGame::loadResources()
 
 	/// loading materials
 	auto *mat = new Zion::Material();
-	mat->texure.loadTextureFromPath("resource/models/enemies/OrdileDh.png");
+	mat->texure.loadTextureFromPath("resource/models/enemies/cubex_Diffuse.psd");
 	auto *cubex = (Zion::Model *)getModel("cubex");
 	cubex->addMaterial(0, *mat);
+
+	mat->texure.loadTextureFromPath("resource/models/enemies/OrdileDh.png");
+	auto *dino = (Zion::Model *)getModel("dino");
+	dino->addMaterial(0, *mat);
 
 	mat->texure.loadTextureFromPath("resource/models/enemies/mag_Diffuse.tga");
 	auto *mag = (Zion::Model *)getModel("mag");
