@@ -1,7 +1,7 @@
-FloorType floor1
-WallType block1
-BreakType block2
-UnbreakType block3
+FloorType stage3_Floor
+WallType stage3_Wall
+BreakType stage3_Breakable
+UnbreakType stage3_Unbreakable
 BgType lavaBackground
 Enemy cubex mag
 RRRRRRRRRRRRRRR
