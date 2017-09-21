@@ -1,0 +1,21 @@
+FloorType stage3_Floor
+WallType stage3_Wall
+BreakType stage3_Breakable
+UnbreakType stage3_Unbreakable
+BgType lavaBackground
+Enemy enemyBallon2  dino
+RRRRRRRRRRRRRRR
+R......L...2..R
+R.L.LGLLLGL.L.R
+RGGG...L...GGGR
+R.L.LGLLLGLGL.R
+REG....L....GER
+RGL.L.LLL.L.LGR
+RG...GE..G...GR
+R.L.L.LGL.L.L.R
+R.GGGG...GGGG.R
+RGL.L.LLLGL.LGR
+R....ELG......R
+R.LEL.L.GGL.LER
+R.GGG.L.GGGGG.R
+RRRRRRRRRRRRRRR
