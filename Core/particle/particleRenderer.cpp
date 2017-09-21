@@ -48,8 +48,7 @@ namespace Zion{
 				glBufferSubData(GL_ARRAY_BUFFER, 0, (ListParticles.size() * INSTANCE_DATA_LENGTH) * 4, &vboData[0]);
 				glBindBuffer(GL_ARRAY_BUFFER, 0);
 				/// instance rendering done here
-				glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, (const GLvoid *)nullptr,
-						ListParticles.size());
+				glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, (const GLvoid *)nullptr, ListParticles.size());
 				glBindTexture(GL_TEXTURE_2D, 0);
 			}
 		}
@@ -99,8 +98,7 @@ namespace Zion{
 	{
 		glBindVertexArray(vao);
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
-		glVertexAttribPointer(attribute, dataSize, GL_FLOAT, GL_FALSE, instancedDataLength * 4,
-				(void *)(offset * 4));
+		glVertexAttribPointer(attribute, dataSize, GL_FLOAT, GL_FALSE, instancedDataLength * 4, (void *)(offset * 4));
 		glVertexAttribDivisor(attribute, 1);
 		glBindVertexArray(0);
 	}

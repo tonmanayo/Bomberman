@@ -2,7 +2,7 @@
 #include <menu.hpp>
 
 Zion::Renderer                  MainGame::renderer;
-std::map<std::string, Func>    MainGame::functions;
+std::map<std::string, Func>     MainGame::functions;
 MainGame*                       MainGame::game;
 Zion::ParticleSystem*           MainGame::explosionLeft;
 Zion::ParticleSystem*           MainGame::explosionRight;
@@ -116,6 +116,8 @@ bool MainGame::initGame2(float width, float height, float fov)
 	/// Loading Shaders
 	if (addShader("basic", "shaders/basic.vert", "shaders/basic.frag"))
 		getShader("basic")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
+	if (addShader("instance", "shaders/instance.vert", "shaders/basic.frag"))
+		getShader("instance")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
 	if (addShader("particle", "shaders/particle.vert", "shaders/particle.frag"))
 		getShader("particle")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
 	if (addShader("fire", "shaders/basic.vert", "shaders/fire.frag"))
@@ -146,26 +148,26 @@ bool MainGame::initGame2(float width, float height, float fov)
 void MainGame::loadResources()
 {
 	/// loading level 1 block models
-	addModel("stage1_Wall", *getShader("basic"), "resource/models/blocks/stage1/stage1_Wall.gltf");
+	addModel("stage1_Wall", *getShader("instance"), "resource/models/blocks/stage1/stage1_Wall.gltf");
 	addModel("stage1_Breakable", *getShader("fire"), "resource/models/blocks/stage1/stage1_Breakable.gltf");
-	addModel("stage1_Unbreakable", *getShader("basic"), "resource/models/blocks/stage1/stage1_Unbreakable.gltf");
-	addModel("stage1_Floor", *getShader("basic"), "resource/models/blocks/stage1/stage1_Floor.gltf");
+	addModel("stage1_Unbreakable", *getShader("instance"), "resource/models/blocks/stage1/stage1_Unbreakable.gltf");
+	addModel("stage1_Floor", *getShader("instance"), "resource/models/blocks/stage1/stage1_Floor.gltf");
 
 	/// loading level 2 block models
-	addModel("stage2_Wall", *getShader("basic"), "resource/models/blocks/stage2/stage2_Wall.gltf");
+	addModel("stage2_Wall", *getShader("instance"), "resource/models/blocks/stage2/stage2_Wall.gltf");
 	addModel("stage2_Breakable", *getShader("fire"), "resource/models/blocks/stage2/stage2_Breakable.gltf");
-	addModel("stage2_Unbreakable", *getShader("basic"), "resource/models/blocks/stage2/stage2_Unbreakable.gltf");
-	addModel("stage2_Floor", *getShader("basic"), "resource/models/blocks/stage2/stage2_Floor.gltf");
+	addModel("stage2_Unbreakable", *getShader("instance"), "resource/models/blocks/stage2/stage2_Unbreakable.gltf");
+	addModel("stage2_Floor", *getShader("instance"), "resource/models/blocks/stage2/stage2_Floor.gltf");
 
 	/// loading level 3 block models
-	addModel("stage3_Wall", *getShader("basic"), "resource/models/blocks/stage3/stage3_Wall.gltf");
+	addModel("stage3_Wall", *getShader("instance"), "resource/models/blocks/stage3/stage3_Wall.gltf");
 	addModel("stage3_Breakable", *getShader("fire"), "resource/models/blocks/stage3/stage3_Breakable.gltf");
-	addModel("stage3_Unbreakable", *getShader("basic"), "resource/models/blocks/stage3/stage3_Unbreakable.gltf");
-	addModel("stage3_Floor", *getShader("basic"), "resource/models/blocks/stage3/stage3_Floor.gltf");
+	addModel("stage3_Unbreakable", *getShader("instance"), "resource/models/blocks/stage3/stage3_Unbreakable.gltf");
+	addModel("stage3_Floor", *getShader("instance"), "resource/models/blocks/stage3/stage3_Floor.gltf");
 
 	/// loading floor models
 
-	addModel("floor2", *getShader("basic"), "resource/models/blocks/ManHole.gltf");
+	addModel("floor2", *getShader("instance"), "resource/models/blocks/ManHole.gltf");
 
 	addModel("explosion", *getShader("basic"), "resource/models/blocks/fireBlock.gltf");
 
@@ -173,9 +175,9 @@ void MainGame::loadResources()
 	addModel("bomberman", *getShader("anime"), "resource/models/bomberman/bomberman1.glb");
 
 	/// loading other models
-	addModel("bomb", *getShader("basic"), "resource/models/others/bomb.gltf");
+	addModel("bomb", *getShader("instance"), "resource/models/others/bomb.gltf");
 	addModel("bomb1", *getShader("animeNoJoint"), "resource/models/others/bomb1.gltf");
-	addModel("lavaBackground", *getShader("basic"), "resource/models/bomberman/lavaBackground.gltf");
+	addModel("lavaBackground", *getShader("instance"), "resource/models/bomberman/lavaBackground.gltf");
 	addModel("bg", *getShader("gui"), "resource/models/others/bg.gltf");
 
 	/// loading enemies
@@ -188,10 +190,10 @@ void MainGame::loadResources()
 
 
 	/// loading powerUps
-	addModel("heart", *getShader("basic"), "resource/models/powerUps/heart.glb");
-	addModel("present", *getShader("basic"), "resource/models/powerUps/present.gltf");
-	addModel("lemon", *getShader("basic"), "resource/models/powerUps/lemon.gltf");
-	addModel("star", *getShader("basic"), "resource/models/powerUps/star.gltf");
+	addModel("heart", *getShader("instance"), "resource/models/powerUps/heart.glb");
+	addModel("present", *getShader("instance"), "resource/models/powerUps/present.gltf");
+	addModel("lemon", *getShader("instance"), "resource/models/powerUps/lemon.gltf");
+	addModel("star", *getShader("instance"), "resource/models/powerUps/star.gltf");
 
 	/// loading maps
 	addMap("map2", "resource/maps/map2");

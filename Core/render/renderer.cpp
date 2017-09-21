@@ -21,6 +21,12 @@ namespace Zion
 
 	void Renderer::addToRender(std::string type, int id, Renderable *model, glm::mat4 mat)
 	{
+		if (_vbo == 0){
+			glGenBuffers(1, &_vbo);
+			glBindBuffer(GL_ARRAY_BUFFER, _vbo);
+			glBufferData(GL_ARRAY_BUFFER, MODEL_INSTANCE_DATA_SIZE * MODEL_MAX_INSTANCES, "", GL_STREAM_DRAW);
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+		}
 		_objects[type].push_back({id, 0.0f, 0, false, 1.0f, -1.0f, model, mat});
 	}
 
@@ -74,7 +80,6 @@ namespace Zion
 		_renderStatic(_objects["endLevel"]);
 		_renderStatic(_objects["lemon"]);
 		_renderStatic(_objects["present"]);
-		_renderStatic(_objects["explosion4"]);
 		_renderAnime(_objects["mag"], "mag");
 		_renderAnime(_objects["cubex"], "cubex");
 		_renderAnime(_objects["dino"], "dino");
@@ -86,7 +91,6 @@ namespace Zion
 
 	void Renderer::_renderBreakable(std::vector<RendererObj> &objects)
 	{
-		std::vector<RendererObj>    deadBlocks;
 		Shader  *shader = MainGame::game->getShader("fire");
 
 		if (objects.empty())
@@ -99,11 +103,8 @@ namespace Zion
 		for (RendererObj& obj : objects)
 		{
 			if (!obj.die)
-				obj.model->simpleRender(obj.matrix);
-			else
-				deadBlocks.push_back(obj);
+				model->simpleRender(obj.matrix);
 		}
-		model->unloadMaterialFromShader();
 		/// render dead blocks
 		Material *fireBlock = MainGame::game->getMaterial("explosion2");
 		Material::sendMaterialToShader(*shader, *fireBlock, 0);
@@ -147,12 +148,47 @@ namespace Zion
 		auto *model = (Zion::Gltf *)objects[0].model;
 		model->enableShader();
 		model->loadMaterialToShader();
-		/// rendering
+		/// instance rendering
+		GLuint vao = model->getVao();
+		GLuint indicesCount = model->getIndicesCount();
+		int     instanceCount = 0;
+		/// enabling attrib pointers
+		addInstanceAttribute(vao, _vbo, 1, 4, MODEL_INSTANCE_DATA_SIZE,  0);
+		addInstanceAttribute(vao, _vbo, 2, 4, MODEL_INSTANCE_DATA_SIZE,  4);
+		addInstanceAttribute(vao, _vbo, 3, 4, MODEL_INSTANCE_DATA_SIZE,  8);
+		addInstanceAttribute(vao, _vbo, 4, 4, MODEL_INSTANCE_DATA_SIZE,  12);
+
+		glBindVertexArray(vao);
+		glEnableVertexAttribArray(1);
+		glEnableVertexAttribArray(2);
+		glEnableVertexAttribArray(3);
+		glEnableVertexAttribArray(4);
+		_pointer = 0;
 		for (RendererObj& obj : objects)
+		{
+			instanceCount++;
+		}
+		float   vboData[instanceCount * MODEL_INSTANCE_DATA_SIZE];
+		for (RendererObj& obj : objects)
+		{
+			storeMatrix(obj.matrix, vboData);
+		}
+		glBindBuffer(GL_ARRAY_BUFFER, _vbo);
+		glBufferData(GL_ARRAY_BUFFER, (instanceCount * MODEL_INSTANCE_DATA_SIZE) * 4, nullptr, GL_STREAM_DRAW);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, (instanceCount * MODEL_INSTANCE_DATA_SIZE) * 4, &vboData[0]);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glDrawElementsInstanced(GL_TRIANGLES, (GLsizei)indicesCount, GL_UNSIGNED_SHORT, (const GLvoid *)nullptr, instanceCount);
+		glDisableVertexAttribArray(1);
+		glDisableVertexAttribArray(2);
+		glDisableVertexAttribArray(3);
+		glDisableVertexAttribArray(4);
+		glBindVertexArray(0);
+		/// rendering
+		/*for (RendererObj& obj : objects)
 		{
 			if (!obj.die)
 				obj.model->simpleRender(obj.matrix);
-		}
+		}*/
 		model->unloadMaterialFromShader();
 		model->disableShader();
 	}
@@ -271,5 +307,35 @@ namespace Zion
 		}catch (const std::out_of_range& oor) {
 			return;
 		}
+	}
+
+	void Renderer::addInstanceAttribute(GLuint vao, GLuint vbo, GLuint attribute, int dataSize, int dataLength, int offset)
+	{
+		glBindVertexArray(vao);
+		glBindBuffer(GL_ARRAY_BUFFER, vbo);
+		glVertexAttribPointer(attribute, dataSize, GL_FLOAT, GL_FALSE, dataLength * 4, (void *)(offset * 4));
+		glVertexAttribDivisor(attribute, 1);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindVertexArray(0);
+	}
+
+	void Renderer::storeMatrix(glm::mat4 &matrix, float *vboData)
+	{
+		vboData[_pointer++] = matrix[0][0];
+		vboData[_pointer++] = matrix[0][1];
+		vboData[_pointer++] = matrix[0][2];
+		vboData[_pointer++] = matrix[0][3];
+		vboData[_pointer++] = matrix[1][0];
+		vboData[_pointer++] = matrix[1][1];
+		vboData[_pointer++] = matrix[1][2];
+		vboData[_pointer++] = matrix[1][3];
+		vboData[_pointer++] = matrix[2][0];
+		vboData[_pointer++] = matrix[2][1];
+		vboData[_pointer++] = matrix[2][2];
+		vboData[_pointer++] = matrix[2][3];
+		vboData[_pointer++] = matrix[3][0];
+		vboData[_pointer++] = matrix[3][1];
+		vboData[_pointer++] = matrix[3][2];
+		vboData[_pointer++] = matrix[3][3];
 	}
 }

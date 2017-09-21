@@ -36,12 +36,21 @@ namespace Zion
 		virtual void    render(glm::mat4 matrix) = 0;
 		virtual void    simpleRender(glm::mat4 matrix) = 0;
 
+		GLuint          getVao(){ return _vao; }
+		GLuint          getIndicesCount(){ return _indicesCount; }
+
 		void            setLocalMatrix(glm::mat4 mat) { _locMat = mat; }
 
 		void            loadMaterialToShader()
 		{
 			for (std::pair<int, Material> material : _materials)
 				Material::sendMaterialToShader(_shader, material.second, material.first);
+		}
+
+		void            loadMaterialToShader(Shader & shader)
+		{
+			for (std::pair<int, Material> material : _materials)
+				Material::sendMaterialToShader(shader, material.second, material.first);
 		}
 
 		void            unloadMaterialFromShader()

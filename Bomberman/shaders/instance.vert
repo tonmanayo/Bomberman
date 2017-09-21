@@ -1,17 +1,17 @@
 #version 400 core
 
-in  vec3    position;
-in  vec3    normal;
-in  vec2    uv;
-in  float   matIndex;
-in  int     node;
+layout (location = 0) in  vec3    position;
+layout (location = 1) in  mat4    model_matrix;
+layout (location = 5) in  vec3    normal;
+layout (location = 6) in  vec2    uv;
+layout (location = 7) in  float   matIndex;
+layout (location = 8) in  int     node;
 
 out vec3    fposition;
 out vec3    fnormal;
 out vec2    fuv;
 out float   fmatIndex;
 
-uniform mat4    model_matrix = mat4(1.0);
 uniform mat4    view_matrix = mat4(1.0);
 uniform mat4    proj_matrix = mat4(1.0);
 

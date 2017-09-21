@@ -12,6 +12,8 @@
 
 #define SCALE 1
 #define TRANS 2
+#define MODEL_INSTANCE_DATA_SIZE 16
+#define MODEL_MAX_INSTANCES 100
 
 enum GAMESTATE
 {
@@ -72,6 +74,8 @@ namespace Zion
 	{
 	private:
 		std::map<std::string, std::vector<RendererObj>>    _objects;
+		GLuint      _vbo = 0;
+		int         _pointer;
 	private:
 		void    _renderBreakable(std::vector<RendererObj>& objects);
 		void    _renderStatic(std::vector<RendererObj>& objects);
@@ -90,5 +94,7 @@ namespace Zion
 		void    applyTransformationToRenderable(std::string type, int id, glm::mat4 mat);
 		void    increaseAnimeTime(std::string type, int id, float val);
 		void    render();
+		void    addInstanceAttribute(GLuint vao, GLuint vbo, GLuint attribute, int dataSize, int dataLength, int offset);
+		void    storeMatrix(glm::mat4 &matrix, float *vboData);
 	};
 }
