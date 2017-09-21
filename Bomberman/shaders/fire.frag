@@ -17,7 +17,10 @@ uniform sampler2D   textures[10];
 uniform bool        isTexture[10];
 uniform vec4        texColor[10];
 uniform vec3        viewPos;
-uniform float       alpha = 0.3;
+uniform bool        dead = false;
+uniform vec2        offSet1;
+uniform vec2        offSet2;
+uniform vec2        rowsBlend;
 
 out vec4 out_color;
 
@@ -67,26 +70,23 @@ void main() {
     light.diffuse = vec3(0.7f, 0.42f, 0.26f);
     light.specular = vec3(0.5f, 0.5f, 0.5f);
 
-    int i = 0;
-    for (; i < 10; i++)
-    {
-        if (i == int(fmatIndex))
-            break;
-    }
-	vec4 color = texColor[i];
+    vec4    color;
+    if (!dead){
+        color = texture(textures[0], fuv);
+    }else{
+        vec2  textureCoords = fuv;
+        textureCoords.y = 1.0 - textureCoords.y;
+        textureCoords /= rowsBlend.x;
+        vec2    textureCoords1 = textureCoords + offSet1;
+        vec2    textureCoords2 = textureCoords + offSet2;
+        vec4    color1 = texture(textures[0], textureCoords1);
+        vec4    color2 = texture(textures[0], textureCoords2);
 
-    if (isTexture[i])
-    {
-        if (i == 0)
-            color *= texture(textures[0], fuv);
-        else if (i == 1)
-            color *= texture(textures[1], fuv);
-        else if (i == 2)
-            color *= texture(textures[2], fuv);
+        color = mix(color1, color2, rowsBlend.y);
     }
+
     vec3 viewDir = normalize(viewPos - fposition);
-    color = (light, normalize(fnormal), fposition, viewDir, color);
-    color.w = alpha;
+    //color = (light, normalize(fnormal), fposition, viewDir, color);
     //float gamma = 2.0;
     //color.rgb = pow(color.rgb, vec3(1.0 / gamma));
 	out_color = color;

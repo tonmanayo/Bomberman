@@ -69,11 +69,13 @@ void Scene::updatePlayer(MainGame *game, Scene *scene) {
             Menu::playLevelUp();
             scene->_levelCompleted = true;
 	        game->setGameState(GAMESTATE::END);
+	        MainGame::soundEngine->stopAllSounds();
         }
     }
 
     if (scene->_player->getHP() == 0) {
         game->setGameState(GAMESTATE::END);
+	    MainGame::soundEngine->stopAllSounds();
     }
     if (scene->getLevelTime()  <= 0)
         game->setGameState(GAMESTATE::END);

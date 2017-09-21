@@ -5,15 +5,15 @@ UnbreakType stage2_Unbreakable
 BgType lavaBackground
 Enemy cubex mag
 RRRRRRRRRRRRRRR
-R.E......GLL.LR
-R.L.L.L.LGLG..R
-R...GELGGEL..GR
-R.L.LGLGL.L.L.R
-R....GGG..GGG.R
-RGL.L.L.L.LGL.R
-R.G....GG.G.LGR
-R.LGL.L.LGL.L.R
-R.G.G.E.G.G.E.R
-R@L.LGL.L.LLL.R
 R.....G.G..E.GR
+R@L.LGL.L.LLL.R
+R.G.G.E.G.G.E.R
+R.LGL.L.LGL.L.R
+R.G....GG.G.LGR
+RGL.L.L.L.LGL.R
+R....GGG..GGG.R
+R.L.LGLGL.L.L.R
+R...GELGGEL..GR
+R.L.L.L.LGLG..R
+R.E......GLL.LR
 RRRRRRRRRRRRRRR

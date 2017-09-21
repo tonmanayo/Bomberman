@@ -185,6 +185,8 @@ void MainGame::loadResources()
 	/// loading maps
 	addMap("map2", "resource/maps/map2");
 	addMap("stage1", "resource/maps/stage1");
+	addMap("stage2", "resource/maps/stage2");
+	addMap("stage3", "resource/maps/stage3");
 
 	/// loading materials
 	auto *mat = new Zion::Material();
@@ -200,7 +202,7 @@ void MainGame::loadResources()
 	addMaterial("flame1", "resource/images/flame1.png");
 	addMaterial("particleAtlas", "resource/images/particleAtlas.png");
 	getMaterial("particleAtlas")->numRows =  4;
-	addMaterial("explosion1", "resource/images/explosion1.png");
+	addMaterial("explosion1", "resource/images/explosion2.jpg");
 	getMaterial("explosion1")->numRows =  4;
 	addMaterial("explosion2", "resource/images/explode1.png");
 	getMaterial("explosion2")->numRows =  3;
@@ -261,10 +263,10 @@ void MainGame::gameLoop()
 	Zion::Window::frameChangeTime = 0.0f;
 
 	srand(0);
-	Menu::playMenuMusic();
 	while (!_window.shouldClose())
 	{
 		auto currentTime = (float)glfwGetTime();
+		float startTicks = currentTime * 1000.0f;
 		Zion::Renderable::deltaTime = currentTime - Zion::Renderable::runTime;
 		Zion::Renderable::runTime = currentTime;
 
@@ -292,12 +294,9 @@ void MainGame::gameLoop()
 		{
 			glEnable(GL_DEPTH_TEST);
 			glDepthFunc(GL_LESS);
-			glDisable(GL_BLEND);
-			//glEnable(GL_BLEND);
-			//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-			MainGame::renderer.render();
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			MainGame::renderer.render();
 		}
 
 		/// render particles
@@ -311,6 +310,18 @@ void MainGame::gameLoop()
 		Zion::Input::updateKeys();
 		Zion::Window::frameChangeTime = (float)glfwGetTime() - Zion::Window::frameStartTime;
 		Zion::Window::frameStartTime = (float)glfwGetTime();
+		calculateFPS();
+		/*static int frameCounter = 0;
+		frameCounter++;
+		if (frameCounter == 10){
+			std::cout << _fps << std::endl;
+			frameCounter = 0;
+		}*/
+		float frameTicks = ((float)glfwGetTime() * 1000.0f) - startTicks;
+		/// fps limiter
+		if (1000.0f / _maxFps > frameTicks){
+			glfwSwapInterval((int)(1000.0f / _maxFps - frameTicks));
+		}
 	}
 }
 
@@ -382,4 +393,38 @@ std::vector<std::string> MainGame::stringSplit(const std::string &s, const char 
 	if(buff != "") v.push_back(buff);
 
 	return v;
+}
+
+void MainGame::calculateFPS()
+{
+	static const int NUM_SAMPLES = 10;
+	static float frameTimes[NUM_SAMPLES];
+	static int currentFrame = 0;
+	static int frameCount = 0;
+
+	if (frameCount < NUM_SAMPLES)
+		frameCount++;
+
+	static float prevTicks = (float)glfwGetTime() * 1000;
+
+	float currentTicks;
+	currentTicks = (float)glfwGetTime() * 1000;
+
+	_frameTime = currentTicks - prevTicks;
+	frameTimes[currentFrame++] = _frameTime;
+
+	if (currentFrame >= NUM_SAMPLES)
+		currentFrame = 0;
+
+	float frameTimeAverage = 0;
+	for (int i = 0; i < frameCount; i++){
+		frameTimeAverage += frameTimes[i];
+	}
+	frameTimeAverage /= frameCount;
+	if (frameTimeAverage > 0){
+		_fps = 1000.0f / frameTimeAverage;
+	}else{
+		_fps = 0.0f;
+	}
+	prevTicks = currentTicks;
 }

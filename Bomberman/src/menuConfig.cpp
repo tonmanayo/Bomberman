@@ -5,7 +5,7 @@ void Menu::loadOptionsConfig()
 	std::ifstream   save;
 	std::string     line;
 
-	save.open(std::string("save/options.config"), std::ios::in);
+	save.open(std::string("config/options.config"), std::ios::in);
 	if (!save.is_open())
 		return Menu::loadDefaultOptionsConfig();
 	while (std::getline(save, line))
@@ -69,7 +69,7 @@ void Menu::saveOptionsConfig()
 {
 	std::ofstream   save;
 
-	save.open(std::string("save/options.config"), std::ios::out);
+	save.open(std::string("config/options.config"), std::ios::out);
 	if (!save.is_open())
 		return;
 	save << "MusicVolume " << Menu::options.musicVolume << std::endl;

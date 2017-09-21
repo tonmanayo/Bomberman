@@ -88,11 +88,9 @@ namespace Zion
 		if (objects.empty())
 			return;
 		auto *model = (Zion::Gltf *)objects[0].model;
-		//model->enableShader();
 		shader->enable();
 		/// render alive blocks
-		shader->setUniform1f((GLchar *)"alpha", 1.0);
-		//model->getShader().setUniform1f((GLchar *)"viewpos", 1.0);
+		shader->setUniform1i((GLchar *)"dead", (int)false);
 		model->loadMaterialToShader();
 		for (RendererObj& obj : objects)
 		{
@@ -103,26 +101,38 @@ namespace Zion
 		}
 		model->unloadMaterialFromShader();
 		/// render dead blocks
-		Material *fireBlock = MainGame::game->getMaterial("fireBlock");
+		Material *fireBlock = MainGame::game->getMaterial("explosion2");
 		Material::sendMaterialToShader(*shader, *fireBlock, 0);
 		for (RendererObj &obj : objects)
 		{
-			if (obj.die)
-			{
+			if (obj.die){
+				shader->setUniform1i((GLchar *)"dead", (int)true);
+				obj.model->simpleRender(obj.matrix);
 				if (obj.startTime == -1.0f)
-					obj.startTime = (float)glfwGetTime();
-				else if ((float)glfwGetTime() - obj.startTime >= 1.0f)
+					obj.startTime = 0.0f;
+				obj.startTime += Zion::Renderable::deltaTime;
+				if (obj.startTime > 1.2f){
 					removeObject("breakBlock", obj.id);
-				else
-				{
-					shader->setUniform1f((GLchar *)"alpha", obj.alpha);
-					obj.model->simpleRender(obj.matrix);
-					obj.alpha -= ((float)glfwGetTime() - obj.startTime) / 500.0f;
+					continue;
 				}
+				float   lifeFactor = obj.startTime / 1.2f;
+				int     stageCount = fireBlock->numRows * fireBlock->numRows;
+				float   atlasProgression = lifeFactor * stageCount;
+				int     index1 = (int)std::floor(atlasProgression);
+				int     index2 = index1 < stageCount - 1 ? index1 + 1 : index1;
+				shader->setUniform2f((GLchar *)"rowsBlend", {fireBlock->numRows, fmodf(atlasProgression, 1)});
+				int     column = index1 % fireBlock->numRows;
+				int     row = index1 / fireBlock->numRows;
+				glm::vec2 offSet = {(float)column / fireBlock->numRows, (float)row / fireBlock->numRows};
+				shader->setUniform2f((GLchar *)"offSet1", offSet);
+				column = index2 % fireBlock->numRows;
+				row = index2 / fireBlock->numRows;
+				offSet = {(float)column / fireBlock->numRows, (float)row / fireBlock->numRows};
+				shader->setUniform2f((GLchar *)"offSet2", offSet);
+				obj.model->simpleRender(obj.matrix);
 			}
 		}
 		glBindTexture(GL_TEXTURE_2D, 0);
-		//model->disableShader();
 		shader->disable();
 	}
 

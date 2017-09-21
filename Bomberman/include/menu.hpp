@@ -84,6 +84,7 @@ public:
 	static void     loadOptions();
 	static void     copyOptions(Options & dest, Options & src);
 	static void     updateGraphicOptions();
+	static void     updateSoundOptions();
 	static void     loadOptionsConfig();
 	static void     loadDefaultOptionsConfig();
 	static void     saveOptionsConfig();
@@ -91,12 +92,11 @@ public:
 	static bool     mouseCallback(int button, int action, int mod);
 	static bool     cursorPositionCallback(int xpos, int ypos);
 	static bool     keyCallback(int key, int scancode, int action, int mods);
-	static void     playMenuMusic();
-	static void     stopMenuMusic();
 	static bool     isKeyAvailable(std::string &name, int keyValue);
 	static void     keyPressKeyBindings(int key);
 	static void     myGlfwGetKeyName(int key, std::string &dest);
 
+	static void     playMenuMusic();
 	static void 	playBombExplosion();
 	static void 	playBombPlacement();
 	static void 	playPlayerHurt();
