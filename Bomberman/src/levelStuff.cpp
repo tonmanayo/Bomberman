@@ -34,4 +34,5 @@ void    Scene::enemyFollowPlayer(bool collision, std::map<int, std::map<int, Blo
     {
         _enemies->setDirection('D');
     }
+
 }

@@ -185,11 +185,19 @@ void Scene::_addEnemy(float x, float z, std::string &type)
 	static int i = 0;
 
 	model = _game->getModel(type);
+
 	if (model != nullptr)
 	{
 		Player *enemy = new Player(i, type);
 		enemy->modelType = type;
 		_enemies.push_back(enemy);
+		_enemies.back()->setHp(1);
+		_enemies.back()->setSpeed(2.0f);
+		if (type == "illy") {
+			_enemies.back()->setSpeed(6.0f);
+			_enemies.back()->scale(glm::vec3{2.0f, 2.0f, 2.0f});
+			_enemies.back()->setHp(5);
+		}
 		_enemies.back()->setPosition(glm::vec3{getGridx(x), 0, getGridy(z)});
 		_enemies.back()->playerStart = glm::vec3(getGridx(x), 0, getGridy(z));
 		MainGame::renderer.addToRender(_enemies.back()->getType(), _enemies.back()->getId(), model, _enemies.back()->getTransformation());

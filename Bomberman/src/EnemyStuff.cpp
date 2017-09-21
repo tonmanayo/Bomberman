@@ -2,8 +2,69 @@
 // Created by Tony MACK on 2017/09/04.
 //
 
-#include <scene.hpp>
+#include <menu.hpp>
 
+
+void Scene::enemiesExplosionCollision(glm::vec3 pos, Scene *scene)
+{
+    int 	bombx = scene->getWorldx(pos.x);
+    int 	bomby = scene->getWorldy(pos.z);
+    bool 	del = false;
+    bool 	r = true, l = true, u = true, d = true;
+
+
+    for (int i = 0; i < scene->_enemies.size(); ++i) {
+
+        int playerx = scene->getWorldx(scene->_enemies[i]->getPosition().x);
+        int playery = scene->getWorldy(scene->_enemies[i]->getPosition().z);
+
+        for (int j = 0; j < scene->_player->getPowerExplosion() + 1; ++j) {
+
+            if (playerx == bombx - 1 - j && playery == bomby && l) {
+                del = true;
+            }
+            if (playerx == bombx + 1 + j && playery == bomby && r) {
+                del = true;
+            }
+            if (playery == bomby - 1 - j && playerx == bombx && d) {
+                del = true;
+            }
+            if (playery == bomby + 1 + j && playerx == bombx && u) {
+                del = true;
+            }
+            if (playery == bomby && playerx == bombx) {
+                del = true;
+            }
+            if (del) {
+                Menu::playEnemyHurt();
+                scene->_enemies[i]->setHp(scene->_enemies[i]->getHP() - 1);
+                if (scene->_enemies[i]->getHP() <= 0) {
+                    MainGame::renderer.removeFromRender(scene->_enemies[i]->getType(), scene->_enemies[i]->getId());
+                    delete scene->_enemies[i];
+                    scene->_enemies[i] = scene->_enemies.back();
+                    scene->_enemies.pop_back();
+                }
+                del = false;
+            }
+            if (scene->_blocks[bomby - 1 - i][bombx] != nullptr &&
+                scene->_blocks[bomby - 1 - i][bombx]->getCollision() && d) {
+                d = false;
+            }
+            if (scene->_blocks[bomby + 1 + i][bombx] != nullptr &&
+                scene->_blocks[bomby + 1 + i][bombx]->getCollision() && u) {
+                u = false;
+            }
+            if (scene->_blocks[bomby][bombx - 1 - i] != nullptr &&
+                scene->_blocks[bomby][bombx - 1 - i]->getCollision() && l) {
+                l = false;
+            }
+            if (scene->_blocks[bomby][bombx + 1 + i] != nullptr &&
+                scene->_blocks[bomby][bombx  + 1 + i]->getCollision() && r) {
+                r = false;
+            }
+        }
+    }
+}
 
 char Scene::oppDir(char dir) {
     if (dir == 'L')
@@ -128,24 +189,24 @@ void Scene::updateEnemy(MainGame *game, Scene *scene) {
         // moving the enemy in the right direction
         if (scene->_enemies[i]->getDirection() == 'D') {
             if (!collision)
-                scene->_enemies[i]->changePosZ(2.0f * Zion::Renderable::deltaTime);
+                scene->_enemies[i]->changePosZ(scene->_enemies[i]->getSpeed() * Zion::Renderable::deltaTime);
             scene->_enemies[i]->setPosition(glm::vec3(std::round(scene->_enemies[i]->getPosition().x), 0,
                                                           scene->_enemies[i]->getPosition().z));
             scene->_enemies[i]->rotate(glm::radians(0.0f), {0, 1, 0});
         } else if (scene->_enemies[i]->getDirection() == 'U') {
             if (!collision)
-                scene->_enemies[i]->changePosZ(-2.0f * Zion::Renderable::deltaTime);
+                scene->_enemies[i]->changePosZ(-(scene->_enemies[i]->getSpeed()) * Zion::Renderable::deltaTime);
             scene->_enemies[i]->setPosition(glm::vec3(std::round(scene->_enemies[i]->getPosition().x), 0,
                                                           scene->_enemies[i]->getPosition().z));
             scene->_enemies[i]->rotate(glm::radians(180.0f), {0, 1, 0});
         } else if (scene->_enemies[i]->getDirection() == 'L') {
             if (!collision)
-                scene->_enemies[i]->changePosX(-2.0f * Zion::Renderable::deltaTime);
+                scene->_enemies[i]->changePosX(-(scene->_enemies[i]->getSpeed()) * Zion::Renderable::deltaTime);
             scene->_enemies[i]->setPosition(glm::vec3(scene->_enemies[i]->getPosition().x, 0, std::round(scene->_enemies[i]->getPosition().z)));
             scene->_enemies[i]->rotate(glm::radians(-90.0f), {0, 1, 0});
         } else if (scene->_enemies[i]->getDirection() == 'R') {
             if (!collision)
-                scene->_enemies[i]->changePosX(2.0f * Zion::Renderable::deltaTime);
+                scene->_enemies[i]->changePosX(scene->_enemies[i]->getSpeed() * Zion::Renderable::deltaTime);
             scene->_enemies[i]->setPosition(glm::vec3(scene->_enemies[i]->getPosition().x, 0,
                                                           std::round(scene->_enemies[i]->getPosition().z)));
             scene->_enemies[i]->rotate(glm::radians(90.0f), {0, 1, 0});
