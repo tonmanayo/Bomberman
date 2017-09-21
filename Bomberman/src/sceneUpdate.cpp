@@ -77,8 +77,8 @@ void Scene::updatePlayer(MainGame *game, Scene *scene) {
         game->setGameState(GAMESTATE::END);
 	    MainGame::soundEngine->stopAllSounds();
     }
-    if (scene->getLevelTime()  <= 0)
-        game->setGameState(GAMESTATE::END);
+    //if (scene->getLevelTime()  <= 0)
+    //    game->setGameState(GAMESTATE::END);
     worldGetPower(scene->_player->getPosition(), scene);
 }
 

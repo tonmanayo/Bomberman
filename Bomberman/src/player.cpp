@@ -83,3 +83,23 @@ int			Player::getPowerBombNbr() {
 float			Player::getPowerSpeed() {
 	return _powerSpeed;
 }
+
+void Player::setPowerExplosion(int val)
+{
+	_powerBombExplosion = val;
+}
+
+void Player::setPowerBombNbr(int val)
+{
+	_powerBombNumber = val;
+}
+
+void Player::setPowerSpeed(float val)
+{
+	_powerSpeed = val;
+}
+
+void Player::setHp(int val)
+{
+	_hp = val;
+}

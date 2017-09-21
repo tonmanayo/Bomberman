@@ -19,7 +19,9 @@ enum GAMESTATE
 	PAUSE,
 	GAME,
 	START,
-	END
+	END,
+	CUT_SCENE_START,
+	CUT_SCENE_END
 };
 
 class MainGame;

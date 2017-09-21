@@ -16,13 +16,12 @@ public:
     glm::vec3   playerStart;
     glm::vec3  	playerScale;
 
-    char   setDirection(char c);
-
-    char   getDirection();
-
-	int getHP();
-	void incHP();
-	void decHP(int );
+    char    setDirection(char c);
+    char    getDirection();
+	int     getHP();
+	void    setHp(int val);
+	void    incHP();
+	void    decHP(int );
 
 public:
 	Player(int id, std::string type);
@@ -39,5 +38,8 @@ public:
 	int			getPowerExplosion();
 	int			getPowerBombNbr();
 	float		getPowerSpeed();
+	void		setPowerExplosion(int val);
+	void		setPowerBombNbr(int val);
+	void		setPowerSpeed(float val);
 
 };

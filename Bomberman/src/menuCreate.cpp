@@ -202,7 +202,7 @@ void Menu::createNewGameMenu()
 	int     otherButtonHeight = (Menu::windowWidth > 800) ? buttonHeight : buttonHeight / 2;
 	int     otherPosX = posX + ((Menu::windowWidth > 800) ? 10 : -15);
 
-	nanogui::Theme  *tmp = new nanogui::Theme(_screen->nvgContext());
+	auto  *tmp = new nanogui::Theme(_screen->nvgContext());
 	tmp->mFontBold = 1;
 	tmp->mFontNormal = 0;
 	tmp->mStandardFontSize = (Menu::windowWidth < 1280) ? (Menu::windowWidth * 25) / 1200 : 25;
@@ -282,7 +282,7 @@ void Menu::createNewGameMenu()
 void Menu::createPauseGameMenu()
 {
 	/// window theme
-	nanogui::Theme  *winTheme = new nanogui::Theme(_screen->nvgContext());
+	auto  *winTheme = new nanogui::Theme(_screen->nvgContext());
 	winTheme->mWindowCornerRadius = 0;
 	winTheme->mWindowFillFocused = {30, 30, 30, 255};
 	winTheme->mWindowFillUnfocused = {30, 30, 30, 255};
@@ -392,7 +392,7 @@ void Menu::createPauseGameMenu()
 void Menu::createEndGameMenu()
 {
 	/// window theme
-	nanogui::Theme  *winTheme = new nanogui::Theme(_screen->nvgContext());
+	auto  *winTheme = new nanogui::Theme(_screen->nvgContext());
 	winTheme->mWindowCornerRadius = 0;
 	winTheme->mWindowFillFocused = {30, 30, 30, 255};
 	winTheme->mWindowFillUnfocused = {30, 30, 30, 255};
@@ -458,8 +458,8 @@ void Menu::createLoadGameMenu()
 
 	Menu::loadSaveDirectory();
 
-	/// filenames panel
-	nanogui::Theme  *panelTheme = new nanogui::Theme(_screen->nvgContext());
+	/// fileNames panel
+	auto  *panelTheme = new nanogui::Theme(_screen->nvgContext());
 	panelTheme->mTransparent = {10, 10, 10, 255};
 	panelTheme->mButtonFontSize = 20;
 	panelTheme->mFontBold = 0;
@@ -610,7 +610,7 @@ void Menu::createOptionsMenu()
 		Menu::optionMenu.audioButton->setTheme(Menu::optionMenu.unfocusTabTheme);
 	});
 
-	nanogui::Theme *windowTheme = new nanogui::Theme(_screen->nvgContext());
+	auto *windowTheme = new nanogui::Theme(_screen->nvgContext());
 	windowTheme->mWindowFillFocused = {20, 20, 20, 0};
 	windowTheme->mWindowFillUnfocused = {20, 20, 20, 0};
 	windowTheme->mBorderLight = {237, 237, 237, 0};
@@ -644,7 +644,7 @@ void Menu::createOptionsMenu()
 
 	std::vector<int>    resolutionData = Menu::tmpOptions.resolutionList[Menu::tmpOptions.resolutionIndex];
 	std::string resStr = std::to_string(resolutionData[0]) + " x " + std::to_string(resolutionData[1]) + " " + std::to_string(resolutionData[2]) + "Hz";
-	nanogui::TextBox *resolutionBox = new nanogui::TextBox(Menu::optionMenu.screenWindow, resStr);
+	auto *resolutionBox = new nanogui::TextBox(Menu::optionMenu.screenWindow, resStr);
 	resolutionBox->setSize({panelArrowSizeX * 5, winHeight});
 	resolutionBox->setPosition({midOffset + panelArrowSizeX, 0});
 	resolutionBox->setFontSize(panelFontSize - ((Menu::windowWidth < 1280) ? (Menu::windowWidth * 5) / 1100 : 5));
@@ -680,7 +680,7 @@ void Menu::createOptionsMenu()
 		resolutionBox->setValue(resStr1);
 	});
 
-	/// fullscreen
+	/// fullScreen
 	int winPosY = winHeight + 10;
 	nanogui::Label  *fullScreenLabel = new nanogui::Label(Menu::optionMenu.screenWindow, "Full Screen", "sans", panelFontSize);
 	fullScreenLabel->setSize({midOffset, winPosY});
@@ -729,7 +729,7 @@ void Menu::createOptionsMenu()
 	musicLabel->setSize({midOffset, winHeight});
 	musicLabel->setPosition({2, 0});
 
-	nanogui::Slider *musicSlider = new nanogui::Slider(Menu::optionMenu.audioWindow);
+	auto *musicSlider = new nanogui::Slider(Menu::optionMenu.audioWindow);
 	musicSlider->setSize({halfWinX * 2, winHeight});
 	musicSlider->setPosition({midOffset, 0});
 	musicSlider->setHighlightColor({174, 17, 2, 255});
@@ -747,7 +747,7 @@ void Menu::createOptionsMenu()
 	soundLabel->setSize({midOffset, winHeight});
 	soundLabel->setPosition({2, winPosY});
 
-	nanogui::Slider *soundSlider = new nanogui::Slider(Menu::optionMenu.audioWindow);
+	auto *soundSlider = new nanogui::Slider(Menu::optionMenu.audioWindow);
 	soundSlider->setSize({halfWinX * 2, winHeight});
 	soundSlider->setPosition({midOffset, winPosY});
 	soundSlider->setHighlightColor({174, 17, 2, 255});
@@ -829,7 +829,7 @@ void Menu::createOptionsMenu()
 	});
 
 	/// create press key window
-	nanogui::Theme *pressKey = new nanogui::Theme(_screen->nvgContext());
+	auto *pressKey = new nanogui::Theme(_screen->nvgContext());
 	pressKey->mWindowFillFocused = {20, 20, 20, 200};
 	pressKey->mWindowFillUnfocused = {20, 20, 20, 200};
 	pressKey->mBorderLight = {20, 20, 20, 200};
@@ -863,7 +863,7 @@ void Menu::createOptionsMenu()
 	upLabel->setSize({midOffset, winHeight});
 	upLabel->setPosition({2, 0});
 
-	nanogui::Button *upKey = new nanogui::Button(Menu::optionMenu.keyWindow, Menu::tmpOptions.moveUp.name);
+	auto *upKey = new nanogui::Button(Menu::optionMenu.keyWindow, Menu::tmpOptions.moveUp.name);
 	upKey->setSize({panelArrowSizeX * 5, winHeight});
 	upKey->setPosition({midOffset, 0});
 	upKey->setFontSize(panelFontSize);
@@ -880,7 +880,7 @@ void Menu::createOptionsMenu()
 	downLabel->setSize({midOffset, winHeight});
 	downLabel->setPosition({2, winPosY});
 
-	nanogui::Button *downKey = new nanogui::Button(Menu::optionMenu.keyWindow, Menu::tmpOptions.moveDown.name);
+	auto *downKey = new nanogui::Button(Menu::optionMenu.keyWindow, Menu::tmpOptions.moveDown.name);
 	downKey->setSize({panelArrowSizeX * 5, winHeight});
 	downKey->setPosition({midOffset, winPosY});
 	downKey->setFontSize(panelFontSize);
@@ -898,7 +898,7 @@ void Menu::createOptionsMenu()
 	leftLabel->setSize({midOffset, winHeight});
 	leftLabel->setPosition({2, winPosY});
 
-	nanogui::Button *leftKey = new nanogui::Button(Menu::optionMenu.keyWindow, Menu::tmpOptions.moveLeft.name);
+	auto *leftKey = new nanogui::Button(Menu::optionMenu.keyWindow, Menu::tmpOptions.moveLeft.name);
 	leftKey->setSize({panelArrowSizeX * 5, winHeight});
 	leftKey->setPosition({midOffset, winPosY});
 	leftKey->setFontSize(panelFontSize);
@@ -916,7 +916,7 @@ void Menu::createOptionsMenu()
 	rightLabel->setSize({midOffset, winHeight});
 	rightLabel->setPosition({2, winPosY});
 
-	nanogui::Button *rightKey = new nanogui::Button(Menu::optionMenu.keyWindow, Menu::tmpOptions.moveRight.name);
+	auto *rightKey = new nanogui::Button(Menu::optionMenu.keyWindow, Menu::tmpOptions.moveRight.name);
 	rightKey->setSize({panelArrowSizeX * 5, winHeight});
 	rightKey->setPosition({midOffset, winPosY});
 	rightKey->setFontSize(panelFontSize);
@@ -934,7 +934,7 @@ void Menu::createOptionsMenu()
 	placeBombLabel->setSize({midOffset, winHeight});
 	placeBombLabel->setPosition({2, winPosY});
 
-	nanogui::Button *placeBombKey = new nanogui::Button(Menu::optionMenu.keyWindow, Menu::tmpOptions.placeBomb.name);
+	auto *placeBombKey = new nanogui::Button(Menu::optionMenu.keyWindow, Menu::tmpOptions.placeBomb.name);
 	placeBombKey->setSize({panelArrowSizeX * 5, winHeight});
 	placeBombKey->setPosition({midOffset, winPosY});
 	placeBombKey->setFontSize(panelFontSize);
@@ -952,7 +952,7 @@ void Menu::createOptionsMenu()
 	pauseLabel->setSize({midOffset, winHeight});
 	pauseLabel->setPosition({2, winPosY});
 
-	nanogui::Button *pauseKey = new nanogui::Button(Menu::optionMenu.keyWindow, Menu::tmpOptions.pause.name);
+	auto *pauseKey = new nanogui::Button(Menu::optionMenu.keyWindow, Menu::tmpOptions.pause.name);
 	pauseKey->setSize({panelArrowSizeX * 5, winHeight});
 	pauseKey->setPosition({midOffset, winPosY});
 	pauseKey->setFontSize(panelFontSize);
@@ -1015,9 +1015,6 @@ void Menu::createBackground()
 	/// add timeBanner
 	Menu::gui.timeBack = new Zion::SquareSprite(*_mainGame->getShader("guiGame"), 0, 0, 0.4, 0.3);
 	Menu::gui.timeBack->addTextureFromFile("resource/images/backTime.png");
-	/// add hudcase
-	//Menu::gui.hudCase = new Zion::SquareSprite(*_mainGame->getShader("guiGame"), 0, 0, 0.2, 0.3);
-	//Menu::gui.hudCase->addTextureFromFile("resource/images/hudCase.jpeg");
 }
 
 void Menu::updateGraphicOptions()
@@ -1093,9 +1090,7 @@ bool Menu::isKeyAvailable(std::string &name, int keyValue)
 		return false;
 	if (name != "placeBomb" && keyValue == Menu::tmpOptions.placeBomb.glfwValue)
 		return false;
-	if (name != "pause" && keyValue == Menu::tmpOptions.pause.glfwValue)
-		return false;
-	return true;
+	return (name != "pause" && keyValue == Menu::tmpOptions.pause.glfwValue);
 }
 
 void Menu::keyPressKeyBindings(int key)
@@ -1199,6 +1194,4 @@ void Menu::myGlfwGetKeyName(int key, std::string &dest)
 		dest = "Enter";
 	else if (key == GLFW_KEY_TAB)
 		dest = "Tab";
-	else if (key == GLFW_KEY_ESCAPE)
-		dest = "Escape";
 }

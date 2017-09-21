@@ -99,6 +99,14 @@ bool Scene::loadGame(MainGame *game, std::string fileName)
 		else if (strSplits[0] == std::string("G"))
 			_addBreakableBlock((float) atoi(strSplits[1].c_str()), (float) atoi(strSplits[3].c_str()),
 			                   atoi(strSplits[5].c_str()), atoi(strSplits[4].c_str()));
+		else if (strSplits[0] == std::string("Hp"))
+			_player->setHp(std::atoi(strSplits[1].c_str()));
+		else if (strSplits[0] == std::string("Explosion"))
+			_player->setPowerExplosion(std::atoi(strSplits[1].c_str()));
+		else if (strSplits[0] == std::string("Bomb"))
+			_player->setPowerBombNbr(std::atoi(strSplits[1].c_str()));
+		else if (strSplits[0] == std::string("Speed"))
+			_player->setPowerSpeed((float)std::atof(strSplits[1].c_str()));
 	}
 	if (_mapName.empty())
 		return false;
@@ -158,12 +166,12 @@ bool Scene::saveGame(std::string fileName)
 	save << "BreakableBlockType " << _breakableBlockType << std::endl;
 	save << "Level " << _sceneLevel << std::endl;
 	save << "Difficulty " << _difficulty << std::endl;
+	pos = _player->getPosition();
+	save << "@ " << pos.x << " " << pos.y << " " << pos.z << std::endl;
 	save << "Explosion " << _player->getPowerExplosion() << std::endl;
 	save << "Bomb " << _player->getPowerBombNbr() << std::endl;
 	save << "Hp " << _player->getHP() << std::endl;
 	save << "Speed " << _player->getPowerSpeed() << std::endl;
-	pos = _player->getPosition();
-	save << "@ " << pos.x << " " << pos.y << " " << pos.z << std::endl;
 	for (std::pair<int, std::map<int, Block *>> pair : _blocks)
 	{
 		for (std::pair<int, Block *> block : pair.second)

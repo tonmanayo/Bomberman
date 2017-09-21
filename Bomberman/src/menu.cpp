@@ -55,7 +55,7 @@ void Menu::loadOptions()
 	int index = 0;
 	/// loading them into my resolution list
 	for (int i = 0; i < count - 1; i++){
-		if (modes[i].refreshRate >= mode->refreshRate && mode->redBits == modes[i].redBits &&
+		if (modes[i].refreshRate == mode->refreshRate && mode->redBits == modes[i].redBits &&
 				mode->greenBits == modes[i].greenBits && mode->blueBits == modes[i].blueBits)
 		{
 			Menu::options.resolutionList.insert(std::pair<int, std::vector<int>>(index, {modes[i].width, modes[i].height, modes[i].refreshRate}));
@@ -254,23 +254,22 @@ void Menu::updateGameStateStart(MainGame *game, Menu *menu, GAMESTATE state)
 
 void Menu::updateGameStateEnd(MainGame *game, Menu *menu, GAMESTATE state)
 {
-	float halfHeight = (float)Menu::windowHeight / 3;
-	float halfWidth = (float)Menu::windowWidth / 2;
-	float xOffset = (float)Menu::windowWidth / 5;
-
+	glDisable(GL_DEPTH_TEST);
 	if (Menu::textStartTime == 0.0f)
 		Menu::textStartTime = (float)glfwGetTime();
 
+	Menu::gui.whiteBanner->render(glm::translate(glm::mat4(), {0, 0.0, 0}));
+
 	float changeTime = (float)glfwGetTime() - Menu::textStartTime;
-	if (menu->scene->isLevelCompleted())
-	{
-		float offset;
-		if (changeTime <= 0.9f)
-			offset = (changeTime / 0.9f) * (halfWidth + xOffset);
-		else
-			offset = (halfWidth + xOffset);
-		Menu::gui.whiteBanner->render(glm::translate(glm::mat4(), {0, 0.3, 0}));
-		MainGame::fontRenderer1->renderText("Stage Cleared", (float)Menu::windowWidth - offset, halfHeight + 55, 2.0f, {0.8, 0.8, 0.8});
+	float textSize = ((float)Menu::windowWidth / 1600.0f) * 3.0f;
+	float posY;
+	float posX;
+
+	if (menu->scene->isLevelCompleted()){
+		posY = (0.90f * Menu::windowHeight) / 2.0f;
+		posX = (0.70f * Menu::windowWidth) / 2.0f;
+		textSize = ((float)Menu::windowWidth / 1600.0f) * 2.5f;
+		MainGame::fontRenderer1->renderText("Stage Cleared", posX, posY, textSize, {0.8, 0.8, 0.8});
 		if (changeTime >= 1.7f){
 			int level = menu->scene->getLevel() + 1;
 			int difficulty = menu->scene->getDifficultyValue();
@@ -278,9 +277,10 @@ void Menu::updateGameStateEnd(MainGame *game, Menu *menu, GAMESTATE state)
 			createNewGame(level, difficulty, menu->_saveFileName);
 		}
 	}else{
-		Menu::gui.whiteBanner->render(glm::translate(glm::mat4(), {0, 0.4, 0}));
-		MainGame::fontRenderer1->renderText("You  Died !!!", halfWidth - xOffset, halfHeight - 15, 2.0f, {0.54, 0.027, 0.027});
-		if (changeTime > 0.6f)
+		posY = (0.90f * Menu::windowHeight) / 2.0f;
+		posX = (0.65f * Menu::windowWidth) / 2.0f;
+		MainGame::fontRenderer1->renderText("You  Died !!!", posX, posY, textSize, {0.54, 0.027, 0.027});
+		if (changeTime > 0.7f)
 		{
 			if (Menu::pauseMenu.window->visible())
 				Menu::pauseMenu.changeView(false);
@@ -289,7 +289,8 @@ void Menu::updateGameStateEnd(MainGame *game, Menu *menu, GAMESTATE state)
 			menu->_screen->drawWidgets();
 		}
 	}
-
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LESS);
 }
 
 void Menu::updateMenu(MainGame *game, std::vector<void *> params)
@@ -306,10 +307,10 @@ void Menu::updateMenu(MainGame *game, std::vector<void *> params)
 	}
 	else if (state == GAMESTATE::PAUSE)
 	{
-
-		float halfHeight = (float)Menu::windowHeight / 2;
-		float halfWidth = (float)Menu::windowWidth / 3;
-		MainGame::fontRenderer2->renderText("Paused", halfWidth, halfHeight, 2.0f, {0.8, 0.8, 0.8});
+		float posX = (0.80f * Menu::windowWidth) / 2.0f;
+		float posY = (0.80f * Menu::windowHeight) / 2.0f;
+		float textSize = ((float)Menu::windowWidth / 1600.0f) * 2.0f;
+		MainGame::fontRenderer2->renderText("Paused", posX, posY, textSize, {0.8, 0.8, 0.8});
 		menu->_screen->drawWidgets();
 	}
 	else if (state == GAMESTATE::GAME)
