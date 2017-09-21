@@ -122,6 +122,8 @@ bool MainGame::initGame2(float width, float height, float fov)
 		getShader("fire")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
 	if (addShader("gui", "shaders/gui.vert", "shaders/basic.frag"))
 		getShader("gui")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
+	if (addShader("guiGame", "shaders/gui1.vert", "shaders/basic.frag"))
+		getShader("guiGame")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
 	if (addShader("anime", "shaders/anime.vert", "shaders/basic.frag"))
 		getShader("anime")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
 	if (addShader("animeNoJoint", "shaders/animeNoJoint.vert", "shaders/basic.frag"))

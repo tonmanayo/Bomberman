@@ -19,6 +19,7 @@
 #include <sys/types.h>
 #include <dirent.h>
 #include <stdio.h>
+#include <zion.h>
 
 struct  MainMenu
 {
@@ -166,6 +167,7 @@ struct  Gui
 	Zion::SquareSprite  *explode;
 	Zion::SquareSprite  *heartCase;
 	Zion::SquareSprite  *whiteBanner;
+	Zion::SquareSprite  *hudCase;
 };
 
 struct  OptionMenu

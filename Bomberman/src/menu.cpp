@@ -55,7 +55,7 @@ void Menu::loadOptions()
 	int index = 0;
 	/// loading them into my resolution list
 	for (int i = 0; i < count - 1; i++){
-		if (mode->refreshRate == modes[i].refreshRate && mode->redBits == modes[i].redBits &&
+		if (modes[i].refreshRate >= mode->refreshRate && mode->redBits == modes[i].redBits &&
 				mode->greenBits == modes[i].greenBits && mode->blueBits == modes[i].blueBits)
 		{
 			Menu::options.resolutionList.insert(std::pair<int, std::vector<int>>(index, {modes[i].width, modes[i].height, modes[i].refreshRate}));
@@ -184,40 +184,62 @@ void Menu::loadSaveDirectory()
 
 void Menu::updateGameStateStart(MainGame *game, Menu *menu, GAMESTATE state)
 {
-	float halfHeight = (float)Menu::windowHeight / 3;
-	float halfWidth = (float)Menu::windowWidth / 2;
-	float xOffset = (float)Menu::windowWidth / 5;
+	glDisable(GL_DEPTH_TEST);
 	if (Menu::textStartTime == 0.0f)
 		Menu::textStartTime = (float)glfwGetTime();
 
-	Menu::gui.whiteBanner->render(glm::translate(glm::mat4(), {0, 0.3, 0}));
+	Menu::gui.whiteBanner->render(glm::translate(glm::mat4(), {0, 0.0, 0}));
 
 	float changeTime = (float)glfwGetTime() - Menu::textStartTime;
-	float offset;
-	if (changeTime <= 1.4f) {
+	float posY1;
+	float posY2;
+	float posX1;
+	float posX2;
+	float offSet;
+	float textSize = ((float)Menu::windowWidth / 1600.0f) * 2.0f;
 
-		int stage = menu->scene->getLevel();
-		if (changeTime <= 0.9f)
-			offset = (changeTime / 0.9f) * (halfWidth + xOffset);
-		else
-			offset = (halfWidth + xOffset);
-		MainGame::fontRenderer1->renderText("STAGE " + std::to_string(stage), (float)Menu::windowWidth - (offset - halfWidth / 3), halfHeight, 1.5f, {0.8, 0.8, 0.8});
-		MainGame::fontRenderer1->renderText("Defeat All Enemies", (float)Menu::windowWidth - offset, halfHeight + 55, 2.0f, {0.8, 0.8, 0.8});
-	}else if (changeTime <= 2.6f) {
+	if (changeTime <= 1.4f)
+	{
+		int stage = Menu::activeMenu->scene->getLevel();
+		posX1 = (0.80f * Menu::windowWidth) / 2.0f;
+		posX2 = (0.57f * Menu::windowWidth) / 2.0f;
+		posY1 = (0.80f * Menu::windowHeight) / 2.0f;
+		posY2 = (1.0f * Menu::windowHeight) / 2.0f;
+		if (changeTime <= 1.0f){
+			offSet = (changeTime / 0.7f) * posX1;
+			float newPosX = (float)Menu::windowWidth - offSet;
+			MainGame::fontRenderer1->renderText("STAGE " + std::to_string(stage), newPosX, posY1, textSize, {0.8, 0.8, 0.8});
+			offSet = (changeTime / 0.45f) * posX2;
+			newPosX = (float)Menu::windowWidth - offSet;
+			MainGame::fontRenderer1->renderText("Defeat All Enemies", newPosX, posY2, textSize, {0.8, 0.8, 0.8});
+		}else {
+			MainGame::fontRenderer1->renderText("STAGE " + std::to_string(stage), posX1, posY1, textSize, {0.8, 0.8, 0.8});
+			MainGame::fontRenderer1->renderText("Defeat All Enemies", posX2, posY2, textSize, {0.8, 0.8, 0.8});
+		}
+	}
+	else if (changeTime <= 2.6f)
+	{
+		posX1 = (0.90f * Menu::windowWidth) / 2.0f;
+		posY1 = (0.90f * Menu::windowHeight) / 2.0f;
 		float tmp = changeTime - 1.4f;
-		if (changeTime <= 2.3)
-			offset = (tmp / 0.9f) * (halfWidth + xOffset - halfWidth / 4);
-		else
-			offset = (halfWidth + xOffset - halfWidth / 4);
-		MainGame::fontRenderer1->renderText("READY", (float)Menu::windowWidth - offset, halfHeight, 3.0f, {0.8, 0.8, 0.8});
-        Menu::playGameReady();
-	}else {
+		if (changeTime <= 2.3){
+			offSet = (tmp / 0.8f) * posX1;
+			float newPosX = (float)Menu::windowWidth - offSet;
+			MainGame::fontRenderer1->renderText("READY", newPosX, posY1, textSize, {0.8, 0.8, 0.8});
+		}else{
+			MainGame::fontRenderer1->renderText("READY", posX1, posY1, textSize, {0.8, 0.8, 0.8});
+		}
+	}else{
+		posX1 = (0.98f * Menu::windowWidth) / 2.0f;
+		posY1 = (0.90f * Menu::windowHeight) / 2.0f;
 		float tmp = changeTime - 2.8f;
-		if (changeTime <= 3.5f)
-			offset = (tmp / 0.7f) * (halfWidth + xOffset - halfWidth / 3);
-		else
-			offset = (halfWidth + xOffset - halfWidth / 3);
-		MainGame::fontRenderer1->renderText("GO", (float)Menu::windowWidth - offset, halfHeight, 3.0f, {0.8, 0.8, 0.8});
+		if (changeTime <= 3.5f){
+			offSet = (tmp / 0.75f) * posX1;
+			float newPosX = (float)Menu::windowWidth - offSet;
+			MainGame::fontRenderer1->renderText("GO", newPosX, posY1, textSize, {0.8, 0.8, 0.8});
+		} else{
+			MainGame::fontRenderer1->renderText("GO", posX1, posY1, textSize, {0.8, 0.8, 0.8});
+		}
 	}
 	if (changeTime >= 3.9f)
 	{
@@ -225,6 +247,8 @@ void Menu::updateGameStateStart(MainGame *game, Menu *menu, GAMESTATE state)
 		Menu::textStartTime = 0;
 		Menu::playGameSong();
 	}
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LESS);
 }
 
 void Menu::updateGameStateEnd(MainGame *game, Menu *menu, GAMESTATE state)
@@ -301,38 +325,42 @@ void Menu::renderGui()
 {
 	/// render life
 	int  life = scene->getPlayer()->getHP() / scene->getDifficulty();
-	int  enenmyCount = (int)scene->getEnemyCount();
+	int  enemyCount = (int)scene->getEnemyCount();
 	int  bomb = scene->getPlayer()->getPowerBombNbr() + 1;
 	int  explode = scene->getPlayer()->getPowerExplosion() + 1;
 
-	float posX = -3.3f;
+	float posX = 0.96f;
+	float posY = 0.91f;
+	float heartPosX = posX * -1;
+	glDisable(GL_DEPTH_TEST);
 	for (int i = 0; i < life; i++)
 	{
-		Menu::gui.heart->render({glm::translate(glm::mat4(), {posX, 1.9, 0})});
-		posX += 0.2;
+		Menu::gui.heart->render({glm::translate(glm::mat4(), {heartPosX, 0.93, 0})});
+		heartPosX += 0.06;
 	}
-	/// bomb
-	Menu::gui.bomb->render(glm::translate(glm::mat4(), {-3.3f, -1.3, 0}));
-	MainGame::fontRenderer1->renderText("x" + std::to_string(bomb), 80,
-	                                    Menu::windowHeight - 152, 0.5f,
-	                                    {0.8, 0.8, 0.8});
-	/// explode
-	Menu::gui.explode->render(glm::translate(glm::mat4(), {-3.3f, -1.6, 0}));
-	MainGame::fontRenderer1->renderText(std::string("x") + std::to_string(explode), 80,
-	                                    Menu::windowHeight - 102, 0.5f,
-	                                    {0.8, 0.8, 0.8});
-	/// enemy
-	Menu::gui.enemy2->render(glm::translate(glm::mat4(), {-3.3f, -1.9, 0}));
-	MainGame::fontRenderer1->renderText(std::string("x") + std::to_string(enenmyCount), 80,
-	                                    Menu::windowHeight - 50, 0.5f,
-	                                    {0.8, 0.8, 0.8});
 
-	///time
-	auto i = static_cast<int>(std::trunc(scene->getLevelTime()));                //todo fix with resolution
-	Menu::gui.timeBack->render(glm::translate(glm::mat4(), {0.0f, 1.94f, 0.0f}));
-	MainGame::fontRenderer1->renderText(std::to_string(i), (Menu::windowWidth / 2) - 32,
-										25 , 1.0f,
-										{0.8, 0.8, 0.8});
+	/// bomb
+	Menu::gui.bomb->render(glm::translate(glm::mat4(), {-0.94f, -0.78f, 0}));
+	float textPosY = (1.75f * Menu::windowHeight) / 2.0f;
+	float textPosX = (0.1f * Menu::windowWidth) / 2.0f;
+	float textSize = (float)Menu::windowWidth / 1600.0f;
+	MainGame::fontRenderer1->renderText("x" + std::to_string(bomb), textPosX, textPosY, textSize, {0.8, 0.8, 0.8});
+	/// explode
+	textPosY = (1.88f * Menu::windowHeight) / 2.0f;
+	Menu::gui.explode->render(glm::translate(glm::mat4(), {-0.94f, -0.91f, 0}));
+	MainGame::fontRenderer1->renderText(std::string("x") + std::to_string(explode), textPosX, textPosY, textSize, {0.8, 0.8, 0.8});
+	/// enemy
+	textPosY = (1.62f * Menu::windowHeight) / 2.0f;
+	Menu::gui.enemy2->render(glm::translate(glm::mat4(), {-0.94f, -0.65f, 0}));
+	MainGame::fontRenderer1->renderText(std::string("x") + std::to_string(enemyCount), textPosX, textPosY, textSize, {0.8, 0.8, 0.8});
+	/// level
+	int level = Menu::activeMenu->scene->getLevel();
+	textPosX = (0.87f * Menu::windowWidth) / 2.0f;
+	textPosY = (0.06f * Menu::windowHeight) / 2.0f;
+	Menu::gui.timeBack->render(glm::translate(glm::mat4(), {0.0f, posY, 0.0f}));
+	MainGame::fontRenderer2->renderText(std::string("Stage ") + std::to_string(level), textPosX, textPosY, textSize, {0.8, 0.8, 0.8});
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LESS);
 }
 
 bool Menu::mouseCallback(int button, int action, int mod)

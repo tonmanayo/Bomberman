@@ -286,11 +286,13 @@ void Menu::createPauseGameMenu()
 	winTheme->mWindowCornerRadius = 0;
 	winTheme->mWindowFillFocused = {30, 30, 30, 255};
 	winTheme->mWindowFillUnfocused = {30, 30, 30, 255};
+	winTheme->mStandardFontSize = (Menu::windowWidth / 1600) * 30;
+	winTheme->mButtonFontSize = (Menu::windowWidth <= 800) ? 15 : 30;
 
 	/// dimensions and positions for buttons
 	int     posY = Menu::windowHeight / 3;
 	int     winSizeX = Menu::windowWidth / 5;
-	winSizeX = (winSizeX < 350) ? 350 : winSizeX;
+	winSizeX = (winSizeX > 350) ? 350 : winSizeX;
 	int     xOffset = winSizeX / 5;
 	int     buttonWidth = xOffset * 3;
 
@@ -398,7 +400,6 @@ void Menu::createEndGameMenu()
 	/// dimensions and positions for buttons
 	int     winSizeX = Menu::windowWidth / 5;
 	winSizeX = (winSizeX < 350) ? 350 : winSizeX;
-	int     xOffset = winSizeX / 5;
 
 	/// end window
 	int  quitWinOffset = winSizeX / 3;
@@ -560,7 +561,7 @@ void Menu::createOptionsMenu()
 	windowWidth = (windowWidth > 450) ? 450 : windowWidth;
 	int     offset = ((Menu::windowWidth / 2) - windowWidth) / 2;
 	int     posX = (Menu::windowWidth / 2) - (windowWidth + offset);
-	int     buttonHeight = (Menu::windowWidth > 800) ? 50 : 30;
+	int     buttonHeight = (Menu::windowHeight > 900) ? 50 : 30;
 	int     buttonWidth = (Menu::windowWidth > 800) ? Menu::windowWidth / 6 : Menu::windowWidth / 8;
 	buttonWidth = (buttonWidth > 130) ? 130 : buttonWidth;
 	int     tabOffsetX = (posX / 3);
@@ -622,7 +623,7 @@ void Menu::createOptionsMenu()
 	windowTheme->mButtonCornerRadius = 0;
 
 	posY = posY + buttonHeight + 20;
-	int winHeight = (Menu::windowWidth < 1280) ? (Menu::windowWidth * 30) / 1280 : 30;
+	int winHeight = (Menu::windowHeight < 900) ? (Menu::windowHeight * 30) / 900 : 30;
 	int panelFontSize = (Menu::windowWidth < 1280) ? (Menu::windowWidth * 30) / 1100 : 30;
 
 	int newWinSizeX = (tmp - tabOffsetX) + buttonWidth;
@@ -985,35 +986,38 @@ void Menu::createBackground()
 	_menuTitle = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 2, 1);
 	_menuTitle->addTextureFromFile("resource/images/menuLogo.png");
 	/// adding heart logo
-	Menu::gui.heart = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 0.2, 0.2);
+	Menu::gui.heart = new Zion::SquareSprite(*_mainGame->getShader("guiGame"), 0, 0, 0.05, 0.08);
 	Menu::gui.heart->addTextureFromFile("resource/images/heart.png");
 	/// adding speed
-	Menu::gui.speed = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 0.2, 0.2);
+	Menu::gui.speed = new Zion::SquareSprite(*_mainGame->getShader("guiGame"), 0, 0, 0.2, 0.2);
 	Menu::gui.speed->addTextureFromFile("resource/images/bolt.png");
 	/// adding bomb logo
-	Menu::gui.bomb = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 0.3, 0.3);
+	Menu::gui.bomb = new Zion::SquareSprite(*_mainGame->getShader("guiGame"), 0, 0, 0.08, 0.13);
 	Menu::gui.bomb->addTextureFromFile("resource/images/bomb.png");
-	/// adding heart explode
-	Menu::gui.explode = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 0.3, 0.3);
+	/// adding explode
+	Menu::gui.explode = new Zion::SquareSprite(*_mainGame->getShader("guiGame"), 0, 0, 0.08, 0.12);
 	Menu::gui.explode->addTextureFromFile("resource/images/explode.png");
 	/// adding heart case
-	Menu::gui.heartCase = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 0.5, 0.7);
+	Menu::gui.heartCase = new Zion::SquareSprite(*_mainGame->getShader("guiGame"), 0, 0, 0.5, 0.7);
 	Menu::gui.heartCase->addTextureFromFile("resource/images/hudBg.png");
-	/// add bombman
-	Menu::gui.bombMan = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 2.0, 1.5);
+	/// add bomberman
+	Menu::gui.bombMan = new Zion::SquareSprite(*_mainGame->getShader("guiGame"), 0, 0, 2.0, 1.5);
 	Menu::gui.bombMan->addTextureFromFile("resource/images/bombMan3.png");
 	/// add enemy1
-	Menu::gui.enemy1 = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 1.5, 1.0);
+	Menu::gui.enemy1 = new Zion::SquareSprite(*_mainGame->getShader("guiGame"), 0, 0, 1.5, 1.0);
 	Menu::gui.enemy1->addTextureFromFile("resource/images/enemy.png");
 	/// add enemy2
-	Menu::gui.enemy2 = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 0.4, 0.3);
+	Menu::gui.enemy2 = new Zion::SquareSprite(*_mainGame->getShader("guiGame"), 0, 0, 0.08, 0.12);
 	Menu::gui.enemy2->addTextureFromFile("resource/images/enemy2.png");
 	/// add banner
-	Menu::gui.whiteBanner = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 7.5, 1.2);
+	Menu::gui.whiteBanner = new Zion::SquareSprite(*_mainGame->getShader("guiGame"), 0, 0, 7.5, 0.5);
 	Menu::gui.whiteBanner->addBaseColor({0.2, 0.2, 0.2, 0.5});
 	/// add timeBanner
-	Menu::gui.timeBack = new Zion::SquareSprite(*_mainGame->getShader("gui"), 0, 0, 0.9, 0.5);
+	Menu::gui.timeBack = new Zion::SquareSprite(*_mainGame->getShader("guiGame"), 0, 0, 0.4, 0.3);
 	Menu::gui.timeBack->addTextureFromFile("resource/images/backTime.png");
+	/// add hudcase
+	Menu::gui.hudCase = new Zion::SquareSprite(*_mainGame->getShader("guiGame"), 0, 0, 0.2, 0.3);
+	Menu::gui.hudCase->addTextureFromFile("resource/images/hudCase.jpeg");
 }
 
 void Menu::updateGraphicOptions()
@@ -1030,6 +1034,28 @@ void Menu::updateGraphicOptions()
 		glfwSetWindowMonitor(Menu::activeMenu->_screen->glfwWindow(), nullptr, 0, 0,
 		Menu::windowWidth, Menu::windowHeight, Menu::options.resolutionList[Menu::options.resolutionIndex][2]);
 	}
+	/// fixing projection matrix
+	delete MainGame::fontRenderer1;
+	MainGame::fontRenderer1 = new Zion::TextRenderer(MainGame::game->getShader("text"), (GLuint)Menu::windowWidth, (GLuint)Menu::windowHeight);
+	MainGame::fontRenderer1->loadFont("resource/fonts/angryBirds.ttf", 48);
+	delete MainGame::fontRenderer2;
+	MainGame::fontRenderer2 = new Zion::TextRenderer(MainGame::game->getShader("text"), (GLuint)Menu::windowWidth, (GLuint)Menu::windowHeight);
+	MainGame::fontRenderer2->loadFont("resource/fonts/sansSerious.ttf", 48);
+	glm::mat4 projectionMatrix = glm::perspective(glm::radians(70.0f), (float)Menu::windowWidth / (float)Menu::windowHeight, 0.1f, 1000.0f);
+	if (MainGame::game->getShader("basic") != nullptr)
+		MainGame::game->getShader("basic")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
+	if (MainGame::game->getShader("particle") != nullptr)
+		MainGame::game->getShader("particle")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
+	if (MainGame::game->getShader("fire") != nullptr)
+		MainGame::game->getShader("fire")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
+	if (MainGame::game->getShader("gui") != nullptr)
+		MainGame::game->getShader("gui")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
+	if (MainGame::game->getShader("guiGame") != nullptr)
+		MainGame::game->getShader("guiGame")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
+	if (MainGame::game->getShader("anime") != nullptr)
+		MainGame::game->getShader("anime")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
+	if (MainGame::game->getShader("animeNoJoint") != nullptr)
+		MainGame::game->getShader("animeNoJoint")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
 }
 
 void Menu::updateSoundOptions()
