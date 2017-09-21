@@ -143,15 +143,23 @@ bool MainGame::initGame2(float width, float height, float fov)
 
 void MainGame::loadResources()
 {
-	/// loading block models
-	addModel("block1", *getShader("basic"), "resource/models/blocks/block1.gltf");
-	addModel("block2", *getShader("fire"), "resource/models/blocks/block2.gltf");
-	addModel("explosion", *getShader("basic"), "resource/models/blocks/fireBlock.gltf");
-	addModel("block3", *getShader("basic"), "resource/models/blocks/block3.gltf");
+	/// loading level 1 block models
+	addModel("stage1_Wall", *getShader("basic"), "resource/models/blocks/stage1/stage1_Wall.gltf");
+	addModel("stage1_Breakable", *getShader("fire"), "resource/models/blocks/stage1/stage1_Breakable.gltf");
+	addModel("stage1_Unbreakable", *getShader("basic"), "resource/models/blocks/stage1/stage1_Unbreakable.gltf");
+	addModel("stage1_Floor", *getShader("basic"), "resource/models/blocks/stage1/stage1_Floor.gltf");
+
+	/// loading level 2 block models
+	addModel("stage2_Wall", *getShader("basic"), "resource/models/blocks/stage2/stage2_Wall.gltf");
+	addModel("stage2_Breakable", *getShader("fire"), "resource/models/blocks/stage2/stage2_Breakable.gltf");
+	addModel("stage2_Unbreakable", *getShader("basic"), "resource/models/blocks/stage2/stage2_Unbreakable.gltf");
+	addModel("stage2_Floor", *getShader("basic"), "resource/models/blocks/stage2/stage2_Floor.gltf");
 
 	/// loading floor models
-	addModel("floor1", *getShader("basic"), "resource/models/blocks/floor1.gltf");
+
 	addModel("floor2", *getShader("basic"), "resource/models/blocks/ManHole.gltf");
+
+	addModel("explosion", *getShader("basic"), "resource/models/blocks/fireBlock.gltf");
 
 	/// loading bomberman model
 	addModel("bomberman", *getShader("anime"), "resource/models/bomberman/bomberman1.glb");
