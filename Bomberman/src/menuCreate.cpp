@@ -551,8 +551,8 @@ void Menu::createOptionsMenu()
 	Menu::optionMenu.unfocusTabTheme->mBorderLight = {177, 21, 8, 255};
 	Menu::optionMenu.unfocusTabTheme->mBorderMedium = {177, 21, 8, 255};
 	Menu::optionMenu.unfocusTabTheme->mDropShadow = {0, 0, 0, 0};
-	
-	
+
+
 	Menu::optionMenu.buttonTheme = Menu::mainMenu.buttonTheme;
 
 	/// dimensions and position
@@ -1175,4 +1175,30 @@ void Menu::myGlfwGetKeyName(int key, std::string &dest)
 		dest = "Esc";
 	else if (key == GLFW_KEY_SPACE)
 		dest = "Space";
+	else if (key == GLFW_KEY_KP_0)
+		dest = "Num0";
+	else if (key == GLFW_KEY_KP_1)
+		dest = "Num1";
+	else if (key == GLFW_KEY_KP_2)
+		dest = "Num2";
+	else if (key == GLFW_KEY_KP_3)
+		dest = "Num3";
+	else if (key == GLFW_KEY_KP_4)
+		dest = "Num4";
+	else if (key == GLFW_KEY_KP_5)
+		dest = "Num5";
+	else if (key == GLFW_KEY_KP_6)
+		dest = "Num6";
+	else if (key == GLFW_KEY_KP_7)
+		dest = "Num7";
+	else if (key == GLFW_KEY_KP_8)
+		dest = "Num8";
+	else if (key == GLFW_KEY_KP_9)
+		dest = "Num9";
+	else if (key == GLFW_KEY_ENTER)
+		dest = "Enter";
+	else if (key == GLFW_KEY_TAB)
+		dest = "Tab";
+	else if (key == GLFW_KEY_ESCAPE)
+		dest = "Escape";
 }

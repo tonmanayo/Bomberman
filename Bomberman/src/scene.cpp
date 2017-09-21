@@ -257,8 +257,6 @@ void Scene::sceneUpdate(MainGame *game, std::vector<void *> params)
 			MainGame::soundEngine->setAllSoundsPaused(true);
 			return;
 		}
-		if (scene->getLevelTime()  == 0)
-			game->setGameState(GAMESTATE::END);
 		scene->decLevelTime();
 		updateBomb(game, scene);
 		updateEnemy(game, scene);
@@ -293,16 +291,7 @@ bool Scene::enemyPlayerCollision(Player *enemy, Scene *scene){
 	return false;
 }
 
-int Scene::getPowerSpeed () {
-	return _powerSpeed;
-}
-
-void Scene::inctPowerSpeed() {
-	_powerSpeed++;
-}
-
 void	 Scene::decLevelTime() {
-	if (_levelTime >= 0.0f)
 		_levelTime -= 0.01f;
 }
 

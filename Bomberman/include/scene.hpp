@@ -114,6 +114,8 @@ public:
     static bool     worldCollisionRight(Player *enemy, glm::vec3 offset, Scene *scene);
     static bool     worldCollisionLeft(Player *enemy, glm::vec3 offset, Scene *scene);
 
+    static void     enemyFollowPlayer(bool collision, std::map<int, std::map<int, Block *>> _blocks, Player *_enemies, Player *_player, int x, int y);
+
 	static void     renderFlameExplosion(glm::vec3 flamePosition);
 
     bool            enemyPlayerCollision(Player *enemy, Scene *scene);

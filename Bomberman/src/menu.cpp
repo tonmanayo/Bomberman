@@ -62,6 +62,7 @@ void Menu::loadOptions()
 			index++;
 		}
 	}
+	/// todo: load options from config file
 	/// loading options
 	Menu::loadOptionsConfig();
 	if (Menu::options.resolutionIndex + 1 >= Menu::options.resolutionList.size())

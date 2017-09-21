@@ -145,15 +145,29 @@ bool MainGame::initGame2(float width, float height, float fov)
 
 void MainGame::loadResources()
 {
-	/// loading block models
-	addModel("block1", *getShader("basic"), "resource/models/blocks/block1.gltf");
-	addModel("block2", *getShader("fire"), "resource/models/blocks/block2.gltf");
-	addModel("explosion", *getShader("basic"), "resource/models/blocks/fireBlock.gltf");
-	addModel("block3", *getShader("basic"), "resource/models/blocks/block3.gltf");
+	/// loading level 1 block models
+	addModel("stage1_Wall", *getShader("basic"), "resource/models/blocks/stage1/stage1_Wall.gltf");
+	addModel("stage1_Breakable", *getShader("fire"), "resource/models/blocks/stage1/stage1_Breakable.gltf");
+	addModel("stage1_Unbreakable", *getShader("basic"), "resource/models/blocks/stage1/stage1_Unbreakable.gltf");
+	addModel("stage1_Floor", *getShader("basic"), "resource/models/blocks/stage1/stage1_Floor.gltf");
+
+	/// loading level 2 block models
+	addModel("stage2_Wall", *getShader("basic"), "resource/models/blocks/stage2/stage2_Wall.gltf");
+	addModel("stage2_Breakable", *getShader("fire"), "resource/models/blocks/stage2/stage2_Breakable.gltf");
+	addModel("stage2_Unbreakable", *getShader("basic"), "resource/models/blocks/stage2/stage2_Unbreakable.gltf");
+	addModel("stage2_Floor", *getShader("basic"), "resource/models/blocks/stage2/stage2_Floor.gltf");
+
+	/// loading level 3 block models
+	addModel("stage3_Wall", *getShader("basic"), "resource/models/blocks/stage3/stage3_Wall.gltf");
+	addModel("stage3_Breakable", *getShader("fire"), "resource/models/blocks/stage3/stage3_Breakable.gltf");
+	addModel("stage3_Unbreakable", *getShader("basic"), "resource/models/blocks/stage3/stage3_Unbreakable.gltf");
+	addModel("stage3_Floor", *getShader("basic"), "resource/models/blocks/stage3/stage3_Floor.gltf");
 
 	/// loading floor models
-	addModel("floor1", *getShader("basic"), "resource/models/blocks/floor1.gltf");
+
 	addModel("floor2", *getShader("basic"), "resource/models/blocks/ManHole.gltf");
+
+	addModel("explosion", *getShader("basic"), "resource/models/blocks/fireBlock.gltf");
 
 	/// loading bomberman model
 	addModel("bomberman", *getShader("anime"), "resource/models/bomberman/bomberman1.glb");
@@ -165,7 +179,7 @@ void MainGame::loadResources()
 	addModel("bg", *getShader("gui"), "resource/models/others/bg.gltf");
 
 	/// loading enemies
-	addModel("cubex", *getShader("anime"), "resource/models/enemies/Cubex.glb");
+	addModel("cubex", *getShader("anime"), "resource/models/enemies/dino1.glb");
 	addModel("mag", *getShader("anime"), "resource/models/enemies/MagmaEnemy.glb");
 	addModel("enemy1", *getShader("basic"), "resource/models/enemies/enemy2.gltf");
 	addModel("enemyBallon", *getShader("animeNoJoint"), "resource/models/enemies/enemyBallon.gltf");
@@ -184,7 +198,7 @@ void MainGame::loadResources()
 
 	/// loading materials
 	auto *mat = new Zion::Material();
-	mat->texure.loadTextureFromPath("resource/models/enemies/cubex_Diffuse.psd");
+	mat->texure.loadTextureFromPath("resource/models/enemies/OrdileDh.png");
 	auto *cubex = (Zion::Model *)getModel("cubex");
 	cubex->addMaterial(0, *mat);
 

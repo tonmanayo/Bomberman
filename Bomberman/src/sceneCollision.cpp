@@ -32,7 +32,6 @@ void Scene::worldGetPower(glm::vec3 pos, Scene *scene)
             scene->_blocks[y][x] = nullptr;
         } else if (scene->_blocks[y][x]->getPowerName() == "PowerSpeed") {
             scene->_player->incPowerSpeed();
-            scene->inctPowerSpeed();
             std::cout << "GotPOWER Speed!\n";
             MainGame::renderer.removeFromRender("star", scene->_blocks[y][x]->getId());
             delete scene->_blocks[y][x];

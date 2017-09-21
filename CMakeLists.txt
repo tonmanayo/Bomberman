@@ -55,7 +55,7 @@ target_link_libraries(${PROJECT_NAME}
         ${GLM_LIBRARIES}
         ${FREETYPE_LIBRARIES}
         zion
-)
+        )
 if (APPLE)
     target_link_libraries(${PROJECT_NAME} ${OPENGL_FLAGS})
 endif()
@@ -73,7 +73,7 @@ set(B_SOURCE_FILES Bomberman/main.cpp Bomberman/src/MainGame.cpp Bomberman/src/s
         Bomberman/src/player.cpp Bomberman/src/block.cpp Bomberman/src/sceneUpdate.cpp
         Bomberman/src/Bomb.cpp Bomberman/src/sceneCollision.cpp Bomberman/src/menu.cpp
         Bomberman/src/EnemyStuff.cpp Bomberman/src/sceneLoad.cpp Bomberman/src/BombStuff.cpp
-        Bomberman/src/menuCreate.cpp Bomberman/src/menuConfig.cpp Bomberman/src/levelSuff.cpp)
+        Bomberman/src/menuCreate.cpp Bomberman/src/menuConfig.cpp Bomberman/src/levelStuff.cpp)
 
 add_executable(Bomberman ${B_SOURCE_FILES})
 target_link_libraries(Bomberman

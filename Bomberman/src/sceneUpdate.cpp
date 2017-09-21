@@ -77,6 +77,8 @@ void Scene::updatePlayer(MainGame *game, Scene *scene) {
         game->setGameState(GAMESTATE::END);
 	    MainGame::soundEngine->stopAllSounds();
     }
+    if (scene->getLevelTime()  <= 0)
+        game->setGameState(GAMESTATE::END);
     worldGetPower(scene->_player->getPosition(), scene);
 }
 
@@ -86,9 +88,9 @@ void Scene::updateBomb(MainGame *game, Scene *scene) {
 		if (scene->_bomb[i].explodeTime() && !scene->_bomb[i].getExploded())
 		{
             scene->_bomb[i].setExploded(true);
+            enemiesExplosionCollision(scene->_bomb[i].getPosition(), scene);
             bombExplode(scene, scene->_bomb[i]);
             renderExplosion(scene, scene->_bomb[i], game);
-            enemiesExplosionCollision(scene->_bomb[i].getPosition(), scene);
             if (scene->PlayerExplosionCollision(scene->_bomb[i].getPosition(), scene)) {
                 scene->_player->decHP(scene->getDifficulty());
                 Menu::playPlayerHurt();
@@ -119,6 +121,5 @@ void Scene::updateBomb(MainGame *game, Scene *scene) {
             delete scene->_blocks[y][x];
             scene->_blocks[y][x] = nullptr;
         }
-
 	}
 }
