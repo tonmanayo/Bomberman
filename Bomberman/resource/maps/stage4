@@ -2,7 +2,7 @@ FloorType stage4_Floor
 WallType stage4_Wall
 BreakType stage4_Breakable
 UnbreakType stage4_Unbreakable
-BgType lavaBackground
+BgType stage4_Background
 Enemy enemyBallon2 dino
 RRRRRRRRRRRRRRR
 RRRR....@..RRRR

@@ -2,7 +2,7 @@ FloorType stage1_Floor
 WallType stage1_Wall
 BreakType stage1_Breakable
 UnbreakType stage1_Unbreakable
-BgType lavaBackground
+BgType stage1_Background
 Enemy cubex mag
 RRRRRRRRRRRRR
 R.G.@.....G.R

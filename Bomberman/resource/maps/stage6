@@ -2,7 +2,7 @@ FloorType stage6_Floor
 WallType stage6_Wall
 BreakType stage6_Breakable
 UnbreakType stage6_Unbreakable
-BgType lavaBackground
+BgType stage6_Background
 Enemy illy illy
 RRRRRRRRRRRRR
 R...@.......R

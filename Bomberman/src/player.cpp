@@ -35,7 +35,7 @@ void Player::incBombNbr(){
 }
 
 void Player::incPowerSpeed(){
-	_powerSpeed += 2.5f;
+	_powerSpeed += 1.5f;
 }
 
 void Player::setPosition(glm::vec3 pos)
