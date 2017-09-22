@@ -2,7 +2,7 @@
 #include <MainGame.hpp>
 #include <menu.hpp>
 
-int     main(int ac, char **av)
+int     main(void)
 {
 	MainGame    game;
 	Menu        menu;

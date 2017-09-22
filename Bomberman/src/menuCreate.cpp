@@ -672,7 +672,7 @@ void Menu::createOptionsMenu()
 	rightChange->setTextColor({230, 230, 230, 255});
 	rightChange->setCursor(nanogui::Cursor::Hand);
 	rightChange->setCallback([resolutionBox]{
-		if (Menu::tmpOptions.resolutionIndex + 1 == Menu::tmpOptions.resolutionList.size())
+		if (Menu::tmpOptions.resolutionIndex + 1 == (int)Menu::tmpOptions.resolutionList.size())
 			return;
 		Menu::tmpOptions.resolutionIndex += 1;
 		std::vector<int>    resolutionData1 = Menu::tmpOptions.resolutionList[Menu::tmpOptions.resolutionIndex];

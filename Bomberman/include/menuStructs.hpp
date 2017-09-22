@@ -1,5 +1,10 @@
 #pragma once
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wall"
+#pragma clang diagnostic ignored "-Wextra"
+#pragma clang diagnostic ignored "-Werror"
+
 #include <nanogui/screen.h>
 #include <nanogui/window.h>
 #include <nanogui/layout.h>
@@ -13,6 +18,9 @@
 #include <nanogui/common.h>
 #include <nanogui/theme.h>
 #include <nanogui/vscrollpanel.h>
+
+#pragma clang diagnostic pop
+
 #include <MainGame.hpp>
 #include <scene.hpp>
 #include <MainGame.hpp>

@@ -40,16 +40,15 @@ void Scene::bombExplode(Scene *scene, const Bomb &bomb) {
 }
 
 void Scene::renderExplosion(Scene *scene, Bomb &bomb, MainGame *game) {
+	(void)game;
     int x = static_cast<int>(scene->getGridx(bomb.getPosition().x));
     int y = static_cast<int>(scene->getGridy(bomb.getPosition().z));
 
     int xx = scene->getWorldx(bomb.getPosition().x);
     int yy = scene->getWorldy(bomb.getPosition().z);
 
-    glm::vec3   bombPosition = bomb.getPosition();
-
     bool r = true, l = true, u = true, d = true;
-    Zion::Renderable *model;
+    Zion::Renderable *model = nullptr;
 
 	float   quarter = (float)HALF_GRID_BLOCK_SIZE / 2.0f;
 
