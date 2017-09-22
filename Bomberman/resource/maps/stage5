@@ -5,7 +5,7 @@ UnbreakType stage3_Unbreakable
 BgType lavaBackground
 Enemy enemyBallon2  dino
 RRRRRRRRRRRRRRR
-R......L...2..R
+R......L...@..R
 R.L.LGLLLGL.L.R
 RGGG...L...GGGR
 R.L.LGLLLGLGL.R
