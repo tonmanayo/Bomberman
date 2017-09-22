@@ -76,6 +76,7 @@ set(B_SOURCE_FILES Bomberman/main.cpp Bomberman/src/MainGame.cpp Bomberman/src/s
         Bomberman/src/menuCreate.cpp Bomberman/src/menuConfig.cpp Bomberman/src/levelStuff.cpp)
 
 add_executable(Bomberman ${B_SOURCE_FILES})
+target_compile_options(Bomberman PRIVATE -Wall -Wextra -Werror)
 target_link_libraries(Bomberman
         ${OPENGL_LIBRARIES}
         ${GLEW_LIBRARIES}

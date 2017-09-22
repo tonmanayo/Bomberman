@@ -33,6 +33,7 @@ MainGame::MainGame(const MainGame &rhs) { *this = rhs; }
 
 MainGame& MainGame::operator=(const MainGame &rhs)
 {
+	(void)rhs;
 	return *this;
 }
 

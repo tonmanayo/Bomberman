@@ -58,7 +58,7 @@ void Scene::updatePlayer(MainGame *game, Scene *scene) {
         scene->_game->getGameCamera().setCameraTarget(scene->_player->getPosition());
         scene->_game->getGameCamera().setCameraUp(glm::vec3(0, 1, 0));
     }
-    if (game->getGameWindow().isKeyPressed(Menu::options.placeBomb.glfwValue) && scene->_bomb.size() < 1 + scene->_player->getPowerBombNbr()) {
+    if (game->getGameWindow().isKeyPressed(Menu::options.placeBomb.glfwValue) && (int)scene->_bomb.size() < 1 + scene->_player->getPowerBombNbr()) {
         Menu::playBombPlacement();
         scene->_addBomb(scene->_player->getPosition().x, scene->_player->getPosition().z);
     }
@@ -84,7 +84,7 @@ void Scene::updatePlayer(MainGame *game, Scene *scene) {
 
 void Scene::updateBomb(MainGame *game, Scene *scene) {
 
-	for (int i = 0; i < scene->_bomb.size(); ++i) {
+	for (int i = 0; i < (int)scene->_bomb.size(); ++i) {
 		if (scene->_bomb[i].explodeTime() && !scene->_bomb[i].getExploded())
 		{
             scene->_bomb[i].setExploded(true);

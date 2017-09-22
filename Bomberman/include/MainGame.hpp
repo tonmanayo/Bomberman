@@ -5,8 +5,6 @@
 #include <unistd.h>
 #include <irrKlang.h>
 
-#pragma comment(lib, "irrKlang.lib")
-
 class   MainGame;
 class   Menu;
 

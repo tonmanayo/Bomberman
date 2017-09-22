@@ -36,10 +36,14 @@ Menu::Menu(MainGame *mainGame)
 	initMenu(mainGame);
 }
 
-Menu::Menu(const Menu &rhs) { *this = rhs; }
+Menu::Menu(const Menu &rhs) {
+	(void)rhs;
+	*this = rhs;
+}
 
 Menu& Menu::operator=(const Menu &rhs)
 {
+	(void)rhs;
 	return *this;
 }
 
@@ -65,7 +69,7 @@ void Menu::loadOptions()
 	/// todo: load options from config file
 	/// loading options
 	Menu::loadOptionsConfig();
-	if (Menu::options.resolutionIndex + 1 >= Menu::options.resolutionList.size())
+	if (Menu::options.resolutionIndex + 1 >= (int)Menu::options.resolutionList.size())
 		Menu::options.resolutionIndex = (int)Menu::options.resolutionList.size() - 1;
 	Menu::copyOptions(Menu::tmpOptions, Menu::options);
 	Menu::windowWidth = Menu::options.resolutionList[Menu::options.resolutionIndex][0];
@@ -149,12 +153,19 @@ void Menu::createNewGame(int level, int difficulty, std::string saveName)
 	if (level < 4)
 	{
 		activeMenu->scene->newGame(activeMenu->_mainGame, "stage" + std::to_string(level));
+		activeMenu->scene->saveGame(activeMenu->_saveFileName);
+		activeMenu->createLoadGameMenu();
+		activeMenu->_mainGame->setGameState(GAMESTATE::START);
+		Menu::textStartTime = 0;
+		MainGame::soundEngine->stopAllSounds();
+	}else{
+		activeMenu->_mainGame->setGameState(GAMESTATE::MENU);
+		Menu::activeMenu->playMenuMusic();
+		Menu::pauseMenu.changeView(false);
+		Menu::mainMenu.changeView(true);
+		Menu::title->setVisible(true);
+		Menu::title->setCaption("MAIN MENU");
 	}
-	activeMenu->scene->saveGame(activeMenu->_saveFileName);
-	activeMenu->createLoadGameMenu();
-	activeMenu->_mainGame->setGameState(GAMESTATE::START);
-	Menu::textStartTime = 0;
-	MainGame::soundEngine->stopAllSounds();
 }
 
 void Menu::destroyGame()
@@ -185,6 +196,8 @@ void Menu::loadSaveDirectory()
 
 void Menu::updateGameStateStart(MainGame *game, Menu *menu, GAMESTATE state)
 {
+	(void)game;
+	(void)state;
 	glDisable(GL_DEPTH_TEST);
 	if (Menu::textStartTime == 0.0f)
 		Menu::textStartTime = (float)glfwGetTime();
@@ -254,6 +267,8 @@ void Menu::updateGameStateStart(MainGame *game, Menu *menu, GAMESTATE state)
 
 void Menu::updateGameStateEnd(MainGame *game, Menu *menu, GAMESTATE state)
 {
+	(void)game;
+	(void)state;
 	glDisable(GL_DEPTH_TEST);
 	if (Menu::textStartTime == 0.0f)
 		Menu::textStartTime = (float)glfwGetTime();

@@ -2,9 +2,14 @@
 #include <menu.hpp>
 
 Scene::Scene(const Scene &rhs)
-{}
+{
+	(void)rhs;
+}
 
-Scene& Scene::operator=(const Scene &rhs) { return *this; }
+Scene& Scene::operator=(const Scene &rhs) {
+	(void)rhs;
+	return *this;
+}
 
 Scene::~Scene()
 {

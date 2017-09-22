@@ -18,11 +18,12 @@ char Scene::oppDir(char dir) {
 }
 
 void Scene::updateEnemy(MainGame *game, Scene *scene) {
+	(void)game;
     bool collision = false;
 
     char dir[3] = {'L', 'L', 'L'};
 
-    for (int i = 0; i < scene->_enemies.size(); i++) {
+    for (int i = 0; i < (int)scene->_enemies.size(); i++) {
 
         int y = scene->getWorldy(scene->_enemies[i]->getPosition().z);
         int x = scene->getWorldx(scene->_enemies[i]->getPosition().x);
@@ -105,7 +106,7 @@ void Scene::updateEnemy(MainGame *game, Scene *scene) {
         }
         enemyFollowPlayer(collision, scene->_blocks, scene->_enemies[i], scene->_player, x, y);
         // collision enemy with enemy
-        for (int j = 0; j < scene->_enemies.size(); j++) {
+        for (int j = 0; j < (int)scene->_enemies.size(); j++) {
             if (j == i)
                 continue;
             const float MIN_DISTANCE = PLAYER_SIZE;

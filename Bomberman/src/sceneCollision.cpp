@@ -228,7 +228,7 @@ void Scene::enemiesExplosionCollision(glm::vec3 pos, Scene *scene)
 	bool 	r = true, l = true, u = true, d = true;
 
 
-	for (int i = 0; i < scene->_enemies.size(); ++i) {
+	for (int i = 0; i < (int)scene->_enemies.size(); ++i) {
 
 		int playerx = scene->getWorldx(scene->_enemies[i]->getPosition().x);
 		int playery = scene->getWorldy(scene->_enemies[i]->getPosition().z);
