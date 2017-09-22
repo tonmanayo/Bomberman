@@ -58,15 +58,14 @@ void Menu::loadOptions()
 	const GLFWvidmode* modes = glfwGetVideoModes(glfwGetPrimaryMonitor(), &count);
 	int index = 0;
 	/// loading them into my resolution list
-	for (int i = 0; i < count - 1; i++){
-		if (modes[i].refreshRate == mode->refreshRate && mode->redBits == modes[i].redBits &&
-				mode->greenBits == modes[i].greenBits && mode->blueBits == modes[i].blueBits)
+	for (int i = 0; i < count - 1; i++)
+	{
+		if (modes[i].refreshRate == mode->refreshRate && mode->redBits == modes[i].redBits && mode->greenBits == modes[i].greenBits && mode->blueBits == modes[i].blueBits)
 		{
 			Menu::options.resolutionList.insert(std::pair<int, std::vector<int>>(index, {modes[i].width, modes[i].height, modes[i].refreshRate}));
 			index++;
 		}
 	}
-	/// todo: load options from config file
 	/// loading options
 	Menu::loadOptionsConfig();
 	if (Menu::options.resolutionIndex + 1 >= (int)Menu::options.resolutionList.size())

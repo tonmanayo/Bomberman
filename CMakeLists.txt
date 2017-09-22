@@ -38,26 +38,13 @@ set(LIB_SOURCE_FILES Core/entities/window.cpp Core/entities/input.cpp
         Core/entities/shader.cpp Core/utils/file.cpp Core/sprite/squareSprite.cpp
         Core/entities/material.cpp Core/sprite/cubeSprite.cpp Core/entities/camera.cpp
         Core/render/renderer.cpp Core/models/gltf.cpp Core/models/gltfAnimation.cpp
-        Core/entities/animation.cpp Core/particle/particle.cpp Core/particle/particleRenderer.cpp Core/particle/particleMaster.cpp Core/particle/particleSystem.cpp Core/entities/textRenderer.cpp)
+        Core/entities/animation.cpp Core/particle/particle.cpp Core/particle/particleRenderer.cpp
+        Core/particle/particleMaster.cpp
+        Core/particle/particleSystem.cpp Core/entities/textRenderer.cpp)
 
 add_library(zion STATIC ${LIB_SOURCE_FILES})
 if (APPLE)
     set(OPENGL_FLAGS "-framework OpenGL -framework GLUT -framework Cocoa -framework IOKit -framework CoreVideo")
-endif()
-
-set(SOURCE_FILES Game/main.cpp)
-
-add_executable(${PROJECT_NAME} ${SOURCE_FILES})
-target_link_libraries(${PROJECT_NAME}
-        ${OPENGL_LIBRARIES}
-        ${GLEW_LIBRARIES}
-        ${GLFW3_LIBRARIES}
-        ${GLM_LIBRARIES}
-        ${FREETYPE_LIBRARIES}
-        zion
-        )
-if (APPLE)
-    target_link_libraries(${PROJECT_NAME} ${OPENGL_FLAGS})
 endif()
 
 add_subdirectory(lib/nanogui)

@@ -1000,12 +1000,6 @@ void Menu::createBackground()
 	/// adding heart case
 	Menu::gui.heartCase = new Zion::SquareSprite(*_mainGame->getShader("guiGame"), 0, 0, 0.5, 0.7);
 	Menu::gui.heartCase->addTextureFromFile("resource/images/hudBg.png");
-	/// add bomberman
-	Menu::gui.bombMan = new Zion::SquareSprite(*_mainGame->getShader("guiGame"), 0, 0, 2.0, 1.5);
-	Menu::gui.bombMan->addTextureFromFile("resource/images/bombMan3.png");
-	/// add enemy1
-	Menu::gui.enemy1 = new Zion::SquareSprite(*_mainGame->getShader("guiGame"), 0, 0, 1.5, 1.0);
-	Menu::gui.enemy1->addTextureFromFile("resource/images/enemy.png");
 	/// add enemy2
 	Menu::gui.enemy2 = new Zion::SquareSprite(*_mainGame->getShader("guiGame"), 0, 0, 0.08, 0.12);
 	Menu::gui.enemy2->addTextureFromFile("resource/images/enemy2.png");

@@ -48,64 +48,85 @@ void Scene::renderExplosion(Scene *scene, Bomb &bomb, MainGame *game) {
     int yy = scene->getWorldy(bomb.getPosition().z);
 
     bool r = true, l = true, u = true, d = true;
-    Zion::Renderable *model = nullptr;
 
-	float   quarter = (float)HALF_GRID_BLOCK_SIZE / 2.0f;
+	//float   quarter = (float)HALF_GRID_BLOCK_SIZE / 2.0f;
 
 	glm::vec3 middle = glm::vec3(x, 0, y);
 	// renderFlameExplosion(middle);
-	MainGame::explosionUp->generateParticles(middle, true);
 	MainGame::explosionUp->generateParticles(middle, true);
 	MainGame::explosionDown->generateParticles(middle, true);
 	MainGame::explosionLeft->generateParticles(middle, true);
 	MainGame::explosionRight->generateParticles(middle, true);
 
     for (int i = 0; i < 1 + scene->_player->getPowerExplosion(); ++i ) {
-	    if (i > bomb.getExplosionCount())
-		    return bomb.increaseExplosionCount(i);
+//	    if (i > bomb.getExplosionCount())
+//		    return bomb.increaseExplosionCount(i);
         glm::vec3 matup = glm::vec3(x, 0,  y - ((i + 1) * GRID_BLOCK_SIZE));
         glm::vec3 matdown = glm::vec3(x, 0,  y + (i + 1) * GRID_BLOCK_SIZE);
         glm::vec3 matleft = glm::vec3(x - ((i + 1)  * GRID_BLOCK_SIZE), 0,  y);
         glm::vec3 matright = glm::vec3(x + (i + 1) * GRID_BLOCK_SIZE, 0,  y);
-        if (model != nullptr)
-        {
-            if (u)
-            {
-	            MainGame::explosionUp->generateParticles(matup, true);
-	            MainGame::explosionUp->generateParticles(matup + quarter, true);
-	            MainGame::explosionUp->generateParticles(matup - quarter, true);
-            }
-            if (d)
-            {
-	            MainGame::explosionDown->generateParticles(matdown, true);
-	            MainGame::explosionDown->generateParticles(matdown + quarter, true);
-	            MainGame::explosionDown->generateParticles(matdown - quarter, true);
-            }
-            if (l)
-            {
-	            MainGame::explosionLeft->generateParticles(matleft, true);
-	            MainGame::explosionLeft->generateParticles(matleft + quarter, true);
-	            MainGame::explosionLeft->generateParticles(matleft - quarter, true);
-            }
-            if (r)
-            {
-	            MainGame::explosionRight->generateParticles(matright, true);
-	            MainGame::explosionRight->generateParticles(matright + quarter, true);
-	            MainGame::explosionRight->generateParticles(matright - quarter, true);
-            }
 
-            if (scene->_blocks[yy - 1 - i][xx] != nullptr && d) {
-                d = false;
-            }
-            if (scene->_blocks[yy + 1 + i][xx] != nullptr && u) {
-                u = false;
-            }
-            if (scene->_blocks[yy][xx - 1 - i] != nullptr && l) {
-                l = false;
-            }
-            if (scene->_blocks[yy][xx + 1 + i] != nullptr && r) {
-                r = false;
-            }
-        }
+	    if (scene->_blocks[yy + 1 + i][xx] != nullptr && scene->_blocks[yy + 1 + i][xx]->getCollision() && d) {
+		    d = false;
+	    }
+	    if (scene->_blocks[yy - 1 - i][xx] != nullptr && scene->_blocks[yy - 1 - i][xx]->getCollision() && u) {
+		    u = false;
+	    }
+	    if (scene->_blocks[yy][xx - 1 - i] != nullptr && scene->_blocks[yy][xx - 1 - i]->getCollision() && l) {
+		    l = false;
+	    }
+	    if (scene->_blocks[yy][xx + 1 + i] != nullptr && scene->_blocks[yy][xx + 1 + i]->getCollision() && r) {
+		    r = false;
+	    }
+	    if (u)
+	    {
+		    if (scene->_blocks[yy + 1 + i][xx] != nullptr){
+			    MainGame::explosionDown->generateParticles(matdown, true);
+			    //MainGame::explosionDown->generateParticles(matdown + quarter, true);
+			    //MainGame::explosionDown->generateParticles(matdown - quarter, true);
+		    }else{
+			    MainGame::explosionUp->generateParticles(matup, true);
+			    //MainGame::explosionUp->generateParticles(matup + quarter, true);
+			    //MainGame::explosionUp->generateParticles(matup - quarter, true);
+		    }
+	    }
+	    if (d)
+	    {
+		    if (scene->_blocks[yy - 1 - i][xx] != nullptr){
+			    MainGame::explosionUp->generateParticles(matup, true);
+			    //MainGame::explosionUp->generateParticles(matup + quarter, true);
+			    //MainGame::explosionUp->generateParticles(matup - quarter, true);
+		    }else{
+			    MainGame::explosionDown->generateParticles(matdown, true);
+			    //MainGame::explosionDown->generateParticles(matdown + quarter, true);
+			    //MainGame::explosionDown->generateParticles(matdown - quarter, true);
+		    }
+	    }
+	    if (l)
+	    {
+		    if (scene->_blocks[yy][xx - 1 - i] != nullptr){
+			    MainGame::explosionRight->generateParticles(matright, true);
+			    //MainGame::explosionRight->generateParticles(matright + quarter, true);
+			    //MainGame::explosionRight->generateParticles(matright - quarter, true);
+		    }else{
+			    MainGame::explosionLeft->generateParticles(matleft, true);
+			    //MainGame::explosionLeft->generateParticles(matleft + quarter, true);
+			    //MainGame::explosionLeft->generateParticles(matleft - quarter, true);
+		    }
+	    }
+	    if (r)
+	    {
+		    if (scene->_blocks[yy][xx + 1 + i] != nullptr){
+			    MainGame::explosionLeft->generateParticles(matleft, true);
+			    //MainGame::explosionLeft->generateParticles(matleft + quarter, true);
+			    //MainGame::explosionLeft->generateParticles(matleft - quarter, true);
+		    }else{
+			    MainGame::explosionRight->generateParticles(matright, true);
+			    //MainGame::explosionRight->generateParticles(matright + quarter, true);
+			    //MainGame::explosionRight->generateParticles(matright - quarter, true);
+		    }
+	    }
+
+
     }
 }

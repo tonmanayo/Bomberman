@@ -36,6 +36,7 @@ public:
 	static Zion::ParticleSystem     *explosionRight;
 	static Zion::ParticleSystem     *explosionUp;
 	static Zion::ParticleSystem     *explosionDown;
+	static Zion::ParticleSystem     *explosionSky;
 	static Zion::ParticleSystem     *bombSparks;
 	static Zion::ParticleSystem     *smokeParticles;
 	static irrklang::ISoundEngine   *soundEngine;
