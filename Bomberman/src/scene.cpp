@@ -270,7 +270,6 @@ void Scene::sceneUpdate(MainGame *game, std::vector<void *> params)
 			MainGame::soundEngine->setAllSoundsPaused(true);
 			return;
 		}
-		scene->decLevelTime();
 		updateBomb(game, scene);
 		updateEnemy(game, scene);
 		updatePlayer(game, scene);
@@ -302,12 +301,4 @@ bool Scene::enemyPlayerCollision(Player *enemy, Scene *scene){
 		return true;
 	}
 	return false;
-}
-
-void	 Scene::decLevelTime() {
-		_levelTime -= 0.01f;
-}
-
-float 	Scene::getLevelTime() {
-	return _levelTime;
 }

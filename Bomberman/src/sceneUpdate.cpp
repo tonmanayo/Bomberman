@@ -6,6 +6,19 @@ void Scene::updatePlayer(MainGame *game, Scene *scene) {
 	float   velocity =  (1.0f + scene->_player->getPowerSpeed() / 3.5f) * Zion::Renderable::deltaTime;
 	float   positionChange = (5.0f + scene->_player->getPowerSpeed()) * Zion::Renderable::deltaTime;
 
+    if (!scene->_endLevel) {
+
+            for (int j = 0; j < (int)scene->_mapLength; ++j) {
+                for (int k = 0; k < (int)scene->_mapWidth; ++k) {
+                    if (scene->_blocks[j][-k] != nullptr && scene->_blocks[j][-k]->isBreakable() &&
+                            !scene->_blocks[j][-k]->getPowerUp()) {
+                        scene->_blocks[j][-k]->setEndMap(true);
+                        scene->_endLevel = true;
+                        break ;
+                    }
+                }
+            }
+    }
     if (game->getGameWindow().isKeyPressed(Menu::options.moveDown.glfwValue)) {
         Menu::playPlayerWalking();
         if (!worldCollisionDown(scene->_player, {0.0f, 0.0f, positionChange}, scene))
@@ -78,7 +91,7 @@ void Scene::updatePlayer(MainGame *game, Scene *scene) {
 	    MainGame::soundEngine->stopAllSounds();
     }
     worldGetPower(scene->_player->getPosition(), scene);
-    if (scene->getLevel() == 1) {
+    if (scene->getLevel() == 6) {
 
         int ix = 0;
         int iy = 0;

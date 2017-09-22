@@ -167,6 +167,24 @@ void MainGame::loadResources()
 	addModel("stage3_Unbreakable", *getShader("instance"), "resource/models/blocks/stage3/stage3_Unbreakable.gltf");
 	addModel("stage3_Floor", *getShader("instance"), "resource/models/blocks/stage3/stage3_Floor.gltf");
 
+	/// loading level 4 block models
+	addModel("stage4_Wall", *getShader("instance"), "resource/models/blocks/stage4/stage4_Wall.gltf");
+	addModel("stage4_Breakable", *getShader("fire"), "resource/models/blocks/stage4/stage4_Breakable.gltf");
+	addModel("stage4_Unbreakable", *getShader("instance"), "resource/models/blocks/stage4/stage4_Unbreakable.gltf");
+	addModel("stage4_Floor", *getShader("instance"), "resource/models/blocks/stage4/stage4_Floor.gltf");
+
+	/// loading level 5 block models
+	addModel("stage5_Wall", *getShader("instance"), "resource/models/blocks/stage5/stage5_Wall.gltf");
+	addModel("stage5_Breakable", *getShader("fire"), "resource/models/blocks/stage5/stage5_Breakable.gltf");
+	addModel("stage5_Unbreakable", *getShader("instance"), "resource/models/blocks/stage5/stage5_Unbreakable.gltf");
+	addModel("stage5_Floor", *getShader("instance"), "resource/models/blocks/stage5/stage5_Floor.gltf");
+
+	/// loading level 6 block models
+	addModel("stage6_Wall", *getShader("instance"), "resource/models/blocks/stage6/stage6_Wall.gltf");
+	addModel("stage6_Breakable", *getShader("fire"), "resource/models/blocks/stage6/stage6_Breakable.gltf");
+	addModel("stage6_Unbreakable", *getShader("instance"), "resource/models/blocks/stage6/stage6_Unbreakable.gltf");
+	addModel("stage6_Floor", *getShader("instance"), "resource/models/blocks/stage6/stage6_Floor.gltf");
+
 	/// loading floor models
 
 	addModel("floor2", *getShader("instance"), "resource/models/blocks/ManHole.gltf");
@@ -202,6 +220,9 @@ void MainGame::loadResources()
 	addMap("stage1", "resource/maps/stage1");
 	addMap("stage2", "resource/maps/stage2");
 	addMap("stage3", "resource/maps/stage3");
+	addMap("stage4", "resource/maps/stage4");
+	addMap("stage5", "resource/maps/stage5");
+	addMap("stage6", "resource/maps/stage6");
 
 	/// loading materials
 	auto *mat = new Zion::Material();

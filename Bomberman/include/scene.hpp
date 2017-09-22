@@ -31,7 +31,6 @@ private:
 	int 									_powerSpeed;
 	float                                   _dropStartTime;
 	bool                                    _dropped = false;
-	float 									_levelTime;
 private:
 	std::string                 _floorType;
 	std::string                 _wallType;
@@ -43,8 +42,6 @@ private:
 	float  			            z = GRID_START_Z;
 	int 			            gridY = 0;
 public:
-	void		decLevelTime();
-	float 		getLevelTime();
 	size_t		_mapWidth = 0;
 	size_t   	_mapLength = 0;
 

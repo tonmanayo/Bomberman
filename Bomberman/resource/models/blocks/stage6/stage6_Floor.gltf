@@ -92,12 +92,12 @@
     "buffers" : [
         {
             "byteLength" : 140, 
-            "uri" : "stage3_Floor.bin"
+            "uri" : "stage6_Floor.bin"
         }
     ], 
     "images" : [
         {
-            "uri" : "stage3_Floor.jpg"
+            "uri" : "stage6_Floor.png"
         }
     ], 
     "materials" : [

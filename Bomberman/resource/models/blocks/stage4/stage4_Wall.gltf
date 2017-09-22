@@ -174,15 +174,15 @@
     "buffers" : [
         {
             "byteLength" : 840, 
-            "uri" : "stage3_Wall.bin"
+            "uri" : "stage4_Wall.bin"
         }
     ], 
     "images" : [
         {
-            "uri" : "snow_test.jpg"
+            "uri" : "stage4_Wall.png"
         }, 
         {
-            "uri" : "snow_test.jpg"
+            "uri" : "stage4_Wall.png"
         }
     ], 
     "materials" : [
