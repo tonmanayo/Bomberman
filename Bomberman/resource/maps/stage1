@@ -3,16 +3,16 @@ WallType stage1_Wall
 BreakType stage1_Breakable
 UnbreakType stage1_Unbreakable
 BgType lavaBackground
-Enemy illy illy
+Enemy cubex mag
 RRRRRRRRRRRRR
-R...@.......R
-R...........R
-R...........R
-R...........R
-R...........R
-R...........R
-R.....E.....R
-R...........R
-R...........R
-R...LG......R
+R.G.@.....G.R
+RL.L.L.L.L.LR
+R...GGGGG.G.R
+RLLL.L.L.LLLR
+RGG..EGE..L.R
+RL.LLL.LLL.LR
+R...G...G...R
+RLELGLEL.L.LR
+RL.L.L.LGLELR
+R.GG..G..GG.R
 RRRRRRRRRRRRR
