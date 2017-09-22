@@ -8,6 +8,7 @@ Zion::ParticleSystem*           MainGame::explosionLeft;
 Zion::ParticleSystem*           MainGame::explosionRight;
 Zion::ParticleSystem*           MainGame::explosionUp;
 Zion::ParticleSystem*           MainGame::explosionDown;
+Zion::ParticleSystem*           MainGame::explosionY;
 Zion::ParticleSystem*           MainGame::bombSparks;
 Zion::ParticleSystem*           MainGame::smokeParticles;
 irrklang::ISoundEngine*         MainGame::soundEngine;
@@ -266,6 +267,14 @@ void MainGame::loadParticles()
 	explosionDown->setSpeedError(0.25f);
 	explosionDown->setScaleError(0.5f);
 	explosionDown->setPositionError(0.7f);
+
+	explosionY = new Zion::ParticleSystem(getMaterial("explosion2"), 15, 3, 0.0f, 1.6, 0.5f);
+	explosionY->randomizeRotation();
+	explosionY->setDirection({0, 1, 0}, 0.1f);
+	explosionY->setLifeError(0.3f);
+	explosionY->setSpeedError(0.25f);
+	explosionY->setScaleError(0.5f);
+	explosionY->setPositionError(0.7f);
 
 }
 

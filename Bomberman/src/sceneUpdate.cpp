@@ -77,9 +77,18 @@ void Scene::updatePlayer(MainGame *game, Scene *scene) {
         game->setGameState(GAMESTATE::END);
 	    MainGame::soundEngine->stopAllSounds();
     }
-    //if (scene->getLevelTime()  <= 0)
-    //    game->setGameState(GAMESTATE::END);
     worldGetPower(scene->_player->getPosition(), scene);
+    if (scene->getLevel() == 1) {
+
+        int ix = 0;
+        int iy = 0;
+        if (scene->_enemies[0]->getDirection() == 'R') { ix = (int)-HALF_GRID_BLOCK_SIZE; iy = 0; }
+        if (scene->_enemies[0]->getDirection() == 'L') {ix = (int)HALF_GRID_BLOCK_SIZE; iy = 0;}
+        if (scene->_enemies[0]->getDirection() == 'U') {ix = 0; iy = (int)HALF_GRID_BLOCK_SIZE;}
+        if (scene->_enemies[0]->getDirection() == 'D') {ix = 0; iy = (int)-HALF_GRID_BLOCK_SIZE;}
+        glm::vec3 matup = glm::vec3(scene->_enemies[0]->getPosition().x + ix, 0,  scene->_enemies[0]->getPosition().z + iy);
+        MainGame::explosionY->generateParticles(matup, true);
+    }
 }
 
 void Scene::updateBomb(MainGame *game, Scene *scene) {

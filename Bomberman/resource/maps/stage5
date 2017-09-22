@@ -3,7 +3,7 @@ WallType stage3_Wall
 BreakType stage3_Breakable
 UnbreakType stage3_Unbreakable
 BgType lavaBackground
-Enemy enemyBallon2  dino
+Enemy enemyBallon2 dino
 RRRRRRRRRRRRRRR
 R......L...@..R
 R.L.LGLLLGL.L.R

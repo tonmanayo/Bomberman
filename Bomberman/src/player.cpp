@@ -3,8 +3,8 @@
 Player::Player(int id, std::string type) : NonStatic(id, type){
   	_direction = 'U';
 	_powerBombExplosion = 1;
-	_powerBombNumber = 0;
-	_powerSpeed = 0;
+	_powerBombNumber = 1;
+	_powerSpeed = 1;
 	_hp = 100;
 }
 
@@ -102,4 +102,11 @@ void Player::setPowerSpeed(float val)
 void Player::setHp(int val)
 {
 	_hp = val;
+}
+
+float		Player::getSpeed() {
+	return _speed;
+}
+void		Player::setSpeed(float val) {
+	_speed = val;
 }
