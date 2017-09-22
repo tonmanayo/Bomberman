@@ -21,7 +21,7 @@ public:
     char    getDirection();
 	int     getHP();
 	void    setHp(int val);
-	void    incHP();
+	void    incHP(int);
 	void    decHP(int );
 
 public:

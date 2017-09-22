@@ -1,7 +1,7 @@
-FloorType stage3_Floor
-WallType stage3_Wall
-BreakType stage3_Breakable
-UnbreakType stage3_Unbreakable
+FloorType stage5_Floor
+WallType stage5_Wall
+BreakType stage5_Breakable
+UnbreakType stage5_Unbreakable
 BgType stage5_Background
 Enemy enemyBallon2 dino
 RRRRRRRRRRRRRRR

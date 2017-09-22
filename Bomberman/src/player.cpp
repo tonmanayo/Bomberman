@@ -12,10 +12,10 @@ int Player::getHP() {
 	return _hp;
 }
 
-void Player::incHP() {
-	if (_hp + 25 < 100)
-		_hp += 25;
-	else if (_hp + 25 > 100)
+void Player::incHP(int x) {
+	if (_hp + x < 100)
+		_hp += x;
+	else if (_hp + x > 100)
 		_hp = 100;
 }
 

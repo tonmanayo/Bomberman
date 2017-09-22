@@ -182,7 +182,7 @@ void MainGame::loadResources()
 	addModel("stage5_Breakable", *getShader("fire"), "resource/models/blocks/stage5/stage5_Breakable.gltf");
 	addModel("stage5_Unbreakable", *getShader("instance"), "resource/models/blocks/stage5/stage5_Unbreakable.gltf");
 	addModel("stage5_Floor", *getShader("instance"), "resource/models/blocks/stage5/stage5_Floor.gltf");
-	addModel("stage5_Background", *getShader("instance"), "resource/models/blocks/stage5/stage5_Background");
+	addModel("stage5_Background", *getShader("instance"), "resource/models/blocks/stage5/stage5_Background.gltf");
 
 	/// loading level 6 block models
 	addModel("stage6_Wall", *getShader("instance"), "resource/models/blocks/stage6/stage6_Wall.gltf");

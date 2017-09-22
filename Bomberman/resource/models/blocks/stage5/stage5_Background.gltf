@@ -92,12 +92,12 @@
     "buffers" : [
         {
             "byteLength" : 140, 
-            "uri" : "stage6_Background.bin"
+            "uri" : "stage5_Background.bin"
         }
     ], 
     "images" : [
         {
-            "uri" : "stage6_Background.png"
+            "uri" : "stage5_Background.png"
         }
     ], 
     "materials" : [
