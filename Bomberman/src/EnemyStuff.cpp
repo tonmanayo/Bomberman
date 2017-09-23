@@ -1,7 +1,3 @@
-//
-// Created by Tony MACK on 2017/09/04.
-//
-
 #include <menu.hpp>
 
 

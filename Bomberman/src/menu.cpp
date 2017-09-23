@@ -146,8 +146,10 @@ GLFWwindow* Menu::getGlfwWindow()
 	return _screen->glfwWindow();
 }
 
-void Menu::createNewGame(int level, int difficulty, std::string saveName)
+void Menu::createNewGame(int level, int difficulty, std::string saveName, int hp, int bombs, float speed, int explode)
 {
+	(void)level;
+	(void)difficulty;
 	activeMenu->_saveFileName = saveName;
 	activeMenu->scene = new Scene();
 	activeMenu->scene->setDifficulty(difficulty);
@@ -155,6 +157,10 @@ void Menu::createNewGame(int level, int difficulty, std::string saveName)
 	if (level < 7)
 	{
 		activeMenu->scene->newGame(activeMenu->_mainGame, "stage" + std::to_string(level));
+		activeMenu->scene->getPlayer()->setHp(hp + activeMenu->scene->getPlayer()->getHP());
+		activeMenu->scene->getPlayer()->setPowerExplosion(explode + activeMenu->scene->getPlayer()->getPowerExplosion());
+		activeMenu->scene->getPlayer()->setPowerBombNbr(bombs + activeMenu->scene->getPlayer()->getPowerBombNbr());
+		activeMenu->scene->getPlayer()->setSpeed(speed + activeMenu->scene->getPlayer()->getSpeed());
 		activeMenu->scene->saveGame(activeMenu->_saveFileName);
 		activeMenu->createLoadGameMenu();
 		activeMenu->_mainGame->setGameState(GAMESTATE::START);
@@ -162,12 +168,10 @@ void Menu::createNewGame(int level, int difficulty, std::string saveName)
 		MainGame::soundEngine->stopAllSounds();
 		if (activeMenu->scene->getLevel() == 6) {Menu::playIlly();}
 	}else{
-		activeMenu->_mainGame->setGameState(GAMESTATE::MENU);
-		Menu::activeMenu->playMenuMusic();
+		delete activeMenu->scene;
+	 	activeMenu->_mainGame->setGameState(GAMESTATE::CREDITS);
 		Menu::pauseMenu.changeView(false);
-		Menu::mainMenu.changeView(true);
-		Menu::title->setVisible(true);
-		Menu::title->setCaption("MAIN MENU");
+		Menu::textStartTime = 0.0f;
 	}
 }
 
@@ -291,8 +295,13 @@ void Menu::updateGameStateEnd(MainGame *game, Menu *menu, GAMESTATE state)
 		if (changeTime >= 1.7f){
 			int level = menu->scene->getLevel() + 1;
 			int difficulty = menu->scene->getDifficultyValue();
+			int explode = menu->scene->getPlayer()->getPowerExplosion();
+			int hp = menu->scene->getPlayer()->getHP() - 100;
+			hp = (hp < 0) ? 0 : hp;
+			int bombs = menu->scene->getPlayer()->getPowerBombNbr();
+			float speed = menu->scene->getPlayer()->getSpeed();
 			destroyGame();
-			createNewGame(level, difficulty, menu->_saveFileName);
+			createNewGame(level, difficulty, menu->_saveFileName, hp, bombs, speed, explode);
 		}
 	}else{
 		posY = (0.90f * Menu::windowHeight) / 2.0f;
@@ -313,12 +322,60 @@ void Menu::updateGameStateEnd(MainGame *game, Menu *menu, GAMESTATE state)
 
 void Menu::updateGameCredits(MainGame *game, Menu *menu, GAMESTATE state)
 {
+	static float posX1 = 0.0f;
+	static float posY1 = 0.0f;
+	static float dist = 0.0f;
 	(void)game;
 	(void)state;
+	(void)menu;
 	glDisable(GL_DEPTH_TEST);
-	float textSize = ((float)Menu::windowWidth / 1600.0f) * 2.0f;
-	float posX1;
-	float posY1;
+	float textSize = ((float)Menu::windowWidth / 1600.0f) * 1.5f;
+	float textSize1 = ((float)Menu::windowWidth / 1600.0f) * 1.5f;
+	float textSize2 = ((float)Menu::windowWidth / 1600.0f) * 1.0f;
+	if (posX1 == 0.0f){
+		posY1 = (1.95f * Menu::windowHeight) / 2.0f;
+		posX1 = (0.73f * Menu::windowWidth) / 2.0f;
+		dist = (0.2f * Menu::windowHeight) / 2.0f;
+	}
+	MainGame::fontRenderer2->renderText("CREDITS", posX1, posY1, textSize, {0.1, 0.1, 0.1});
+	/// main programmers
+	MainGame::fontRenderer1->renderText("Game Logic - Tony Mack", (0.70f * Menu::windowWidth) / 2.0f, posY1 + (0.6f * dist), textSize2, {0.1, 0.1, 0.1});
+	MainGame::fontRenderer1->renderText("Model Design - Miriam Lamarre", (0.63f * Menu::windowWidth) / 2.0f, posY1 + (1.0f * dist), textSize2, {0.1, 0.1, 0.1});
+	MainGame::fontRenderer1->renderText("Animations - Miriam Lamarre", (0.68f * Menu::windowWidth) / 2.0f, posY1 + (1.4f * dist), textSize2, {0.1, 0.1, 0.1});
+	MainGame::fontRenderer1->renderText("Music - Tony Mack", (0.82f * Menu::windowWidth) / 2.0f, posY1 + (1.8f * dist), textSize2, {0.1, 0.1, 0.1});
+	MainGame::fontRenderer1->renderText("Graphics Engine - Stephen Asiedu", (0.57f * Menu::windowWidth) / 2.0f, posY1 + (2.2f * dist), textSize2, {0.1, 0.1, 0.1});
+	MainGame::fontRenderer1->renderText("Graphical User Interface(GUI) - Angus Burroughs", (0.23f * Menu::windowWidth) / 2.0f, posY1 + (2.6f * dist), textSize2, {0.1, 0.1, 0.1});
+	MainGame::fontRenderer1->renderText("Sound Engine - Nikolaus Gebhardt", (0.64f * Menu::windowWidth) / 2.0f, posY1 + (3.0f * dist), textSize2, {0.1, 0.1, 0.1});
+	/// technologies and tools
+	MainGame::fontRenderer2->renderText("Tools And Technology", (0.45f * Menu::windowWidth) / 2.0f, posY1 + (3.8f * dist), textSize1, {0.1, 0.1, 0.1});
+	MainGame::fontRenderer1->renderText("Open Graphics Library(OpenGL)", (0.65f * Menu::windowWidth) / 2.0f, posY1 + (4.3f * dist), textSize2, {0.1, 0.1, 0.1});
+	MainGame::fontRenderer1->renderText("GLFW", (0.95f * Menu::windowWidth) / 2.0f, posY1 + (4.7f * dist), textSize2, {0.1, 0.1, 0.1});
+	MainGame::fontRenderer1->renderText("IrrKlang", (0.90f * Menu::windowWidth) / 2.0f, posY1 + (5.1f * dist), textSize2, {0.1, 0.1, 0.1});
+	MainGame::fontRenderer1->renderText("Blender", (0.91f * Menu::windowWidth) / 2.0f, posY1 + (5.5f * dist), textSize2, {0.1, 0.1, 0.1});
+	MainGame::fontRenderer1->renderText("Nanogui", (0.91f * Menu::windowWidth) / 2.0f, posY1 + (5.9f * dist), textSize2, {0.1, 0.1, 0.1});
+	MainGame::fontRenderer1->renderText("GL Transmission Format", (0.70f * Menu::windowWidth) / 2.0f, posY1 + (6.3f * dist), textSize2, {0.1, 0.1, 0.1});
+	if (posY1 > (0.20f * Menu::windowHeight) / 2.0f)
+	{
+		posY1 -= Zion::Renderable::deltaTime * 80.0f;
+	}else{
+		if (Menu::textStartTime == 0.0f)
+			Menu::textStartTime = (float)glfwGetTime();
+		if ((float)glfwGetTime() - Menu::textStartTime > 3.9f)
+		{
+			menu->_mainGame->setGameState(GAMESTATE::MENU);
+			Menu::textStartTime = 0;
+			destroyGame();
+			Menu::mainMenu.changeView(true);
+			Menu::pauseMenu.changeView(false);
+			Menu::title->setVisible(true);
+			Menu::title->setCaption("MAIN MENU");
+			posX1 = 0.0f;
+			posY1 = 0.0f;
+			dist = 0.0f;
+		}
+	}
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LESS);
 }
 
 void Menu::updateMenu(MainGame *game, std::vector<void *> params)
@@ -349,13 +406,15 @@ void Menu::updateMenu(MainGame *game, std::vector<void *> params)
 		Menu::updateGameStateStart(game, menu, state);
 	else if (state == GAMESTATE::END)
 		Menu::updateGameStateEnd(game, menu, state);
+	else if (state == GAMESTATE::CREDITS)
+		Menu::updateGameCredits(game, menu, state);
 }
 
 void Menu::renderGui()
 {
 	/// render life
 	int  life = scene->getPlayer()->getHP() / scene->getDifficulty();
-	int  enemyCount = (int)scene->getEnemyCount();
+	auto  enemyCount = (int)scene->getEnemyCount();
 	int  bomb = scene->getPlayer()->getPowerBombNbr() + 1;
 	int  explode = scene->getPlayer()->getPowerExplosion() + 1;
 
@@ -368,7 +427,6 @@ void Menu::renderGui()
 		Menu::gui.heart->render({glm::translate(glm::mat4(), {heartPosX, 0.93, 0})});
 		heartPosX += 0.06;
 	}
-
 	/// bomb
 	Menu::gui.bomb->render(glm::translate(glm::mat4(), {-0.94f, -0.78f, 0}));
 	float textPosY = (1.75f * Menu::windowHeight) / 2.0f;

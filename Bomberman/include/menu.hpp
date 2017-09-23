@@ -73,7 +73,6 @@ public:
 	void        createLoadGameMenu();
 	void	    createOptionsMenu();
 	void        createBackground();
-	void        createCredits();
     GLFWwindow  *getGlfwWindow();
 	void        renderGui();
 
@@ -81,7 +80,7 @@ public:
 	static void     updateGameStateStart(MainGame *game, Menu *menu, GAMESTATE state);
 	static void		updateGameStateEnd(MainGame *game, Menu *menu, GAMESTATE state);
 	static void		updateGameCredits(MainGame *game, Menu *menu, GAMESTATE state);
-	static void     createNewGame(int level, int difficulty, std::string saveName);
+	static void     createNewGame(int level, int difficulty, std::string saveName, int hp, int bombs, float speed, int explode);
 	static void     destroyGame();
 	static void     loadSaveDirectory();
 	static void     loadOptions();

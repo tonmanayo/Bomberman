@@ -261,7 +261,7 @@ void Menu::createNewGameMenu()
 		Menu::newGameMenu.changeView(false);
 		Menu::title->setVisible(false);
 		Menu::pauseMenu.changeView(true);
-		Menu::createNewGame(1, Menu::difficulty, Menu::newGameMenu.profileNameBox->value());
+		Menu::createNewGame(1, Menu::difficulty, Menu::newGameMenu.profileNameBox->value(), 0, 0, 0, 0);
 		Menu::newGameMenu.profileNameBox->setValue("");
 		Menu::loadSaveDirectory();
 	});
@@ -420,7 +420,7 @@ void Menu::createEndGameMenu()
 		Menu::endGameMenu.changeView(false);
 		Menu::mainMenu.changeView(false);
 		Menu::pauseMenu.changeView(true);
-		createNewGame(level, difficulty, activeMenu->_saveFileName);
+		createNewGame(level, difficulty, activeMenu->_saveFileName, 0, 0, 0, 0);
 		Menu::textStartTime = 0;
 	});
 
@@ -1188,10 +1188,5 @@ void Menu::myGlfwGetKeyName(int key, std::string &dest)
 		dest = "Enter";
 	else if (key == GLFW_KEY_TAB)
 		dest = "Tab";
-}
-
-void Menu::createCredits()
-{
-
 }
 

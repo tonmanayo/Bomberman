@@ -23,7 +23,8 @@ enum GAMESTATE
 	START,
 	END,
 	CUT_SCENE_START,
-	CUT_SCENE_END
+	CUT_SCENE_END,
+	CREDITS
 };
 
 class MainGame;

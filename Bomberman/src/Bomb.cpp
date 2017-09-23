@@ -1,8 +1,3 @@
-//
-// Created by Tony MACK on 2017/08/29.
-//
-
-
 #include <Bomb.hpp>
 
 Bomb::Bomb(glm::vec3 position, int id) :
