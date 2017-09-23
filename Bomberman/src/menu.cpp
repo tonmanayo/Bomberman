@@ -3,6 +3,7 @@
 Menu*                       Menu::activeMenu = nullptr;
 irrklang::ISoundSource*     Menu::_menuMusic;
 irrklang::ISoundSource*     Menu::_playGameReady;
+irrklang::ISoundSource*     Menu::_playGameReady1;
 irrklang::ISoundSource*		Menu::_bombExplosionSound;
 irrklang::ISoundSource*		Menu::_bombPlacementSound;
 irrklang::ISoundSource*		Menu::_mapLevelUp;
@@ -132,6 +133,7 @@ bool Menu::initMenu(MainGame *mainGame)
 		_mapLevelUp = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/levelUp.wav");
 		_playPowerUp = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/powerUp.wav");
 		_playGameReady = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/gameStart.wav");
+		_playGameReady1 = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/gameStart1.wav");
 		_playIlly = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/illy_sound.mp3");
 	}
 	Menu::updateSoundOptions();
@@ -249,6 +251,7 @@ void Menu::updateGameStateStart(MainGame *game, Menu *menu, GAMESTATE state)
 		}else {
 			MainGame::fontRenderer1->renderText("STAGE " + std::to_string(stage), posX1, posY1, textSize, {0.8, 0.8, 0.8});
 			MainGame::fontRenderer1->renderText("Defeat All Enemies", posX2, posY2, textSize, {0.8, 0.8, 0.8});
+			Menu::playGameReady1();
 		}
 	}
 	else if (changeTime <= 2.6f)
@@ -262,6 +265,7 @@ void Menu::updateGameStateStart(MainGame *game, Menu *menu, GAMESTATE state)
 			MainGame::fontRenderer1->renderText("READY", newPosX, posY1, textSize, {0.8, 0.8, 0.8});
 		}else{
 			MainGame::fontRenderer1->renderText("READY", posX1, posY1, textSize, {0.8, 0.8, 0.8});
+			Menu::playGameReady1();
 		}
 	}else{
 		posX1 = (0.98f * Menu::windowWidth) / 2.0f;
@@ -272,6 +276,7 @@ void Menu::updateGameStateStart(MainGame *game, Menu *menu, GAMESTATE state)
 			float newPosX = (float)Menu::windowWidth - offSet;
 			MainGame::fontRenderer1->renderText("GO", newPosX, posY1, textSize, {0.8, 0.8, 0.8});
 		} else{
+			Menu::playGameReady();
 			MainGame::fontRenderer1->renderText("GO", posX1, posY1, textSize, {0.8, 0.8, 0.8});
 		}
 	}
@@ -557,6 +562,10 @@ void 	Menu::playGameReady() {
         MainGame::soundEngine->play2D(_playGameReady);
 }
 
+void 	Menu::playGameReady1() {
+	if (MainGame::soundEngine && !MainGame::soundEngine->isCurrentlyPlaying(_playGameReady1))
+		MainGame::soundEngine->play2D(_playGameReady1);
+}
 void 	Menu::playIlly() {
 	if (MainGame::soundEngine && !MainGame::soundEngine->isCurrentlyPlaying(_playIlly))
 		MainGame::soundEngine->play2D(_playIlly);
