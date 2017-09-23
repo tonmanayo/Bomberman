@@ -3,7 +3,7 @@ WallType stage1_Wall
 BreakType stage1_Breakable
 UnbreakType stage1_Unbreakable
 BgType stage1_Background
-Enemy cubex mag
+Enemy moos mag
 RRRRRRRRRRRRR
 R.G.@.....G.R
 RL.L.L.L.L.LR

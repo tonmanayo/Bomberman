@@ -203,6 +203,7 @@ void MainGame::loadResources()
 
 	/// loading enemies
 	addModel("dino", *getShader("anime"), "resource/models/enemies/dino1.glb");
+	addModel("moos", *getShader("anime"), "resource/models/enemies/moos.gltf");
 	addModel("cubex", *getShader("anime"), "resource/models/enemies/cubex.glb");
 	addModel("wooki", *getShader("anime"), "resource/models/enemies/wooki.gltf");
 	addModel("enemyBallon2", *getShader("anime"), "resource/models/enemies/enemyBallon2.gltf");

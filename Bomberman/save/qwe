@@ -5,8 +5,8 @@ BreakableBlockType stage6_Breakable
 Level 6
 Difficulty 2
 @ 8 0 -2
-Explosion 0
-Bomb 0
+Explosion 2
+Bomb 8
 Hp 100
 Speed 0
 G 10 0 -20 10 5

@@ -3,7 +3,7 @@ WallType stage4_Wall
 BreakType stage4_Breakable
 UnbreakType stage4_Unbreakable
 BgType stage4_Background
-Enemy enemyBallon2 dino
+Enemy cubex dino
 RRRRRRRRRRRRRRR
 RRRR....@..RRRR
 R..G.L.LGL..GGR
