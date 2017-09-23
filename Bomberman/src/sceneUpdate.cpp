@@ -10,10 +10,17 @@ void Scene::updatePlayer(MainGame *game, Scene *scene) {
 
             for (int j = 0; j < (int)scene->_mapLength; ++j) {
                 for (int k = 0; k < (int)scene->_mapWidth; ++k) {
-                    if (scene->_blocks[j][-k] != nullptr && scene->_blocks[j][-k]->isBreakable() &&
-                            !scene->_blocks[j][-k]->getPowerUp()) {
-                        scene->_blocks[j][-k]->setEndMap(true);
+                    if (scene->_blocks[j][k] != nullptr && scene->_blocks[j][k]->isBreakable() &&
+                            !scene->_blocks[j][k]->getPowerUp()) {
+                        scene->_blocks[j][k]->setEndMap(true);
+                        scene->_blocks[j][k]->setPosition(k * (int)GRID_BLOCK_SIZE, 0, -j * (int)GRID_BLOCK_SIZE);
                         scene->_endLevel = true;
+                        Zion::Renderable *endLevel = scene->_game->getModel("floor2");
+                        if (endLevel != nullptr)
+                        {
+                            glm::mat4 mat1 = glm::translate(glm::mat4(), glm::vec3(k * (int)GRID_BLOCK_SIZE, -1, -j * (int)GRID_BLOCK_SIZE));
+                            MainGame::renderer.addToRender("endLevel", 0, endLevel, mat1);
+                        }
                         break ;
                     }
                 }

@@ -8,9 +8,15 @@ irrklang::ISoundSource*		Menu::_bombPlacementSound;
 irrklang::ISoundSource*		Menu::_mapLevelUp;
 irrklang::ISoundSource*		Menu::_playerHurtSound;
 irrklang::ISoundSource*		Menu::_enemyHurtSound;
+
 irrklang::ISoundSource*		Menu::_playerWalkingSound;
 irrklang::ISoundSource*		Menu::_playPowerUp;
-irrklang::ISoundSource*		Menu::_gameMusic;
+irrklang::ISoundSource*		Menu::_level1Song;
+irrklang::ISoundSource*		Menu::_level2Song;
+irrklang::ISoundSource*		Menu::_level3Song;
+irrklang::ISoundSource*		Menu::_level4Song;
+irrklang::ISoundSource*		Menu::_level5Song;
+irrklang::ISoundSource*		Menu::_level6Song;
 irrklang::ISoundSource*		Menu::_playIlly;
 
 bool                        Menu::isFullScreen = false;
@@ -117,7 +123,12 @@ bool Menu::initMenu(MainGame *mainGame)
 		_playerWalkingSound = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/run.wav");
 		_bombExplosionSound = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/explosion.wav");
 		_bombPlacementSound = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/bombDrop.wav");
-		_gameMusic = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/game_song.wav");
+		_level1Song = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/stageMusic/level1.wav");
+		_level2Song = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/stageMusic/level2.wav");
+		_level3Song = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/stageMusic/level3.wav");
+		_level4Song = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/stageMusic/level4.wav");
+		_level5Song = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/stageMusic/level5.wav");
+		_level6Song = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/stageMusic/level6.wav");
 		_mapLevelUp = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/levelUp.wav");
 		_playPowerUp = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/powerUp.wav");
 		_playGameReady = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/gameStart.wav");
@@ -266,6 +277,7 @@ void Menu::updateGameStateStart(MainGame *game, Menu *menu, GAMESTATE state)
 	{
 		menu->_mainGame->setGameState(GAMESTATE::GAME);
 		Menu::textStartTime = 0;
+		MainGame::game->soundEngine->stopAllSounds();
 		Menu::playGameSong();
 	}
 	glEnable(GL_DEPTH_TEST);
@@ -503,8 +515,24 @@ void 	Menu::playPlayerWalking() {
 		MainGame::soundEngine->play2D(_playerWalkingSound);
 }
 void	Menu::playGameSong() {
-	if (MainGame::soundEngine && !MainGame::soundEngine->isCurrentlyPlaying(_gameMusic))
-		MainGame::soundEngine->play2D(_gameMusic);
+		if (MainGame::soundEngine && !MainGame::soundEngine->isCurrentlyPlaying(_level1Song) &&
+				Menu::activeMenu->scene->getLevel() == 1)
+			MainGame::soundEngine->play2D(_level1Song);
+		else if (MainGame::soundEngine && !MainGame::soundEngine->isCurrentlyPlaying(_level2Song) &&
+				Menu::activeMenu->scene->getLevel() == 2)
+			MainGame::soundEngine->play2D(_level2Song);
+		else if (MainGame::soundEngine && !MainGame::soundEngine->isCurrentlyPlaying(_level3Song) &&
+				Menu::activeMenu->scene->getLevel() == 3)
+			MainGame::soundEngine->play2D(_level3Song);
+		else if (MainGame::soundEngine && !MainGame::soundEngine->isCurrentlyPlaying(_level4Song) &&
+				Menu::activeMenu->scene->getLevel() == 4)
+			MainGame::soundEngine->play2D(_level4Song);
+		else if (MainGame::soundEngine && !MainGame::soundEngine->isCurrentlyPlaying(_level5Song) &&
+				Menu::activeMenu->scene->getLevel() == 5)
+			MainGame::soundEngine->play2D(_level5Song);
+		else if (MainGame::soundEngine && !MainGame::soundEngine->isCurrentlyPlaying(_level6Song) &&
+				Menu::activeMenu->scene->getLevel() == 6)
+			MainGame::soundEngine->play2D(_level6Song);
 }
 
 void	Menu::playLevelUp() {

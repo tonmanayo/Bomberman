@@ -27,11 +27,16 @@ private:
 	static irrklang::ISoundSource    			*_playerHurtSound;
 	static irrklang::ISoundSource    			*_enemyHurtSound;
 	static irrklang::ISoundSource    			*_playerWalkingSound;
-	static irrklang::ISoundSource    			*_gameMusic;
 	static irrklang::ISoundSource    			*_mapLevelUp;
 	static irrklang::ISoundSource    			*_playPowerUp;
     static irrklang::ISoundSource               *_playGameReady;
     static irrklang::ISoundSource               *_playIlly;
+	static irrklang::ISoundSource				*_level1Song;
+	static irrklang::ISoundSource				*_level2Song;
+	static irrklang::ISoundSource				*_level3Song;
+	static irrklang::ISoundSource				*_level4Song;
+	static irrklang::ISoundSource				*_level5Song;
+	static irrklang::ISoundSource				*_level6Song;
 
 public:
 	Scene       *scene = nullptr;
