@@ -1064,7 +1064,12 @@ void Menu::updateSoundOptions()
 		MainGame::soundEngine->setSoundVolume(1.0f);
 		/// music
 		Menu::activeMenu->_menuMusic->setDefaultVolume(Menu::options.musicVolume);
-		Menu::activeMenu->_gameMusic->setDefaultVolume(Menu::options.musicVolume);
+		Menu::activeMenu->_level1Song->setDefaultVolume(Menu::options.musicVolume);
+		Menu::activeMenu->_level2Song->setDefaultVolume(Menu::options.musicVolume);
+		Menu::activeMenu->_level3Song->setDefaultVolume(Menu::options.musicVolume);
+		Menu::activeMenu->_level4Song->setDefaultVolume(Menu::options.musicVolume);
+		Menu::activeMenu->_level5Song->setDefaultVolume(Menu::options.musicVolume);
+		Menu::activeMenu->_level6Song->setDefaultVolume(Menu::options.musicVolume);
 		/// sound
 		Menu::activeMenu->_bombExplosionSound->setDefaultVolume(Menu::options.soundVolume);
 		Menu::activeMenu->_bombPlacementSound->setDefaultVolume(Menu::options.soundVolume);

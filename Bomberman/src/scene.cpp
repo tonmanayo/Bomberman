@@ -56,14 +56,15 @@ void Scene::_addWall(float x, float z, int xx, int yy)
 }
 
 void Scene::_addPowerUps(float x, float z, int xx, int yy) {
-    char powerUp[8] = {'F', 'G', 'B', 'H', 'O', 'O', '0', '0' };              // F - fire range B - Multiple bombs S - player speed increase
+    char powerUp[25] = {'F', 'G', 'B', 'H', 'E', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'E', 'E', '0', '0', '0',
+						'0', '0', '0', '0', 'E', 'E'};              // F - fire range B - Multiple bombs S - player speed increase
     std::random_device r;
     std::default_random_engine e1(r());
-    std::uniform_int_distribution<int> uniform_dist(0, 7);
+    std::uniform_int_distribution<int> uniform_dist(0, 25);
     int randNbr = uniform_dist(e1);
     glm::mat4 mat = glm::translate(glm::mat4(), glm::vec3(x, 0, z));
 
-    if (randNbr == 0 && !_endLevel) {
+    if (powerUp[randNbr] == 'E' && !_endLevel) {
         Zion::Renderable *endLevel = _game->getModel("floor2");
         _endLevel = true;
         _blocks[yy][xx]->setEndMap(true);
