@@ -11,7 +11,7 @@ namespace   Zion
 		template <class T>
 		static  void    sortHighToLow(std::vector<T>& list)
 		{
-			for (int i = 1; i < list.size(); i++)
+			for (size_t i = 1; i < list.size(); i++)
 			{
 				T item = list[i];
 				if (item.getDistance() > list[i - 1].getDistance())

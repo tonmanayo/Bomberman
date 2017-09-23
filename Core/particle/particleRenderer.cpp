@@ -23,12 +23,11 @@ namespace Zion{
 
 	ParticleRenderer::~ParticleRenderer()
 	{
-		delete _quad;
 	}
 
 	void ParticleRenderer::render(std::map<Material *, std::vector<Particle>>& particles, Camera *camera, glm::mat4 viewMat)
 	{
-		glm::mat4 viewMatrix = camera->getViewMatrix();
+		(void)camera;
 		prepare();
 		for (std::pair<Material *, std::vector<Particle>> listParticles : particles)
 		{
@@ -98,7 +97,7 @@ namespace Zion{
 	{
 		glBindVertexArray(vao);
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
-		glVertexAttribPointer(attribute, dataSize, GL_FLOAT, GL_FALSE, instancedDataLength * 4, (void *)(offset * 4));
+		glVertexAttribPointer(attribute, dataSize, GL_FLOAT, GL_FALSE, instancedDataLength * 4, BUFFER_OFFSET(offset * 4));
 		glVertexAttribDivisor(attribute, 1);
 		glBindVertexArray(0);
 	}

@@ -17,6 +17,7 @@ namespace   Zion
 			int     i = 0;
 			for (Particle& particle : particles.second)
 			{
+				(void)particle;
 				bool stillAlive = _particles[particles.first][i].update(camera);
 				if (!stillAlive)
 					_particles[particles.first].erase(_particles[particles.first].begin() + i);

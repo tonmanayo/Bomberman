@@ -11,6 +11,7 @@ namespace Zion
 
 	Renderer& Renderer::operator=(const Renderer &rhs)
 	{
+		(void)rhs;
 		return *this;
 	}
 
@@ -32,43 +33,6 @@ namespace Zion
 
 	void Renderer::render()
 	{
-		/*for (std::pair<std::string, std::vector<RendererObj>> pair : _objects)
-		{
-            if (!pair.first.compare("endLevel"))
-                _renderStatic(pair.second);
-			if (!pair.first.compare("star"))
-                _renderStatic(pair.second);
-			if (!pair.first.compare("lemon"))
-				_renderStatic(pair.second);
-			if (!pair.first.compare("present"))
-				_renderStatic(pair.second);
-			if (!pair.first.compare("wall"))
-				_renderStatic(pair.second);
-			if (!pair.first.compare("unbreakBlock"))
-				_renderStatic(pair.second);
-			if (!pair.first.compare("background"))
-				_renderStatic(pair.second);
-			if (!pair.first.compare("floors"))
-				_renderStatic(pair.second);
-            if (!pair.first.compare("explosion"))
-                _renderStatic(pair.second);
-			if (!pair.first.compare("explosion1"))
-				_renderStatic(pair.second);
-			if (!pair.first.compare("explosion2"))
-				_renderStatic(pair.second);
-			if (!pair.first.compare("explosion3"))
-				_renderStatic(pair.second);
-			if (!pair.first.compare("explosion4"))
-				_renderStatic(pair.second);
-			if (!pair.first.compare("player"))
-				_renderStatic(pair.second);
-			if (!pair.first.compare("bomb"))
-				_renderStatic(pair.second);
-			if (!pair.first.compare("breakBlock"))
-				_renderStatic(pair.second);
-			if (!pair.first.compare("enemy1"))
-				_renderAnime(pair.second, pair.first);
-		}*/
 		_renderStatic(_objects["background"]);
 		_renderStatic(_objects["floors"]);
 		_renderStatic(_objects["wall"]);
@@ -168,6 +132,7 @@ namespace Zion
 		_pointer = 0;
 		for (RendererObj& obj : objects)
 		{
+			(void)obj;
 			instanceCount++;
 		}
 		float   vboData[instanceCount * MODEL_INSTANCE_DATA_SIZE];

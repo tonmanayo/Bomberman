@@ -319,6 +319,7 @@ void Menu::updateGameStateEnd(MainGame *game, Menu *menu, GAMESTATE state)
 			hp = (hp < 0) ? 0 : hp;
 			int bombs = menu->scene->getPlayer()->getPowerBombNbr();
 			float speed = menu->scene->getPlayer()->getSpeed();
+			Zion::ParticleMaster::clearAll();
 			destroyGame();
 			createNewGame(level, difficulty, menu->_saveFileName, hp, bombs, speed, explode);
 		}

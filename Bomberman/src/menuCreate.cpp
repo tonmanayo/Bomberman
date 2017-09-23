@@ -375,6 +375,7 @@ void Menu::createPauseGameMenu()
 		activeMenu->_mainGame->setGameState(GAMESTATE::MENU);
 		Menu::destroyGame();
 		Menu::playMenuMusic();
+		Zion::ParticleMaster::clearAll();
 	});
 
 	/// no button
@@ -416,6 +417,7 @@ void Menu::createEndGameMenu()
 	Menu::endGameMenu.yes->setCallback([]{
 		int level = activeMenu->scene->getLevel();
 		int difficulty = activeMenu->scene->getDifficultyValue();
+		Zion::ParticleMaster::clearAll();
 		destroyGame();
 		Menu::endGameMenu.changeView(false);
 		Menu::mainMenu.changeView(false);
@@ -429,6 +431,7 @@ void Menu::createEndGameMenu()
 	Menu::endGameMenu.no->setSize({quitWinOffset, 30});
 	Menu::endGameMenu.no->setPosition({2 * padding + quitWinOffset, 35});
 	Menu::endGameMenu.no->setCallback([]{
+		Zion::ParticleMaster::clearAll();
 		destroyGame();
 		Menu::pauseMenu.changeView(false);
 		Menu::title->setVisible(true);

@@ -13,8 +13,11 @@ namespace Zion
 			std::cout << "OpenGl error code : " << error << " in " << ref << std::endl;
 	}
 
-	Window::Window(const char *title, int width, int height) : _title(title), _width(width), _height(height)
+	Window::Window(const char *title, int width, int height)
 	{
+		_title = title;
+		_width = width;
+		_height = height;
 		if (!createGlfwWindow())
 			glfwTerminate();
 	}
@@ -24,7 +27,11 @@ namespace Zion
 		initWindow(window, title, width, height);
 	}
 
-	Window::Window(const Window &rhs) { *this = rhs; }
+	Window::Window(const Window &rhs)
+	{
+		(void)rhs;
+		*this = rhs;
+	}
 
 	Window& Window::operator=(const Window &rhs)
 	{

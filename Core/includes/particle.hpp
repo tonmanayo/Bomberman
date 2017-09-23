@@ -96,6 +96,9 @@ namespace Zion
 		static void        update(Camera *camera);
 		static void        renderParticles(Camera *camera, glm::mat4 viewMat);
 		static void        addParticle(Particle particle);
+		static void        clearAll(){
+			_particles.clear();
+		}
 	};
 
 	class   ParticleSystem

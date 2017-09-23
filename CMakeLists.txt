@@ -43,6 +43,7 @@ set(LIB_SOURCE_FILES Core/entities/window.cpp Core/entities/input.cpp
         Core/particle/particleSystem.cpp Core/entities/textRenderer.cpp)
 
 add_library(zion STATIC ${LIB_SOURCE_FILES})
+#target_compile_options(zion PRIVATE -Wall -Wextra -Werror)
 if (APPLE)
     set(OPENGL_FLAGS "-framework OpenGL -framework GLUT -framework Cocoa -framework IOKit -framework CoreVideo")
 endif()

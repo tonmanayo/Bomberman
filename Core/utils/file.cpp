@@ -23,7 +23,7 @@ char        *zionReadFile(const char *filePath)
 		return nullptr;
 	}
 	bzero(data, (size_t)size + 1);
-	if (fread(data, 1, (size_t)size, file) != size)
+	if (fread(data, 1, (size_t)size, file) != (size_t)size)
 	{
 		fclose(file);
 		free(data);

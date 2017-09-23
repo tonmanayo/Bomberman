@@ -219,7 +219,7 @@ namespace   Zion
 					joint->weight.timeStamps[frames[0]]
 					- joint->weight.timeStamps[0], joint->weight.maxTime);
 			joint->weightMorph.clear();
-			for (int i = 0; i < joint->weight.weightCount; i++){
+			for (size_t i = 0; i < joint->weight.weightCount; i++){
 				int frame0 = (int)(joint->weight.weightCount * frames[0]) + i;
 				int frame1 = (int)(joint->weight.weightCount * frames[1]) + i;
 				float val = joint->weight.weight[frame0] +
