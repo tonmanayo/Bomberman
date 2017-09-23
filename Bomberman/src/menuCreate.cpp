@@ -258,6 +258,7 @@ void Menu::createNewGameMenu()
 	Menu::newGameMenu.createGame->setCallback([]{
 		if (Menu::newGameMenu.profileNameBox->value().empty())
 			return;
+		MainGame::soundEngine->stopAllSounds();
 		Menu::newGameMenu.changeView(false);
 		Menu::title->setVisible(false);
 		Menu::pauseMenu.changeView(true);
@@ -809,6 +810,7 @@ void Menu::createOptionsMenu()
 		Menu::optionMenu.showScreen();
 		Menu::title->setCaption("OPTIONS");
 		Menu::saveOptionsConfig();
+		Menu::playMenuMusic();
 	});
 
 	/// cancel button
@@ -1076,7 +1078,7 @@ void Menu::updateSoundOptions()
 		Menu::activeMenu->_mapLevelUp->setDefaultVolume(Menu::options.soundVolume);
 		Menu::activeMenu->_playPowerUp->setDefaultVolume(Menu::options.soundVolume);
 		Menu::activeMenu->_playGameReady->setDefaultVolume(Menu::options.soundVolume);
-		MainGame::soundEngine->play2D(Menu::activeMenu->_menuMusic);
+		//MainGame::soundEngine->play2D(Menu::activeMenu->_menuMusic);
 	}
 }
 
