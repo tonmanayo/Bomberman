@@ -1,0 +1,40 @@
+MapWidth 15
+MapHeight 13
+MapName stage3
+BreakableBlockType stage3_Breakable
+Level 3
+Difficulty 2
+@ 12 0 -2
+Explosion 0
+Bomb 0
+Hp 100
+Speed 0
+G 14 0 -4 2 7
+G 10 0 -6 3 5
+G 14 0 -6 3 7
+G 18 0 -6 3 9
+G 6 0 -10 5 3
+G 14 0 -10 5 7
+G 16 0 -10 5 8
+G 22 0 -10 5 11
+G 10 0 -12 6 5
+G 14 0 -12 6 7
+G 2 0 -14 7 1
+G 8 0 -14 7 4
+G 10 0 -14 7 5
+G 18 0 -14 7 9
+G 20 0 -14 7 10
+G 2 0 -16 8 1
+G 26 0 -16 8 13
+G 8 0 -18 9 4
+G 10 0 -18 9 5
+G 18 0 -18 9 9
+G 20 0 -18 9 10
+G 8 0 -22 11 4
+E enemyBallon2 14 0 -8
+E dino 2 0 -10
+E dino 8 0 -10
+E enemyBallon2 20 0 -10
+E dino 26 0 -10
+E dino 12 0 -18
+E enemyBallon2 18 0 -22

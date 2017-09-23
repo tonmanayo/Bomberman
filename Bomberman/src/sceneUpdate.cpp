@@ -6,6 +6,19 @@ void Scene::updatePlayer(MainGame *game, Scene *scene) {
 	float   velocity =  (1.0f + scene->_player->getPowerSpeed() / 3.5f) * Zion::Renderable::deltaTime;
 	float   positionChange = (5.0f + scene->_player->getPowerSpeed()) * Zion::Renderable::deltaTime;
 
+    if (!scene->_endLevel) {
+
+            for (int j = 0; j < (int)scene->_mapLength; ++j) {
+                for (int k = 0; k < (int)scene->_mapWidth; ++k) {
+                    if (scene->_blocks[j][-k] != nullptr && scene->_blocks[j][-k]->isBreakable() &&
+                            !scene->_blocks[j][-k]->getPowerUp()) {
+                        scene->_blocks[j][-k]->setEndMap(true);
+                        scene->_endLevel = true;
+                        break ;
+                    }
+                }
+            }
+    }
     if (game->getGameWindow().isKeyPressed(Menu::options.moveDown.glfwValue)) {
         Menu::playPlayerWalking();
         if (!worldCollisionDown(scene->_player, {0.0f, 0.0f, positionChange}, scene))
@@ -77,9 +90,18 @@ void Scene::updatePlayer(MainGame *game, Scene *scene) {
         game->setGameState(GAMESTATE::END);
 	    MainGame::soundEngine->stopAllSounds();
     }
-    //if (scene->getLevelTime()  <= 0)
-    //    game->setGameState(GAMESTATE::END);
     worldGetPower(scene->_player->getPosition(), scene);
+    if (scene->getLevel() == 6) {
+
+        int ix = 0;
+        int iy = 0;
+        if (scene->_enemies[0]->getDirection() == 'R') { ix = (int)-HALF_GRID_BLOCK_SIZE; iy = 0; }
+        if (scene->_enemies[0]->getDirection() == 'L') {ix = (int)HALF_GRID_BLOCK_SIZE; iy = 0;}
+        if (scene->_enemies[0]->getDirection() == 'U') {ix = 0; iy = (int)HALF_GRID_BLOCK_SIZE;}
+        if (scene->_enemies[0]->getDirection() == 'D') {ix = 0; iy = (int)-HALF_GRID_BLOCK_SIZE;}
+        glm::vec3 matup = glm::vec3(scene->_enemies[0]->getPosition().x + ix, 0,  scene->_enemies[0]->getPosition().z + iy);
+        MainGame::explosionY->generateParticles(matup, true);
+    }
 }
 
 void Scene::updateBomb(MainGame *game, Scene *scene) {

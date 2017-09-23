@@ -92,12 +92,12 @@
     "buffers" : [
         {
             "byteLength" : 840, 
-            "uri" : "block3.bin"
+            "uri" : "stage3_Unbreakable.bin"
         }
     ], 
     "images" : [
         {
-            "uri" : "stage3_Unbreakable.jpg"
+            "uri" : "stage3_Background.jpg"
         }
     ], 
     "materials" : [

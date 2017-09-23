@@ -8,7 +8,7 @@ Zion::ParticleSystem*           MainGame::explosionLeft;
 Zion::ParticleSystem*           MainGame::explosionRight;
 Zion::ParticleSystem*           MainGame::explosionUp;
 Zion::ParticleSystem*           MainGame::explosionDown;
-Zion::ParticleSystem*           MainGame::explosionSky;
+Zion::ParticleSystem*           MainGame::explosionY;
 Zion::ParticleSystem*           MainGame::bombSparks;
 Zion::ParticleSystem*           MainGame::smokeParticles;
 irrklang::ISoundEngine*         MainGame::soundEngine;
@@ -50,7 +50,7 @@ bool MainGame::initGame(float width, float height, float fov)
 {
 	glm::mat4       projectionMatrix;
 
-	srand((unsigned int)time(nullptr));
+	srand((unsigned int)time(0));
 	/// Creating glfw window
 	_width = width;
 	_height = height;
@@ -154,31 +154,56 @@ void MainGame::loadResources()
 	addModel("stage1_Breakable", *getShader("fire"), "resource/models/blocks/stage1/stage1_Breakable.gltf");
 	addModel("stage1_Unbreakable", *getShader("instance"), "resource/models/blocks/stage1/stage1_Unbreakable.gltf");
 	addModel("stage1_Floor", *getShader("instance"), "resource/models/blocks/stage1/stage1_Floor.gltf");
+	addModel("stage1_Background", *getShader("instance"), "resource/models/blocks/stage1/stage1_Background.gltf");
 
 	/// loading level 2 block models
 	addModel("stage2_Wall", *getShader("instance"), "resource/models/blocks/stage2/stage2_Wall.gltf");
 	addModel("stage2_Breakable", *getShader("fire"), "resource/models/blocks/stage2/stage2_Breakable.gltf");
 	addModel("stage2_Unbreakable", *getShader("instance"), "resource/models/blocks/stage2/stage2_Unbreakable.gltf");
 	addModel("stage2_Floor", *getShader("instance"), "resource/models/blocks/stage2/stage2_Floor.gltf");
+	addModel("stage2_Background", *getShader("instance"), "resource/models/blocks/stage2/stage2_Background.gltf");
 
 	/// loading level 3 block models
 	addModel("stage3_Wall", *getShader("instance"), "resource/models/blocks/stage3/stage3_Wall.gltf");
 	addModel("stage3_Breakable", *getShader("fire"), "resource/models/blocks/stage3/stage3_Breakable.gltf");
 	addModel("stage3_Unbreakable", *getShader("instance"), "resource/models/blocks/stage3/stage3_Unbreakable.gltf");
 	addModel("stage3_Floor", *getShader("instance"), "resource/models/blocks/stage3/stage3_Floor.gltf");
+	addModel("stage3_Background", *getShader("instance"), "resource/models/blocks/stage3/stage3_Background.gltf");
+
+	/// loading level 4 block models
+	addModel("stage4_Wall", *getShader("instance"), "resource/models/blocks/stage4/stage4_Wall.gltf");
+	addModel("stage4_Breakable", *getShader("fire"), "resource/models/blocks/stage4/stage4_Breakable.gltf");
+	addModel("stage4_Unbreakable", *getShader("instance"), "resource/models/blocks/stage4/stage4_Unbreakable.gltf");
+	addModel("stage4_Floor", *getShader("instance"), "resource/models/blocks/stage4/stage4_Floor.gltf");
+	addModel("stage4_Background", *getShader("instance"), "resource/models/blocks/stage4/stage4_Background.gltf");
+
+	/// loading level 5 block models
+	addModel("stage5_Wall", *getShader("instance"), "resource/models/blocks/stage5/stage5_Wall.gltf");
+	addModel("stage5_Breakable", *getShader("fire"), "resource/models/blocks/stage5/stage5_Breakable.gltf");
+	addModel("stage5_Unbreakable", *getShader("instance"), "resource/models/blocks/stage5/stage5_Unbreakable.gltf");
+	addModel("stage5_Floor", *getShader("instance"), "resource/models/blocks/stage5/stage5_Floor.gltf");
+	addModel("stage5_Background", *getShader("instance"), "resource/models/blocks/stage5/stage5_Background");
+
+	/// loading level 6 block models
+	addModel("stage6_Wall", *getShader("instance"), "resource/models/blocks/stage6/stage6_Wall.gltf");
+	addModel("stage6_Breakable", *getShader("fire"), "resource/models/blocks/stage6/stage6_Breakable.gltf");
+	addModel("stage6_Unbreakable", *getShader("instance"), "resource/models/blocks/stage6/stage6_Unbreakable.gltf");
+	addModel("stage6_Floor", *getShader("instance"), "resource/models/blocks/stage6/stage6_Floor.gltf");
+	addModel("stage6_Background", *getShader("instance"), "resource/models/blocks/stage6/stage6_Background.gltf");
 
 	/// loading floor models
+
 	addModel("floor2", *getShader("instance"), "resource/models/blocks/ManHole.gltf");
+
 	addModel("explosion", *getShader("basic"), "resource/models/blocks/fireBlock.gltf");
 
-	/// loading bomberMan model
+	/// loading bomberman model
 	addModel("bomberman", *getShader("anime"), "resource/models/bomberman/bomberman1.glb");
 
 	/// loading other models
+	addModel("bomb", *getShader("instance"), "resource/models/others/bomb.gltf");
 	addModel("bomb1", *getShader("animeNoJoint"), "resource/models/others/bomb1.gltf");
-
-	/// loading backgrounds
-	addModel("lavaBackground", *getShader("instance"), "resource/models/bomberman/lavaBackground.gltf");
+	addModel("bg", *getShader("gui"), "resource/models/others/bg.gltf");
 
 	/// loading enemies
 	addModel("dino", *getShader("anime"), "resource/models/enemies/dino1.glb");
@@ -196,9 +221,13 @@ void MainGame::loadResources()
 	addModel("star", *getShader("instance"), "resource/models/powerUps/star.gltf");
 
 	/// loading maps
+	addMap("map2", "resource/maps/map2");
 	addMap("stage1", "resource/maps/stage1");
 	addMap("stage2", "resource/maps/stage2");
 	addMap("stage3", "resource/maps/stage3");
+	addMap("stage4", "resource/maps/stage4");
+	addMap("stage5", "resource/maps/stage5");
+	addMap("stage6", "resource/maps/stage6");
 
 	/// loading materials
 	auto *mat = new Zion::Material();
@@ -234,37 +263,46 @@ void MainGame::loadParticles()
 {
 	Zion::ParticleMaster::init(*getShader("particle"));
 	/// explosion to the left
-	explosionLeft = new Zion::ParticleSystem(getMaterial("explosion2"), 15, 1.5, 0.0f, 1.0, 0.5f);
+	explosionLeft = new Zion::ParticleSystem(getMaterial("explosion2"), 15, 3, 0.0f, 1.6, 0.5f);
 	explosionLeft->randomizeRotation();
-	explosionLeft->setDirection({0, 1, 0}, 0.1f);
-	explosionLeft->setLifeError(0.1f);
+	explosionLeft->setDirection({-1, 0, 0}, 0.1f);
+	explosionLeft->setLifeError(0.3f);
 	explosionLeft->setSpeedError(0.25f);
-	explosionLeft->setScaleError(0.3f);
-	explosionLeft->setPositionError(0.2f);
+	explosionLeft->setScaleError(0.5f);
+	explosionLeft->setPositionError(0.7f);
 	/// explosion to the right
-	explosionRight = new Zion::ParticleSystem(getMaterial("explosion2"), 15, 1.5, 0.0f, 1.0, 0.5f);
+	explosionRight = new Zion::ParticleSystem(getMaterial("explosion2"), 15, 3, 0.0f, 1.6, 0.5f);
 	explosionRight->randomizeRotation();
-	explosionRight->setDirection({0, 1, 0}, 0.1f);
-	explosionRight->setLifeError(0.1f);
+	explosionRight->setDirection({1, 0, 0}, 0.1f);
+	explosionRight->setLifeError(0.3f);
 	explosionRight->setSpeedError(0.25f);
-	explosionRight->setScaleError(0.3f);
-	explosionRight->setPositionError(0.2f);
+	explosionRight->setScaleError(0.5f);
+	explosionRight->setPositionError(0.7f);
 	/// explosion up
-	explosionUp = new Zion::ParticleSystem(getMaterial("explosion2"), 15, 1.5, 0.0f, 1.0, 0.5f);
+	explosionUp = new Zion::ParticleSystem(getMaterial("explosion2"), 15, 3, 0.0f, 1.6, 0.5f);
 	explosionUp->randomizeRotation();
-	explosionUp->setDirection({0, 1, 0}, 0.1f);
-	explosionUp->setLifeError(0.1f);
+	explosionUp->setDirection({0, 0, -1}, 0.1f);
+	explosionUp->setLifeError(0.3f);
 	explosionUp->setSpeedError(0.25f);
-	explosionUp->setScaleError(0.3f);
-	explosionUp->setPositionError(0.2f);
+	explosionUp->setScaleError(0.5f);
+	explosionUp->setPositionError(0.7f);
 	/// explosion down
-	explosionDown = new Zion::ParticleSystem(getMaterial("explosion2"), 15, 1.5, 0.0f, 1.0, 0.5f);
+	explosionDown = new Zion::ParticleSystem(getMaterial("explosion2"), 15, 3, 0.0f, 1.6, 0.5f);
 	explosionDown->randomizeRotation();
-	explosionDown->setDirection({0, 1, 0}, 0.1f);
-	explosionDown->setLifeError(0.1f);
+	explosionDown->setDirection({0, 0, 1}, 0.1f);
+	explosionDown->setLifeError(0.3f);
 	explosionDown->setSpeedError(0.25f);
-	explosionDown->setScaleError(0.3f);
-	explosionDown->setPositionError(0.2f);
+	explosionDown->setScaleError(0.5f);
+	explosionDown->setPositionError(0.7f);
+
+	explosionY = new Zion::ParticleSystem(getMaterial("explosion2"), 15, 3, 0.0f, 1.6, 0.5f);
+	explosionY->randomizeRotation();
+	explosionY->setDirection({0, 1, 0}, 0.1f);
+	explosionY->setLifeError(0.3f);
+	explosionY->setSpeedError(0.25f);
+	explosionY->setScaleError(0.5f);
+	explosionY->setPositionError(0.7f);
+
 }
 
 void MainGame::gameLoop()

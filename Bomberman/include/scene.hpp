@@ -31,7 +31,6 @@ private:
 	int 									_powerSpeed;
 	float                                   _dropStartTime;
 	bool                                    _dropped = false;
-	float 									_levelTime;
 private:
 	std::string                 _floorType;
 	std::string                 _wallType;
@@ -43,8 +42,6 @@ private:
 	float  			            z = GRID_START_Z;
 	int 			            gridY = 0;
 public:
-	void		decLevelTime();
-	float 		getLevelTime();
 	size_t		_mapWidth = 0;
 	size_t   	_mapLength = 0;
 
@@ -68,13 +65,8 @@ public:
 
 	static void		collisionPush(Scene *scene, int x, int y, int i, int dirx, int diry);
 	std::map<int, std::map<int, Block *>> 	getBlocks() {return _blocks;};
-	int         getPowerExplosion();
-	int 		getPowerNbBombs();
-	int 		getPowerSpeed();
 	size_t      getEnemyCount(){ return _enemies.size(); }
-	void 		incPowerExplosion();
-	void 		incPowerNbBombs();
-	void 		inctPowerSpeed();
+
     int         getWorldx(float x);
     int  		getWorldy(float y);
     float       getGridx(float x);

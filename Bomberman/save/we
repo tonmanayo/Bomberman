@@ -1,0 +1,13 @@
+MapWidth 13
+MapHeight 12
+MapName stage1
+BreakableBlockType stage1_Breakable
+Level 1
+Difficulty 2
+@ 8 0 -2
+Explosion 1
+Bomb 0
+Hp 100
+Speed 0
+G 10 0 -20 10 5
+E illy 12 0 -14

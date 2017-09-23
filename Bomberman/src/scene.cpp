@@ -190,11 +190,19 @@ void Scene::_addEnemy(float x, float z, std::string &type)
 	static int i = 0;
 
 	model = _game->getModel(type);
+
 	if (model != nullptr)
 	{
 		Player *enemy = new Player(i, type);
 		enemy->modelType = type;
 		_enemies.push_back(enemy);
+		_enemies.back()->setHp(1);
+		_enemies.back()->setSpeed(2.0f);
+		if (type == "illy") {
+			_enemies.back()->setSpeed(6.0f);
+			_enemies.back()->scale(glm::vec3{2.0f, 2.0f, 2.0f});
+			_enemies.back()->setHp(5);
+		}
 		_enemies.back()->setPosition(glm::vec3{getGridx(x), 0, getGridy(z)});
 		_enemies.back()->playerStart = glm::vec3(getGridx(x), 0, getGridy(z));
 		MainGame::renderer.addToRender(_enemies.back()->getType(), _enemies.back()->getId(), model, _enemies.back()->getTransformation());
@@ -262,7 +270,6 @@ void Scene::sceneUpdate(MainGame *game, std::vector<void *> params)
 			MainGame::soundEngine->setAllSoundsPaused(true);
 			return;
 		}
-		scene->decLevelTime();
 		updateBomb(game, scene);
 		updateEnemy(game, scene);
 		updatePlayer(game, scene);
@@ -294,12 +301,4 @@ bool Scene::enemyPlayerCollision(Player *enemy, Scene *scene){
 		return true;
 	}
 	return false;
-}
-
-void	 Scene::decLevelTime() {
-		_levelTime -= 0.01f;
-}
-
-float 	Scene::getLevelTime() {
-	return _levelTime;
 }

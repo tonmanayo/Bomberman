@@ -1,0 +1,18 @@
+FloorType stage6_Floor
+WallType stage6_Wall
+BreakType stage6_Breakable
+UnbreakType stage6_Unbreakable
+BgType stage6_Background
+Enemy illy illy
+RRRRRRRRRRRRR
+R...@.......R
+R...........R
+R...........R
+R...........R
+R...........R
+R...........R
+R.....E.....R
+R...........R
+R...........R
+R...LG......R
+RRRRRRRRRRRRR

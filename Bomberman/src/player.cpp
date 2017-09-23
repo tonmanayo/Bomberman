@@ -2,7 +2,7 @@
 
 Player::Player(int id, std::string type) : NonStatic(id, type){
   	_direction = 'U';
-	_powerBombExplosion = 1;
+	_powerBombExplosion = 0;
 	_powerBombNumber = 0;
 	_powerSpeed = 0;
 	_hp = 100;
@@ -35,7 +35,7 @@ void Player::incBombNbr(){
 }
 
 void Player::incPowerSpeed(){
-	_powerSpeed += 2.5f;
+	_powerSpeed += 1.5f;
 }
 
 void Player::setPosition(glm::vec3 pos)
@@ -102,4 +102,11 @@ void Player::setPowerSpeed(float val)
 void Player::setHp(int val)
 {
 	_hp = val;
+}
+
+float		Player::getSpeed() {
+	return _speed;
+}
+void		Player::setSpeed(float val) {
+	_speed = val;
 }
