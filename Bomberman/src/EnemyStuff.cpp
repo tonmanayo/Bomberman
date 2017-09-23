@@ -1,6 +1,5 @@
 #include <menu.hpp>
 
-
 void Scene::enemiesExplosionCollision(glm::vec3 pos, Scene *scene)
 {
     int 	bombx = scene->getWorldx(pos.x);
