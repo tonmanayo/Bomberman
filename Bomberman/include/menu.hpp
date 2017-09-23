@@ -95,7 +95,7 @@ public:
 	static bool     isKeyAvailable(std::string &name, int keyValue);
 	static void     keyPressKeyBindings(int key);
 	static void     myGlfwGetKeyName(int key, std::string &dest);
-
+	/// game music and sounds
 	static void     playMenuMusic();
 	static void 	playBombExplosion();
 	static void 	playBombPlacement();
