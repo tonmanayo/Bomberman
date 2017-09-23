@@ -1189,3 +1189,9 @@ void Menu::myGlfwGetKeyName(int key, std::string &dest)
 	else if (key == GLFW_KEY_TAB)
 		dest = "Tab";
 }
+
+void Menu::createCredits()
+{
+
+}
+

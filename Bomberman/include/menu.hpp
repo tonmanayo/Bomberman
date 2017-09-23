@@ -72,12 +72,14 @@ public:
 	void        createLoadGameMenu();
 	void	    createOptionsMenu();
 	void        createBackground();
+	void        createCredits();
     GLFWwindow  *getGlfwWindow();
 	void        renderGui();
 
 	static void     updateMenu(MainGame *game, std::vector<void *> params);
 	static void     updateGameStateStart(MainGame *game, Menu *menu, GAMESTATE state);
 	static void		updateGameStateEnd(MainGame *game, Menu *menu, GAMESTATE state);
+	static void		updateGameCredits(MainGame *game, Menu *menu, GAMESTATE state);
 	static void     createNewGame(int level, int difficulty, std::string saveName);
 	static void     destroyGame();
 	static void     loadSaveDirectory();

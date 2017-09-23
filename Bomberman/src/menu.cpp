@@ -307,6 +307,16 @@ void Menu::updateGameStateEnd(MainGame *game, Menu *menu, GAMESTATE state)
 	glDepthFunc(GL_LESS);
 }
 
+void Menu::updateGameCredits(MainGame *game, Menu *menu, GAMESTATE state)
+{
+	(void)game;
+	(void)state;
+	glDisable(GL_DEPTH_TEST);
+	float textSize = ((float)Menu::windowWidth / 1600.0f) * 2.0f;
+	float posX1;
+	float posY1;
+}
+
 void Menu::updateMenu(MainGame *game, std::vector<void *> params)
 {
 	auto *menu = (Menu*)params[0];
