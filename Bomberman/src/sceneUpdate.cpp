@@ -86,10 +86,10 @@ void Scene::updatePlayer(MainGame *game, Scene *scene) {
 	if (scene->worldEndLevel(scene->_player->getPosition(), scene)) {
         if (scene->_enemies.empty())
         {
+            MainGame::soundEngine->stopAllSounds();
             Menu::playLevelUp();
             scene->_levelCompleted = true;
 	        game->setGameState(GAMESTATE::END);
-	        MainGame::soundEngine->stopAllSounds();
         }
     }
 

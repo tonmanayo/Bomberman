@@ -171,8 +171,10 @@ void Menu::createNewGame(int level, int difficulty, std::string saveName)
 		activeMenu->createLoadGameMenu();
 		activeMenu->_mainGame->setGameState(GAMESTATE::START);
 		Menu::textStartTime = 0;
-		MainGame::soundEngine->stopAllSounds();
-		if (activeMenu->scene->getLevel() == 6) {Menu::playIlly();}
+		if (activeMenu->scene->getLevel() == 6) {
+			MainGame::soundEngine->stopAllSounds();
+			Menu::playIlly();
+		}
 	}else{
 		activeMenu->_mainGame->setGameState(GAMESTATE::MENU);
 		Menu::activeMenu->playMenuMusic();
