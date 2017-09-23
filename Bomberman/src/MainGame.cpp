@@ -50,7 +50,7 @@ bool MainGame::initGame(float width, float height, float fov)
 {
 	glm::mat4       projectionMatrix;
 
-	srand((unsigned int)time(0));
+	srand((unsigned int)time(nullptr));
 	/// Creating glfw window
 	_width = width;
 	_height = height;
@@ -192,18 +192,14 @@ void MainGame::loadResources()
 	addModel("stage6_Background", *getShader("instance"), "resource/models/blocks/stage6/stage6_Background.gltf");
 
 	/// loading floor models
-
 	addModel("floor2", *getShader("instance"), "resource/models/blocks/ManHole.gltf");
-
 	addModel("explosion", *getShader("basic"), "resource/models/blocks/fireBlock.gltf");
 
 	/// loading bomberman model
 	addModel("bomberman", *getShader("anime"), "resource/models/bomberman/bomberman1.glb");
 
 	/// loading other models
-	addModel("bomb", *getShader("instance"), "resource/models/others/bomb.gltf");
 	addModel("bomb1", *getShader("animeNoJoint"), "resource/models/others/bomb1.gltf");
-	addModel("bg", *getShader("gui"), "resource/models/others/bg.gltf");
 
 	/// loading enemies
 	addModel("dino", *getShader("anime"), "resource/models/enemies/dino1.glb");
@@ -222,7 +218,6 @@ void MainGame::loadResources()
 	addModel("star", *getShader("instance"), "resource/models/powerUps/star.gltf");
 
 	/// loading maps
-	addMap("map2", "resource/maps/map2");
 	addMap("stage1", "resource/maps/stage1");
 	addMap("stage2", "resource/maps/stage2");
 	addMap("stage3", "resource/maps/stage3");

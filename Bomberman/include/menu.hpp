@@ -84,7 +84,8 @@ public:
 	static void     updateMenu(MainGame *game, std::vector<void *> params);
 	static void     updateGameStateStart(MainGame *game, Menu *menu, GAMESTATE state);
 	static void		updateGameStateEnd(MainGame *game, Menu *menu, GAMESTATE state);
-	static void     createNewGame(int level, int difficulty, std::string saveName);
+	static void		updateGameCredits(MainGame *game, Menu *menu, GAMESTATE state);
+	static void     createNewGame(int level, int difficulty, std::string saveName, int hp, int bombs, float speed, int explode);
 	static void     destroyGame();
 	static void     loadSaveDirectory();
 	static void     loadOptions();
@@ -101,7 +102,7 @@ public:
 	static bool     isKeyAvailable(std::string &name, int keyValue);
 	static void     keyPressKeyBindings(int key);
 	static void     myGlfwGetKeyName(int key, std::string &dest);
-
+	/// game music and sounds
 	static void     playMenuMusic();
 	static void 	playBombExplosion();
 	static void 	playBombPlacement();

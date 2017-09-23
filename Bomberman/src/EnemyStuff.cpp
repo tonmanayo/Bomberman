@@ -1,9 +1,4 @@
-//
-// Created by Tony MACK on 2017/09/04.
-//
-
 #include <menu.hpp>
-
 
 void Scene::enemiesExplosionCollision(glm::vec3 pos, Scene *scene)
 {
