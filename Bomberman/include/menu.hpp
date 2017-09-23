@@ -31,6 +31,7 @@ private:
 	static irrklang::ISoundSource    			*_mapLevelUp;
 	static irrklang::ISoundSource    			*_playPowerUp;
     static irrklang::ISoundSource               *_playGameReady;
+    static irrklang::ISoundSource               *_playIlly;
 
 public:
 	Scene       *scene = nullptr;
@@ -108,5 +109,7 @@ public:
 	static void		playLevelUp();
 	static void		playPowerUp();
 	static void		playGameReady();
+	static void 	playIlly();
 
-};
+
+	};

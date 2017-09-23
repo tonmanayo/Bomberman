@@ -11,6 +11,8 @@ irrklang::ISoundSource*		Menu::_enemyHurtSound;
 irrklang::ISoundSource*		Menu::_playerWalkingSound;
 irrklang::ISoundSource*		Menu::_playPowerUp;
 irrklang::ISoundSource*		Menu::_gameMusic;
+irrklang::ISoundSource*		Menu::_playIlly;
+
 bool                        Menu::isFullScreen = false;
 int                         Menu::windowWidth = 1280;
 int                         Menu::windowHeight = 760;
@@ -119,6 +121,7 @@ bool Menu::initMenu(MainGame *mainGame)
 		_mapLevelUp = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/levelUp.wav");
 		_playPowerUp = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/powerUp.wav");
 		_playGameReady = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/gameStart.wav");
+		_playIlly = MainGame::soundEngine->addSoundSourceFromFile("resource/sounds/illy_sound.mp3");
 	}
 	Menu::updateSoundOptions();
 	return true;
@@ -148,15 +151,16 @@ void Menu::createNewGame(int level, int difficulty, std::string saveName)
 	activeMenu->_saveFileName = saveName;
 	activeMenu->scene = new Scene();
 	activeMenu->scene->setDifficulty(difficulty);
-	activeMenu->scene->setLevel(3);
+	activeMenu->scene->setLevel(level);
 	if (level < 7)
 	{
-		activeMenu->scene->newGame(activeMenu->_mainGame, "stage" + std::to_string(3));
+		activeMenu->scene->newGame(activeMenu->_mainGame, "stage" + std::to_string(level));
 		activeMenu->scene->saveGame(activeMenu->_saveFileName);
 		activeMenu->createLoadGameMenu();
 		activeMenu->_mainGame->setGameState(GAMESTATE::START);
 		Menu::textStartTime = 0;
 		MainGame::soundEngine->stopAllSounds();
+		if (activeMenu->scene->getLevel() == 6) {Menu::playIlly();}
 	}else{
 		activeMenu->_mainGame->setGameState(GAMESTATE::MENU);
 		Menu::activeMenu->playMenuMusic();
@@ -463,4 +467,9 @@ void 	Menu::playBombExplosion() {
 void 	Menu::playGameReady() {
     if (MainGame::soundEngine && !MainGame::soundEngine->isCurrentlyPlaying(_playGameReady))
         MainGame::soundEngine->play2D(_playGameReady);
+}
+
+void 	Menu::playIlly() {
+	if (MainGame::soundEngine && !MainGame::soundEngine->isCurrentlyPlaying(_playIlly))
+		MainGame::soundEngine->play2D(_playIlly);
 }
