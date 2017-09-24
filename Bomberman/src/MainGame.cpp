@@ -203,7 +203,7 @@ void MainGame::loadResources()
 
 	/// loading enemies
 	addModel("dino", *getShader("anime"), "resource/models/enemies/dino1.glb");
-	addModel("moos", *getShader("anime"), "resource/models/enemies/moos.gltf");
+	addModel("moos", *getShader("anime"), "resource/models/enemies/wooki.gltf");
 	addModel("cubex", *getShader("anime"), "resource/models/enemies/cubex.glb");
 	addModel("wooki", *getShader("anime"), "resource/models/enemies/wooki.gltf");
 	addModel("enemyBallon2", *getShader("anime"), "resource/models/enemies/enemyBallon2.gltf");
@@ -252,6 +252,8 @@ void MainGame::loadResources()
 	getMaterial("explosion3")->numRows =  4;
 	addMaterial("explosion4", "resource/images/explosion4.jpg");
 	getMaterial("explosion4")->numRows =  4;
+	addMaterial("smoke1", "resource/images/smoke2.png");
+	getMaterial("smoke1")->numRows =  7;
 	loadParticles();
 	_window.enableVsync();
 }
@@ -259,6 +261,15 @@ void MainGame::loadResources()
 void MainGame::loadParticles()
 {
 	Zion::ParticleMaster::init(*getShader("particle"));
+	/// smoke effects
+	smokeParticles = new Zion::ParticleSystem(getMaterial("smoke1"), 40, 1.0f, 0.0f, 2.5, 0.5f);
+	smokeParticles->randomizeRotation();
+	smokeParticles->setDirection({-1, -1, 0}, 0.1f);
+	smokeParticles->setLifeError(0.4f);
+	smokeParticles->setSpeedError(0.1f);
+	smokeParticles->setScaleError(0.3f);
+	smokeParticles->setPositionError(0.5f);
+
 	/// explosion to the left
 	explosionLeft = new Zion::ParticleSystem(getMaterial("explosion2"), 15, 3, 0.0f, 1.6, 0.5f);
 	explosionLeft->randomizeRotation();
