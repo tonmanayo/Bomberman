@@ -7,11 +7,11 @@ class   Player : public NonStatic
 {
 private:
 	glm::vec3       _pos;
-	float 			_speed;
+	float 			_speed = 0.0f;
     char        	_direction;
 	int 			_powerBombExplosion;
 	int 			_powerBombNumber;
-	float 			_powerSpeed;
+	float 			_powerSpeed = 0.0f;
 	int 			_hp;
 public:
     glm::vec3   playerStart;
