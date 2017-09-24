@@ -173,7 +173,7 @@ void Menu::createNewGame(int level, int difficulty, std::string saveName, int hp
 		activeMenu->scene->getPlayer()->setHp(hp + activeMenu->scene->getPlayer()->getHP());
 		activeMenu->scene->getPlayer()->setPowerExplosion(explode + activeMenu->scene->getPlayer()->getPowerExplosion());
 		activeMenu->scene->getPlayer()->setPowerBombNbr(bombs + activeMenu->scene->getPlayer()->getPowerBombNbr());
-		activeMenu->scene->getPlayer()->setSpeed(speed + activeMenu->scene->getPlayer()->getSpeed());
+		activeMenu->scene->getPlayer()->setPowerSpeed(speed + activeMenu->scene->getPlayer()->getPowerSpeed());
 		activeMenu->scene->saveGame(activeMenu->_saveFileName);
 		activeMenu->createLoadGameMenu();
 		activeMenu->_mainGame->setGameState(GAMESTATE::START);
@@ -318,7 +318,7 @@ void Menu::updateGameStateEnd(MainGame *game, Menu *menu, GAMESTATE state)
 			int hp = menu->scene->getPlayer()->getHP() - 100;
 			hp = (hp < 0) ? 0 : hp;
 			int bombs = menu->scene->getPlayer()->getPowerBombNbr();
-			float speed = menu->scene->getPlayer()->getSpeed();
+			float speed = menu->scene->getPlayer()->getPowerSpeed();
 			Zion::ParticleMaster::clearAll();
 			destroyGame();
 			createNewGame(level, difficulty, menu->_saveFileName, hp, bombs, speed, explode);
@@ -437,6 +437,7 @@ void Menu::renderGui()
 	auto  enemyCount = (int)scene->getEnemyCount();
 	int  bomb = scene->getPlayer()->getPowerBombNbr() + 1;
 	int  explode = scene->getPlayer()->getPowerExplosion() + 1;
+	auto speed = (int)(scene->getPlayer()->getPowerSpeed() / 1.5f);
 
 	float posX = 0.96f;
 	float posY = 0.91f;
@@ -453,6 +454,10 @@ void Menu::renderGui()
 	float textPosX = (0.1f * Menu::windowWidth) / 2.0f;
 	float textSize = (float)Menu::windowWidth / 1600.0f;
 	MainGame::fontRenderer1->renderText("x" + std::to_string(bomb), textPosX, textPosY, textSize, {0.8, 0.8, 0.8});
+	/// speed
+	textPosY = (1.48f * Menu::windowHeight) / 2.0f;
+	Menu::gui.speed->render(glm::translate(glm::mat4(), {-0.94f, -0.52f, 0}));
+	MainGame::fontRenderer1->renderText(std::string("x") + std::to_string(speed), textPosX, textPosY, textSize, {0.8, 0.8, 0.8});
 	/// explode
 	textPosY = (1.88f * Menu::windowHeight) / 2.0f;
 	Menu::gui.explode->render(glm::translate(glm::mat4(), {-0.94f, -0.91f, 0}));
