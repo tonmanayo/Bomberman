@@ -17,6 +17,7 @@ namespace Zion
 
 	Camera& Camera::operator=(const Camera &rhs)
 	{
+		(void)rhs;
 		return *this;
 	}
 
@@ -24,9 +25,9 @@ namespace Zion
 	{
 		/// Calculate the new Front vector
 		glm::vec3 front;
-		front.x = (float)(cos(glm::radians(_yaw)) * cos(glm::radians(_pitch)));
-		front.y = (float)sin(glm::radians(_pitch));
-		front.z = (float)(sin(glm::radians(_yaw)) * cos(glm::radians(_pitch)));
+		front.x = (cos(glm::radians(_yaw)) * cos(glm::radians(_pitch)));
+		front.y = sin(glm::radians(_pitch));
+		front.z = (sin(glm::radians(_yaw)) * cos(glm::radians(_pitch)));
 		_front = glm::normalize(front);
 		/// Also re-calculate the Right and Up vector
 		_right = glm::normalize(glm::cross(_front, _worldUp));
@@ -52,10 +53,12 @@ namespace Zion
 
 	void Camera::moveUp(float val)
 	{
+		(void)val;
 	}
 
 	void Camera::moveDown(float val)
 	{
+		(void)val;
 	}
 
 	void Camera::moveForward(float val)

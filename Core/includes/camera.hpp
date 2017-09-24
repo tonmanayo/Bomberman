@@ -16,7 +16,7 @@ namespace Zion
 		glm::vec3   Up;
 		float       _pitch;
 		float       _yaw;
-		float       _roll;
+		//float       _roll;
 		glm::mat4   _viewMatrix;
 	private:
 		void        _updateCamera();

@@ -28,10 +28,15 @@ namespace Zion
 	}
 
 	Input::Input(const Input &rhs) { *this = rhs; }
-	Input& Input::operator=(const Input &rhs) { return *this; }
+	Input& Input::operator=(const Input &rhs)
+	{
+		(void)rhs;
+		return *this;
+	}
 
 	void Input::keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods)
 	{
+		(void)window;
 		_prevKeys[key] = _keys[key];
 		_keys[key] = action != GLFW_RELEASE;
 		if (keyCallback2 != nullptr)
@@ -42,6 +47,7 @@ namespace Zion
 
 	void Input::mouseButtonCallback(GLFWwindow *window, int button, int action, int mods)
 	{
+		(void)window;
 		_mouse[button] = action != GLFW_RELEASE;
 		if (mouseCallback2 != nullptr)
 			mouseCallback2(button, action, mods);
@@ -50,6 +56,7 @@ namespace Zion
 
 	void Input::cursorPositionCallback(GLFWwindow *window, double xpos, double ypos)
 	{
+		(void)window;
 		_mouseX = xpos;
 		_mouseY = ypos;
 		if (cursorPositionCallback2 != nullptr)

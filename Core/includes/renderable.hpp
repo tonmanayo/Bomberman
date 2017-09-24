@@ -27,6 +27,8 @@ enum GAMESTATE
 	CREDITS
 };
 
+#define BUFFER_OFFSET(i) ((char *)NULL + (i))
+
 class MainGame;
 
 namespace Zion

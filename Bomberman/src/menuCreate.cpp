@@ -258,6 +258,7 @@ void Menu::createNewGameMenu()
 	Menu::newGameMenu.createGame->setCallback([]{
 		if (Menu::newGameMenu.profileNameBox->value().empty())
 			return;
+		MainGame::soundEngine->stopAllSounds();
 		Menu::newGameMenu.changeView(false);
 		Menu::title->setVisible(false);
 		Menu::pauseMenu.changeView(true);
@@ -375,6 +376,7 @@ void Menu::createPauseGameMenu()
 		activeMenu->_mainGame->setGameState(GAMESTATE::MENU);
 		Menu::destroyGame();
 		Menu::playMenuMusic();
+		Zion::ParticleMaster::clearAll();
 	});
 
 	/// no button
@@ -416,6 +418,7 @@ void Menu::createEndGameMenu()
 	Menu::endGameMenu.yes->setCallback([]{
 		int level = activeMenu->scene->getLevel();
 		int difficulty = activeMenu->scene->getDifficultyValue();
+		Zion::ParticleMaster::clearAll();
 		destroyGame();
 		Menu::endGameMenu.changeView(false);
 		Menu::mainMenu.changeView(false);
@@ -429,6 +432,7 @@ void Menu::createEndGameMenu()
 	Menu::endGameMenu.no->setSize({quitWinOffset, 30});
 	Menu::endGameMenu.no->setPosition({2 * padding + quitWinOffset, 35});
 	Menu::endGameMenu.no->setCallback([]{
+		Zion::ParticleMaster::clearAll();
 		destroyGame();
 		Menu::pauseMenu.changeView(false);
 		Menu::title->setVisible(true);
@@ -806,6 +810,7 @@ void Menu::createOptionsMenu()
 		Menu::optionMenu.showScreen();
 		Menu::title->setCaption("OPTIONS");
 		Menu::saveOptionsConfig();
+		Menu::playMenuMusic();
 	});
 
 	/// cancel button
@@ -1073,7 +1078,7 @@ void Menu::updateSoundOptions()
 		Menu::activeMenu->_mapLevelUp->setDefaultVolume(Menu::options.soundVolume);
 		Menu::activeMenu->_playPowerUp->setDefaultVolume(Menu::options.soundVolume);
 		Menu::activeMenu->_playGameReady->setDefaultVolume(Menu::options.soundVolume);
-		MainGame::soundEngine->play2D(Menu::activeMenu->_menuMusic);
+		//MainGame::soundEngine->play2D(Menu::activeMenu->_menuMusic);
 	}
 }
 

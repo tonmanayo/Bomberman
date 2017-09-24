@@ -45,7 +45,7 @@ public:
 	static int                      stage;
 public:
 	static Zion::Renderer                   renderer;
-	static std::map<std::string, Func>     functions;
+	static std::map<std::string, Func>      functions;
 	static std::string                      getNameFromPath(const char *path);
 	static std::vector<std::string>         stringSplit(const std::string& s, const char c);
 public:

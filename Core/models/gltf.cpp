@@ -65,9 +65,9 @@ namespace Zion
 
 	bool Gltf::_processModel()
 	{
-		std::vector<tinygltf::Accessor>& acc = _model.accessors;
-		std::vector<tinygltf::BufferView>&  bufViews = _model.bufferViews;
-		std::vector<tinygltf::Buffer>& bufs = _model.buffers;
+		//std::vector<tinygltf::Accessor>& acc = _model.accessors;
+		//std::vector<tinygltf::BufferView>&  bufViews = _model.bufferViews;
+		//std::vector<tinygltf::Buffer>& bufs = _model.buffers;
 
 		for (tinygltf::Scene& scene : _model.scenes)
 		{
@@ -296,7 +296,7 @@ namespace Zion
 			bufView = bufViews[Acc.bufferView];
 			auto indicesData = (GLushort*)(bufs[bufView.buffer].data.data() + bufView.byteOffset);
 			//std::cout << "Indices ";
-			for (int i = 0; i < Acc.count; i++)
+			for (size_t i = 0; i < Acc.count; i++)
 			{
 				//std::cout << indicesData[i] << " ";
 				_indices.push_back((GLushort)(indicesData[i] + currVecSize));
@@ -310,9 +310,9 @@ namespace Zion
 		GLuint  vbo[11];
 		GLint position = _shader.getAttribLocation((char *)"position");
 		GLint targetPosition = _shader.getAttribLocation((char *)"targetPosition");
-		GLint targetNormal = _shader.getAttribLocation((char *)"targetNormal");
+		//GLint targetNormal = _shader.getAttribLocation((char *)"targetNormal");
 		GLint targetPosition1 = _shader.getAttribLocation((char *)"targetPosition1");
-		GLint targetNormal1 = _shader.getAttribLocation((char *)"targetNormal1");
+		//GLint targetNormal1 = _shader.getAttribLocation((char *)"targetNormal1");
 		GLint matIndex = _shader.getAttribLocation((char *)"matIndex");
 		GLint normal = _shader.getAttribLocation((char *)"normal");
 		GLint joint = _shader.getAttribLocation((char *)"joint");
@@ -468,7 +468,7 @@ namespace Zion
 	{
 		std::string str = std::string("jointMat[") + std::to_string(bone->id) + std::string("]");
 
-		glm::mat4 currentLocalTransform = _animations[0]->getJointAnimationMatrix(bone->index);
+		//glm::mat4 currentLocalTransform = _animations[0]->getJointAnimationMatrix(bone->index);
 		glm::mat4 currentTransform = parentTransform * _animations[0]->getJointTranslationMatrix(bone->index)
 			* _animations[0]->getJointRotationMatrix(bone->index);
 
@@ -479,7 +479,7 @@ namespace Zion
 
 	bool Gltf::loadAnimationMatrix(int animeType, float time)
 	{
-		if (animeType >= _animations.size())
+		if (animeType >= (int)_animations.size())
 			return false;
 		_animations[animeType]->setCurrentAnimationTime(time);
 		_animations[animeType]->update();

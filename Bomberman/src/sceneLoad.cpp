@@ -37,7 +37,7 @@ bool Scene::newGame(MainGame *game, std::string mapName)
 	/// adding scene update to render loop functions
 	std::vector<void *> params;
 	params.push_back(this);
-	MainGame::functions.insert(std::pair<const char *, Func>("sceneUpdate", {Scene::sceneUpdate, params}));
+	MainGame::functions.insert(std::pair<std::string, Func>("sceneUpdate", {Scene::sceneUpdate, params}));
 	return true;
 }
 
@@ -128,7 +128,7 @@ bool Scene::loadGame(MainGame *game, std::string fileName)
 	/// adding scene update to render loop functions
 	std::vector<void *> params;
 	params.push_back(this);
-	MainGame::functions.insert(std::pair<const char *, Func>("sceneUpdate", {Scene::sceneUpdate, params}));
+	MainGame::functions.insert(std::pair<std::string, Func>("sceneUpdate", {Scene::sceneUpdate, params}));
 	return true;
 }
 
