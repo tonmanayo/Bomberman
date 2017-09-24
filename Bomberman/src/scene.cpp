@@ -267,13 +267,34 @@ void Scene::sceneUpdate(MainGame *game, std::vector<void *> params)
 		{
 			std::cout << "paused"<< std::endl;
 			game->setGameState(GAMESTATE::PAUSE);
-			//MainGame::soundEngine->stopAllSounds();
 			MainGame::soundEngine->setAllSoundsPaused(true);
 			return;
 		}
 		updateBomb(game, scene);
-		updateEnemy(game, scene);
-		updatePlayer(game, scene);
+		if (scene->_player->getHP() > 0){
+			updatePlayer(game, scene);
+			updateEnemy(game, scene);
+		}
+		else{
+			float   positionChange = 5.5f * Zion::Renderable::deltaTime;
+			scene->_player->scale({0.3f, 0.3f, 0.3f});
+			scene->_player->changePosY(positionChange);
+			if (scene->_player->getDirection() == 'U')
+				scene->_player->changePosZ(-positionChange);
+			else if (scene->_player->getDirection() == 'D')
+				scene->_player->changePosZ(positionChange);
+			if (scene->_player->getDirection() == 'L')
+				scene->_player->changePosX(-positionChange);
+			else if (scene->_player->getDirection() == 'R')
+				scene->_player->changePosX(positionChange);
+			MainGame::renderer.applyTransformationToRenderable(scene->_player->getType(), scene->_player->getId(),
+					scene->_player->getTransformation());
+			MainGame::smokeParticles->generateParticles(scene->_player->getPosition(), true);
+			if (scene->_player->getPosition().y > 10.0f){
+				game->setGameState(GAMESTATE::END);
+				MainGame::soundEngine->stopAllSounds();
+			}
+		}
 	}
 }
 

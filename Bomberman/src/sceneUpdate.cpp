@@ -35,7 +35,8 @@ void Scene::updatePlayer(MainGame *game, Scene *scene) {
                                                            scene->_player->getTransformation());
 	    game->renderer.increaseAnimeTime("player", 0, velocity);
         glm::vec3 pos = scene->_player->getPosition();
-        scene->_game->getGameCamera().setCameraPosition(glm::vec3(pos.x, pos.y + 10, pos.z + 6));
+        scene->_player->setDirection('D');
+        scene->_game->getGameCamera().setCameraPosition(glm::vec3(pos.x, pos.y + 11, pos.z + 6));
         scene->_game->getGameCamera().setCameraTarget(scene->_player->getPosition());
         scene->_game->getGameCamera().setCameraUp(glm::vec3(0, 1, 0));
     }
@@ -47,8 +48,9 @@ void Scene::updatePlayer(MainGame *game, Scene *scene) {
         MainGame::renderer.applyTransformationToRenderable(scene->_player->getType(), scene->_player->getId(),
                                                            scene->_player->getTransformation());
 	    game->renderer.increaseAnimeTime("player", 0, velocity);
+        scene->_player->setDirection('U');
         glm::vec3 pos = scene->_player->getPosition();
-        scene->_game->getGameCamera().setCameraPosition(glm::vec3(pos.x, pos.y + 10, pos.z + 6));
+        scene->_game->getGameCamera().setCameraPosition(glm::vec3(pos.x, pos.y + 11, pos.z + 6));
         scene->_game->getGameCamera().setCameraTarget(scene->_player->getPosition());
         scene->_game->getGameCamera().setCameraUp(glm::vec3(0, 1, 0));
     }
@@ -60,8 +62,9 @@ void Scene::updatePlayer(MainGame *game, Scene *scene) {
         MainGame::renderer.applyTransformationToRenderable(scene->_player->getType(), scene->_player->getId(),
                                                            scene->_player->getTransformation());
 	    game->renderer.increaseAnimeTime("player", 0, velocity);
+        scene->_player->setDirection('L');
         glm::vec3 pos = scene->_player->getPosition();
-        scene->_game->getGameCamera().setCameraPosition(glm::vec3(pos.x, pos.y + 10, pos.z + 6));
+        scene->_game->getGameCamera().setCameraPosition(glm::vec3(pos.x, pos.y + 11, pos.z + 6));
         scene->_game->getGameCamera().setCameraTarget(scene->_player->getPosition());
         scene->_game->getGameCamera().setCameraUp(glm::vec3(0, 1, 0));
     }
@@ -73,8 +76,9 @@ void Scene::updatePlayer(MainGame *game, Scene *scene) {
         MainGame::renderer.applyTransformationToRenderable(scene->_player->getType(), scene->_player->getId(),
                                                            scene->_player->getTransformation());
 	    game->renderer.increaseAnimeTime("player", 0, velocity);
+        scene->_player->setDirection('R');
         glm::vec3 pos = scene->_player->getPosition();
-        scene->_game->getGameCamera().setCameraPosition(glm::vec3(pos.x, pos.y + 10, pos.z + 6));
+        scene->_game->getGameCamera().setCameraPosition(glm::vec3(pos.x, pos.y + 11, pos.z + 6));
         scene->_game->getGameCamera().setCameraTarget(scene->_player->getPosition());
         scene->_game->getGameCamera().setCameraUp(glm::vec3(0, 1, 0));
     }
@@ -91,11 +95,6 @@ void Scene::updatePlayer(MainGame *game, Scene *scene) {
             scene->_levelCompleted = true;
 	        game->setGameState(GAMESTATE::END);
         }
-    }
-
-    if (scene->_player->getHP() == 0) {
-        game->setGameState(GAMESTATE::END);
-	    MainGame::soundEngine->stopAllSounds();
     }
     worldGetPower(scene->_player->getPosition(), scene);
     if (scene->getLevel() == 6) {
