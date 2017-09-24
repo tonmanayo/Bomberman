@@ -62,7 +62,7 @@ void Scene::_addPowerUps(float x, float z, int xx, int yy) {
     std::default_random_engine e1(r());
     std::uniform_int_distribution<int> uniform_dist(0, 25);
     int randNbr = uniform_dist(e1);
-    glm::mat4 mat = glm::translate(glm::mat4(), glm::vec3(x, 0, z));
+    glm::mat4 mat = glm::translate(glm::mat4(), glm::vec3(x, -0.3, z));
 
     if (powerUp[randNbr] == 'E' && !_endLevel) {
         Zion::Renderable *endLevel = _game->getModel("floor2");
@@ -70,7 +70,7 @@ void Scene::_addPowerUps(float x, float z, int xx, int yy) {
         _blocks[yy][xx]->setEndMap(true);
         if (endLevel != nullptr)
         {
-            glm::mat4 mat1 = glm::translate(glm::mat4(), glm::vec3(x, -1, z));
+            glm::mat4 mat1 = glm::translate(glm::mat4(), glm::vec3(x, -0.9, z));
             MainGame::renderer.addToRender("endLevel", 0, endLevel, mat1);
         }
     }
@@ -78,8 +78,6 @@ void Scene::_addPowerUps(float x, float z, int xx, int yy) {
     if (powerUp[randNbr] == 'F' && !_blocks[yy][xx]->getEndMap()) {
         _blocks[yy][xx]->setPowerName("PowerBombNbrInc");
         _blocks[yy][xx]->setPowerUp(true);
-        glm::mat4 scale = glm::scale(glm::mat4(), glm::vec3(0.3f,0.3f,0.3f));
-        mat = mat * scale;
         Zion::Renderable *present = _game->getModel("present");
         if (present != nullptr)
         {
@@ -102,10 +100,10 @@ void Scene::_addPowerUps(float x, float z, int xx, int yy) {
     if (powerUp[randNbr] == 'G' && !_blocks[yy][xx]->getEndMap()) {
         _blocks[yy][xx]->setPowerName("PowerBombExplosionInc");
         _blocks[yy][xx]->setPowerUp(true);
-        Zion::Renderable *present = _game->getModel("lemon");
+        Zion::Renderable *present = _game->getModel("incExplosionPower");
         if (present != nullptr)
         {
-            MainGame::renderer.addToRender("lemon", _blocks[yy][xx]->getId() , present, mat);
+            MainGame::renderer.addToRender("incExplosionPower", _blocks[yy][xx]->getId() , present, mat);
         }
     }
 	if (powerUp[randNbr] == 'B' && !_blocks[yy][xx]->getEndMap()) {
@@ -224,6 +222,8 @@ void Scene::_addBomb(float x, float z)
 	if (_blocks[newy][newx] != nullptr && _blocks[newy][newx]->getType() == "bomb") {
 		return;
 	}
+	if (_blocks[newy][newx] != nullptr && _blocks[newy][newx]->getEndMap())
+		return;
 	glm::mat4 mat = glm::translate(glm::mat4(), glm::vec3(x, 0, z));
 	mat = glm::scale(mat, {0.6, 0.6, 0.6});
 	Zion::Renderable *model = _game->getModel("bomb1");

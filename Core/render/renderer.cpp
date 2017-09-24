@@ -42,7 +42,7 @@ namespace Zion
 		_renderStatic(_objects["heart"]);
 		_renderStatic(_objects["star"]);
 		_renderStatic(_objects["endLevel"]);
-		_renderStatic(_objects["lemon"]);
+		_renderStatic(_objects["incExplosionPower"]);
 		_renderStatic(_objects["present"]);
 		_renderAnime(_objects["mag"], "mag");
 		_renderAnime(_objects["cubex"], "cubex");

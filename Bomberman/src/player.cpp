@@ -27,15 +27,18 @@ void Player::decHP(int x) {
 }
 
 void Player::incBombExplosion() {
-	_powerBombExplosion++;
+	if (_powerBombExplosion < 5)
+		_powerBombExplosion++;
 }
 
 void Player::incBombNbr(){
-	_powerBombNumber++;
+	if (_powerBombNumber < 5)
+		_powerBombNumber++;
 }
 
 void Player::incPowerSpeed(){
-	_powerSpeed += 1.5f;
+	if (_powerSpeed < 5.0f)
+	_powerSpeed += 1.0f;
 }
 
 void Player::setPosition(glm::vec3 pos)

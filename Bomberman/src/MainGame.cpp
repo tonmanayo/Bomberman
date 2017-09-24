@@ -192,7 +192,7 @@ void MainGame::loadResources()
 	addModel("stage6_Background", *getShader("instance"), "resource/models/blocks/stage6/stage6_Background.gltf");
 
 	/// loading floor models
-	addModel("floor2", *getShader("instance"), "resource/models/blocks/ManHole.gltf");
+	addModel("floor2", *getShader("instance"), "resource/models/others/endGame.gltf");
 	addModel("explosion", *getShader("basic"), "resource/models/blocks/fireBlock.gltf");
 
 	/// loading bomberman model
@@ -214,9 +214,9 @@ void MainGame::loadResources()
 
 	/// loading powerUps
 	addModel("heart", *getShader("instance"), "resource/models/powerUps/heart.glb");
-	addModel("present", *getShader("instance"), "resource/models/powerUps/present.gltf");
-	addModel("lemon", *getShader("instance"), "resource/models/powerUps/lemon.gltf");
-	addModel("star", *getShader("instance"), "resource/models/powerUps/star.gltf");
+	addModel("present", *getShader("instance"), "resource/models/powerUps/blue_bomb.gltf");
+	addModel("incExplosionPower", *getShader("instance"), "resource/models/powerUps/red_bomb.gltf");
+	addModel("star", *getShader("instance"), "resource/models/powerUps/battery.gltf");
 
 	/// loading maps
 	addMap("stage1", "resource/maps/stage1");
