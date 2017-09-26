@@ -3,7 +3,7 @@ WallType stage6_Wall
 BreakType stage6_Breakable
 UnbreakType stage6_Unbreakable
 BgType stage6_Background
-Enemy illy illy
+Enemy illy illy illy illy illy
 RRRRRRRRRRRRR
 R...@.......R
 R...........R

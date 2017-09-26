@@ -90,7 +90,7 @@ void Scene::updateEnemy(MainGame *game, Scene *scene) {
             scene->_player->decHP(scene->getDifficulty());
             break;
         }
-        if (worldCollisionDown(scene->_enemies[i], {0.0f, 0.0f, 2.0f * Zion::Renderable::deltaTime}, scene)) {
+        if (worldCollisionDown(scene->_enemies[i], {0.0f, 0.0f, scene->_enemies[i]->getSpeed() * Zion::Renderable::deltaTime}, scene)) {
             collision = true;
             dir[0] = 'U';
             dir[1] = 'R';
@@ -106,7 +106,7 @@ void Scene::updateEnemy(MainGame *game, Scene *scene) {
                 dir[2] = 'R';
             }
         }
-        else if (worldCollisionUp(scene->_enemies[i], {0.0f, 0.0f, -2.0f * Zion::Renderable::deltaTime}, scene)) {
+        else if (worldCollisionUp(scene->_enemies[i], {0.0f, 0.0f, -scene->_enemies[i]->getSpeed() * Zion::Renderable::deltaTime}, scene)) {
             collision = true;
 
             dir[0] = 'D';
@@ -122,7 +122,7 @@ void Scene::updateEnemy(MainGame *game, Scene *scene) {
             if (scene->_blocks[y][x - 1] != nullptr) {
                 dir[2] = 'D';
             }
-        } else if (worldCollisionRight(scene->_enemies[i], {2.0f * Zion::Renderable::deltaTime, 0.0f, 0.0f}, scene)) {
+        } else if (worldCollisionRight(scene->_enemies[i], {scene->_enemies[i]->getSpeed() * Zion::Renderable::deltaTime, 0.0f, 0.0f}, scene)) {
             collision = true;
 
             dir[0] = 'L';
@@ -138,7 +138,7 @@ void Scene::updateEnemy(MainGame *game, Scene *scene) {
             if (scene->_blocks[y - 1][x] != nullptr) {
                 dir[2] = 'U';
             }
-        } else if (worldCollisionLeft(scene->_enemies[i], {-2.0f * Zion::Renderable::deltaTime, 0.0f, 0.0f}, scene)) {
+        } else if (worldCollisionLeft(scene->_enemies[i], {-scene->_enemies[i]->getSpeed() * Zion::Renderable::deltaTime, 0.0f, 0.0f}, scene)) {
             collision = true;
 
             dir[0] = 'R';

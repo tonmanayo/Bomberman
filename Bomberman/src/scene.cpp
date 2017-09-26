@@ -187,7 +187,6 @@ void Scene::_addEnemy(float x, float z, std::string &type)
 {
 	Zion::Renderable *model;
 	static int i = 0;
-
 	model = _game->getModel(type);
 
 	if (model != nullptr)
@@ -201,6 +200,24 @@ void Scene::_addEnemy(float x, float z, std::string &type)
 			_enemies.back()->setSpeed(6.0f);
 			_enemies.back()->scale(glm::vec3{2.0f, 2.0f, 2.0f});
 			_enemies.back()->setHp(5);
+		}
+        if (type == "moos") {
+			_enemies.back()->setSpeed(1.0f);
+		}
+        if (type == "mag") {
+			_enemies.back()->setSpeed(2.0f);
+		}
+        if (type == "wooki") {
+			_enemies.back()->setSpeed(3.0f);
+		}
+        if (type == "wooki") {
+			_enemies.back()->setSpeed(4.0f);
+		}
+        if (type == "dino") {
+			_enemies.back()->setSpeed(5.0f);
+		}
+        if (type == "cubex") {
+			_enemies.back()->setSpeed(6.0f);
 		}
 		_enemies.back()->setPosition(glm::vec3{getGridx(x), 0, getGridy(z)});
 		_enemies.back()->playerStart = glm::vec3(getGridx(x), 0, getGridy(z));

@@ -25,6 +25,9 @@ bool Scene::newGame(MainGame *game, std::string mapName)
         else if (strSplits[0] == std::string("Enemy")) {
             _enemyType.push_back(strSplits[1]);
             _enemyType.push_back(strSplits[2]);
+            _enemyType.push_back(strSplits[3]);
+            _enemyType.push_back(strSplits[4]);
+            _enemyType.push_back(strSplits[5]);
         }
 		else if (line[0] == 'R')
 		{
@@ -56,7 +59,7 @@ void Scene::_loadNewGameLine(std::string &line)
 		else if (c == '@')
 			_addPlayer(x, z);
 		else if (c == 'E'){
-			int ranEnemy = rand() % 2;
+			int ranEnemy = rand() % 5;
 			_addEnemy(x, z, _enemyType[ranEnemy]);
 		}
 		_addFloor(x, z);

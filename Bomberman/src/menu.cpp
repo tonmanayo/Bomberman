@@ -192,7 +192,10 @@ void Menu::createNewGame(int level, int difficulty, std::string saveName, int hp
 
 void Menu::destroyGame()
 {
-	delete activeMenu->scene;
+//	if (activeMenu->scene != nullptr) {
+//		delete activeMenu->scene;
+//		activeMenu->scene = nullptr;
+//	}
 	MainGame::functions.erase("sceneUpdate");
 	MainGame::renderer.removeAll();
 }
