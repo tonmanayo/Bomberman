@@ -200,6 +200,7 @@ void MainGame::loadResources()
 
 	/// loading other models
 	addModel("bomb1", *getShader("animeNoJoint"), "resource/models/others/bomb1.gltf");
+	addModel("ring", *getShader("animeNoJoint"), "resource/models/others/ring.gltf");
 
 	/// loading enemies
 	addModel("dino", *getShader("anime"), "resource/models/enemies/dino1.glb");

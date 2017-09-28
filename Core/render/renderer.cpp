@@ -39,6 +39,7 @@ namespace Zion
 		_renderStatic(_objects["unbreakBlock"]);
 		_renderBreakable(_objects["breakBlock"]);
 		_renderAnime(_objects["bomb"], "bomb");
+		_renderAnime(_objects["ring"], "ring");
 		_renderStatic(_objects["heart"]);
 		_renderStatic(_objects["star"]);
 		_renderStatic(_objects["endLevel"]);

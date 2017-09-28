@@ -1094,7 +1094,9 @@ bool Menu::isKeyAvailable(std::string &name, int keyValue)
 		return false;
 	if (name != "placeBomb" && keyValue == Menu::tmpOptions.placeBomb.glfwValue)
 		return false;
-	return (name != "pause" && keyValue == Menu::tmpOptions.pause.glfwValue);
+	if  (name != "pause" && keyValue == Menu::tmpOptions.pause.glfwValue)
+		return false;
+	return true;
 }
 
 void Menu::keyPressKeyBindings(int key)
