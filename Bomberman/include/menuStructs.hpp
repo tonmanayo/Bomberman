@@ -96,8 +96,6 @@ struct  NewGameMenu
 			normal->setVisible(value);
 		if (hard != nullptr)
 			hard->setVisible(value);
-		if (nameUsed != nullptr)
-			nameUsed->setVisible(value);
 	}
 };
 

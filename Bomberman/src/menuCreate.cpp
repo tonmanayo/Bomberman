@@ -268,11 +268,16 @@ void Menu::createNewGameMenu()
 		{
 			if (fileName == Menu::newGameMenu.profileNameBox->value())
 			{
-
+				if (Menu::newGameMenu.nameUsed != nullptr)
+				{
+					Menu::newGameMenu.nameUsed->setVisible(true);
+					return;
+				}
 			}
 		}
 		MainGame::soundEngine->stopAllSounds();
 		Menu::newGameMenu.changeView(false);
+		Menu::newGameMenu.nameUsed->setVisible(false);
 		Menu::title->setVisible(false);
 		Menu::pauseMenu.changeView(true);
 		Menu::createNewGame(1, Menu::difficulty, Menu::newGameMenu.profileNameBox->value(), 0, 0, 0, 0);
@@ -295,7 +300,7 @@ void Menu::createNewGameMenu()
 	Menu::newGameMenu.nameUsed->setSize({textBoxWidth + 15, textBoxHeight});
 	Menu::newGameMenu.nameUsed->setPosition({buttonPosX + (buttonWidth / 2), posY + buttonHeight + 10});
 	Menu::newGameMenu.nameUsed->setColor({230, 0, 0, 255});
-	//Menu::newGameMenu.nameUsed->setVisible(false);
+	Menu::newGameMenu.nameUsed->setVisible(false);
 
 	Menu::newGameMenu.changeView(false);
 }
@@ -501,16 +506,17 @@ void Menu::createLoadGameMenu()
 
 	auto *panelView = new nanogui::Widget(Menu::loadGameMenu.panel);
 	panelView->setLayout(new nanogui::BoxLayout(nanogui::Orientation::Vertical, nanogui::Alignment::Fill, 20, 5));
-	panelView->setSize({textBoxWidth, textBoxHeight * 4});
+	panelView->setSize({textBoxWidth, textBoxHeight * Menu::loadGameMenu.fileNames.size()});
 	panelView->setTheme(panelTheme);
 
 	int     namePosY = 10;
 	for (std::string& fileName : Menu::loadGameMenu.fileNames){
 		auto *nameButton = new nanogui::Button(panelView, fileName);
-		nameButton->setSize({textBoxWidth - 10, 20});
+		nameButton->setSize({textBoxWidth - 10, 35});
 		nameButton->setPosition({5, namePosY});
 		nameButton->setTextColor({230, 230, 230, 255});
 		nameButton->setTheme(panelTheme);
+		nameButton->setCursor(nanogui::Cursor::Hand);
 		nameButton->setCallback([fileName]{
 			Menu::loadGameMenu.changeView(false);
 			Menu::title->setVisible(false);
