@@ -29,6 +29,7 @@ private:
 	bool				   					_levelCompleted = false;
 	int								        _difficulty = 2;
 	int 									_powerSpeed;
+	int                                     _score = 0;
 	float                                   _dropStartTime;
 	bool                                    _dropped = false;
 private:
@@ -81,6 +82,8 @@ public:
 	bool	    loadGame(MainGame *game, std::string fileName);
 	bool        newGame(MainGame *game, std::string mapName);
 	bool        isLevelCompleted(){ return _levelCompleted; }
+	void        setScore(int score){_score = score;}
+	int         getScore(){return _score;}
 
 	static bool checkBlockCollision(glm::vec3 blockPos, glm::vec3 entityPos);
     static bool worldEndLevel(glm::vec3 pos, Scene *scene);

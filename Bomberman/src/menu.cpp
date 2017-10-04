@@ -362,24 +362,24 @@ void Menu::updateGameCredits(MainGame *game, Menu *menu, GAMESTATE state)
 	}
 	MainGame::fontRenderer2->renderText("CREDITS", posX1, posY1, textSize, {0.1, 0.1, 0.1});
 	/// main programmers
-	MainGame::fontRenderer1->renderText("Game Logic - Tony Mack", (0.70f * Menu::windowWidth) / 2.0f, posY1 + (0.6f * dist), textSize2, {0.1, 0.1, 0.1});
-	MainGame::fontRenderer1->renderText("Model Design - Miriam Lamarre", (0.63f * Menu::windowWidth) / 2.0f, posY1 + (1.0f * dist), textSize2, {0.1, 0.1, 0.1});
-	MainGame::fontRenderer1->renderText("Animations - Miriam Lamarre", (0.68f * Menu::windowWidth) / 2.0f, posY1 + (1.4f * dist), textSize2, {0.1, 0.1, 0.1});
-	MainGame::fontRenderer1->renderText("Music - Tony Mack", (0.82f * Menu::windowWidth) / 2.0f, posY1 + (1.8f * dist), textSize2, {0.1, 0.1, 0.1});
-	MainGame::fontRenderer1->renderText("Graphics Engine - Stephen Asiedu", (0.57f * Menu::windowWidth) / 2.0f, posY1 + (2.2f * dist), textSize2, {0.1, 0.1, 0.1});
-	MainGame::fontRenderer1->renderText("Graphical User Interface(GUI) - Angus Burroughs", (0.23f * Menu::windowWidth) / 2.0f, posY1 + (2.6f * dist), textSize2, {0.1, 0.1, 0.1});
-	MainGame::fontRenderer1->renderText("Sound Engine - Nikolaus Gebhardt", (0.64f * Menu::windowWidth) / 2.0f, posY1 + (3.0f * dist), textSize2, {0.1, 0.1, 0.1});
+	MainGame::fontRenderer1->renderText("Game Logic - Tony Mack", (0.70f * Menu::windowWidth) / 2.0f, posY1 + (0.8f * dist), textSize2, {0.1, 0.1, 0.1});
+	MainGame::fontRenderer1->renderText("Model Design - Miriam Lamarre", (0.63f * Menu::windowWidth) / 2.0f, posY1 + (1.4f * dist), textSize2, {0.1, 0.1, 0.1});
+	MainGame::fontRenderer1->renderText("Animations - Miriam Lamarre", (0.68f * Menu::windowWidth) / 2.0f, posY1 + (2.0f * dist), textSize2, {0.1, 0.1, 0.1});
+	MainGame::fontRenderer1->renderText("Music - Tony Mack", (0.82f * Menu::windowWidth) / 2.0f, posY1 + (2.6f * dist), textSize2, {0.1, 0.1, 0.1});
+	MainGame::fontRenderer1->renderText("Graphics Engine - Stephen Asiedu", (0.57f * Menu::windowWidth) / 2.0f, posY1 + (3.2f * dist), textSize2, {0.1, 0.1, 0.1});
+	MainGame::fontRenderer1->renderText("Graphical User Interface(GUI) - Angus Burroughs", (0.23f * Menu::windowWidth) / 2.0f, posY1 + (3.8f * dist), textSize2, {0.1, 0.1, 0.1});
+	MainGame::fontRenderer1->renderText("Sound Engine - Nikolaus Gebhardt", (0.64f * Menu::windowWidth) / 2.0f, posY1 + (4.4f * dist), textSize2, {0.1, 0.1, 0.1});
 	/// technologies and tools
-	MainGame::fontRenderer2->renderText("Tools And Technology", (0.45f * Menu::windowWidth) / 2.0f, posY1 + (3.8f * dist), textSize1, {0.1, 0.1, 0.1});
-	MainGame::fontRenderer1->renderText("Open Graphics Library(OpenGL)", (0.65f * Menu::windowWidth) / 2.0f, posY1 + (4.3f * dist), textSize2, {0.1, 0.1, 0.1});
-	MainGame::fontRenderer1->renderText("GLFW", (0.95f * Menu::windowWidth) / 2.0f, posY1 + (4.7f * dist), textSize2, {0.1, 0.1, 0.1});
-	MainGame::fontRenderer1->renderText("IrrKlang", (0.90f * Menu::windowWidth) / 2.0f, posY1 + (5.1f * dist), textSize2, {0.1, 0.1, 0.1});
-	MainGame::fontRenderer1->renderText("Blender", (0.91f * Menu::windowWidth) / 2.0f, posY1 + (5.5f * dist), textSize2, {0.1, 0.1, 0.1});
-	MainGame::fontRenderer1->renderText("Nanogui", (0.91f * Menu::windowWidth) / 2.0f, posY1 + (5.9f * dist), textSize2, {0.1, 0.1, 0.1});
-	MainGame::fontRenderer1->renderText("GL Transmission Format", (0.70f * Menu::windowWidth) / 2.0f, posY1 + (6.3f * dist), textSize2, {0.1, 0.1, 0.1});
-	if (posY1 > (0.20f * Menu::windowHeight) / 2.0f)
+	MainGame::fontRenderer2->renderText("Tools And Technology", (0.45f * Menu::windowWidth) / 2.0f, posY1 + (5.6f * dist), textSize1, {0.1, 0.1, 0.1});
+	MainGame::fontRenderer1->renderText("Open Graphics Library(OpenGL)", (0.65f * Menu::windowWidth) / 2.0f, posY1 + (6.2f * dist), textSize2, {0.1, 0.1, 0.1});
+	MainGame::fontRenderer1->renderText("GLFW", (0.95f * Menu::windowWidth) / 2.0f, posY1 + (6.8f * dist), textSize2, {0.1, 0.1, 0.1});
+	MainGame::fontRenderer1->renderText("IrrKlang", (0.90f * Menu::windowWidth) / 2.0f, posY1 + (7.4f * dist), textSize2, {0.1, 0.1, 0.1});
+	MainGame::fontRenderer1->renderText("Blender", (0.91f * Menu::windowWidth) / 2.0f, posY1 + (8.0f * dist), textSize2, {0.1, 0.1, 0.1});
+	MainGame::fontRenderer1->renderText("Nanogui", (0.91f * Menu::windowWidth) / 2.0f, posY1 + (8.6f * dist), textSize2, {0.1, 0.1, 0.1});
+	MainGame::fontRenderer1->renderText("GL Transmission Format", (0.70f * Menu::windowWidth) / 2.0f, posY1 + (9.2f * dist), textSize2, {0.1, 0.1, 0.1});
+	if (posY1 > (0.05f * Menu::windowHeight) / 2.0f)
 	{
-		posY1 -= Zion::Renderable::deltaTime * 80.0f;
+		posY1 -= Zion::Renderable::deltaTime * 100.0f;
 	}else{
 		if (Menu::textStartTime == 0.0f)
 			Menu::textStartTime = (float)glfwGetTime();
@@ -396,6 +396,19 @@ void Menu::updateGameCredits(MainGame *game, Menu *menu, GAMESTATE state)
 			posY1 = 0.0f;
 			dist = 0.0f;
 		}
+	}
+	if (game->getGameWindow().isKeyPressed(GLFW_KEY_ESCAPE))
+	{
+		menu->_mainGame->setGameState(GAMESTATE::MENU);
+		Menu::textStartTime = 0;
+		destroyGame();
+		Menu::mainMenu.changeView(true);
+		Menu::pauseMenu.changeView(false);
+		Menu::title->setVisible(true);
+		Menu::title->setCaption("MAIN MENU");
+		posX1 = 0.0f;
+		posY1 = 0.0f;
+		dist = 0.0f;
 	}
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);

@@ -460,10 +460,10 @@ void Menu::createEndGameMenu()
 		Zion::ParticleMaster::clearAll();
 		destroyGame();
 		Menu::pauseMenu.changeView(false);
-		Menu::title->setVisible(true);
+		//Menu::title->setVisible(true);
 		Menu::endGameMenu.changeView(false);
-		Menu::mainMenu.changeView(true);
-		activeMenu->_mainGame->setGameState(GAMESTATE::MENU);
+		//Menu::mainMenu.changeView(true);
+		activeMenu->_mainGame->setGameState(GAMESTATE::CREDITS);
 		Menu::textStartTime = 0;
 	});
 
