@@ -73,6 +73,7 @@ struct  NewGameMenu
 	nanogui::Button     *createGame = nullptr;
 	nanogui::Button     *cancel = nullptr;
 	nanogui::Label      *textLabel = nullptr;
+	nanogui::Label      *nameUsed = nullptr;
 	nanogui::TextBox    *profileNameBox = nullptr;
 	nanogui::CheckBox   *easy = nullptr;
 	nanogui::CheckBox   *normal = nullptr;
@@ -95,15 +96,17 @@ struct  NewGameMenu
 			normal->setVisible(value);
 		if (hard != nullptr)
 			hard->setVisible(value);
+		if (nameUsed != nullptr)
+			nameUsed->setVisible(value);
 	}
 };
 
 struct  LoadGameMenu
 {
-	nanogui::Theme      *buttonTheme;
-	nanogui::Button     *loadGame = nullptr;
-	nanogui::Button     *cancel = nullptr;
-	nanogui::VScrollPanel   *panel = nullptr;
+	nanogui::Theme              *buttonTheme;
+	nanogui::Button             *loadGame = nullptr;
+	nanogui::Button             *cancel = nullptr;
+	nanogui::VScrollPanel       *panel = nullptr;
 	std::vector<std::string>    fileNames;
 
 	LoadGameMenu() = default;

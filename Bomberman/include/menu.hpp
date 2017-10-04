@@ -40,7 +40,7 @@ private:
 	static irrklang::ISoundSource				*_level6Song;
 
 public:
-	Scene       *scene = nullptr;
+	Scene                   *scene = nullptr;
     static Menu             *activeMenu;
     static bool             isFullScreen;
     static int              windowWidth;

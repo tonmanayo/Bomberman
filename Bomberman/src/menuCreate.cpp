@@ -181,6 +181,7 @@ void Menu::createNewGameMenu()
 	buttonWidth = (buttonWidth > 250) ? 250 : buttonWidth;
 	int     buttonPosX = ((Menu::windowWidth / 2) - (buttonWidth * 2)) / 3;
 
+	/// Enter profile name label
 	int profileFontSize = (Menu::windowWidth < 1280) ? (Menu::windowWidth * 30) / 1000 : 30;
 	Menu::newGameMenu.textLabel = new nanogui::Label(_screen, "Enter Profile Name", "sans", profileFontSize);
 	Menu::newGameMenu.textLabel->setSize({textBoxWidth, textBoxHeight});
@@ -188,6 +189,7 @@ void Menu::createNewGameMenu()
 	Menu::newGameMenu.textLabel->setPosition({posX + tempOffset, posY});
 	Menu::newGameMenu.textLabel->setColor({50, 50, 50, 255});
 
+	/// profile name text input box
 	posY += textBoxHeight + ((Menu::windowWidth > 800) ? 10 : 5);
 	Menu::newGameMenu.profileNameBox = new nanogui::TextBox(_screen, "");
 	Menu::newGameMenu.profileNameBox->setSize({textBoxWidth, textBoxHeight});
@@ -208,6 +210,7 @@ void Menu::createNewGameMenu()
 	tmp->mStandardFontSize = (Menu::windowWidth < 1280) ? (Menu::windowWidth * 25) / 1200 : 25;
 	tmp->mTextColor = {40, 40, 40, 255};
 
+	/// easy difficulty checkbox
 	Menu::newGameMenu.easy = new nanogui::CheckBox(_screen, "    Easy");
 	Menu::newGameMenu.easy->setSize({otherButtonWidth, otherButtonHeight});
 	Menu::newGameMenu.easy->setPosition({otherPosX, posY});
@@ -221,6 +224,7 @@ void Menu::createNewGameMenu()
 			Menu::newGameMenu.easy->setChecked(true);
 	});
 
+	/// normal difficulty checkbox
 	otherPosX += otherButtonWidth;
 	Menu::newGameMenu.normal = new nanogui::CheckBox(_screen, "    Normal");
 	Menu::newGameMenu.normal->setSize({otherButtonWidth, otherButtonHeight});
@@ -236,6 +240,7 @@ void Menu::createNewGameMenu()
 			Menu::newGameMenu.normal->setChecked(true);
 	});
 
+	/// hard difficulty checkbox
 	otherPosX += otherButtonWidth + 10;
 	Menu::newGameMenu.hard = new nanogui::CheckBox(_screen, "    Hard");
 	Menu::newGameMenu.hard->setSize({otherButtonWidth, otherButtonHeight});
@@ -251,6 +256,7 @@ void Menu::createNewGameMenu()
 	});
 
 	posY += 80;
+	/// create new game button
 	Menu::newGameMenu.createGame = new nanogui::Button(_screen, "Create Game");
 	Menu::newGameMenu.createGame->setSize({buttonWidth, buttonHeight});
 	Menu::newGameMenu.createGame->setPosition({buttonPosX, posY});
@@ -258,6 +264,13 @@ void Menu::createNewGameMenu()
 	Menu::newGameMenu.createGame->setCallback([]{
 		if (Menu::newGameMenu.profileNameBox->value().empty())
 			return;
+		for (std::string& fileName : Menu::loadGameMenu.fileNames)
+		{
+			if (fileName == Menu::newGameMenu.profileNameBox->value())
+			{
+
+			}
+		}
 		MainGame::soundEngine->stopAllSounds();
 		Menu::newGameMenu.changeView(false);
 		Menu::title->setVisible(false);
@@ -266,7 +279,7 @@ void Menu::createNewGameMenu()
 		Menu::newGameMenu.profileNameBox->setValue("");
 		Menu::loadSaveDirectory();
 	});
-
+	/// cancel new game button
 	Menu::newGameMenu.cancel = new nanogui::Button(_screen, "Cancel");
 	Menu::newGameMenu.cancel->setSize({buttonWidth, buttonHeight});
 	Menu::newGameMenu.cancel->setPosition({buttonPosX + buttonWidth + buttonPosX, posY});
@@ -276,6 +289,13 @@ void Menu::createNewGameMenu()
 		Menu::newGameMenu.changeView(false);
 		Menu::title->setCaption("CAMPAIGN");
 	});
+
+	/// name already used
+	Menu::newGameMenu.nameUsed = new nanogui::Label(_screen, "Profile name already used", "sans", profileFontSize);
+	Menu::newGameMenu.nameUsed->setSize({textBoxWidth + 15, textBoxHeight});
+	Menu::newGameMenu.nameUsed->setPosition({buttonPosX + (buttonWidth / 2), posY + buttonHeight + 10});
+	Menu::newGameMenu.nameUsed->setColor({230, 0, 0, 255});
+	//Menu::newGameMenu.nameUsed->setVisible(false);
 
 	Menu::newGameMenu.changeView(false);
 }
