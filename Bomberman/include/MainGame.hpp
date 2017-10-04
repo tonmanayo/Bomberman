@@ -42,6 +42,9 @@ public:
 	static irrklang::ISoundEngine   *soundEngine;
 	static Zion::TextRenderer       *fontRenderer1;
 	static Zion::TextRenderer       *fontRenderer2;
+	static Zion::TextRenderer       *fontRenderer3;
+	static Zion::TextRenderer       *fontRenderer4;
+	static Zion::TextRenderer       *fontRenderer5;
 	static int                      stage;
 public:
 	static Zion::Renderer                   renderer;

@@ -38,6 +38,7 @@ Options                     Menu::options;
 Options                     Menu::tmpOptions;
 bool                        Menu::isKeyBind = false;
 std::string                 Menu::keyBind;
+std::vector<ScoreCard>      Menu::scoreCards;
 
 Menu::Menu(MainGame *mainGame)
 {
@@ -159,7 +160,7 @@ GLFWwindow* Menu::getGlfwWindow()
 	return _screen->glfwWindow();
 }
 
-void Menu::createNewGame(int level, int difficulty, std::string saveName, int hp, int bombs, float speed, int explode)
+void Menu::createNewGame(int level, int difficulty, std::string saveName, int hp, int bombs, float speed, int explode, int score)
 {
 	(void)level;
 	(void)difficulty;
@@ -167,6 +168,7 @@ void Menu::createNewGame(int level, int difficulty, std::string saveName, int hp
 	activeMenu->scene = new Scene();
 	activeMenu->scene->setDifficulty(difficulty);
 	activeMenu->scene->setLevel(level);
+	activeMenu->scene->setScore(score);
 	if (level < 7)
 	{
 		activeMenu->scene->newGame(activeMenu->_mainGame, "stage" + std::to_string(level));
@@ -319,12 +321,13 @@ void Menu::updateGameStateEnd(MainGame *game, Menu *menu, GAMESTATE state)
 			int difficulty = menu->scene->getDifficultyValue();
 			int explode = menu->scene->getPlayer()->getPowerExplosion();
 			int hp = menu->scene->getPlayer()->getHP() - 100;
+			int score = menu->scene->getScore();
 			hp = (hp < 0) ? 0 : hp;
 			int bombs = menu->scene->getPlayer()->getPowerBombNbr();
 			float speed = menu->scene->getPlayer()->getPowerSpeed();
 			Zion::ParticleMaster::clearAll();
 			destroyGame();
-			createNewGame(level, difficulty, menu->_saveFileName, hp, bombs, speed, explode);
+			createNewGame(level, difficulty, menu->_saveFileName, hp, bombs, speed, explode, score);
 		}
 	}else{
 		posY = (0.90f * Menu::windowHeight) / 2.0f;
@@ -426,6 +429,46 @@ void Menu::updateMenu(MainGame *game, std::vector<void *> params)
 		menu->_menuTitle->render(glm::translate(glm::mat4(), {-1.7, 1.4, 0}));
 		menu->_screen->drawWidgets();
 	}
+	else if (state == GAMESTATE::SCORE)
+	{
+		float posX = (0.65f * Menu::windowWidth) / 2.0f;
+		float posY = (0.10f * Menu::windowHeight) / 2.0f;
+		float textSize = ((float)Menu::windowWidth / 1600.0f) * 1.5f;
+		float textSize1 = ((float)Menu::windowWidth / 1600.0f) * 1.0f;
+		float posX1 = (0.20f * Menu::windowWidth) / 2.0f;
+		float posX2 = (0.8f * Menu::windowWidth) / 2.0f;
+		float posX3 = (1.4f * Menu::windowWidth) / 2.0f;
+		float posY1 = (0.30f * Menu::windowHeight) / 2.0f;
+
+		MainGame::fontRenderer3->renderText("HIGH SCORES", posX, posY, textSize, {0.02, 0.78, 0.96});
+		MainGame::fontRenderer3->renderText("RANK", posX1, posY1, textSize1, {0.89, 0.74, 0.13});
+		MainGame::fontRenderer3->renderText("SCORE", posX2, posY1, textSize1, {0.89, 0.74, 0.13});
+		MainGame::fontRenderer3->renderText("NAME", posX3, posY1, textSize1, {0.89, 0.74, 0.13});
+
+		posY1 = (0.55f * Menu::windowHeight) / 2.0f;
+		posX1 = (0.22f * Menu::windowWidth) / 2.0f;
+		posX2 = (0.82f * Menu::windowWidth) / 2.0f;
+		textSize1 = ((float)Menu::windowWidth / 1600.0f) * 1.2f;
+		float diff = (0.14f * Menu::windowHeight) / 2.0f;
+		char *positions[10] = {(char *)"1ST", (char *)"2ND", (char *)"3RD", (char *)"4TH", (char *)"5TH",
+		                       (char *)"6TH", (char *)"7TH", (char *)"8TH", (char *)"9TH", (char *)"10TH"};
+		for (int i = 0; i < 10; i++){
+			if ((size_t)i == Menu::scoreCards.size())
+				break;
+			MainGame::fontRenderer4->renderText(positions[i], posX1, posY1, textSize1, {0.0f, 0.15, 0.87});
+			MainGame::fontRenderer4->renderText(std::to_string(Menu::scoreCards[i].score), posX2, posY1, textSize1, {0.0f, 0.15, 0.87});
+			MainGame::fontRenderer4->renderText(Menu::scoreCards[i].name, posX3, posY1, textSize1, {0.0f, 0.15, 0.87});
+			posY1 += diff;
+		}
+
+		menu->_screen->drawWidgets();
+		if (Zion::Input::getKeyPressOnce(GLFW_KEY_ESCAPE))
+		{
+			Menu::mainMenu.changeView(true);
+			Menu::title->setVisible(true);
+			Menu::activeMenu->_mainGame->setGameState(GAMESTATE::MENU);
+		}
+	}
 	else if (state == GAMESTATE::PAUSE)
 	{
 		float posX = (0.80f * Menu::windowWidth) / 2.0f;
@@ -488,6 +531,11 @@ void Menu::renderGui()
 	textPosY = (0.06f * Menu::windowHeight) / 2.0f;
 	Menu::gui.timeBack->render(glm::translate(glm::mat4(), {0.0f, posY, 0.0f}));
 	MainGame::fontRenderer2->renderText(std::string("Stage ") + std::to_string(level), textPosX, textPosY, textSize, {0.8, 0.8, 0.8});
+	/// score
+	int score = Menu::activeMenu->scene->getScore();
+	textPosX = (1.70f * Menu::windowWidth) / 2.0f;
+	textPosY = (0.05f * Menu::windowHeight) / 2.0f;
+	MainGame::fontRenderer2->renderText(std::to_string(score), textPosX, textPosY, textSize, {0.8, 0.8, 0.8});
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
 }

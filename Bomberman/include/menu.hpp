@@ -60,6 +60,7 @@ public:
 	static Options          tmpOptions;
 	static bool             isKeyBind;
 	static std::string      keyBind;
+	static std::vector<ScoreCard>   scoreCards;
 
 public:
 	Menu() = default;
@@ -86,9 +87,10 @@ public:
 	static void     updateGameStateStart(MainGame *game, Menu *menu, GAMESTATE state);
 	static void		updateGameStateEnd(MainGame *game, Menu *menu, GAMESTATE state);
 	static void		updateGameCredits(MainGame *game, Menu *menu, GAMESTATE state);
-	static void     createNewGame(int level, int difficulty, std::string saveName, int hp, int bombs, float speed, int explode);
+	static void     createNewGame(int level, int difficulty, std::string saveName, int hp, int bombs, float speed, int explode, int score = 0);
 	static void     destroyGame();
 	static void     loadSaveDirectory();
+	static void     loadHighScores();
 	static void     loadOptions();
 	static void     copyOptions(Options & dest, Options & src);
 	static void     updateGraphicOptions();

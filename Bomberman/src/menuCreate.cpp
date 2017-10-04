@@ -61,6 +61,19 @@ void Menu::createMainMenu()
 	});
 
 	posY += 60;
+	Menu::mainMenu.scores = new nanogui::Button(_screen, "HIGH SCORES");
+	Menu::mainMenu.scores->setSize({buttonWidth, buttonHeight});
+	Menu::mainMenu.scores->setPosition({posX, posY});
+	Menu::mainMenu.scores->setTheme(Menu::mainMenu.buttonTheme);
+	Menu::mainMenu.scores->setCursor(nanogui::Cursor::Hand);
+	Menu::mainMenu.scores->setCallback([]{
+		Menu::mainMenu.changeView(false);
+		Menu::title->setVisible(false);
+		Menu::loadHighScores();
+		Menu::activeMenu->_mainGame->setGameState(GAMESTATE::SCORE);
+	});
+
+	posY += 60;
 	Menu::mainMenu.exit = new nanogui::Button(_screen, "EXIT");
 	Menu::mainMenu.exit->setSize({buttonWidth, buttonHeight});
 	Menu::mainMenu.exit->setPosition({posX, posY});
@@ -443,12 +456,15 @@ void Menu::createEndGameMenu()
 	Menu::endGameMenu.yes->setCallback([]{
 		int level = activeMenu->scene->getLevel();
 		int difficulty = activeMenu->scene->getDifficultyValue();
+		int score = activeMenu->scene->getPrevScore();
+		score -= 15;
+		score = (score < 0) ? 0 : score;
 		Zion::ParticleMaster::clearAll();
 		destroyGame();
 		Menu::endGameMenu.changeView(false);
 		Menu::mainMenu.changeView(false);
 		Menu::pauseMenu.changeView(true);
-		createNewGame(level, difficulty, activeMenu->_saveFileName, 0, 0, 0, 0);
+		createNewGame(level, difficulty, activeMenu->_saveFileName, 0, 0, 0, 0, score);
 		Menu::textStartTime = 0;
 	});
 
@@ -1063,6 +1079,12 @@ void Menu::updateGraphicOptions()
 	delete MainGame::fontRenderer2;
 	MainGame::fontRenderer2 = new Zion::TextRenderer(MainGame::game->getShader("text"), (GLuint)Menu::windowWidth, (GLuint)Menu::windowHeight);
 	MainGame::fontRenderer2->loadFont("resource/fonts/sansSerious.ttf", 48);
+	delete MainGame::fontRenderer3;
+	MainGame::fontRenderer3 = new Zion::TextRenderer(MainGame::game->getShader("text"), (GLuint)Menu::windowWidth, (GLuint)Menu::windowHeight);
+	MainGame::fontRenderer3->loadFont("resource/fonts/entsans.ttf", 48);
+	delete MainGame::fontRenderer4;
+	MainGame::fontRenderer4 = new Zion::TextRenderer(MainGame::game->getShader("text"), (GLuint)Menu::windowWidth, (GLuint)Menu::windowHeight);
+	MainGame::fontRenderer4->loadFont("resource/fonts/BaldurRegular.ttf", 48);
 	glm::mat4 projectionMatrix = glm::perspective(glm::radians(70.0f), (float)Menu::windowWidth / (float)Menu::windowHeight, 0.1f, 1000.0f);
 	if (MainGame::game->getShader("basic") != nullptr)
 		MainGame::game->getShader("basic")->setUniformMat4((GLchar *)"proj_matrix", projectionMatrix);
@@ -1228,3 +1250,37 @@ void Menu::myGlfwGetKeyName(int key, std::string &dest)
 		dest = "Tab";
 }
 
+void Menu::loadHighScores()
+{
+	Menu::scoreCards.clear();
+	for (std::string& fileName : Menu::loadGameMenu.fileNames)
+	{
+		std::ifstream   save;
+		std::string     line;
+
+		save.open(std::string("save/") + fileName, std::ios::in);
+		if (!save.is_open())
+			continue;
+		while (std::getline(save, line))
+		{
+			std::vector<std::string> strSplits = MainGame::stringSplit(line, ' ');
+			if (strSplits[0] == std::string("Score"))
+			{
+				bool found = false;
+				int score = std::atoi(strSplits[1].c_str());
+				for (size_t i = 0; i < Menu::scoreCards.size(); i++)
+				{
+					if (score > Menu::scoreCards[i].score){
+						found = true;
+						Menu::scoreCards.insert(Menu::scoreCards.begin()+i, {score, fileName});
+						break;
+					}
+				}
+				if (!found)
+					Menu::scoreCards.push_back({score, fileName});
+				break;
+			}
+		}
+		save.close();
+	}
+}

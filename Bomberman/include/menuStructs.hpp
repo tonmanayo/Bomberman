@@ -33,6 +33,7 @@ struct  MainMenu
 {
     nanogui::Button     *start = nullptr;
     nanogui::Button     *options = nullptr;
+	nanogui::Button     *scores = nullptr;
     nanogui::Button     *exit = nullptr;
     nanogui::Theme      *buttonTheme;
 
@@ -43,9 +44,26 @@ struct  MainMenu
             start->setVisible(value);
         if (options != nullptr)
             options->setVisible(value);
+	    if (scores != nullptr)
+		    scores->setVisible(value);
         if (exit != nullptr)
             exit->setVisible(value);
     }
+};
+
+struct  HighScoreMenu
+{
+	nanogui::Window     *scores = nullptr;
+	nanogui::Button     *back = nullptr;
+
+	HighScoreMenu() = default;
+
+	void changeView(bool value){
+		if (scores != nullptr)
+			scores->setVisible(value);
+		if (back != nullptr)
+			back->setVisible(value);
+	}
 };
 
 struct  StoryModeMenu
@@ -297,4 +315,10 @@ struct  Options
 	Key     placeBomb;
 	Key     pause;
 	std::map<int, std::vector<int>> resolutionList;
+};
+
+struct  ScoreCard
+{
+	int         score;
+	std::string name;
 };

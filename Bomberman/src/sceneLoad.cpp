@@ -109,6 +109,8 @@ bool Scene::loadGame(MainGame *game, std::string fileName)
 			_player->setPowerBombNbr(std::atoi(strSplits[1].c_str()));
 		else if (strSplits[0] == std::string("Speed"))
 			_player->setPowerSpeed((float)std::atof(strSplits[1].c_str()));
+		else if (strSplits[0] == std::string("Score"))
+			setScore(std::atoi(strSplits[1].c_str()));
 	}
 	if (_mapName.empty())
 		return false;
@@ -162,6 +164,7 @@ bool Scene::saveGame(std::string fileName)
 	save.open(std::string("save/") + fileName, std::ios::out);
 	if (!save.is_open())
 		return false;
+	save << "Score " << _score << std::endl;
 	save << "MapWidth " << _mapWidth << std::endl;
 	save << "MapHeight " << _mapLength << std::endl;
 	save << "MapName " << _mapName << std::endl;

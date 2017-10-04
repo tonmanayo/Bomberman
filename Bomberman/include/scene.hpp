@@ -30,6 +30,7 @@ private:
 	int								        _difficulty = 2;
 	int 									_powerSpeed;
 	int                                     _score = 0;
+	int                                     _prevScore = 0;
 	float                                   _dropStartTime;
 	bool                                    _dropped = false;
 private:
@@ -82,8 +83,10 @@ public:
 	bool	    loadGame(MainGame *game, std::string fileName);
 	bool        newGame(MainGame *game, std::string mapName);
 	bool        isLevelCompleted(){ return _levelCompleted; }
-	void        setScore(int score){_score = score;}
+	void        setScore(int score){_score = score; _prevScore = score;}
+	void        increaseScore(int val){_score += val;}
 	int         getScore(){return _score;}
+	int         getPrevScore(){ return _prevScore;}
 
 	static bool checkBlockCollision(glm::vec3 blockPos, glm::vec3 entityPos);
     static bool worldEndLevel(glm::vec3 pos, Scene *scene);

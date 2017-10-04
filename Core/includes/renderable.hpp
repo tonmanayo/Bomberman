@@ -24,7 +24,8 @@ enum GAMESTATE
 	END,
 	CUT_SCENE_START,
 	CUT_SCENE_END,
-	CREDITS
+	CREDITS,
+	SCORE
 };
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))

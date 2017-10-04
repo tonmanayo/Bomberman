@@ -14,6 +14,9 @@ Zion::ParticleSystem*           MainGame::smokeParticles;
 irrklang::ISoundEngine*         MainGame::soundEngine;
 Zion::TextRenderer              *MainGame::fontRenderer1;
 Zion::TextRenderer              *MainGame::fontRenderer2;
+Zion::TextRenderer              *MainGame::fontRenderer3;
+Zion::TextRenderer              *MainGame::fontRenderer4;
+Zion::TextRenderer              *MainGame::fontRenderer5;
 int                             MainGame::stage = 1;
 
 std::string MainGame::getNameFromPath(const char *path)
@@ -143,6 +146,10 @@ bool MainGame::initGame2(float width, float height, float fov)
 	MainGame::fontRenderer1->loadFont("resource/fonts/angryBirds.ttf", 48);
 	MainGame::fontRenderer2 = new Zion::TextRenderer(getShader("text"), (GLuint)Menu::windowWidth, (GLuint)Menu::windowHeight);
 	MainGame::fontRenderer2->loadFont("resource/fonts/sansSerious.ttf", 48);
+	MainGame::fontRenderer3 = new Zion::TextRenderer(getShader("text"), (GLuint)Menu::windowWidth, (GLuint)Menu::windowHeight);
+	MainGame::fontRenderer3->loadFont("resource/fonts/entsans.ttf", 48);
+	MainGame::fontRenderer4 = new Zion::TextRenderer(getShader("text"), (GLuint)Menu::windowWidth, (GLuint)Menu::windowHeight);
+	MainGame::fontRenderer4->loadFont("resource/fonts/BaldurRegular.ttf", 48);
 	MainGame::game = this;
 	return true;
 }

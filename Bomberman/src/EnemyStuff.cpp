@@ -34,6 +34,7 @@ void Scene::enemiesExplosionCollision(glm::vec3 pos, Scene *scene)
                 Menu::playEnemyHurt();
                 scene->_enemies[i]->setHp(scene->_enemies[i]->getHP() - 1);
                 if (scene->_enemies[i]->getHP() <= 0) {
+                    Menu::activeMenu->scene->increaseScore(Menu::activeMenu->scene->getDifficulty());
                     MainGame::renderer.removeFromRender(scene->_enemies[i]->getType(), scene->_enemies[i]->getId());
                     delete scene->_enemies[i];
                     scene->_enemies[i] = scene->_enemies.back();
