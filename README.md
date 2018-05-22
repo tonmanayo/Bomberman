@@ -1,5 +1,5 @@
 # Bomberman
-<h1>Semester 3, final c++ project - 2 months</h1> <br>
+<h2>Semester 3, final c++ project - 2 months</h2> <br>
 We used openGL to create a game engine <br>
 We used irrKlang for 3d sound <br>
 We used nanogui to create a menue <br>
