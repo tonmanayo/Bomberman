@@ -17,7 +17,7 @@ Zion::TextRenderer              *MainGame::fontRenderer2;
 Zion::TextRenderer              *MainGame::fontRenderer3;
 Zion::TextRenderer              *MainGame::fontRenderer4;
 Zion::TextRenderer              *MainGame::fontRenderer5;
-int                             MainGame::stage = 1;
+int                             MainGame::stage = 2;
 
 std::string MainGame::getNameFromPath(const char *path)
 {

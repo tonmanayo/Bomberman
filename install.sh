@@ -12,7 +12,7 @@ echo ${machine}
 case "${machine}" in
 	Linux)
 		if !(dpkg -l | grep libglfw3) ;then
-            sudo apt-get install libfreetype6-dev
+            sudo apt-get install libglfw3
         else
             echo libglfw3 already installed
 		fi

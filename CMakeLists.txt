@@ -5,8 +5,17 @@ set(CMAKE_CXX_STANDARD 14)
 
 find_package(OpenGL REQUIRED)
 find_package(PkgConfig REQUIRED)
+find_package(Freetype REQUIRED)
+find_package(GLEW REQUIRED)
 
-pkg_search_module(FREETYPE REQUIRED Freetype)
+
+#linux
+if (GLEW_FOUND)
+    include_directories(${GLEW_INCLUDE_DIRS})
+    link_libraries(${GLEW_LIBRARIES})
+endif()
+
+pkg_search_module(FREETYPE REQUIRED freetype2)
 
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH ${PROJECT_SOURCE_DIR}/lib)
 
@@ -16,8 +25,11 @@ execute_process(COMMAND git clone --recursive https://github.com/wjakob/nanogui.
 # Adding dependencies
 pkg_search_module(GLEW REQUIRED glew)
 pkg_search_module(GLFW3 REQUIRED glfw3)
-pkg_search_module(GLM REQUIRED glm)
-pkg_search_module(FREETYPE REQUIRED freetype2)
+#pkg_search_module(GLM REQUIRED glm)
+find_package(glm REQUIRED)
+include_directories(${GLM_INCLUDE_DIRS})
+
+#pkg_search_module(FREETYPE REQUIRED freetype2)
 
 include_directories(
         ${PROJECT_SOURCE_DIR}/Core/includes
@@ -26,13 +38,20 @@ include_directories(
         ${GLM_INCLUDE_DIRS}
         ${FREETYPE_INCLUDE_DIRS}
         ${PROJECT_SOURCE_DIR}/Bomberman/include
+        ${PROJECT_SOURCE_DIR}/lib/irrKlang/include
+
 )
 link_directories(
         ${GLEW_LIBRARY_DIRS}
         ${GLFW3_LIBRARY_DIRS}
-        ${GLM_LIBRARY_DIRS}
-        ${FREETYPE_LIBRARY_DIRS}
+        #${GLM_LIBRARY_DIRS}
+#        ${FREETYPE_LIBRARY_DIRS}
+        ${FREETYPE_LIBRARY}
+
+        ${PROJECT_SOURCE_DIR}/lib/irrKlang/lib
+
 )
+link_libraries(${FREETYPE_LIBRARY})
 
 set(LIB_SOURCE_FILES Core/entities/window.cpp Core/entities/input.cpp
         Core/entities/shader.cpp Core/utils/file.cpp Core/sprite/squareSprite.cpp
@@ -43,7 +62,7 @@ set(LIB_SOURCE_FILES Core/entities/window.cpp Core/entities/input.cpp
         Core/particle/particleSystem.cpp Core/entities/textRenderer.cpp)
 
 add_library(zion STATIC ${LIB_SOURCE_FILES})
-#target_compile_options(zion PRIVATE -Wall -Wextra -Werror)
+#target_compile_options(zion PRIVATE )
 if (APPLE)
     set(OPENGL_FLAGS "-framework OpenGL -framework GLUT -framework Cocoa -framework IOKit -framework CoreVideo")
 endif()
@@ -63,19 +82,20 @@ set(B_SOURCE_FILES Bomberman/main.cpp Bomberman/src/MainGame.cpp Bomberman/src/s
         Bomberman/src/EnemyStuff.cpp Bomberman/src/sceneLoad.cpp Bomberman/src/BombStuff.cpp
         Bomberman/src/menuCreate.cpp Bomberman/src/menuConfig.cpp Bomberman/src/levelStuff.cpp)
 
-add_executable(Bomberman ${B_SOURCE_FILES})
-target_compile_options(Bomberman PRIVATE -Wall -Wextra -Werror)
-target_link_libraries(Bomberman
+add_executable(BombermanExe ${B_SOURCE_FILES})
+target_compile_options(BombermanExe PRIVATE )
+target_link_libraries(BombermanExe
         ${OPENGL_LIBRARIES}
         ${GLEW_LIBRARIES}
-        ${GLM_LIBRARIES}
-        ${FREETYPE_LIBRARIES}
+        #${GLM_LIBRARIES}
+        #${FREETYPE_LIBRARIES}
+        ${FREETYPE_LIBRARY}
         zion
         nanogui
-        irrKlang
+        IrrKlang
         ${NANOGUI_EXTRA_LIBS}
         )
-target_link_libraries(Bomberman ${PROJECT_SOURCE_DIR}/lib/irrKlang/lib/libirrklang.dylib)
+#target_link_libraries(BombermanExe ${PROJECT_SOURCE_DIR}/lib/irrKlang/lib/libirrklang.dylib)
 if (APPLE)
     target_link_libraries(Bomberman ${OPENGL_FLAGS})
     add_custom_command(TARGET Bomberman
