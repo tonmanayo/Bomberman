@@ -12,3 +12,5 @@ Game sounds - bomb placements - explosion sounds - background music - death soun
 Gameplay - kill all enemies and find the portal to go to the next level <br>
 Score dependent on enemies killed <br>
 4 unique powerups - extra health, bigger explosions, more bombs, faster speed<br>
+For linux users clone the linux2 branch and also use glm@9.7.2><br>
+Graphics may lag on linux if you dont use your GPU for rendering<br>
